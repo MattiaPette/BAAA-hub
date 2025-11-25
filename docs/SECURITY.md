@@ -147,5 +147,5 @@ When deploying with Docker:
 
 ## License
 
-This project is licensed under the MIT License.
-See the root of the repository for license details.
+This project is licensed under the MIT License. See the root of the repository
+for license details.

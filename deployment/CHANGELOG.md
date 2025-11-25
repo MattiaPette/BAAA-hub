@@ -6,15 +6,18 @@
 
 #### 🏗️ Architecture Refactor: Separated Docker Containers
 
-The application deployment has been completely restructured from a monolithic single-container approach to a **4-container microservices architecture**:
+The application deployment has been completely restructured from a monolithic
+single-container approach to a **4-container microservices architecture**:
 
 **Previous Architecture:**
+
 - Single `app-prod` container running:
   - Nginx (reverse proxy + static files)
   - Backend API (Node.js)
   - Both services in one container
 
 **New Architecture:**
+
 - `nginx-prod` - Dedicated reverse proxy (port 8080 exposed)
 - `frontend-prod` - Nginx serving static frontend files (internal)
 - `backend-prod` - Node.js API server (internal)
@@ -26,7 +29,8 @@ The application deployment has been completely restructured from a monolithic si
 ✅ **Independent Scaling**: Scale frontend and backend separately  
 ✅ **Easier Maintenance**: Update/restart services independently  
 ✅ **Improved Security**: Better isolation between services  
-✅ **No Permission Issues**: Environment files created inside containers at runtime
+✅ **No Permission Issues**: Environment files created inside containers at
+runtime
 
 ### New Files
 
@@ -38,16 +42,19 @@ The application deployment has been completely restructured from a monolithic si
 
 ### Modified Files
 
-- `deployment/docker-compose.yml` - Complete rewrite for multi-container architecture
+- `deployment/docker-compose.yml` - Complete rewrite for multi-container
+  architecture
 - `deployment/README.md` - Updated documentation with new architecture
 - `deployment/.env.example` - Updated with NPM deployment instructions
 
 ### Breaking Changes
 
 ⚠️ **Container Names Changed:**
+
 - `app-prod` → Split into: `nginx-prod`, `frontend-prod`, `backend-prod`
 
 ⚠️ **Docker Compose Configuration:**
+
 - Must rebuild all containers: `./deploy.sh build`
 - Old containers will be orphaned and can be removed manually
 
@@ -80,21 +87,25 @@ cd deployment
 
 ### Environment Variables
 
-No changes to environment variable names or usage. All existing `.env` files are compatible.
+No changes to environment variable names or usage. All existing `.env` files are
+compatible.
 
 ### Fixed Issues
 
-✅ **Environment File Permission Errors**: 
+✅ **Environment File Permission Errors**:
+
 - Environment files are now created inside containers at build/runtime
 - Proper ownership and permissions set in Dockerfiles
 - No more "permission denied" errors when accessing env files
 
 ✅ **Backend Build Issues**:
+
 - Backend is built in a dedicated build stage
 - Dependencies properly installed in production stage
 - Build artifacts correctly copied between stages
 
 ✅ **Missing Backend Dependencies**:
+
 - Production dependencies installed separately from dev dependencies
 - All required packages included in final image
 - Proper workspace configuration for monorepo
@@ -104,6 +115,7 @@ No changes to environment variable names or usage. All existing `.env` files are
 #### 🔒 Nginx Proxy Manager (NPM) Support
 
 Complete guide for production HTTPS deployment with NPM:
+
 - SSL/TLS termination setup
 - Domain configuration (e.g., https://dev1.pette.dev)
 - Docker network integration
@@ -115,6 +127,7 @@ See: `deployment/NPM_SETUP_GUIDE.md`
 #### 📊 Individual Container Health Checks
 
 Each service now has its own health check:
+
 - `backend-prod`: Checks `/health` endpoint
 - `frontend-prod`: Checks root `/` endpoint
 - `nginx-prod`: Checks proxied `/health` endpoint
@@ -123,6 +136,7 @@ Each service now has its own health check:
 #### 🔄 Service Dependencies
 
 Proper startup ordering:
+
 1. MongoDB starts first
 2. Backend waits for MongoDB health check
 3. Frontend builds independently
@@ -133,6 +147,7 @@ Proper startup ordering:
 #### Container Communication
 
 All containers communicate through the `app-network` Docker bridge network:
+
 - Internal DNS resolution by container name
 - No ports exposed except nginx reverse proxy (8080)
 - Improved security through network isolation
@@ -147,6 +162,7 @@ All containers communicate through the `app-network` Docker bridge network:
 ### Testing
 
 Verified functionality:
+
 - ✅ Docker Compose syntax validation
 - ✅ Environment variable substitution
 - ✅ Service dependencies configuration
@@ -156,6 +172,7 @@ Verified functionality:
 ### Documentation
 
 Updated/Added documentation:
+
 - ✅ Deployment README with new architecture diagram
 - ✅ NPM setup guide with step-by-step instructions
 - ✅ Environment file examples with NPM configuration
@@ -181,6 +198,7 @@ Recommended actions after deploying:
 ### Support
 
 For issues or questions:
+
 - Review logs: `docker compose logs [service-name]`
 - Check health: `curl http://localhost:8080/health`
 - Verify network: `docker network inspect app-network`
