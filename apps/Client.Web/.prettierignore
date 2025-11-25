@@ -1,0 +1,14 @@
+.yarn
+
+**/node_modules
+**/build
+**/dist
+**/lib
+
+**/*.md
+.pnp.cjs
+.pnp.loader.mjs
+.gitlab-ci.yml
+
+**/src/locales/**/*.ts
+!**/src/locales/**/*.d.ts

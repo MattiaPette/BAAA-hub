@@ -1,0 +1,67 @@
+# Dependencies
+node_modules
+**/node_modules
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+**/dist
+**/build
+**/.tsbuildinfo
+*.tsbuildinfo
+
+# Development files
+**/.git
+**/.gitignore
+**/.gitattributes
+**/.github
+**/.vscode
+**/.idea
+**/*.log
+
+# Environment files
+.env
+.env.*
+!.env.production.example
+**/environments/.env.*
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+**/coverage
+**/__tests__
+**/__mocks__
+
+# Documentation
+**/docs
+**/*.md
+!README.md
+
+# Examples
+**/examples
+
+# Development tools
+**/.husky
+**/.lintstagedrc.json
+**/.prettierrc.json
+**/.prettierignore
+**/.editorconfig
+**/vitest.config.ts
+
+# Docker files (avoid recursion)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp
+temp
+*.tmp

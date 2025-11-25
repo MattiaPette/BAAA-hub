@@ -1,0 +1,132 @@
+{
+  "name": "monorepo-template",
+  "description": "Monorepo template for PWA AI-powered applications built with React and Koa",
+  "version": "1.0.0",
+  "framework": {
+    "name": "React",
+    "version": "19.2.0",
+    "buildTool": "Vite",
+    "language": "TypeScript"
+  },
+  "packageManager": "yarn",
+  "workspaces": ["apps/*"],
+  "entrypoints": {
+    "main": "apps/Client.Web/src/index.tsx",
+    "html": "apps/Client.Web/index.html",
+    "app": "apps/Client.Web/src/containers/core/App/App.tsx",
+    "router": "apps/Client.Web/src/containers/core/Router/Router.tsx"
+  },
+  "commands": {
+    "install": "yarn install",
+    "dev": "yarn fe:dev",
+    "build": "yarn fe:build",
+    "test": "yarn fe:test",
+    "test:coverage": "yarn workspace frontend test:coverage",
+    "lint": "yarn fe:lint",
+    "format": "yarn fe:format",
+    "extract": "yarn fe:extract",
+    "compile": "yarn fe:compile",
+    "type-check": "yarn fe:type-check"
+  },
+  "sourceDirectories": {
+    "root": "apps/Client.Web",
+    "src": "apps/Client.Web/src",
+    "components": "apps/Client.Web/src/components",
+    "containers": "apps/Client.Web/src/containers",
+    "helpers": "apps/Client.Web/src/helpers",
+    "hooks": "apps/Client.Web/src/hooks",
+    "providers": "apps/Client.Web/src/providers",
+    "theme": "apps/Client.Web/src/theme",
+    "locales": "apps/Client.Web/src/locales",
+    "assets": "apps/Client.Web/src/assets",
+    "public": "apps/Client.Web/public"
+  },
+  "exampleFiles": {
+    "component": "apps/Client.Web/src/components/commons/feedbacks/Dialog/Dialog.tsx",
+    "container": "apps/Client.Web/src/containers/MainContainer/MainContainer.tsx",
+    "helper": "apps/Client.Web/src/helpers/makeRequest/makeRequest.ts",
+    "test": "apps/Client.Web/src/helpers/makeRequest/makeRequest.test.ts",
+    "model": "apps/Client.Web/src/helpers/makeRequest/makeRequest.model.ts",
+    "provider": "apps/Client.Web/src/providers/AuthProvider/AuthProvider.tsx",
+    "hook": "apps/Client.Web/src/hooks",
+    "locale": "apps/Client.Web/src/locales/en/messages.ts"
+  },
+  "configuration": {
+    "typescript": "apps/Client.Web/tsconfig.json",
+    "vite": "apps/Client.Web/vite.config.ts",
+    "vitest": "apps/Client.Web/vitest.config.ts",
+    "eslint": "apps/Client.Web/.eslintrc.cjs",
+    "prettier": "apps/Client.Web/.prettierrc",
+    "babel": "apps/Client.Web/.babelrc",
+    "lingui": "apps/Client.Web/lingui.config.ts",
+    "packageJson": "apps/Client.Web/package.json",
+    "rootPackageJson": "package.json"
+  },
+  "technologies": {
+    "frontend": [
+      "React 19.2.0",
+      "TypeScript 5.9.3",
+      "Vite 7.2.2",
+      "Material-UI 6.5.0",
+      "React Router 7.9.5",
+      "TanStack Query 5.90.7",
+      "Emotion",
+      "Lingui (i18n)"
+    ],
+    "testing": ["Vitest 3.0.1", "Testing Library", "jsdom"],
+    "tooling": ["ESLint 8.57.1", "Prettier 3.6.1", "TypeScript ESLint 6.21.0"],
+    "authentication": ["Auth0"],
+    "pwa": ["Vite PWA Plugin", "Workbox"]
+  },
+  "buildOutput": {
+    "directory": "apps/Client.Web/build",
+    "assets": "apps/Client.Web/build/assets"
+  },
+  "devServer": {
+    "port": 4000,
+    "command": "yarn fe:dev"
+  },
+  "testing": {
+    "framework": "vitest",
+    "environment": "jsdom",
+    "setupFile": "apps/Client.Web/vitest.setup.ts",
+    "coverageProvider": "v8"
+  },
+  "patterns": {
+    "component": {
+      "path": "apps/Client.Web/src/components/**/*.tsx",
+      "description": "React components with optional .model.ts files for type definitions"
+    },
+    "container": {
+      "path": "apps/Client.Web/src/containers/**/*.tsx",
+      "description": "Higher-level container components that orchestrate multiple components"
+    },
+    "helper": {
+      "path": "apps/Client.Web/src/helpers/**/*.ts",
+      "description": "Utility functions and helpers with optional .model.ts and .test.ts files"
+    },
+    "provider": {
+      "path": "apps/Client.Web/src/providers/**/*.tsx",
+      "description": "React context providers for global state management"
+    }
+  },
+  "requirements": {
+    "node": "20.x LTS",
+    "yarn": "latest",
+    "git": "latest"
+  },
+  "environments": {
+    "envDirectory": "environments",
+    "variables": [
+      "VITE_AUTH_DOMAIN",
+      "VITE_AUTH_CLIENT_ID",
+      "VITE_AUTH_DATABASE_CONNECTION",
+      "VITE_AUTH_REDIRECT_URI"
+    ]
+  },
+  "i18n": {
+    "framework": "Lingui",
+    "supportedLocales": ["en", "it"],
+    "localeDirectory": "apps/Client.Web/src/locales"
+  }
+}

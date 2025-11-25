@@ -1,0 +1,96 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "Tools",
+    },
+    {
+      "path": "apps/Client.Web",
+      "name": "Template.Client.Web",
+    },
+    {
+      "path": "apps/Server.Api",
+      "name": "Template.Server.Api",
+    },
+  ],
+  "settings": {
+    "auto-run-command.rules": [
+      {
+        "event": "onFileRename",
+        "command": "typescript.restartTsServer",
+      },
+      {
+        "event": "onFileDelete",
+        "command": "typescript.restartTsServer",
+      },
+    ],
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    // Standard vscode
+    "files.autoSave": "onFocusChange",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.wordWrapColumn": 100,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "terminal.explorerKind": "external",
+
+    // Custom plugins configuration
+    "prettier.arrowParens": "avoid",
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "all",
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true,
+    "[jsonc]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "eslint.probe": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "html",
+      "vue",
+      "yaml",
+    ],
+    "typescript.tsdk": "Tools\\node_modules\\typescript\\lib",
+  },
+  "extensions": {
+    "recommendations": [
+      "kisstkondoros.vscode-codemetrics",
+      "naumovs.color-highlight",
+      "mikestead.dotenv",
+      "dbaeumer.vscode-eslint",
+      "tombonnike.vscode-status-bar-format-toggle",
+      "wix.vscode-import-cost",
+      "davidanson.vscode-markdownlint",
+      "christian-kohler.path-intellisense",
+      "esbenp.prettier-vscode",
+      "sidp.strict-whitespace",
+      "gabrielgrinberg.auto-run-command",
+      "vitest.explorer",
+      "kingwl.vscode-vitest-runner",
+    ],
+  },
+}

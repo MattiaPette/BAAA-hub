@@ -1,0 +1,80 @@
+# Backend Dockerfile - Builds and runs the backend API
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy root package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy backend package files
+COPY apps/Server.API/package.json ./apps/Server.API/
+COPY packages/shared-types/package.json ./packages/shared-types/
+
+# Enable pnpm via Corepack
+RUN corepack enable
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY apps/Server.API ./apps/Server.API
+COPY packages/shared-types ./packages/shared-types
+COPY tsconfig.json ./
+
+# Build shared-types first to compile TypeScript to JavaScript
+# This must happen before backend build because backend imports from shared-types
+RUN pnpm --filter @monorepo-template/shared-types build
+
+# Build backend
+RUN pnpm --filter backend build
+
+# Production stage
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/Server.API/package.json ./apps/Server.API/
+COPY packages/shared-types/package.json ./packages/shared-types/
+
+# Enable pnpm via Corepack
+RUN corepack enable
+
+# Install production dependencies only
+# Use --ignore-scripts to skip lifecycle scripts (like "prepare" which runs husky)
+# since devDependencies are not installed in production mode
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
+
+# Copy built backend and shared-types
+COPY --from=builder /app/apps/Server.API/dist ./apps/Server.API/dist
+COPY --from=builder /app/packages/shared-types/dist ./packages/shared-types/dist
+COPY --from=builder /app/packages/shared-types/package.json ./packages/shared-types/package.json
+
+# Create environments directory with proper permissions
+RUN mkdir -p /app/environments && \
+    chown -R node:node /app && \
+    chmod -R 755 /app/environments
+
+# Use node user for security
+USER node
+
+# Expose backend port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+
+# Start backend with environment setup
+# Note: Environment file is created at runtime to allow Docker environment variables
+# to be properly injected into the application configuration
+CMD ["sh", "-c", "\
+    mkdir -p /app/environments && \
+    echo \"BACKEND_PORT=${BACKEND_PORT:-3000}\" > /app/environments/.env.production && \
+    echo \"NODE_ENV=${NODE_ENV:-production}\" >> /app/environments/.env.production && \
+    echo \"MONGODB_URI=${MONGODB_URI}\" >> /app/environments/.env.production && \
+    echo \"CORS_ORIGIN=${CORS_ORIGIN}\" >> /app/environments/.env.production && \
+    echo \"DEBUG=${DEBUG:-false}\" >> /app/environments/.env.production && \
+    ENV=production node apps/Server.API/dist/index.js \
+"]

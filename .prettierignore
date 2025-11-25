@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+.yarn
+.pnp.*
+
+# Build outputs
+dist
+build
+lib
+coverage
+
+# Generated files
+*.d.ts
+src/locales/**/*.d.ts
+
+# Cache
+.cache
+.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

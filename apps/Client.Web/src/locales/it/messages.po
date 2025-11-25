@@ -1,0 +1,525 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-05-07 15:06+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: it\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:56
+msgid "A server error has occurred. Please try again later"
+msgstr "Si è verificato un errore del server. Riprova più tardi"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:154
+msgid "Above Divider"
+msgstr "Sopra il divisore"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:20
+msgid "Access denied. Incorrect username and/or password"
+msgstr "Accesso negato. Nome utente e/o password non corretti"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:267
+msgid "Add"
+msgstr "Aggiungi"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:102
+msgid "Additional interaction is required"
+msgstr "È richiesta un'interazione aggiuntiva"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:223
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:227
+msgid "Age"
+msgstr "Età"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:115
+msgid "An error occurred during authentication. Please try again"
+msgstr "Si è verificato un errore durante l'autenticazione. Riprova"
+
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:167
+msgid "App is already installed"
+msgstr "Applicazione già installata"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:84
+msgid "Autocomplete"
+msgstr "Completamento automatico"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:136
+msgid "Basic Chip"
+msgstr "Chip base"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:156
+msgid "Below Divider"
+msgstr "Sotto il divisore"
+
+#: src/containers/Books/Books.tsx:50
+#: src/containers/Books/Books.tsx:265
+#: src/containers/MainContainer/MainContainer.tsx:34
+msgid "Books"
+msgstr "Libreria"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:102
+msgid "Button"
+msgstr "Pulsante"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:117
+msgid "Button Group"
+msgstr "Gruppo di pulsanti"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:309
+msgid "Center"
+msgstr "Centro"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:157
+msgid "CENTER"
+msgstr "CENTRO"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:132
+msgid "Checkbox"
+msgstr "Casella di controllo"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:141
+msgid "Checkbox Label"
+msgstr "Etichetta della casella"
+
+#: src/containers/Settings/Settings.tsx:114
+msgid "Choose your preferred language"
+msgstr "Scegli la tua lingua preferita"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:137
+msgid "Clickable"
+msgstr "Cliccabile"
+
+#: src/containers/MainContainer/MainContainer.tsx:41
+msgid "Components Demo"
+msgstr "Demo componenti"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:48
+msgid "Components Demo - Data Display"
+msgstr "Demo componenti - Visualizzazione dati"
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:41
+msgid "Components Demo - Feedbacks"
+msgstr "Demo componenti - Feedback"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:57
+msgid "Components Demo - Inputs"
+msgstr "Demo componenti - Input"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:100
+msgid "Consent is required"
+msgstr "È richiesto il consenso"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:105
+msgid "Contained"
+msgstr "Riempito"
+
+#: src/containers/Settings/Settings.tsx:86
+msgid "Dark Mode"
+msgstr "Modalità scura"
+
+#: src/containers/Dashboard/Dashboard.tsx:19
+#: src/containers/Dashboard/Dashboard.tsx:25
+#: src/containers/MainContainer/MainContainer.tsx:27
+#: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: src/containers/ComponentsDemo/ComponentsDemo.tsx:75
+msgid "Data Display"
+msgstr "Visualizzazione dati"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:72
+msgid "Data Display Components"
+msgstr "Componenti di visualizzazione dati"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:138
+msgid "Deletable"
+msgstr "Eliminabile"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:264
+msgid "Delete"
+msgstr "Elimina"
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:157
+msgid "Dialog Title"
+msgstr "Titolo del dialogo"
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:164
+msgid "Disagree"
+msgstr "Non sono d'accordo"
+
+#: src/containers/Books/Books.tsx:240
+msgid "Failed to load books"
+msgstr "Caricamento dei libri fallito"
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:85
+msgid "Feedback Components"
+msgstr "Componenti di feedback"
+
+#: src/containers/ComponentsDemo/ComponentsDemo.tsx:76
+msgid "Feedbacks"
+msgstr "Feedback"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:282
+msgid "Filled"
+msgstr "Riempito"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:151
+msgid "Floating Action Button"
+msgstr "Pulsante azione flottante"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:24
+msgid "Incorrect username or password"
+msgstr "Nome utente o password non corretti"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:65
+msgid "Input Components"
+msgstr "Componenti di input"
+
+#: src/containers/ComponentsDemo/ComponentsDemo.tsx:74
+msgid "Inputs"
+msgstr "Inserimento"
+
+#: src/components/prompts/InstallApp/InstallApp.tsx:35
+#: src/components/prompts/InstallApp/InstallApp.tsx:74
+#: src/components/prompts/InstallApp/InstallApp.tsx:106
+msgid "Install app"
+msgstr "Installa l'app"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:44
+msgid "Invalid authentication code"
+msgstr "Codice di autenticazione non valido"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:112
+msgid "Invalid configuration"
+msgstr "Configurazione non valida"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:50
+msgid "Invalid credentials or session expired"
+msgstr "Credenziali non valide o sessione scaduta"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:69
+msgid "Invalid registration. Please check the information you entered"
+msgstr "Registrazione non valida. Verifica i dati inseriti"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:104
+msgid "Invalid request"
+msgstr "Richiesta non valida"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:110
+msgid "Invalid scope"
+msgstr "Ambito non valido"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:96
+msgid "Invalid token"
+msgstr "Token non valido"
+
+#: src/containers/Settings/Settings.tsx:98
+msgid "Language"
+msgstr "Lingua"
+
+#: src/containers/Settings/Settings.tsx:59
+msgid "Language changed to English"
+msgstr "Lingua cambiata in Inglese"
+
+#: src/containers/Settings/Settings.tsx:60
+msgid "Language changed to Italian"
+msgstr "Lingua cambiata in Italiano"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:306
+msgid "Left"
+msgstr "Sinistra"
+
+#: src/containers/Settings/Settings.tsx:86
+msgid "Light Mode"
+msgstr "Modalità chiara"
+
+#: src/components/login/LoginForm/LoginForm.tsx:130
+#: src/components/login/LoginForm/LoginForm.tsx:201
+msgid "Login"
+msgstr "Accedi"
+
+#: src/containers/MainContainer/MainContainer.tsx:56
+msgid "Logout"
+msgstr "Esci"
+
+#: src/containers/Logout/Logout.tsx:25
+msgid "Logout page"
+msgstr "Pagina di disconnessione"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:42
+msgid "Multi-factor authentication is required"
+msgstr "È richiesta l'autenticazione a più fattori"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:162
+msgid "Navigate"
+msgstr "Naviga"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:90
+msgid "Network error. Check your internet connection"
+msgstr "Errore di rete. Verifica la connessione internet"
+
+#: src/components/commons/errors/RootErrorFallback/RootErrorFallback.tsx:97
+msgid "Oh no! Something went wrong..."
+msgstr "Oh no! Qualcosa è andato storto..."
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:120
+msgid "One"
+msgstr "Uno"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:182
+msgid "Option 1"
+msgstr "Opzione 1"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:187
+msgid "Option 2"
+msgstr "Opzione 2"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:106
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:283
+msgid "Outlined"
+msgstr "Con bordo"
+
+#: src/components/login/LoginForm/LoginForm.tsx:170
+msgid "Password"
+msgstr "Password"
+
+#: src/components/login/LoginForm/LoginForm.tsx:182
+msgid "Password is required"
+msgstr "Password necessaria"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:194
+msgid "Photos"
+msgstr "Foto"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:139
+msgid "Primary"
+msgstr "Primario"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:173
+msgid "Radio Group"
+msgstr "Gruppo radio"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:198
+msgid "Rating"
+msgstr "Valutazione"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:108
+msgid "Response type not supported"
+msgstr "Tipo di risposta non supportato"
+
+#: src/containers/Books/Books.tsx:246
+msgid "Retry"
+msgstr "Riprova"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:312
+msgid "Right"
+msgstr "Destra"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:220
+msgid "Select"
+msgstr "Seleziona"
+
+#: src/containers/Settings/Settings.tsx:101
+#: src/containers/Settings/Settings.tsx:106
+msgid "Select Language"
+msgstr "Seleziona lingua"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:91
+msgid "Select option"
+msgstr "Seleziona opzione"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:270
+#: src/containers/MainContainer/MainContainer.tsx:48
+#: src/containers/Settings/Settings.tsx:40
+#: src/containers/Settings/Settings.tsx:68
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:243
+msgid "Slider"
+msgstr "Cursore"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:281
+msgid "Standard"
+msgstr "Standard"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:140
+msgid "Success"
+msgstr "Successo"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:259
+msgid "Switch"
+msgstr "Interruttore"
+
+#: src/containers/Settings/Settings.tsx:89
+msgid "Switch between light and dark theme"
+msgstr "Passa tra tema chiaro e scuro"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:268
+msgid "Switch Label"
+msgstr "Etichetta interruttore"
+
+#: src/containers/Settings/Settings.tsx:49
+msgid "Switched to dark theme"
+msgstr "Passato al tema scuro"
+
+#: src/containers/Settings/Settings.tsx:48
+msgid "Switched to light theme"
+msgstr "Passato al tema chiaro"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:230
+msgid "Ten"
+msgstr "Dieci"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:107
+msgid "Text"
+msgstr "Testo"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:278
+msgid "Text Field"
+msgstr "Campo di testo"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:78
+msgid "The password cannot contain personal information"
+msgstr "La password non può contenere informazioni personali"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:74
+msgid "The password does not meet the minimum security requirements"
+msgstr "La password non soddisfa i requisiti minimi di sicurezza"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:94
+msgid "The request has expired. Please try again"
+msgstr "La richiesta è scaduta. Riprova"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:60
+msgid "The service is temporarily unavailable. Please try again later"
+msgstr "Il servizio è temporaneamente non disponibile. Riprova più tardi"
+
+#: src/containers/Settings/Settings.tsx:76
+msgid "Theme"
+msgstr "Tema"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:65
+msgid "There is already a user with this email address"
+msgstr "Esiste già un utente con questo indirizzo email"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:232
+msgid "Thirty"
+msgstr "Trenta"
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:160
+msgid "This is a sample dialog content. You can put any content here."
+msgstr "Questo è un esempio di contenuto del dialogo. Puoi inserire qualsiasi contenuto qui."
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:110
+msgid "This is a success alert"
+msgstr "Questo è un avviso di successo"
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:107
+msgid "This is an error alert"
+msgstr "Questo è un avviso di errore"
+
+#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:109
+msgid "This is an info alert"
+msgstr "Questo è un avviso informativo"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:26
+msgid "This password has been compromised in a data breach. Please choose a different password to protect your account"
+msgstr "Questa password è stata compromessa in una violazione dei dati. Scegli una password diversa per proteggere il tuo account"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:67
+msgid "This username is already in use"
+msgstr "Questo nome utente è già in uso"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:122
+msgid "Three"
+msgstr "Tre"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:293
+msgid "Toggle Button"
+msgstr "Pulsante toggle"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:86
+msgid "Too many attempts. Please try again in a few minutes"
+msgstr "Troppi tentativi. Riprova tra qualche minuto"
+
+#: src/components/login/LoginForm/LoginForm.tsx:157
+msgid "Too many characters"
+msgstr "Troppi caratteri"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:231
+msgid "Twenty"
+msgstr "Venti"
+
+#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:121
+msgid "Two"
+msgstr "Due"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:106
+msgid "Unauthorized client"
+msgstr "Client non autorizzato"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:40
+msgid "Unauthorized. Please verify your credentials"
+msgstr "Non autorizzato. Verifica le tue credenziali"
+
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:208
+msgid "User installed the app"
+msgstr "L'utente ha installato l'applicazione"
+
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:210
+msgid "User rejected app installation"
+msgstr "L'utente ha respinto l'installazione dell'app"
+
+#: src/components/login/LoginForm/LoginForm.tsx:146
+#: src/components/login/LoginForm/LoginForm.tsx:147
+msgid "Username"
+msgstr "Nome utente"
+
+#: src/components/login/LoginForm/LoginForm.tsx:161
+msgid "Username is required"
+msgstr "Nome utente è necessario"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:141
+msgid "With Icon"
+msgstr "Con icona"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:158
+msgid "With Text"
+msgstr "Con testo"
+
+#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:202
+msgid "Work"
+msgstr "Lavoro"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:98
+msgid "You must log in"
+msgstr "È necessario effettuare l'accesso"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:46
+msgid "You must register for multi-factor authentication"
+msgstr "È necessario registrare l'autenticazione a più fattori"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:36
+msgid "Your account has been blocked for security reasons"
+msgstr "Il tuo account è stato bloccato per motivi di sicurezza"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:31
+msgid "Your account has been locked after too many consecutive login attempts. We have sent you an email with instructions on how to unlock it"
+msgstr "Il tuo account è stato bloccato dopo troppi tentativi di accesso consecutivi. Ti abbiamo inviato un'email con le istruzioni su come sbloccarlo"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:82
+msgid "Your password is too common. Choose a more secure one"
+msgstr "La password è troppo comune. Scegline una più sicura"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:52
+msgid "Your session has expired. Please log in again"
+msgstr "La sessione è scaduta. Effettua nuovamente l'accesso"

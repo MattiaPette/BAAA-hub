@@ -1,0 +1,73 @@
+# Frontend Dockerfile - Builds and serves frontend static files with nginx
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy root package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy frontend package files
+COPY apps/Client.Web/package.json ./apps/Client.Web/
+COPY packages/shared-types/package.json ./packages/shared-types/
+
+# Enable pnpm via Corepack
+RUN corepack enable
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY apps/Client.Web ./apps/Client.Web
+COPY packages/shared-types ./packages/shared-types
+COPY tsconfig.json ./
+COPY eslint.config.base.js ./
+
+# Build arguments for environment variables
+ARG VITE_AUTH_DOMAIN
+ARG VITE_AUTH_CLIENT_ID
+ARG VITE_AUTH_REDIRECT_URI
+ARG VITE_AUTH_DATABASE_CONNECTION
+ARG VITE_API_URL
+
+# Build shared-types first to compile TypeScript to JavaScript
+# This must happen before frontend build because frontend imports from shared-types
+RUN pnpm --filter @monorepo-template/shared-types build
+
+# Build frontend with environment variables properly set
+# Vite embeds these at build time since it's a static frontend
+ENV ENV=production \
+    VITE_AUTH_DOMAIN=${VITE_AUTH_DOMAIN} \
+    VITE_AUTH_CLIENT_ID=${VITE_AUTH_CLIENT_ID} \
+    VITE_AUTH_REDIRECT_URI=${VITE_AUTH_REDIRECT_URI} \
+    VITE_AUTH_DATABASE_CONNECTION=${VITE_AUTH_DATABASE_CONNECTION} \
+    VITE_API_URL=${VITE_API_URL}
+RUN pnpm --filter frontend build
+
+# Production stage - nginx to serve static files
+FROM nginx:alpine
+
+# Copy nginx configuration
+COPY deployment/nginx-frontend.conf /etc/nginx/nginx.conf
+
+# Copy frontend build
+COPY --from=builder /app/apps/Client.Web/build /usr/share/nginx/html
+
+# Create nginx directories and set permissions
+RUN mkdir -p /var/cache/nginx/client_temp && \
+    mkdir -p /var/cache/nginx/proxy_temp && \
+    mkdir -p /var/cache/nginx/fastcgi_temp && \
+    mkdir -p /var/cache/nginx/uwsgi_temp && \
+    mkdir -p /var/cache/nginx/scgi_temp && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
+
+EXPOSE 80
+
+# Install wget for health checks (not available in alpine by default)
+RUN apk add --no-cache wget
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:80/ || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]

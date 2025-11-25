@@ -1,0 +1,58 @@
+{
+  "name": "web-monorepo",
+  "version": "1.0.0",
+  "author": "Mattia Pettenuzzo <mattia.pettenuzzo@gmail.com>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "fe:lint": "pnpm --filter frontend lint",
+    "fe:format": "pnpm --filter frontend format",
+    "fe:format:check": "pnpm --filter frontend format --check",
+    "fe:type-check": "pnpm --filter frontend type-check",
+    "fe:dev": "pnpm --filter frontend dev",
+    "fe:extract": "pnpm --filter frontend extract",
+    "fe:compile": "pnpm --filter frontend compile",
+    "fe:test": "pnpm --filter frontend test",
+    "fe:test:coverage": "pnpm --filter frontend test:coverage",
+    "fe:build": "pnpm --filter frontend build",
+    "be:lint": "pnpm --filter backend lint",
+    "be:format": "pnpm --filter backend format",
+    "be:type-check": "pnpm --filter backend type-check",
+    "be:dev": "pnpm --filter backend dev",
+    "be:test": "pnpm --filter backend test",
+    "be:test:coverage": "pnpm --filter backend test:coverage",
+    "be:build": "pnpm --filter backend build",
+    "be:start": "pnpm --filter backend start",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose down",
+    "dev": "pnpm run db:start && concurrently \"pnpm fe:dev\" \"pnpm be:dev\" --names \"FE,BE\" --prefix-colors \"blue,green\"",
+    "prepare": "husky"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "pnpm": {
+    "overrides": {
+      "punycode": "2.3.1"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.6.1"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@10.20.0"
+}
