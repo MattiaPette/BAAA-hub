@@ -147,5 +147,5 @@ When deploying with Docker:
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0).
+This project is licensed under the MIT License.
 See the root of the repository for license details.

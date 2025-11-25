@@ -2,7 +2,7 @@
   "name": "baaa-hub",
   "version": "1.0.0",
   "author": "Mattia Pettenuzzo <mattia.pettenuzzo@gmail.com>",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "lint": "eslint . --fix",
