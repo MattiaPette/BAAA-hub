@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect } from 'react';
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   Stack,
   styled,
@@ -65,13 +66,18 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
  * @param {Object} props - The properties passed to the component.
  * @param {boolean} props.error - A flag indicating if there is an error in the login form.
  * @param {Function} props.onSubmit - The function to call when the form is submitted.
+ * @param {Function} props.onLoginWithRedirect - The function to call for redirect-based login.
  *
  * @returns {JSX.Element} The rendered login form.
  *
  * @example
- * <LoginForm error={false} onSubmit={handleLogin} />
+ * <LoginForm error={false} onSubmit={handleLogin} onLoginWithRedirect={handleRedirectLogin} />
  */
-export const LoginForm: FC<LoginFormProps> = ({ errorMessages, onSubmit }) => {
+export const LoginForm: FC<LoginFormProps> = ({
+  errorMessages,
+  onSubmit,
+  onLoginWithRedirect,
+}) => {
   const {
     register,
     handleSubmit: handleSubmitForm,
@@ -200,6 +206,43 @@ export const LoginForm: FC<LoginFormProps> = ({ errorMessages, onSubmit }) => {
           <Button type="submit" fullWidth variant="contained">
             <Trans>Login</Trans>
           </Button>
+          {onLoginWithRedirect && (
+            <>
+              <Divider>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Trans>or</Trans>
+                </Typography>
+              </Divider>
+              <Typography
+                variant="body2"
+                sx={{
+                  textAlign: 'center',
+                  color: 'text.secondary',
+                }}
+              >
+                <Trans>Having trouble signing in?</Trans>{' '}
+                <Button
+                  type="button"
+                  onClick={onLoginWithRedirect}
+                  variant="text"
+                  sx={{
+                    padding: 0,
+                    minWidth: 'auto',
+                    textTransform: 'none',
+                    fontWeight: 'inherit',
+                    fontSize: 'inherit',
+                    verticalAlign: 'baseline',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      textDecoration: 'underline',
+                    },
+                  }}
+                >
+                  <Trans>Try alternative login</Trans>
+                </Button>
+              </Typography>
+            </>
+          )}
         </Box>
       </Card>
     </SignInContainer>

@@ -95,4 +95,38 @@ describe('LoginForm', () => {
       expect(passwordInput).toHaveAttribute('aria-invalid', 'true');
     });
   });
+
+  it('should render alternative login button when onLoginWithRedirect is provided', () => {
+    const mockLoginWithRedirect = vi.fn();
+    render(<LoginForm onLoginWithRedirect={mockLoginWithRedirect} />);
+
+    expect(
+      screen.getByRole('button', { name: /try alternative login/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/having trouble signing in\?/i),
+    ).toBeInTheDocument();
+  });
+
+  it('should not render alternative login button when onLoginWithRedirect is not provided', () => {
+    render(<LoginForm />);
+
+    expect(
+      screen.queryByRole('button', { name: /try alternative login/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('should call onLoginWithRedirect when alternative login button is clicked', async () => {
+    const mockLoginWithRedirect = vi.fn();
+    render(<LoginForm onLoginWithRedirect={mockLoginWithRedirect} />);
+
+    const alternativeLoginButton = screen.getByRole('button', {
+      name: /try alternative login/i,
+    });
+    fireEvent.click(alternativeLoginButton);
+
+    await waitFor(() => {
+      expect(mockLoginWithRedirect).toHaveBeenCalled();
+    });
+  });
 });
