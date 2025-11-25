@@ -2,6 +2,7 @@
   "name": "baaa-hub",
   "version": "1.0.0",
   "author": "Mattia Pettenuzzo <mattia.pettenuzzo@gmail.com>",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "lint": "eslint . --fix",
@@ -42,13 +43,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "concurrently": "^9.1.2",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.5.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.6.1"
+    "prettier": "^3.6.2"
   },
   "engines": {
     "node": ">=20.0.0",
