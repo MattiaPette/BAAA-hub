@@ -33,10 +33,10 @@
     "@types/koa__cors": "^5.0.0",
     "@types/koa__router": "^12.0.4",
     "@types/node": "^22.10.5",
-    "@typescript-eslint/eslint-plugin": "^8.47.0",
-    "@typescript-eslint/parser": "^8.47.0",
-    "@vitest/coverage-v8": "^4.0.10",
-    "@vitest/ui": "^4.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.48.0",
+    "@typescript-eslint/parser": "^8.48.0",
+    "@vitest/coverage-v8": "^4.0.14",
+    "@vitest/ui": "^4.0.14",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
@@ -44,7 +44,7 @@
     "supertest": "^7.0.0",
     "tsx": "^4.19.2",
     "typescript": "~5.9.3",
-    "vitest": "^4.0.10"
+    "vitest": "^4.0.14"
   },
   "module": "index.ts",
   "engines": {
