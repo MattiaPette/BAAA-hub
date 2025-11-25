@@ -17,6 +17,10 @@ import { getErrorDescription } from '../../helpers/getErrorDescription/getErrorD
  * component translates the error code to a human-friendly message and
  * displays it in the form.
  *
+ * Also provides an alternative `loginWithRedirect` handler for browsers
+ * with strict cookie policies (e.g., Safari) where the cross-origin
+ * authentication may fail with server errors.
+ *
  * @param {void} props - This component does not accept props; it uses
  *   `useLocation` and `useAuth` internally.
  * @returns {JSX.Element} A React element containing the login form.
@@ -40,7 +44,7 @@ import { getErrorDescription } from '../../helpers/getErrorDescription/getErrorD
 
 export const Login: FC = () => {
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, loginWithRedirect } = useAuth();
 
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
@@ -68,7 +72,11 @@ export const Login: FC = () => {
 
   return (
     <FlexContainer direction="column">
-      <LoginForm errorMessages={errorMessages} onSubmit={onSubmit} />
+      <LoginForm
+        errorMessages={errorMessages}
+        onSubmit={onSubmit}
+        onLoginWithRedirect={loginWithRedirect}
+      />
     </FlexContainer>
   );
 };

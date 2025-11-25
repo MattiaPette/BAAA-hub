@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 
-import logo from '../../../../assets/vite.svg';
+import logo from '../../../../assets/shrimp.png';
 import { TopbarTitleProps } from './TopbarTitle.model';
 
 /**

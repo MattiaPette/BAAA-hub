@@ -26,6 +26,7 @@ describe('LoginCallback', () => {
       isAuthenticated: false,
       localStorageAvailable: true,
       login: vi.fn(),
+      loginWithRedirect: vi.fn(),
       logout: vi.fn(),
       token: null,
       userPermissions: [],

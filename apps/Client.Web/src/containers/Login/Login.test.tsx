@@ -8,11 +8,13 @@ import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 
 describe('Login', () => {
   const mockLogin = vi.fn();
+  const mockLoginWithRedirect = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       login: mockLogin,
+      loginWithRedirect: mockLoginWithRedirect,
       isAuthenticated: false,
       localStorageAvailable: true,
       logout: vi.fn(),
@@ -43,7 +45,7 @@ describe('Login', () => {
 
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole('button', { name: /login/i });
+    const submitButton = screen.getByRole('button', { name: /^login$/i });
 
     fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -73,7 +75,7 @@ describe('Login', () => {
 
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole('button', { name: /login/i });
+    const submitButton = screen.getByRole('button', { name: /^login$/i });
 
     fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
@@ -108,7 +110,7 @@ describe('Login', () => {
 
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole('button', { name: /login/i });
+    const submitButton = screen.getByRole('button', { name: /^login$/i });
 
     fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -116,6 +118,35 @@ describe('Login', () => {
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalled();
+    });
+  });
+
+  it('should render alternative login link', () => {
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole('button', { name: /try alternative login/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('should call loginWithRedirect when alternative login is clicked', async () => {
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    const alternativeLoginButton = screen.getByRole('button', {
+      name: /try alternative login/i,
+    });
+    fireEvent.click(alternativeLoginButton);
+
+    await waitFor(() => {
+      expect(mockLoginWithRedirect).toHaveBeenCalled();
     });
   });
 });
