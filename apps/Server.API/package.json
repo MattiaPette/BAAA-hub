@@ -32,7 +32,7 @@
     "@types/koa-bodyparser": "^4.3.12",
     "@types/koa__cors": "^5.0.0",
     "@types/koa__router": "^12.0.4",
-    "@types/node": "^22.10.5",
+    "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.48.0",
     "@typescript-eslint/parser": "^8.48.0",
     "@vitest/coverage-v8": "^4.0.14",
