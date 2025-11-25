@@ -9,8 +9,8 @@
       "name": "BAAA-Hub.Client.Web",
     },
     {
-      "path": "apps/Server.Api",
-      "name": "BAAA-Hub.Server.Api",
+      "path": "apps/Server.API",
+      "name": "BAAA-Hub.Server.API",
     },
   ],
   "settings": {
