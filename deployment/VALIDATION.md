@@ -5,9 +5,12 @@
 ### Original Issue Requirements
 
 #### 1. Separate Docker Containers ✅
-**Requirement:** Separate containers for mongodb, frontend, backend, and nginx in the same network.
+
+**Requirement:** Separate containers for mongodb, frontend, backend, and nginx
+in the same network.
 
 **Implementation:**
+
 - ✅ `mongodb-prod` - MongoDB database container
 - ✅ `frontend-prod` - Frontend static files with nginx
 - ✅ `backend-prod` - Backend API server
@@ -16,9 +19,11 @@
 - ✅ Containers can communicate via service names
 
 #### 2. Better Debugging and Deployment ✅
+
 **Requirement:** Improve debugging and enable future scaling.
 
 **Implementation:**
+
 - ✅ Individual container logs: `docker logs [container-name]`
 - ✅ Independent health checks for each service
 - ✅ Services can be scaled independently
@@ -26,9 +31,11 @@
 - ✅ Clear separation of concerns
 
 #### 3. Nginx Proxy Manager (NPM) Setup Guide ✅
+
 **Requirement:** Guide to configure external NPM for https://dev1.pette.dev
 
 **Implementation:**
+
 - ✅ Complete NPM setup guide (`NPM_SETUP_GUIDE.md`)
 - ✅ Network configuration instructions
 - ✅ SSL/HTTPS setup with Let's Encrypt
@@ -37,9 +44,11 @@
 - ✅ Security best practices
 
 #### 4. Fix Environment File Permission Issues ✅
+
 **Requirement:** Fix "permission denied" errors for env files.
 
 **Implementation:**
+
 - ✅ Environment files created inside containers at build/runtime
 - ✅ Proper ownership set in Dockerfiles (`chown -R node:node`)
 - ✅ Correct permissions set (`chmod -R 755`)
@@ -47,9 +56,12 @@
 - ✅ Environment variables passed via docker-compose
 
 #### 5. Fix Backend Build Issues ✅
-**Requirement:** Ensure backend has dependencies installed and build is generated.
+
+**Requirement:** Ensure backend has dependencies installed and build is
+generated.
 
 **Implementation:**
+
 - ✅ Multi-stage Dockerfile for backend
 - ✅ Dependencies installed in builder stage
 - ✅ Backend built in builder stage (`pnpm --filter backend build`)
@@ -60,19 +72,23 @@
 ## 📦 Files Created/Modified
 
 ### New Dockerfiles
+
 - `deployment/Dockerfile.frontend` - Frontend build and nginx serve (2.3KB)
 - `deployment/Dockerfile.backend` - Backend build and runtime (2.2KB)
 
 ### New Nginx Configurations
+
 - `deployment/nginx-frontend.conf` - Frontend nginx config (2.2KB)
 - `deployment/nginx-proxy.conf` - Reverse proxy config (3.1KB)
 
 ### Updated Files
+
 - `deployment/docker-compose.yml` - Multi-container orchestration (2.7KB)
 - `deployment/README.md` - Updated architecture documentation (11KB)
 - `deployment/.env.example` - Updated with NPM examples (2.8KB)
 
 ### New Documentation
+
 - `deployment/NPM_SETUP_GUIDE.md` - Complete NPM setup guide (9.4KB)
 - `deployment/CHANGELOG.md` - Migration guide (5.7KB)
 - `deployment/QUICKSTART.md` - Quick reference (4.0KB)
@@ -81,12 +97,14 @@
 ## 🏗️ Architecture Verification
 
 ### Container Communication Flow
+
 ```
 Internet → nginx-prod:8080 → frontend-prod:80 (static files)
                           → backend-prod:3000 → mongodb-prod:27017
 ```
 
 ### Service Dependencies
+
 ```
 mongodb (starts first)
   ↓
@@ -98,6 +116,7 @@ nginx (waits for both backend and frontend health)
 ```
 
 ### Network Isolation
+
 - ✅ Only nginx-prod exposes port 8080 to host
 - ✅ All other containers communicate internally
 - ✅ No direct access to backend or database from host
@@ -106,6 +125,7 @@ nginx (waits for both backend and frontend health)
 ## 🔍 Configuration Validation
 
 ### Docker Compose Syntax
+
 ```bash
 $ docker compose config --services
 mongodb
@@ -113,17 +133,21 @@ backend
 frontend
 nginx
 ```
+
 ✅ All 4 services configured correctly
 
 ### Health Checks
+
 - ✅ mongodb: `mongosh --eval "db.adminCommand('ping')"`
 - ✅ backend: `wget http://localhost:3000/health`
 - ✅ frontend: `wget http://localhost/`
 - ✅ nginx: `wget http://localhost:8080/health`
 
 ### Environment Variables
+
 All environment variables properly configured in docker-compose.yml:
-- ✅ VITE_* variables passed as build args to frontend
+
+- ✅ VITE\_\* variables passed as build args to frontend
 - ✅ Backend runtime variables set in environment section
 - ✅ MongoDB URI configured for internal network
 - ✅ CORS_ORIGIN configurable via .env file
@@ -131,6 +155,7 @@ All environment variables properly configured in docker-compose.yml:
 ## 📋 Deployment Checklist
 
 ### First-Time Setup
+
 - [ ] Copy `.env.example` to `.env`
 - [ ] Configure Auth0 credentials in `.env`
 - [ ] Run `./deploy.sh build`
@@ -138,6 +163,7 @@ All environment variables properly configured in docker-compose.yml:
 - [ ] Verify with `./deploy.sh status`
 
 ### With Nginx Proxy Manager
+
 - [ ] Create shared Docker network
 - [ ] Update docker-compose.yml network config
 - [ ] Configure NPM proxy host
@@ -151,22 +177,27 @@ All environment variables properly configured in docker-compose.yml:
 When testing in actual environment:
 
 1. **Build Test:**
+
    ```bash
    ./deploy.sh build
    ```
+
    - Verify frontend builds successfully
    - Verify backend builds successfully
    - Check for dependency installation errors
 
 2. **Startup Test:**
+
    ```bash
    ./deploy.sh start
    ```
+
    - Verify all 4 containers start
    - Check startup order (mongodb → backend → frontend → nginx)
    - Verify health checks pass
 
 3. **Connectivity Test:**
+
    ```bash
    curl http://localhost:8080/health
    docker exec nginx-prod wget -O- http://frontend/
@@ -174,6 +205,7 @@ When testing in actual environment:
    ```
 
 4. **Logs Test:**
+
    ```bash
    ./deploy.sh logs
    docker logs frontend-prod
@@ -199,6 +231,7 @@ When testing in actual environment:
 ## 📊 Comparison: Before vs After
 
 ### Before
+
 - 1 monolithic container (app-prod)
 - Combined nginx + backend in single container
 - Environment file permission issues
@@ -207,6 +240,7 @@ When testing in actual environment:
 - Backend build issues
 
 ### After
+
 - 4 separate containers (nginx, frontend, backend, mongodb)
 - Clear separation of concerns
 - No permission issues
@@ -257,6 +291,8 @@ All original requirements have been successfully implemented:
 
 ## ✅ Final Validation
 
-**All requirements from the original issue have been successfully implemented and documented.**
+**All requirements from the original issue have been successfully implemented
+and documented.**
 
-The solution is ready for deployment and testing in an actual environment with network access.
+The solution is ready for deployment and testing in an actual environment with
+network access.

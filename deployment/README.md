@@ -131,7 +131,7 @@ By default, MongoDB runs in a container. To use an external MongoDB (e.g.,
 MongoDB Atlas):
 
 ```bash
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/activity-tracker
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/baaa-hub
 ```
 
 Then remove the `mongodb` service from `docker-compose.yml`.

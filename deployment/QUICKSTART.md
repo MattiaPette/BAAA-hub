@@ -1,6 +1,7 @@
 # Quick Start Guide - Separated Docker Containers
 
-This guide provides a quick reference for deploying the application with the new separated container architecture.
+This guide provides a quick reference for deploying the application with the new
+separated container architecture.
 
 ## 🚀 Quick Deploy (Local Testing)
 
@@ -82,6 +83,7 @@ networks:
 ### 3. Configure NPM
 
 In Nginx Proxy Manager:
+
 - **Domain**: dev1.pette.dev
 - **Forward Host**: nginx-prod
 - **Forward Port**: 8080
@@ -133,16 +135,17 @@ docker exec -it backend-prod ping mongodb
 
 ### Permission errors with env files
 
-**Fixed in v2.0**: Environment files are now created inside containers with proper permissions. No manual intervention needed.
+**Fixed in v2.0**: Environment files are now created inside containers with
+proper permissions. No manual intervention needed.
 
 ## 📊 Container Details
 
-| Container | Purpose | Internal Port | Exposed Port |
-|-----------|---------|---------------|--------------|
-| nginx-prod | Reverse proxy | 8080 | 8080 |
-| frontend-prod | Static files | 80 | - |
-| backend-prod | API server | 3000 | - |
-| mongodb-prod | Database | 27017 | - |
+| Container     | Purpose       | Internal Port | Exposed Port |
+| ------------- | ------------- | ------------- | ------------ |
+| nginx-prod    | Reverse proxy | 8080          | 8080         |
+| frontend-prod | Static files  | 80            | -            |
+| backend-prod  | API server    | 3000          | -            |
+| mongodb-prod  | Database      | 27017         | -            |
 
 ## 🔒 Security Notes
 

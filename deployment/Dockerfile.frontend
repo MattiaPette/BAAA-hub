@@ -31,7 +31,7 @@ ARG VITE_API_URL
 
 # Build shared-types first to compile TypeScript to JavaScript
 # This must happen before frontend build because frontend imports from shared-types
-RUN pnpm --filter @monorepo-template/shared-types build
+RUN pnpm --filter @baaa-hub/shared-types build
 
 # Build frontend with environment variables properly set
 # Vite embeds these at build time since it's a static frontend
