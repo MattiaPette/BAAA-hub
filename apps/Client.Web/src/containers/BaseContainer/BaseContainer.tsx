@@ -59,10 +59,7 @@ const ContentHeader = styled(Box)(({ theme }) => ({
     right: 0,
     bottom: 0,
     height: '2px',
-    background: `linear-gradient(90deg, 
-      ${alpha(theme.palette.primary.main, 0)} 0%,
-      ${alpha(theme.palette.primary.main, 0.5)} 50%,
-      ${alpha(theme.palette.primary.main, 0)} 100%)`,
+    background: `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0)} 0%, ${alpha(theme.palette.primary.main, 0.5)} 50%, ${alpha(theme.palette.primary.main, 0)} 100%)`,
     animation: `${accentGlow} 3s ease-in-out infinite`,
   },
 }));
