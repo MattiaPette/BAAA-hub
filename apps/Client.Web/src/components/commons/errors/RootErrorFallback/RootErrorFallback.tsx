@@ -9,7 +9,7 @@ import { initTheme } from '../../../../theme/theme';
 
 import { Layout } from '../../layouts/Layout/Layout';
 
-import logo from '../../../../assets/vite.svg';
+import logo from '../../../../assets/shrimp.png';
 
 import { RootErrorFallbackProps } from './RootErrorFallback.model';
 import { useLanguageContext } from '../../../../providers/LanguageProvider/LanguageProvider';

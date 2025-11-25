@@ -15,7 +15,7 @@ import { FlexContainer } from '../../components/commons/layouts/FlexContainer/Fl
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
 import { SidebarProps } from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
-import logo from '../../assets/vite.svg';
+import logo from '../../assets/shrimp.png';
 
 type BaseContainerProps = {
   /** Title displayed in the content header (breadcrumb) */
@@ -141,8 +141,8 @@ export const BaseContainer: FC<BaseContainerProps> = ({
             src={logo}
             variant="square"
             sx={{
-              width: 32,
-              height: 32,
+              width: 45,
+              height: 45,
               '& img': {
                 objectFit: 'contain',
                 width: '100%',

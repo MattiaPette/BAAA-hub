@@ -18,11 +18,10 @@ import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { IFormInput, LoginFormProps } from './LoginForm.model';
 
-import logo from '../../../assets/vite.svg';
+import logo from '../../../assets/baaa.png';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  opacity: 0.8,
   display: 'flex',
   flexDirection: 'column',
   alignSelf: 'center',
@@ -121,11 +120,11 @@ export const LoginForm: FC<LoginFormProps> = ({
 
   return (
     <SignInContainer direction="column" justifyContent="space-between">
-      <Card variant="outlined" sx={{ borderColor: theme.palette.grey[600] }}>
+      <Card sx={{ borderColor: theme.palette.grey[600] }}>
         <img
           src={logo}
-          width={200}
-          style={{ placeSelf: 'center', marginBottom: '2rem' }}
+          width={350}
+          style={{ placeSelf: 'center' }}
           alt="Logo"
         />
         <Typography
