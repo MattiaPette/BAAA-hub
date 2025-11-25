@@ -35,5 +35,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build shared-types package
+        run: pnpm --filter @baaa-hub/shared-types build
+
       - name: Run TypeScript type check
         run: pnpm fe:type-check
