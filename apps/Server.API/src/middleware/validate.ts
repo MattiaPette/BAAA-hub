@@ -16,8 +16,8 @@ export const validate = (schema: ZodSchema) => {
         ctx.status = 400;
         ctx.body = {
           error: 'Validation Error',
-          details: error.errors.map(err => ({
-            path: err.path.join('.'),
+          details: error.issues.map(err => ({
+            path: String(err.path?.join('.') ?? ''),
             message: err.message,
           })),
         };
