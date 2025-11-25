@@ -1,30 +1,100 @@
 import { FC, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
-import { IconButton, Stack, Box, alpha } from '@mui/material';
+import {
+  IconButton,
+  Box,
+  alpha,
+  Typography,
+  Avatar,
+  Stack,
+} from '@mui/material';
+import { styled, keyframes } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
-import { Layout } from '../../components/commons/layouts/Layout/Layout';
-import { TopBar } from '../../components/commons/navigation/TopBar/TopBar';
-import { TopBarTitle } from '../../components/commons/navigation/TopbarTitle/TopbarTitle';
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
 import { SidebarProps } from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
+import logo from '../../assets/vite.svg';
 
 type BaseContainerProps = {
-  /** Title in the top bar */
+  /** Title displayed in the content header (breadcrumb) */
   title: string;
   /** Sidebar route definitions */
   routes: SidebarProps['routes'];
-  /** Optional component to render at the right of the topbar */
+  /** Optional component to render in the content header */
   endAdornment?: React.ReactNode;
   /** Optional wrapper providers */
   providers?: React.ComponentType<{ children: React.ReactNode }>[];
 };
 
+// Subtle gradient animation for the header accent
+const accentGlow = keyframes`
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+`;
+
+/**
+ * Styled content header that matches the sidebar style
+ */
+const ContentHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(2, 3),
+  position: 'relative',
+  background: alpha(theme.palette.background.paper, 0.8),
+  backdropFilter: 'blur(12px)',
+  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
+
+  // Subtle accent border at the bottom
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '2px',
+    background: `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0)} 0%, ${alpha(theme.palette.primary.main, 0.5)} 50%, ${alpha(theme.palette.primary.main, 0)} 100%)`,
+    animation: `${accentGlow} 3s ease-in-out infinite`,
+  },
+}));
+
+/**
+ * Logo and app name section
+ */
+const LogoSection = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+}));
+
+/**
+ * Breadcrumb/title section
+ */
+const TitleSection = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+  flex: 1,
+  marginLeft: theme.spacing(2),
+  paddingLeft: theme.spacing(2),
+  borderLeft: `1px solid ${alpha(theme.palette.divider, 0.3)}`,
+
+  [theme.breakpoints.down('sm')]: {
+    marginLeft: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+  },
+}));
+
 /**
  * Generic, reusable container layout for application modules.
  * Mobile-first design with overlay sidebar and user info in sidebar bottom.
+ * Uses a content header that matches the sidebar style instead of a top bar.
  */
 export const BaseContainer: FC<BaseContainerProps> = ({
   title,
@@ -45,68 +115,90 @@ export const BaseContainer: FC<BaseContainerProps> = ({
       children,
     );
 
-  const renderTopBar = (
-    <TopBar
-      sx={{
-        background: theme =>
-          `linear-gradient(135deg, 
-            ${theme.palette.primary.dark} 0%,
-            ${theme.palette.primary.main} 50%,
-            ${theme.palette.primary.light} 100%)`,
-        borderBottom: 'none',
-      }}
-      startAdornment={
-        <IconButton
-          onClick={() => setDrawerOpen(true)}
-          sx={{
-            ml: 1,
-            color: theme => theme.palette.common.white,
-            '&:hover': {
-              backgroundColor: theme => alpha(theme.palette.common.white, 0.1),
-            },
-          }}
-          aria-label="Open menu"
-        >
-          <MenuIcon fontSize="medium" />
-        </IconButton>
-      }
-      endAdornment={
-        endAdornment && (
+  const content = (
+    <FlexContainer direction="column">
+      {/* Content Header with logo, menu button, and breadcrumbs */}
+      <ContentHeader>
+        <LogoSection>
+          {/* Menu button for mobile/tablet */}
+          <IconButton
+            onClick={() => setDrawerOpen(true)}
+            sx={{
+              color: theme => theme.palette.text.primary,
+              backgroundColor: theme => alpha(theme.palette.primary.main, 0.1),
+              '&:hover': {
+                backgroundColor: theme =>
+                  alpha(theme.palette.primary.main, 0.2),
+              },
+            }}
+            aria-label="Open menu"
+          >
+            <MenuIcon fontSize="medium" />
+          </IconButton>
+
+          {/* Logo */}
+          <Avatar
+            src={logo}
+            variant="square"
+            sx={{
+              width: 32,
+              height: 32,
+              '& img': {
+                objectFit: 'contain',
+                width: '100%',
+                height: '100%',
+              },
+              display: { xs: 'none', sm: 'flex' },
+            }}
+          />
+        </LogoSection>
+
+        {/* Breadcrumb/Title */}
+        <TitleSection>
+          <Typography
+            variant="h6"
+            component="h1"
+            sx={{
+              fontWeight: 500,
+              color: theme => theme.palette.text.primary,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {title}
+          </Typography>
+        </TitleSection>
+
+        {/* End adornment slot */}
+        {endAdornment && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {endAdornment}
           </Box>
-        )
-      }
-    >
-      <Stack sx={{ direction: 'row' }}>
-        <TopBarTitle title={title} />
-      </Stack>
-    </TopBar>
-  );
+        )}
+      </ContentHeader>
 
-  const content = (
-    <FlexContainer direction="column">
-      <Layout startAdornment={renderTopBar}>
-        <Box
-          sx={{
-            padding: 2,
-            flex: 1,
-            overflow: 'auto',
-          }}
-        >
-          <Outlet />
-        </Box>
+      {/* Main content area */}
+      <Box
+        component="main"
+        sx={{
+          flex: 1,
+          overflow: 'auto',
+          padding: 2,
+        }}
+      >
+        <Outlet />
+      </Box>
 
-        {/* Mobile-first overlay sidebar */}
-        <Sidebar
-          routes={routes}
-          currentPath={currentPath}
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          userName={token?.idTokenPayload?.name}
-          userEmail={token?.idTokenPayload?.email}
-        />
-      </Layout>
+      {/* Mobile-first overlay sidebar */}
+      <Sidebar
+        routes={routes}
+        currentPath={currentPath}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        userName={token?.idTokenPayload?.name}
+        userEmail={token?.idTokenPayload?.email}
+      />
     </FlexContainer>
   );
 

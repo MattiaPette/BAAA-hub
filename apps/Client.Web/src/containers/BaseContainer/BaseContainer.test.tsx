@@ -33,15 +33,16 @@ describe('BaseContainer', () => {
     expect(menuButton).toBeInTheDocument();
   });
 
-  it('should render topbar', () => {
-    const { container } = render(
+  it('should render content header', () => {
+    render(
       <BrowserRouter>
         <BaseContainer title="Test App" routes={mockRoutes} />
       </BrowserRouter>,
     );
 
-    const topbar = container.querySelector('.MuiStack-root');
-    expect(topbar).toBeInTheDocument();
+    // Content header should show the title
+    const header = screen.getByRole('heading', { name: 'Test App' });
+    expect(header).toBeInTheDocument();
   });
 
   it('should render menu icon button', () => {
