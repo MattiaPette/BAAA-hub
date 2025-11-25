@@ -19,7 +19,7 @@
     "@baaa-hub/shared-types": "workspace:*",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^14.0.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.2.3",
     "koa": "^3.1.1",
     "koa-bodyparser": "^4.4.1",
     "koa-swagger-decorator": "^1.8.7",
