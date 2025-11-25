@@ -240,6 +240,35 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   );
 
   /**
+   * Login with redirect — initiates authentication via the Auth0 hosted login page.
+   *
+   * Redirects the user to the Auth0 Universal Login page for authentication.
+   * This method is more reliable than cross-origin authentication (used by
+   * `login()`) because it doesn't depend on third-party cookies, making it
+   * work in browsers with strict privacy settings like Safari.
+   *
+   * After successful authentication, Auth0 redirects back to the configured
+   * `redirectUri` with tokens in the URL hash, which are then processed by
+   * the `authenticate()` function.
+   *
+   * @function
+   * @name loginWithRedirect
+   * @type {AuthContextValue['loginWithRedirect']}
+   *
+   * @returns {void}
+   *
+   * @example
+   * loginWithRedirect();
+   */
+  const loginWithRedirect = useCallback<
+    AuthContextValue['loginWithRedirect']
+  >(() => {
+    auth.authorize({
+      connection: userDatabaseConnection,
+    });
+  }, [auth, userDatabaseConnection]);
+
+  /**
    * Logs the user out by removing the access token from localStorage (if available)
    * and resetting the authentication state. Also sets the loading state to false.
    *
@@ -381,6 +410,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       token,
       userPermissions,
       login,
+      loginWithRedirect,
       logout,
       isAuthenticated,
       isLoading: loading,
@@ -394,6 +424,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       loading,
       localStorageAvailable,
       login,
+      loginWithRedirect,
       logout,
       token,
       userPermissions,

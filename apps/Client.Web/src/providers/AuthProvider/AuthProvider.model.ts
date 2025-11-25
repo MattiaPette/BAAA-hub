@@ -192,6 +192,13 @@ export type AuthLoginFunction = (
 ) => void;
 
 /**
+ * Function type for initiating login via redirect flow.
+ * This method redirects the user to the Auth0 hosted login page,
+ * which is more reliable in browsers with strict cookie policies (e.g., Safari).
+ */
+export type LoginWithRedirectFunction = () => void;
+
+/**
  * Parameters for the authenticate function.
  *
  * @property {function} [onErrorCallback] - Optional callback invoked when authentication fails
@@ -218,7 +225,8 @@ export type AuthenticateFunction = (
  * @property {AuthToken | null} token - Current authentication token, or null if not authenticated
  * @property {string[]} userPermissions - Array of permission strings for the authenticated user
  * @property {AuthenticateFunction} authenticate - Function to authenticate from existing session/token
- * @property {AuthLoginFunction} login - Function to log in with credentials
+ * @property {AuthLoginFunction} login - Function to log in with credentials (cross-origin method)
+ * @property {LoginWithRedirectFunction} loginWithRedirect - Function to log in via redirect flow (more reliable in Safari)
  * @property {DispatchWithoutAction} logout - Function to log out the current user
  * @property {boolean} isAuthenticated - Whether the user is currently authenticated
  * @property {boolean} isLoading - Whether an authentication operation is in progress
@@ -231,6 +239,7 @@ export type AuthContextValue = Readonly<{
   userPermissions: string[];
   authenticate: AuthenticateFunction;
   login: AuthLoginFunction;
+  loginWithRedirect: LoginWithRedirectFunction;
   logout: DispatchWithoutAction;
   isAuthenticated: boolean;
   isLoading: boolean;

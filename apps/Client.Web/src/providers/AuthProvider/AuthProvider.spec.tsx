@@ -9,6 +9,7 @@ const parseHashMock = vi.fn();
 const validateTokenMock = vi.fn();
 const loginMock = vi.fn();
 const checkSessionMock = vi.fn();
+const authorizeMock = vi.fn();
 
 vi.mock('auth0-js', () => ({
   WebAuth: function WebAuth() {
@@ -24,6 +25,9 @@ vi.mock('auth0-js', () => ({
       },
       checkSession(opts: unknown, cb: unknown) {
         return checkSessionMock(opts, cb);
+      },
+      authorize(opts: unknown) {
+        return authorizeMock(opts);
       },
     };
   },
@@ -291,6 +295,28 @@ describe('AuthProvider', () => {
     await waitFor(() =>
       expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('access_token'),
     );
+  });
+
+  it('loginWithRedirect calls authorize with database connection', () => {
+    const TestComponent = () => {
+      const auth = useAuth();
+
+      ((): void => {
+        auth.loginWithRedirect();
+      })();
+
+      return <div>Test</div>;
+    };
+
+    render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    expect(authorizeMock).toHaveBeenCalledWith({
+      connection: 'db',
+    });
   });
 
   it('handles expired token from localStorage as not authenticated', () => {
