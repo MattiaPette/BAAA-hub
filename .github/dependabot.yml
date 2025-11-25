@@ -28,9 +28,6 @@ updates:
           - 'minor'
           - 'patch'
       # Major updates are kept separate for careful review
-    labels:
-      - 'dependencies'
-      - 'automated'
     commit-message:
       prefix: 'chore'
       include: 'scope'
@@ -48,9 +45,5 @@ updates:
       actions:
         patterns:
           - '*'
-    labels:
-      - 'dependencies'
-      - 'github-actions'
-      - 'automated'
     commit-message:
       prefix: 'ci'
