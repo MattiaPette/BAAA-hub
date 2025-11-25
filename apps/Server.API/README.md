@@ -1,7 +1,7 @@
 # Backend API
 
-RESTful API for the Monorepo Template application, built with Koa, TypeScript,
-and MongoDB.
+RESTful API for the BAAA Hub application, built with Koa, TypeScript, and
+MongoDB.
 
 ## Features
 
@@ -27,20 +27,20 @@ at the repository root. See
 [environments/README.md](../../environments/README.md) for detailed setup
 instructions.
 
-| Variable       | Description               | Default                                       |
-| -------------- | ------------------------- | --------------------------------------------- |
-| `NODE_ENV`     | Node environment          | `development`                                 |
-| `BACKEND_PORT` | Server port               | `3000`                                        |
-| `MONGODB_URI`  | MongoDB connection string | `mongodb://localhost:27017/monorepo-template` |
-| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:4000`                       |
-| `DEBUG`        | Enable debug mode         | `true`                                        |
+| Variable       | Description               | Default                              |
+| -------------- | ------------------------- | ------------------------------------ |
+| `NODE_ENV`     | Node environment          | `development`                        |
+| `BACKEND_PORT` | Server port               | `3000`                               |
+| `MONGODB_URI`  | MongoDB connection string | `mongodb://localhost:27017/baaa-hub` |
+| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:4000`              |
+| `DEBUG`        | Enable debug mode         | `true`                               |
 
 Example configuration (from `environments/.env.example`):
 
 ```env
 NODE_ENV=development
 BACKEND_PORT=3000
-MONGODB_URI=mongodb://localhost:27017/monorepo-template
+MONGODB_URI=mongodb://localhost:27017/baaa-hub
 CORS_ORIGIN=http://localhost:4000
 DEBUG=true
 ENV=dev
@@ -336,4 +336,4 @@ Example error response:
 
 ## License
 
-Part of the Monorepo Template monorepo.
+Part of the BAAA Hub monorepo.

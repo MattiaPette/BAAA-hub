@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ErrorCode } from '@monorepo-template/shared-types';
+import { ErrorCode } from '@baaa-hub/shared-types';
 
 /**
  * Validation schema for creating a book

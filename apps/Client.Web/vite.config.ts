@@ -40,8 +40,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Template App',
-        short_name: 'Template',
+        name: 'BAAA Hub',
+        short_name: 'BAAA Hub',
         theme_color: '#ffffff',
         icons: [
           {

@@ -1,6 +1,6 @@
 {
-  "name": "monorepo-template",
-  "description": "Monorepo template for PWA AI-powered applications built with React and Koa",
+  "name": "baaa-hub",
+  "description": "BAAA Hub - PWA AI-powered application built with React and Koa",
   "version": "1.0.0",
   "framework": {
     "name": "React",
