@@ -1,77 +1,53 @@
 # Dependabot configuration for automated dependency updates
 # Documentation: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 #
-# Note: This project uses pnpm, but Dependabot uses 'npm' ecosystem for all npm-compatible package managers.
-# Dependabot will correctly update pnpm-lock.yaml when using package-ecosystem: 'npm'.
+# Note: This project uses pnpm workspaces. Dependabot scans from the root directory
+# and will update all workspace package.json files and the shared pnpm-lock.yaml.
+# Using 'npm' ecosystem works for all npm-compatible package managers including pnpm.
+#
+# Strategy to reduce PR spam:
+# - Use aggressive dependency grouping to batch updates into fewer PRs
+# - Lower open-pull-requests-limit to reduce concurrent PRs
+# - Schedule updates weekly to batch changes
 
 version: 2
 updates:
-  # Root workspace dependencies
+  # All npm dependencies (root + all workspaces via pnpm)
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
       interval: 'weekly'
       day: 'monday'
       time: '09:00'
-    open-pull-requests-limit: 10
+    # Limit to 5 open PRs to reduce noise
+    open-pull-requests-limit: 5
     groups:
-      # Group development dependencies together
-      dev-dependencies:
-        dependency-type: 'development'
+      # Group all minor and patch updates together
+      all-minor-patch:
         update-types:
           - 'minor'
           - 'patch'
-      # Group production dependencies together
-      production-dependencies:
-        dependency-type: 'production'
-        update-types:
-          - 'minor'
-          - 'patch'
+      # Major updates are kept separate for careful review
     labels:
       - 'dependencies'
       - 'automated'
     commit-message:
       prefix: 'chore'
       include: 'scope'
-    # Allow both direct and indirect dependency updates
     versioning-strategy: auto
 
-  # Client.Web application dependencies
-  - package-ecosystem: 'npm'
-    directory: '/apps/Client.Web'
-    schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '09:00'
-    open-pull-requests-limit: 10
-    groups:
-      # Group development dependencies together
-      dev-dependencies:
-        dependency-type: 'development'
-        update-types:
-          - 'minor'
-          - 'patch'
-      # Group production dependencies together
-      production-dependencies:
-        dependency-type: 'production'
-        update-types:
-          - 'minor'
-          - 'patch'
-    labels:
-      - 'dependencies'
-      - 'frontend'
-      - 'automated'
-    commit-message:
-      prefix: 'chore'
-      include: 'scope'
-    # Allow both direct and indirect dependency updates
-    versioning-strategy: auto
-
-  # GitHub Actions (for future use when workflows are added)
+  # GitHub Actions
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'monthly'
+    # Limit to 3 open PRs for GitHub Actions
+    open-pull-requests-limit: 3
+    groups:
+      # Group all GitHub Actions updates together
+      actions:
+        patterns:
+          - '*'
     labels:
       - 'dependencies'
       - 'github-actions'
