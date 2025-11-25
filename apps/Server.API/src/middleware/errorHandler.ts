@@ -30,8 +30,8 @@ export const errorHandler = async (ctx: Context, next: Next): Promise<void> => {
       ctx.body = {
         error: 'Validation Error',
         code: ErrorCode.VALIDATION_ERROR,
-        details: error.errors.map(err => ({
-          path: err.path.join('.'),
+        details: error.issues.map(err => ({
+          path: String(err.path?.join('.') ?? ''),
           message: err.message,
           code: err.message as ErrorCode,
         })),

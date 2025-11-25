@@ -1,13 +1,15 @@
 # Nginx Proxy Manager (NPM) Setup Guide
 
-This guide explains how to configure **Nginx Proxy Manager** (NPM) to handle SSL/HTTPS and route traffic to the Activity Tracker application deployed at `https://dev1.pette.dev`.
+This guide explains how to configure **Nginx Proxy Manager** (NPM) to handle
+SSL/HTTPS and route traffic to the BAAA-Hub application deployed at
+`https://dev1.pette.dev`.
 
 ## Prerequisites
 
 - Docker and Docker Compose installed on your server
 - Nginx Proxy Manager installed and running
 - Domain name configured (dev1.pette.dev) pointing to your server's IP
-- Activity Tracker containers running on the same Docker host
+- BAAA-Hub containers running on the same Docker host
 
 ## Architecture Overview
 
@@ -16,7 +18,7 @@ Internet (HTTPS)
         ↓
 Nginx Proxy Manager (Port 443) → SSL Termination
         ↓
-Activity Tracker Nginx Container (Port 8080) → HTTP
+BAAA-Hub Nginx Container (Port 8080) → HTTP
         ↓
     ┌───────────────┴────────────────┐
     ↓                                ↓
@@ -52,7 +54,7 @@ networks:
     external: true
 ```
 
-3. **Update Activity Tracker's docker-compose.yml** to use the same network:
+3. **Update BAAA-Hub's docker-compose.yml** to use the same network:
 
 ```yaml
 # In deployment/docker-compose.yml
@@ -70,8 +72,8 @@ cd /path/to/npm
 docker compose down
 docker compose up -d
 
-# Restart Activity Tracker
-cd /path/to/activity-tracker/deployment
+# Restart BAAA-Hub
+cd /path/to/baaa-hub/deployment
 ./deploy.sh stop
 ./deploy.sh start
 ```
@@ -87,20 +89,20 @@ docker network ls
 # Look for something like: npm_default or nginxproxymanager_default
 ```
 
-2. **Update Activity Tracker's docker-compose.yml:**
+2. **Update BAAA-Hub's docker-compose.yml:**
 
 ```yaml
 # In deployment/docker-compose.yml
 networks:
   app-network:
     external: true
-    name: npm_default  # Replace with your NPM network name
+    name: npm_default # Replace with your NPM network name
 ```
 
-3. **Restart Activity Tracker:**
+3. **Restart BAAA-Hub:**
 
 ```bash
-cd /path/to/activity-tracker/deployment
+cd /path/to/BAAA-hub/deployment
 ./deploy.sh stop
 ./deploy.sh start
 ```
@@ -118,7 +120,6 @@ cd /path/to/activity-tracker/deployment
 1. Click **Add Proxy Host**
 
 2. **Fill in the Details tab:**
-
    - **Domain Names:** `dev1.pette.dev`
    - **Scheme:** `http`
    - **Forward Hostname / IP:** `nginx-prod` (the container name)
@@ -128,7 +129,6 @@ cd /path/to/activity-tracker/deployment
    - **Websockets Support:** ✓ (checked - important for the app)
 
 3. **Configure the SSL tab:**
-
    - **SSL Certificate:** Select "Request a new SSL Certificate"
    - **Force SSL:** ✓ (checked)
    - **HTTP/2 Support:** ✓ (checked)
@@ -155,9 +155,10 @@ cd /path/to/activity-tracker/deployment
 
 5. **Click Save**
 
-## Step 3: Update Activity Tracker Configuration
+## Step 3: Update BAAA-Hub Configuration
 
-Update your `.env` file in the `deployment/` directory with the production domain:
+Update your `.env` file in the `deployment/` directory with the production
+domain:
 
 ```bash
 # In deployment/.env
@@ -204,12 +205,14 @@ In your Auth0 dashboard:
 ## Step 5: Verify the Setup
 
 1. **Check DNS Resolution:**
+
    ```bash
    nslookup dev1.pette.dev
    # Should return your server's IP
    ```
 
 2. **Check Container Status:**
+
    ```bash
    cd deployment
    ./deploy.sh status
@@ -230,21 +233,24 @@ In your Auth0 dashboard:
 
 ### Issue: 502 Bad Gateway
 
-**Cause:** NPM cannot reach the Activity Tracker nginx container.
+**Cause:** NPM cannot reach the BAAA-Hub nginx container.
 
 **Solutions:**
+
 1. Verify containers are in the same network:
+
    ```bash
    docker network inspect npm-network
-   # Should show both NPM and Activity Tracker containers
+   # Should show both NPM and BAAA-Hub containers
    ```
 
 2. Check if containers can communicate:
+
    ```bash
    docker exec -it npm-container ping nginx-prod
    ```
 
-3. Verify the Activity Tracker nginx is running:
+3. Verify the BAAA-Hub nginx is running:
    ```bash
    docker ps | grep nginx-prod
    ```
@@ -252,6 +258,7 @@ In your Auth0 dashboard:
 ### Issue: SSL Certificate Not Generating
 
 **Solutions:**
+
 1. Ensure port 80 is accessible from the internet (Let's Encrypt needs it)
 2. Verify DNS is correctly pointing to your server
 3. Check NPM logs:
@@ -264,7 +271,9 @@ In your Auth0 dashboard:
 **Cause:** CORS configuration doesn't match the domain.
 
 **Solution:**
+
 1. Update `CORS_ORIGIN` in `.env`:
+
    ```bash
    CORS_ORIGIN=https://dev1.pette.dev
    ```
@@ -279,11 +288,13 @@ In your Auth0 dashboard:
 **Cause:** Auth0 callback URL not configured correctly.
 
 **Solution:**
+
 1. Rebuild with correct `VITE_AUTH0_REDIRECT_URI`:
+
    ```bash
    # Update .env file
    VITE_AUTH0_REDIRECT_URI=https://dev1.pette.dev/callback
-   
+
    # Rebuild
    ./deploy.sh build
    ./deploy.sh restart
@@ -295,8 +306,7 @@ In your Auth0 dashboard:
 
 **Cause:** Containers not in the same network.
 
-**Solution:**
-Use Docker network inspection to debug:
+**Solution:** Use Docker network inspection to debug:
 
 ```bash
 # List all networks
@@ -335,7 +345,7 @@ If you want to use a custom network name:
 
 ```bash
 # Create network
-docker network create --driver bridge activity-tracker-network
+docker network create --driver bridge baaa-hub-network
 
 # Update both docker-compose.yml files to use this network
 # Then restart both applications
@@ -349,7 +359,7 @@ View logs for debugging:
 # NPM logs
 docker logs -f npm-container
 
-# Activity Tracker logs
+# BAAA-Hub logs
 cd deployment
 ./deploy.sh logs
 
@@ -368,12 +378,13 @@ docker logs -f mongodb-prod
    - Force SSL redirect
 
 2. **Regular Updates:**
+
    ```bash
    # Update NPM
    docker compose pull
    docker compose up -d
-   
-   # Update Activity Tracker
+
+   # Update BAAA-Hub
    cd deployment
    ./deploy.sh update
    ```

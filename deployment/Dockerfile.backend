@@ -23,7 +23,7 @@ COPY tsconfig.json ./
 
 # Build shared-types first to compile TypeScript to JavaScript
 # This must happen before backend build because backend imports from shared-types
-RUN pnpm --filter @monorepo-template/shared-types build
+RUN pnpm --filter @baaa-hub/shared-types build
 
 # Build backend
 RUN pnpm --filter backend build
@@ -77,4 +77,4 @@ CMD ["sh", "-c", "\
     echo \"CORS_ORIGIN=${CORS_ORIGIN}\" >> /app/environments/.env.production && \
     echo \"DEBUG=${DEBUG:-false}\" >> /app/environments/.env.production && \
     ENV=production node apps/Server.API/dist/index.js \
-"]
+    "]

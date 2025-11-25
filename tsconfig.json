@@ -27,6 +27,11 @@
 
     // Declaration files
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@baaa-hub/shared-types": ["packages/shared-types/src"],
+      "@baaa-hub/shared-types/*": ["packages/shared-types/src/*"]
+    }
   }
 }
