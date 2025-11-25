@@ -1,7 +1,7 @@
-# Contributing to Monorepo Template
+# Contributing to BAAA Hub
 
-Thank you for your interest in contributing to Monorepo Template! This document
-outlines the process and standards for contributing to this project.
+Thank you for your interest in contributing to BAAA Hub! This document outlines
+the process and standards for contributing to this project.
 
 ## Table of Contents
 
@@ -72,8 +72,8 @@ All commands must complete successfully. For detailed guidelines, see
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/MattiaPette/2025_monorepo_pwa_ai.git
-   cd 2025_monorepo_pwa_ai
+   git clone https://github.com/MattiaPette/BAAA-hub.git
+   cd BAAA-hub
    ```
 
 2. Install dependencies:
@@ -264,4 +264,4 @@ If you have questions about contributing, please:
 2. Search existing issues
 3. Create a new issue with the "question" template
 
-Thank you for contributing to Monorepo Template! 🎉
+Thank you for contributing to BAAA Hub! 🎉

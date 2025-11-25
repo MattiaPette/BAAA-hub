@@ -281,8 +281,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <AnimatedContent>
         {/* Animated Header */}
         <SidebarHeader>
-          <Typography className="header-title">Template title</Typography>
-          <Typography className="header-subtitle">Template subtitle</Typography>
+          <Typography className="header-title">BAAA Hub</Typography>
+          <Typography className="header-subtitle">Activity Tracker</Typography>
         </SidebarHeader>
 
         {/* Main navigation list */}

@@ -5,7 +5,7 @@ import type {
   CreateBookInput,
   UpdateBookInput,
 } from '../types/book.schemas.js';
-import { ErrorCode } from '@monorepo-template/shared-types';
+import { ErrorCode } from '@baaa-hub/shared-types';
 
 /**
  * Get all books

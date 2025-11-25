@@ -15,7 +15,7 @@
     "type-check": "tsc --noEmit --incremental --tsBuildInfoFile .tsbuildinfo"
   },
   "dependencies": {
-    "@monorepo-template/shared-types": "workspace:*",
+    "@baaa-hub/shared-types": "workspace:*",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^14.0.0",
     "dotenv": "^16.4.7",

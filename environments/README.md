@@ -1,7 +1,7 @@
 # Environment Configuration
 
-This directory contains environment variable configuration files for the
-Monorepo Template application.
+This directory contains environment variable configuration files for the BAAA
+Hub application.
 
 ## Structure
 
@@ -102,13 +102,13 @@ dotenv.config({
 
 ### Backend Variables
 
-| Variable       | Description               | Default                                       |
-| -------------- | ------------------------- | --------------------------------------------- |
-| `BACKEND_PORT` | Server port               | `3000`                                        |
-| `NODE_ENV`     | Node environment          | `development`                                 |
-| `MONGODB_URI`  | MongoDB connection string | `mongodb://localhost:27017/monorepo-template` |
-| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:4000`                       |
-| `DEBUG`        | Enable debug mode         | `true`                                        |
+| Variable       | Description               | Default                              |
+| -------------- | ------------------------- | ------------------------------------ |
+| `BACKEND_PORT` | Server port               | `3000`                               |
+| `NODE_ENV`     | Node environment          | `development`                        |
+| `MONGODB_URI`  | MongoDB connection string | `mongodb://localhost:27017/baaa-hub` |
+| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:4000`              |
+| `DEBUG`        | Enable debug mode         | `true`                               |
 
 ### System Variables
 

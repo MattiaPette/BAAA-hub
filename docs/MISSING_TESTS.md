@@ -180,7 +180,7 @@ gh issue create \
   --title "[TRACKING] Missing Client.Web Unit Tests - Path to 70% Coverage" \
   --body "$(cat docs/MISSING_TESTS.md)" \
   --label "enhancement,help wanted" \
-  --repo MattiaPette/2025_monorepo_pwa_ai
+  --repo MattiaPette/BAAA-hub
 ```
 
 Or manually create an issue using the content from this document.

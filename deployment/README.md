@@ -1,6 +1,7 @@
 # Production Deployment
 
-This folder contains everything you need to deploy the Activity Tracker application to production.
+This folder contains everything you need to deploy the Activity Tracker
+application to production.
 
 ## 📁 What's in this folder?
 
@@ -17,6 +18,7 @@ This folder contains everything you need to deploy the Activity Tracker applicat
 ### First-time Deployment
 
 1. **Configure environment variables:**
+
    ```bash
    cd deployment
    cp .env.example .env
@@ -24,6 +26,7 @@ This folder contains everything you need to deploy the Activity Tracker applicat
    ```
 
 2. **Deploy:**
+
    ```bash
    ./deploy.sh build
    ./deploy.sh start
@@ -69,21 +72,25 @@ The `deploy.sh` script provides simple commands for managing your deployment:
 ### Common Workflows
 
 **First deployment:**
+
 ```bash
 ./deploy.sh build && ./deploy.sh start
 ```
 
 **Update to latest version:**
+
 ```bash
 ./deploy.sh update
 ```
 
 **Check if everything is working:**
+
 ```bash
 ./deploy.sh status
 ```
 
 **View live logs:**
+
 ```bash
 ./deploy.sh logs
 ```
@@ -120,7 +127,8 @@ CORS_ORIGIN=https://your-domain.com
 
 #### External MongoDB (Optional)
 
-By default, MongoDB runs in a container. To use an external MongoDB (e.g., MongoDB Atlas):
+By default, MongoDB runs in a container. To use an external MongoDB (e.g.,
+MongoDB Atlas):
 
 ```bash
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/activity-tracker
@@ -130,7 +138,8 @@ Then remove the `mongodb` service from `docker-compose.yml`.
 
 ## 🏗️ Architecture
 
-The application is now deployed as **4 separate Docker containers** for better debugging, scaling, and deployment:
+The application is now deployed as **4 separate Docker containers** for better
+debugging, scaling, and deployment:
 
 ```
          ┌─────────────────────────────────────────┐
@@ -164,7 +173,8 @@ The application is now deployed as **4 separate Docker containers** for better d
 - **backend-prod**: Node.js API server with Koa.js (internal)
 - **mongodb-prod**: MongoDB database (internal)
 
-All containers communicate through a private Docker network (`app-network`) and only the nginx reverse proxy is exposed to the host.
+All containers communicate through a private Docker network (`app-network`) and
+only the nginx reverse proxy is exposed to the host.
 
 ## 📊 Container Names
 
@@ -211,6 +221,7 @@ curl http://localhost:8080/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "ok",
@@ -227,7 +238,7 @@ If port 8080 is in use, edit `docker-compose.yml`:
 services:
   app:
     ports:
-      - '9090:8080'  # Change to different port
+      - '9090:8080' # Change to different port
 ```
 
 ### Rebuild after configuration changes
@@ -255,6 +266,7 @@ docker compose up -d
 ```
 
 This will:
+
 1. Pull latest code from git (if applicable)
 2. Rebuild Docker images
 3. Restart containers
@@ -285,7 +297,8 @@ docker compose exec mongodb mongorestore /data/backup
 ## 🔐 Security Notes
 
 1. **Never commit `.env` files** - They contain secrets
-2. **Use HTTPS in production** - Configure your reverse proxy (nginx, Traefik, etc.)
+2. **Use HTTPS in production** - Configure your reverse proxy (nginx, Traefik,
+   etc.)
 3. **Update MongoDB credentials** - Use authentication in production
 4. **Keep images updated** - Regularly rebuild with latest dependencies
 
@@ -293,20 +306,23 @@ docker compose exec mongodb mongorestore /data/backup
 
 ### Using with Nginx Proxy Manager (NPM)
 
-For production deployments with SSL/HTTPS, we recommend using **Nginx Proxy Manager** (NPM).
+For production deployments with SSL/HTTPS, we recommend using **Nginx Proxy
+Manager** (NPM).
 
 The application listens on port 8080 and can be easily configured with NPM:
 
 **See the comprehensive guide:** [NPM_SETUP_GUIDE.md](./NPM_SETUP_GUIDE.md)
 
 Quick summary:
+
 1. Ensure both NPM and Activity Tracker are in the same Docker network
 2. Create a proxy host in NPM pointing to `nginx-prod:8080`
 3. Enable SSL with Let's Encrypt
 4. Update your `.env` file with the production domain
 5. Rebuild the application
 
-For detailed step-by-step instructions, troubleshooting, and security best practices, see the [NPM Setup Guide](./NPM_SETUP_GUIDE.md).
+For detailed step-by-step instructions, troubleshooting, and security best
+practices, see the [NPM Setup Guide](./NPM_SETUP_GUIDE.md).
 
 ### Custom network configuration
 
@@ -334,7 +350,7 @@ services:
         reservations:
           cpus: '0.25'
           memory: 256M
-  
+
   frontend:
     deploy:
       resources:
@@ -348,16 +364,19 @@ services:
 
 ## 🔄 Migration from Old Structure
 
-If you were using the old deployment structure (files in root directory), here's how to migrate:
+If you were using the old deployment structure (files in root directory), here's
+how to migrate:
 
 ### Quick Migration
 
 1. **Backup your current `.env.production` file:**
+
    ```bash
    cp .env.production .env.production.backup
    ```
 
 2. **Create new `.env` file in deployment folder:**
+
    ```bash
    cd deployment
    cp .env.example .env
@@ -365,6 +384,7 @@ If you were using the old deployment structure (files in root directory), here's
    ```
 
 3. **Stop old containers:**
+
    ```bash
    cd ..
    docker compose -f docker-compose.prod.yml down
@@ -379,15 +399,15 @@ If you were using the old deployment structure (files in root directory), here's
 
 ### What Changed
 
-| Old Structure | New Structure |
-|--------------|---------------|
-| `.env.production` (root) | `deployment/.env` |
-| `docker-compose.prod.yml` | `deployment/docker-compose.yml` |
-| `Dockerfile` (root, single container) | Separate Dockerfiles for each service |
-| Container: `monorepo-template-app-prod` | 4 separate containers: `nginx-prod`, `frontend-prod`, `backend-prod`, `mongodb-prod` |
-| Container: `monorepo-template-mongodb-prod` | Container: `mongodb-prod` |
-| Network: `monorepo-template-network` | Network: `app-network` |
-| Manual docker commands | `./deploy.sh` script |
+| Old Structure                         | New Structure                                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------ |
+| `.env.production` (root)              | `deployment/.env`                                                                    |
+| `docker-compose.prod.yml`             | `deployment/docker-compose.yml`                                                      |
+| `Dockerfile` (root, single container) | Separate Dockerfiles for each service                                                |
+| Container: `baaa-hub-app-prod`        | 4 separate containers: `nginx-prod`, `frontend-prod`, `backend-prod`, `mongodb-prod` |
+| Container: `baaa-hub-mongodb-prod`    | Container: `mongodb-prod`                                                            |
+| Network: `baaa-hub-network`           | Network: `app-network`                                                               |
+| Manual docker commands                | `./deploy.sh` script                                                                 |
 
 ### Benefits of New Structure
 
@@ -404,7 +424,9 @@ If you were using the old deployment structure (files in root directory), here's
 
 ### Backward Compatibility
 
-The old files are still present and marked as deprecated. They will continue to work, but we recommend migrating to the new structure for:
+The old files are still present and marked as deprecated. They will continue to
+work, but we recommend migrating to the new structure for:
+
 - Better organization
 - Easier deployment management
 - Simplified configuration
@@ -412,6 +434,7 @@ The old files are still present and marked as deprecated. They will continue to 
 ## 🆘 Support
 
 For more detailed documentation, see:
+
 - [Main README](../README.md)
 - [Docker Deployment Guide](../docs/DOCKER_DEPLOYMENT.md)
 

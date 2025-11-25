@@ -6,11 +6,11 @@
     },
     {
       "path": "apps/Client.Web",
-      "name": "Template.Client.Web",
+      "name": "BAAA-Hub.Client.Web",
     },
     {
       "path": "apps/Server.Api",
-      "name": "Template.Server.Api",
+      "name": "BAAA-Hub.Server.Api",
     },
   ],
   "settings": {

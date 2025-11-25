@@ -21,8 +21,7 @@ const config: Config = {
   nodeEnv: process.env.NODE_ENV || 'development',
   debug: process.env.DEBUG === 'true',
   mongodb: {
-    uri:
-      process.env.MONGODB_URI || 'mongodb://localhost:27017/monorepo-template',
+    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/baaa-hub',
   },
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:4000',

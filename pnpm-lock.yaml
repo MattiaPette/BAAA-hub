@@ -38,6 +38,9 @@ importers:
 
   apps/Client.Web:
     dependencies:
+      '@baaa-hub/shared-types':
+        specifier: workspace:*
+        version: link:../../packages/shared-types
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.6)(react@19.2.0)
@@ -50,9 +53,6 @@ importers:
       '@lingui/react':
         specifier: ^5.6.0
         version: 5.6.0(@lingui/babel-plugin-lingui-macro@5.6.0(babel-plugin-macros@3.1.0)(typescript@5.9.3))(babel-plugin-macros@3.1.0)(react@19.2.0)
-      '@monorepo-template/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
       '@mui/icons-material':
         specifier: ^7.3.5
         version: 7.3.5(@mui/material@7.3.5(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.6)(react@19.2.0))(@types/react@19.2.6)(react@19.2.0))(@types/react@19.2.6)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(@types/react@19.2.6)(react@19.2.0)
@@ -234,15 +234,15 @@ importers:
 
   apps/Server.API:
     dependencies:
+      '@baaa-hub/shared-types':
+        specifier: workspace:*
+        version: link:../../packages/shared-types
       '@koa/cors':
         specifier: ^5.0.0
         version: 5.0.0
       '@koa/router':
         specifier: ^14.0.0
         version: 14.0.0
-      '@monorepo-template/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
       dotenv:
         specifier: ^16.4.7
         version: 16.6.1

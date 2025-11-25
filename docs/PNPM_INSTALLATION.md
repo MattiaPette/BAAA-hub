@@ -79,8 +79,8 @@ After installing pnpm, you can set up the project:
 
 ```bash
 # Clone the repository
-git clone https://github.com/MattiaPette/2025_monorepo_pwa_ai.git
-cd 2025_monorepo_pwa_ai
+git clone https://github.com/MattiaPette/BAAA-hub.git
+cd BAAA-hub
 
 # Use the correct Node version (if using nvm or fnm)
 nvm use  # or: fnm use

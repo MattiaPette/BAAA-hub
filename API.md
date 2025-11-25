@@ -1,9 +1,8 @@
-# Monorepo Template - API Reference
+# BAAA Hub - API Reference
 
-This document provides a comprehensive reference to the Monorepo Template
-application's architecture, modules, and exported functions/types. It serves as
-a guide for developers, contributors, and AI tools to understand the codebase
-structure.
+This document provides a comprehensive reference to the BAAA Hub application's
+architecture, modules, and exported functions/types. It serves as a guide for
+developers, contributors, and AI tools to understand the codebase structure.
 
 ---
 
@@ -26,8 +25,7 @@ structure.
 
 ## Project Overview
 
-**Monorepo Template** is a modern template for PWA AI-powered applications,
-built with:
+**BAAA Hub** is a modern PWA AI-powered application, built with:
 
 - **React 19** - UI framework
 - **TypeScript** - Type-safe JavaScript
@@ -46,7 +44,7 @@ The application follows a monorepo structure with workspace-based organization.
 ## High-Level Architecture
 
 ```txt
-monorepo-template/
+baaa-hub/
 ├── apps/
 │   └── Client.Web/          # Frontend React application
 │       ├── src/

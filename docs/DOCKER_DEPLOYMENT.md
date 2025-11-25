@@ -168,7 +168,7 @@ docker build \
   --build-arg VITE_AUTH0_AUDIENCE=your_audience \
   --build-arg VITE_API_BASE_URL=http://localhost:8080 \
   -f Dockerfile \
-  -t monorepo-template:latest \
+  -t baaa-hub:latest \
   ..
 ```
 
@@ -273,7 +273,7 @@ If you prefer to run the application container without Docker Compose:
 docker run -d \
   --name mongodb-prod \
   -p 27017:27017 \
-  -e MONGO_INITDB_DATABASE=monorepo-template \
+  -e MONGO_INITDB_DATABASE=baaa-hub \
   -v mongodb_data:/data/db \
   mongo:8.0
 ```
@@ -286,10 +286,10 @@ docker run -d \
   -p 8080:8080 \
   -e BACKEND_PORT=3000 \
   -e NODE_ENV=production \
-  -e MONGODB_URI=mongodb://host.docker.internal:27017/monorepo-template \
+  -e MONGODB_URI=mongodb://host.docker.internal:27017/baaa-hub \
   -e CORS_ORIGIN=http://localhost:8080 \
   -e DEBUG=false \
-  monorepo-template:latest
+  baaa-hub:latest
 ```
 
 **Note**: Replace `host.docker.internal` with the appropriate MongoDB hostname
@@ -328,15 +328,15 @@ docker compose build --no-cache
 ### 3. Tag Image for Registry
 
 ```bash
-docker tag monorepo-template:latest your-registry.com/monorepo-template:v1.0.0
-docker tag monorepo-template:latest your-registry.com/monorepo-template:latest
+docker tag baaa-hub:latest your-registry.com/baaa-hub:v1.0.0
+docker tag baaa-hub:latest your-registry.com/baaa-hub:latest
 ```
 
 ### 4. Push to Registry
 
 ```bash
-docker push your-registry.com/monorepo-template:v1.0.0
-docker push your-registry.com/monorepo-template:latest
+docker push your-registry.com/baaa-hub:v1.0.0
+docker push your-registry.com/baaa-hub:latest
 ```
 
 ### 5. Deploy to Server
@@ -347,7 +347,7 @@ On your production server, copy the `deployment/` folder and:
 cd deployment
 
 # Pull the image
-docker pull your-registry.com/monorepo-template:latest
+docker pull your-registry.com/baaa-hub:latest
 
 # Create .env file with production values
 cp .env.example .env
@@ -363,7 +363,7 @@ Or using Docker Compose directly:
 cd deployment
 
 # Pull the image
-docker pull your-registry.com/monorepo-template:latest
+docker pull your-registry.com/baaa-hub:latest
 
 # Stop old containers
 docker compose down
@@ -382,6 +382,7 @@ cd deployment
 ```
 
 This will automatically:
+
 1. Pull latest code (if using git)
 2. Rebuild images
 3. Restart containers
@@ -394,11 +395,11 @@ Atlas):
 Update `deployment/.env`:
 
 ```bash
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/monorepo-template
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/baaa-hub
 ```
 
-Update `deployment/docker-compose.yml` to remove the MongoDB service if using external
-database.
+Update `deployment/docker-compose.yml` to remove the MongoDB service if using
+external database.
 
 ## Environment Variables Reference
 
@@ -420,28 +421,28 @@ Changes require rebuilding the Docker image.
 These variables are used when the container starts. Changes take effect after
 container restart.
 
-| Variable       | Description               | Default                                     | Example               |
-| -------------- | ------------------------- | ------------------------------------------- | --------------------- |
-| `BACKEND_PORT` | Port for backend server   | `3000`                                      | `3000`                |
-| `NODE_ENV`     | Node environment          | `production`                                | `production`          |
-| `MONGODB_URI`  | MongoDB connection string | `mongodb://mongodb:27017/monorepo-template` | See below             |
-| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:8080`                     | `https://yourapp.com` |
-| `DEBUG`        | Enable debug logging      | `false`                                     | `true` or `false`     |
+| Variable       | Description               | Default                            | Example               |
+| -------------- | ------------------------- | ---------------------------------- | --------------------- |
+| `BACKEND_PORT` | Port for backend server   | `3000`                             | `3000`                |
+| `NODE_ENV`     | Node environment          | `production`                       | `production`          |
+| `MONGODB_URI`  | MongoDB connection string | `mongodb://mongodb:27017/baaa-hub` | See below             |
+| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:8080`            | `https://yourapp.com` |
+| `DEBUG`        | Enable debug logging      | `false`                            | `true` or `false`     |
 
 ### MongoDB URI Examples
 
 ```bash
 # Local MongoDB (Docker Compose)
-MONGODB_URI=mongodb://mongodb:27017/monorepo-template
+MONGODB_URI=mongodb://mongodb:27017/baaa-hub
 
 # MongoDB with authentication
-MONGODB_URI=mongodb://username:password@mongodb:27017/monorepo-template
+MONGODB_URI=mongodb://username:password@mongodb:27017/baaa-hub
 
 # MongoDB Atlas
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/monorepo-template
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/baaa-hub
 
 # MongoDB replica set
-MONGODB_URI=mongodb://host1:27017,host2:27017,host3:27017/monorepo-template?replicaSet=rs0
+MONGODB_URI=mongodb://host1:27017,host2:27017,host3:27017/baaa-hub?replicaSet=rs0
 ```
 
 ## Troubleshooting

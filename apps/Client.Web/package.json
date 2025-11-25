@@ -17,7 +17,7 @@
     "type-check": "tsc --noEmit --incremental --tsBuildInfoFile .tsbuildinfo"
   },
   "dependencies": {
-    "@monorepo-template/shared-types": "workspace:*",
+    "@baaa-hub/shared-types": "workspace:*",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/open-sans": "^5.2.6",

@@ -1,9 +1,9 @@
-# Monorepo Template
+# BAAA Hub
 
-![Test and Coverage](https://github.com/MattiaPette/2025_monorepo_pwa_ai/workflows/Test%20and%20Coverage/badge.svg)
+![Test and Coverage](https://github.com/MattiaPette/BAAA-hub/workflows/Test%20and%20Coverage/badge.svg)
 
-A modern monorepo template for PWA AI-powered applications built with React and
-Koa, featuring TypeScript, Vite, and pnpm workspaces.
+A modern monorepo for PWA AI-powered applications built with React and Koa,
+featuring TypeScript, Vite, and pnpm workspaces.
 
 ## Why pnpm?
 
@@ -47,8 +47,8 @@ instructions and migration notes.
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/MattiaPette/2025_monorepo_pwa_ai.git
-   cd 2025_monorepo_pwa_ai
+   git clone https://github.com/MattiaPette/BAAA-hub.git
+   cd BAAA-hub
    ```
 
 2. **Use the correct Node version:**
@@ -228,7 +228,7 @@ deployment documentation including:
 ## Project Structure
 
 ```txt
-monorepo-template/
+baaa-hub/
 ├── apps/
 │   ├── Client.Web/          # Frontend React application
 │   │   ├── src/             # Source code
@@ -452,8 +452,8 @@ Here's a simple example of the typical full stack development cycle:
 
 ```bash
 # 1. Clone and setup
-git clone https://github.com/MattiaPette/2025_monorepo_pwa_ai.git
-cd 2025_monorepo_pwa_ai
+git clone https://github.com/MattiaPette/BAAA-hub.git
+cd BAAA-hub
 nvm use  # or fnm use
 pnpm install
 

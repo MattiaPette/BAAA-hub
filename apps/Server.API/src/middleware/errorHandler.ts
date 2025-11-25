@@ -1,7 +1,7 @@
 import type { Context, Next } from 'koa';
 import { ZodError } from 'zod';
 import mongoose from 'mongoose';
-import { ErrorCode } from '@monorepo-template/shared-types';
+import { ErrorCode } from '@baaa-hub/shared-types';
 
 /**
  * Custom error class for API errors
