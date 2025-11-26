@@ -28,6 +28,7 @@ import {
 import { TranslationProvider } from '../../../providers/TranslationProvider/TranslationProvider';
 import { AuthProvider } from '../../../providers/AuthProvider/AuthProvider';
 import { BreadcrumProvider } from '../../../providers/BreadcrumProvider/BreadcrumProvider';
+import { UserProvider } from '../../../providers/UserProvider/UserProvider';
 import { AppProps } from './App.model';
 
 /**
@@ -90,9 +91,11 @@ export const App: FC<AppProps> = ({ authConfiguration }) => {
                 <QueryClientProvider client={queryClient}>
                   <MaterialUI>
                     <FlexContainer component="main">
-                      <BreadcrumProvider>
-                        <Router />
-                      </BreadcrumProvider>
+                      <UserProvider>
+                        <BreadcrumProvider>
+                          <Router />
+                        </BreadcrumProvider>
+                      </UserProvider>
                     </FlexContainer>
                   </MaterialUI>
                 </QueryClientProvider>

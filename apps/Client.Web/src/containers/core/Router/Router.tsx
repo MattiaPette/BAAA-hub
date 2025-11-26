@@ -3,11 +3,14 @@ import { FC } from 'react';
 import { Navigate, useRoutes } from 'react-router';
 
 import { useAuth } from '../../../providers/AuthProvider/AuthProvider';
+import { useUser } from '../../../providers/UserProvider/UserProvider';
 
 import { Login } from '../../Login/Login';
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
+import { Profile } from '../../Profile/Profile';
+import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
 
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
@@ -37,6 +40,25 @@ const NotAuthenticatedRoutes: FC = () =>
     {
       path: '*',
       element: <Navigate to="/login" />,
+    },
+  ]);
+
+/**
+ * Routes for users who need to complete profile setup
+ */
+const ProfileSetupRoutes: FC = () =>
+  useRoutes([
+    {
+      path: '/profile/setup',
+      element: <ProfileSetup />,
+    },
+    {
+      path: '/logout',
+      element: <Logout />,
+    },
+    {
+      path: '*',
+      element: <Navigate to="/profile/setup" />,
     },
   ]);
 
@@ -84,6 +106,10 @@ const AuthenticatedRoutes: FC = () => {
           element: <Dashboard />,
         },
         {
+          path: '/profile',
+          element: <Profile />,
+        },
+        {
           path: '/settings',
           element: <Settings />,
         },
@@ -106,18 +132,30 @@ const AuthenticatedRoutes: FC = () => {
  * Anonymous function that manages the application's routing based on the user's authentication state.
  * Uses the useAuth hook to check if the user is authenticated and if localStorage is available.
  * If localStorage is not available, it returns a Loader component.
- * If the user is authenticated, it returns the authenticated routes; otherwise, it returns the unauthenticated routes.
+ * If the user is authenticated but hasn't completed profile setup, redirects to profile setup.
+ * If the user is authenticated and has a profile, it returns the authenticated routes; otherwise, it returns the unauthenticated routes.
  *
  * @returns {JSX.Element} Returns a Loader component if localStorage is not available, otherwise returns the authenticated or unauthenticated routes based on the user's authentication state.
  */
 export const Router: FC = () => {
   const { isAuthenticated, localStorageAvailable } = useAuth();
+  const { hasProfile, isLoading: isUserLoading } = useUser();
 
   if (!localStorageAvailable) {
     return <Loader />;
   }
 
   if (isAuthenticated) {
+    // Show loader while checking profile status
+    if (isUserLoading) {
+      return <Loader />;
+    }
+
+    // If user hasn't completed profile setup, show setup routes
+    if (!hasProfile) {
+      return <ProfileSetupRoutes />;
+    }
+
     return <AuthenticatedRoutes />;
   }
   return <NotAuthenticatedRoutes />;

@@ -4,6 +4,7 @@ import { t } from '@lingui/core/macro';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
 
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 
@@ -26,6 +27,15 @@ export const MainContainer: FC = () => {
         label: t`Dashboard`,
         linkTo: { to: '/dashboard' },
         order: 1,
+        permission: 'user',
+      },
+      {
+        id: 'profile',
+        path: 'profile',
+        icon: PersonIcon,
+        label: t`Profile`,
+        linkTo: { to: '/profile' },
+        order: 2,
         permission: 'user',
       },
       {
