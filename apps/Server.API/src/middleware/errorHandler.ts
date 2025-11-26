@@ -58,8 +58,8 @@ export const errorHandler = async (ctx: Context, next: Next): Promise<void> => {
     if (error instanceof Error && 'code' in error && error.code === 11000) {
       ctx.status = 409;
       ctx.body = {
-        error: 'A book with this ISBN already exists',
-        code: ErrorCode.BOOK_ALREADY_EXISTS,
+        error: 'Resource already exists',
+        code: ErrorCode.RESOURCE_ALREADY_EXISTS,
       };
       return;
     }

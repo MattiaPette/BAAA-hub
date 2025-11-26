@@ -4,8 +4,6 @@ import { t } from '@lingui/core/macro';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
-import WidgetsIcon from '@mui/icons-material/Widgets';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 
@@ -28,24 +26,6 @@ export const MainContainer: FC = () => {
         label: t`Dashboard`,
         linkTo: { to: '/dashboard' },
         order: 1,
-        permission: 'user',
-      },
-      {
-        id: 'books',
-        path: 'books',
-        icon: MenuBookIcon,
-        label: t`Books`,
-        linkTo: { to: '/books' },
-        order: 2,
-        permission: 'user',
-      },
-      {
-        id: 'components-demo',
-        path: 'components-demo',
-        icon: WidgetsIcon,
-        label: t`Components Demo`,
-        linkTo: { to: '/components-demo' },
-        order: 3,
         permission: 'user',
       },
       {
