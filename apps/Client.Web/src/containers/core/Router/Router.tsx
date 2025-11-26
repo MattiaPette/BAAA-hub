@@ -8,8 +8,6 @@ import { Login } from '../../Login/Login';
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
-import { ComponentsDemo } from '../../ComponentsDemo/ComponentsDemo';
-import { Books } from '../../Books/Books';
 
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
@@ -84,14 +82,6 @@ const AuthenticatedRoutes: FC = () => {
         {
           path: '/dashboard/*',
           element: <Dashboard />,
-        },
-        {
-          path: '/books/*',
-          element: <Books />,
-        },
-        {
-          path: '/components-demo/*',
-          element: <ComponentsDemo />,
         },
         {
           path: '/settings',
