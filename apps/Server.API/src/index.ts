@@ -6,6 +6,7 @@ import { koaSwagger } from 'koa2-swagger-ui';
 import config from './config/index.js';
 import { connectDatabase } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { userRouter } from './routes/user.routes.js';
 import path from 'path';
 
 /**
@@ -75,6 +76,7 @@ app.use(
  * Register routes
  */
 app.use(healthRouter.routes()).use(healthRouter.allowedMethods());
+app.use(userRouter.routes()).use(userRouter.allowedMethods());
 
 /**
  * Start server
