@@ -59,7 +59,7 @@ export const errorHandler = async (ctx: Context, next: Next): Promise<void> => {
       ctx.status = 409;
       ctx.body = {
         error: 'Resource already exists',
-        code: ErrorCode.VALIDATION_ERROR,
+        code: ErrorCode.RESOURCE_ALREADY_EXISTS,
       };
       return;
     }
