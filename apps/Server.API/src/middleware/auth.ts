@@ -36,8 +36,19 @@ export interface AuthContext extends Context {
 
 /**
  * Extract and decode JWT token from Authorization header
- * Note: This performs basic validation. For production, use a proper JWT library
- * with signature verification against Auth0's public keys.
+ *
+ * SECURITY NOTE: This implementation performs basic JWT decoding without
+ * cryptographic signature verification. In a production environment, you MUST:
+ * 1. Use a library like 'jose' or 'jsonwebtoken' with JWKS support
+ * 2. Verify the token signature against Auth0's public keys (JWKS endpoint)
+ * 3. The JWKS endpoint is: https://{AUTH0_DOMAIN}/.well-known/jwks.json
+ *
+ * This basic implementation relies on:
+ * - HTTPS for transport security
+ * - Auth0's token expiration
+ * - Issuer validation
+ *
+ * For enhanced security, implement proper signature verification.
  */
 const decodeToken = (token: string): DecodedToken | null => {
   try {
