@@ -19,7 +19,7 @@ export const getSportTypeLabel = (sport: SportType): string => {
     [SportType.OTHER]: t`Other`,
   };
 
-  return labels[sport] || sport;
+  return labels[sport] ?? t`Unknown Sport`;
 };
 
 /**

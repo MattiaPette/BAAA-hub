@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -122,6 +122,9 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
       instagramLink: '',
     },
   });
+
+  // Memoize translated sport type labels to avoid re-computation on every render
+  const sportTypeLabels = useMemo(getSportTypeLabels, []);
 
   const watchedName = watch('name');
   const watchedSurname = watch('surname');
@@ -322,41 +325,38 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                   (value && value.length > 0) ||
                   t`Select at least one sport type`,
               }}
-              render={({ field }) => {
-                const sportTypeLabels = getSportTypeLabels();
-                return (
-                  <Select
-                    {...field}
-                    labelId="sport-types-label"
-                    id="sportTypes"
-                    multiple
-                    input={<OutlinedInput label={t`Sport Types`} />}
-                    renderValue={selected => (
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {(selected as SportType[]).map(value => (
-                          <Chip
-                            key={value}
-                            label={getSportTypeLabel(value)}
-                            size="small"
-                          />
-                        ))}
-                      </Box>
-                    )}
-                  >
-                    {Object.values(SportType).map(sport => (
-                      <MenuItem key={sport} value={sport}>
-                        <FormControlLabel
-                          control={
-                            <Checkbox checked={field.value?.includes(sport)} />
-                          }
-                          label={sportTypeLabels[sport]}
-                          sx={{ m: 0 }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  labelId="sport-types-label"
+                  id="sportTypes"
+                  multiple
+                  input={<OutlinedInput label={t`Sport Types`} />}
+                  renderValue={selected => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {(selected as SportType[]).map(value => (
+                        <Chip
+                          key={value}
+                          label={getSportTypeLabel(value)}
+                          size="small"
                         />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                );
-              }}
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {Object.values(SportType).map(sport => (
+                    <MenuItem key={sport} value={sport}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox checked={field.value?.includes(sport)} />
+                        }
+                        label={sportTypeLabels[sport]}
+                        sx={{ m: 0 }}
+                      />
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
             />
             <FormHelperText>
               {errors.sportTypes?.message ||
