@@ -22,13 +22,23 @@ import {
   useTheme,
   Alert,
   Avatar,
+  InputAdornment,
+  SvgIcon,
+  SvgIconProps,
 } from '@mui/material';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import { SportType } from '@baaa-hub/shared-types';
 import {
   ProfileSetupFormInput,
   ProfileSetupFormProps,
 } from './ProfileSetup.model';
 import logo from '../../assets/baaa.png';
+
+const StravaIcon = (props: SvgIconProps) => (
+  <SvgIcon {...props} viewBox="0 0 24 24">
+    <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.477 0 4.51 11.173h4.171" />
+  </SvgIcon>
+);
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -390,6 +400,15 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                 errors.stravaLink?.message ||
                 t`Link to your Strava athlete profile`
               }
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <StravaIcon sx={{ color: '#FC4C02' }} />
+                    </InputAdornment>
+                  ),
+                },
+              }}
               {...register('stravaLink', {
                 pattern: {
                   value: /^(https:\/\/(www\.)?strava\.com\/athletes\/\d+)?$/,
@@ -411,6 +430,15 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                 errors.instagramLink?.message ||
                 t`Link to your Instagram profile`
               }
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <InstagramIcon sx={{ color: '#E1306C' }} />
+                    </InputAdornment>
+                  ),
+                },
+              }}
               {...register('instagramLink', {
                 pattern: {
                   value:

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { User, UserRole } from '@baaa-hub/shared-types';
+import { User, UserRole, PrivacyLevel } from '@baaa-hub/shared-types';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCurrentUser } from './useCurrentUser';
 import * as userService from '../../services/userService';
@@ -51,6 +51,12 @@ describe('useCurrentUser', () => {
     isBlocked: false,
     isEmailVerified: true,
     roles: [UserRole.USER],
+    privacySettings: {
+      email: PrivacyLevel.PUBLIC,
+      dateOfBirth: PrivacyLevel.PUBLIC,
+      sportTypes: PrivacyLevel.PUBLIC,
+      socialLinks: PrivacyLevel.PUBLIC,
+    },
   };
 
   it('should fetch user data when authenticated', async () => {
@@ -151,7 +157,7 @@ describe('useCurrentUser', () => {
     });
 
     const mockError = new Error('Failed to fetch user');
-    vi.spyOn(userService, 'getCurrentUser').mockRejectedValue(mockError);
+    (userService.getCurrentUser as Mock).mockRejectedValue(mockError);
 
     const { result } = renderHook(useCurrentUser, { wrapper });
 

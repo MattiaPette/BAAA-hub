@@ -1,5 +1,10 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import { SportType, UserRole, User as UserType } from '@baaa-hub/shared-types';
+import {
+  SportType,
+  UserRole,
+  User as UserType,
+  PrivacyLevel,
+} from '@baaa-hub/shared-types';
 
 /**
  * User document interface for Mongoose
@@ -79,6 +84,28 @@ const userSchema = new Schema<UserDocument>(
     instagramLink: {
       type: String,
       trim: true,
+    },
+    privacySettings: {
+      email: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      dateOfBirth: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      sportTypes: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      socialLinks: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
     },
 
     // System fields
