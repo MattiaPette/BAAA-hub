@@ -34,6 +34,7 @@ import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { updateUserProfile } from '../../services/userService';
+import { getSportTypeLabel } from '../../helpers/sportTypes';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
 
@@ -42,22 +43,6 @@ const StravaIcon = (props: SvgIconProps) => (
     <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.477 0 4.51 11.173h4.171" />
   </SvgIcon>
 );
-
-/**
- * Sport type labels for display
- */
-const sportTypeLabels: Record<SportType, string> = {
-  [SportType.RUNNING]: 'Running',
-  [SportType.CYCLING]: 'Cycling',
-  [SportType.SWIMMING]: 'Swimming',
-  [SportType.TRIATHLON]: 'Triathlon',
-  [SportType.TRAIL_RUNNING]: 'Trail Running',
-  [SportType.HIKING]: 'Hiking',
-  [SportType.WALKING]: 'Walking',
-  [SportType.GYM]: 'Gym',
-  [SportType.CROSS_FIT]: 'CrossFit',
-  [SportType.OTHER]: 'Other',
-};
 
 /**
  * Generate initials from name
@@ -436,7 +421,7 @@ export const Profile: FC = () => {
                   {user.sportTypes.map(sport => (
                     <Chip
                       key={sport}
-                      label={sportTypeLabels[sport as SportType] || sport}
+                      label={getSportTypeLabel(sport as SportType)}
                       color="primary"
                       variant="filled"
                       sx={{

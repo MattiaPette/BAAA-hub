@@ -17,9 +17,9 @@ msgstr ""
 msgid "A server error has occurred. Please try again later"
 msgstr "Si è verificato un errore del server. Riprova più tardi"
 
-#: src/containers/Profile/Profile.tsx:277
+#: src/containers/Profile/Profile.tsx:262
 msgid "About"
-msgstr ""
+msgstr "Informazioni"
 
 #: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:154
 #~ msgid "Above Divider"
@@ -29,9 +29,9 @@ msgstr ""
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Accesso negato. Nome utente e/o password non corretti"
 
-#: src/containers/Profile/Profile.tsx:474
+#: src/containers/Profile/Profile.tsx:459
 msgid "Activity Statistics"
-msgstr ""
+msgstr "Statistiche Attività"
 
 #: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:267
 #~ msgid "Add"
@@ -48,7 +48,7 @@ msgstr "È richiesta un'interazione aggiuntiva"
 
 #: src/components/login/LoginForm/LoginForm.tsx:258
 msgid "Already have an account?"
-msgstr ""
+msgstr "Hai già un account?"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:115
 msgid "An error occurred during authentication. Please try again"
@@ -60,7 +60,7 @@ msgstr "Applicazione già installata"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:27
 msgid "Authentication required. Please try logging in again."
-msgstr ""
+msgstr "Autenticazione richiesta. Per favore, effettua nuovamente l'accesso."
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:84
 #~ msgid "Autocomplete"
@@ -88,9 +88,9 @@ msgstr ""
 #~ msgid "Button Group"
 #~ msgstr "Gruppo di pulsanti"
 
-#: src/containers/Profile/ProfileEditForm.tsx:251
+#: src/containers/Profile/ProfileEditForm.tsx:242
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:309
 #~ msgid "Center"
@@ -108,9 +108,9 @@ msgstr ""
 #~ msgid "Checkbox Label"
 #~ msgstr "Etichetta della casella"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:248
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:236
 msgid "Choose a unique nickname"
-msgstr ""
+msgstr "Scegli un nickname unico"
 
 #: src/containers/Settings/Settings.tsx:114
 msgid "Choose your preferred language"
@@ -120,17 +120,17 @@ msgstr "Scegli la tua lingua preferita"
 #~ msgid "Clickable"
 #~ msgstr "Cliccabile"
 
-#: src/containers/Profile/Profile.tsx:477
+#: src/containers/Profile/Profile.tsx:462
 msgid "Coming soon..."
-msgstr ""
+msgstr "Prossimamente..."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:432
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:423
 msgid "Complete Setup"
-msgstr ""
+msgstr "Completa Configurazione"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:161
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:149
 msgid "Complete Your Profile"
-msgstr ""
+msgstr "Completa il Tuo Profilo"
 
 #: src/containers/MainContainer/MainContainer.tsx:41
 #~ msgid "Components Demo"
@@ -158,11 +158,21 @@ msgstr "È richiesto il consenso"
 
 #: src/components/login/LoginForm/LoginForm.tsx:245
 msgid "Create Account"
-msgstr ""
+msgstr "Crea Account"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:432
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:423
 msgid "Creating Profile..."
-msgstr ""
+msgstr "Creazione Profilo..."
+
+#: src/helpers/sportTypes/sportTypeLabels.ts:18
+#: src/helpers/sportTypes/sportTypeLabels.ts:38
+msgid "CrossFit"
+msgstr "CrossFit"
+
+#: src/helpers/sportTypes/sportTypeLabels.ts:11
+#: src/helpers/sportTypes/sportTypeLabels.ts:31
+msgid "Cycling"
+msgstr "Ciclismo"
 
 #: src/containers/Settings/Settings.tsx:86
 msgid "Dark Mode"
@@ -183,16 +193,16 @@ msgstr "Dashboard"
 #~ msgid "Data Display Components"
 #~ msgstr "Componenti di visualizzazione dati"
 
-#: src/containers/Profile/Profile.tsx:319
-#: src/containers/Profile/ProfileEditForm.tsx:137
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:300
+#: src/containers/Profile/Profile.tsx:304
+#: src/containers/Profile/ProfileEditForm.tsx:125
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:288
 msgid "Date of Birth"
-msgstr ""
+msgstr "Data di Nascita"
 
-#: src/containers/Profile/ProfileEditForm.tsx:145
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:311
+#: src/containers/Profile/ProfileEditForm.tsx:133
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:299
 msgid "Date of birth is required"
-msgstr ""
+msgstr "La data di nascita è obbligatoria"
 
 #: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:138
 #~ msgid "Deletable"
@@ -212,49 +222,49 @@ msgstr ""
 
 #: src/components/login/LoginForm/LoginForm.tsx:281
 msgid "Don't have an account?"
-msgstr ""
+msgstr "Non hai un account?"
 
-#: src/containers/Profile/Profile.tsx:261
-#: src/containers/Profile/Profile.tsx:497
+#: src/containers/Profile/Profile.tsx:246
+#: src/containers/Profile/Profile.tsx:482
 msgid "Edit Profile"
-msgstr ""
+msgstr "Modifica Profilo"
 
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Profile/Profile.tsx:296
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:278
+#: src/containers/Profile/Profile.tsx:281
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:266
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: src/components/login/LoginForm/LoginForm.tsx:192
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:286
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:274
 msgid "Email is required"
-msgstr ""
+msgstr "L'email è obbligatoria"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:279
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:267
 msgid "Enter your email"
-msgstr ""
+msgstr "Inserisci la tua email"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:208
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:196
 msgid "Enter your first name"
-msgstr ""
+msgstr "Inserisci il tuo nome"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:227
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:215
 msgid "Enter your last name"
-msgstr ""
+msgstr "Inserisci il tuo cognome"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:87
 #: src/containers/ProfileSetup/ProfileSetup.tsx:91
 msgid "Failed to create profile. Please try again."
-msgstr ""
+msgstr "Impossibile creare il profilo. Riprova."
 
 #: src/containers/Books/Books.tsx:240
 #~ msgid "Failed to load books"
 #~ msgstr "Caricamento dei libri fallito"
 
-#: src/containers/Profile/Profile.tsx:132
+#: src/containers/Profile/Profile.tsx:117
 msgid "Failed to update profile. Please try again."
-msgstr ""
+msgstr "Impossibile aggiornare il profilo. Riprova."
 
 #: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:85
 #~ msgid "Feedback Components"
@@ -268,28 +278,38 @@ msgstr ""
 #~ msgid "Filled"
 #~ msgstr "Riempito"
 
-#: src/containers/Profile/ProfileEditForm.tsx:99
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:207
+#: src/containers/Profile/ProfileEditForm.tsx:87
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:195
 msgid "First Name"
-msgstr ""
+msgstr "Nome"
 
-#: src/containers/Profile/ProfileEditForm.tsx:105
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:215
+#: src/containers/Profile/ProfileEditForm.tsx:93
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:203
 msgid "First name is required"
-msgstr ""
+msgstr "Il nome è obbligatorio"
 
-#: src/containers/Profile/ProfileEditForm.tsx:108
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:218
+#: src/containers/Profile/ProfileEditForm.tsx:96
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:206
 msgid "First name must be 50 characters or less"
-msgstr ""
+msgstr "Il nome deve essere di 50 caratteri o meno"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:151
 #~ msgid "Floating Action Button"
 #~ msgstr "Pulsante azione flottante"
 
+#: src/helpers/sportTypes/sportTypeLabels.ts:17
+#: src/helpers/sportTypes/sportTypeLabels.ts:37
+msgid "Gym"
+msgstr "Palestra"
+
 #: src/components/login/LoginForm/LoginForm.tsx:319
 msgid "Having trouble signing in?"
-msgstr ""
+msgstr "Hai problemi ad accedere?"
+
+#: src/helpers/sportTypes/sportTypeLabels.ts:15
+#: src/helpers/sportTypes/sportTypeLabels.ts:35
+msgid "Hiking"
+msgstr "Escursionismo"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:24
 msgid "Incorrect username or password"
@@ -303,10 +323,10 @@ msgstr "Nome utente o password non corretti"
 #~ msgid "Inputs"
 #~ msgstr "Inserimento"
 
-#: src/containers/Profile/ProfileEditForm.tsx:228
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:405
+#: src/containers/Profile/ProfileEditForm.tsx:219
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:396
 msgid "Instagram Profile"
-msgstr ""
+msgstr "Profilo Instagram"
 
 #: src/components/prompts/InstallApp/InstallApp.tsx:85
 msgid "Install app"
@@ -325,14 +345,14 @@ msgid "Invalid credentials or session expired"
 msgstr "Credenziali non valide o sessione scaduta"
 
 #: src/components/login/LoginForm/LoginForm.tsx:196
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:289
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:277
 msgid "Invalid email address"
-msgstr ""
+msgstr "Indirizzo email non valido"
 
-#: src/containers/Profile/ProfileEditForm.tsx:237
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:418
+#: src/containers/Profile/ProfileEditForm.tsx:228
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:409
 msgid "Invalid Instagram profile URL"
-msgstr ""
+msgstr "URL profilo Instagram non valido"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:69
 msgid "Invalid registration. Please check the information you entered"
@@ -346,18 +366,18 @@ msgstr "Richiesta non valida"
 msgid "Invalid scope"
 msgstr "Ambito non valido"
 
-#: src/containers/Profile/ProfileEditForm.tsx:219
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:396
+#: src/containers/Profile/ProfileEditForm.tsx:210
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:387
 msgid "Invalid Strava profile URL"
-msgstr ""
+msgstr "URL profilo Strava non valido"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:96
 msgid "Invalid token"
 msgstr "Token non valido"
 
-#: src/containers/Profile/Profile.tsx:342
+#: src/containers/Profile/Profile.tsx:327
 msgid "Joined"
-msgstr ""
+msgstr "Iscritto"
 
 #: src/containers/Settings/Settings.tsx:98
 msgid "Language"
@@ -371,20 +391,20 @@ msgstr "Lingua cambiata in Inglese"
 msgid "Language changed to Italian"
 msgstr "Lingua cambiata in Italiano"
 
-#: src/containers/Profile/ProfileEditForm.tsx:116
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:226
+#: src/containers/Profile/ProfileEditForm.tsx:104
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:214
 msgid "Last Name"
-msgstr ""
+msgstr "Cognome"
 
-#: src/containers/Profile/ProfileEditForm.tsx:122
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:233
+#: src/containers/Profile/ProfileEditForm.tsx:110
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:221
 msgid "Last name is required"
-msgstr ""
+msgstr "Il cognome è obbligatorio"
 
-#: src/containers/Profile/ProfileEditForm.tsx:125
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:236
+#: src/containers/Profile/ProfileEditForm.tsx:113
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:224
 msgid "Last name must be 50 characters or less"
-msgstr ""
+msgstr "Il cognome deve essere di 50 caratteri o meno"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:306
 #~ msgid "Left"
@@ -394,13 +414,13 @@ msgstr ""
 msgid "Light Mode"
 msgstr "Modalità chiara"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:412
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:403
 msgid "Link to your Instagram profile"
-msgstr ""
+msgstr "Link al tuo profilo Instagram"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:391
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:382
 msgid "Link to your Strava athlete profile"
-msgstr ""
+msgstr "Link al tuo profilo atleta Strava"
 
 #: src/components/login/LoginForm/LoginForm.tsx:154
 #: src/components/login/LoginForm/LoginForm.tsx:247
@@ -416,9 +436,9 @@ msgstr "Esci"
 msgid "Logout page"
 msgstr "Pagina di disconnessione"
 
-#: src/containers/Profile/Profile.tsx:241
+#: src/containers/Profile/Profile.tsx:226
 msgid "Member"
-msgstr ""
+msgstr "Membro"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:42
 msgid "Multi-factor authentication is required"
@@ -432,25 +452,25 @@ msgstr "È richiesta l'autenticazione a più fattori"
 msgid "Network error. Check your internet connection"
 msgstr "Errore di rete. Verifica la connessione internet"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:247
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:235
 msgid "Nickname"
-msgstr ""
+msgstr "Nickname"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:256
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:244
 msgid "Nickname is required"
-msgstr ""
+msgstr "Il nickname è obbligatorio"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:263
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:251
 msgid "Nickname must be 30 characters or less"
-msgstr ""
+msgstr "Il nickname deve essere di 30 caratteri o meno"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:259
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:247
 msgid "Nickname must be at least 3 characters"
-msgstr ""
+msgstr "Il nickname deve essere di almeno 3 caratteri"
 
-#: src/containers/Profile/Profile.tsx:454
+#: src/containers/Profile/Profile.tsx:439
 msgid "No sports selected yet."
-msgstr ""
+msgstr "Nessuno sport selezionato."
 
 #: src/components/commons/errors/RootErrorFallback/RootErrorFallback.tsx:97
 msgid "Oh no! Something went wrong..."
@@ -460,9 +480,9 @@ msgstr "Oh no! Qualcosa è andato storto..."
 #~ msgid "One"
 #~ msgstr "Uno"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:267
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:255
 msgid "Only letters, numbers, and underscores allowed"
-msgstr ""
+msgstr "Sono consentite solo lettere, numeri e underscore"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:182
 #~ msgid "Option 1"
@@ -474,7 +494,12 @@ msgstr ""
 
 #: src/components/login/LoginForm/LoginForm.tsx:309
 msgid "or"
-msgstr ""
+msgstr "oppure"
+
+#: src/helpers/sportTypes/sportTypeLabels.ts:19
+#: src/helpers/sportTypes/sportTypeLabels.ts:39
+msgid "Other"
+msgstr "Altro"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:106
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:283
@@ -491,7 +516,7 @@ msgstr "Password necessaria"
 
 #: src/components/login/LoginForm/LoginForm.tsx:222
 msgid "Password must be at least 8 characters"
-msgstr ""
+msgstr "La password deve essere di almeno 8 caratteri"
 
 #: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:194
 #~ msgid "Photos"
@@ -502,21 +527,21 @@ msgstr ""
 #~ msgstr "Primario"
 
 #: src/containers/MainContainer/MainContainer.tsx:36
-#: src/containers/Profile/Profile.tsx:103
+#: src/containers/Profile/Profile.tsx:88
 msgid "Profile"
-msgstr ""
+msgstr "Profilo"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:50
 msgid "Profile created successfully!"
-msgstr ""
+msgstr "Profilo creato con successo!"
 
-#: src/containers/Profile/Profile.tsx:165
+#: src/containers/Profile/Profile.tsx:150
 msgid "Profile not found"
-msgstr ""
+msgstr "Profilo non trovato"
 
-#: src/containers/Profile/Profile.tsx:127
+#: src/containers/Profile/Profile.tsx:112
 msgid "Profile updated successfully!"
-msgstr ""
+msgstr "Profilo aggiornato con successo!"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:173
 #~ msgid "Radio Group"
@@ -538,22 +563,27 @@ msgstr "Tipo di risposta non supportato"
 #~ msgid "Right"
 #~ msgstr "Destra"
 
-#: src/containers/Profile/ProfileEditForm.tsx:254
-msgid "Save Changes"
-msgstr ""
+#: src/helpers/sportTypes/sportTypeLabels.ts:10
+#: src/helpers/sportTypes/sportTypeLabels.ts:30
+msgid "Running"
+msgstr "Corsa"
 
-#: src/containers/Profile/ProfileEditForm.tsx:254
+#: src/containers/Profile/ProfileEditForm.tsx:245
+msgid "Save Changes"
+msgstr "Salva Modifiche"
+
+#: src/containers/Profile/ProfileEditForm.tsx:245
 msgid "Saving..."
-msgstr ""
+msgstr "Salvataggio..."
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:220
 #~ msgid "Select"
 #~ msgstr "Seleziona"
 
-#: src/containers/Profile/ProfileEditForm.tsx:168
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:335
+#: src/containers/Profile/ProfileEditForm.tsx:156
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:323
 msgid "Select at least one sport type"
-msgstr ""
+msgstr "Seleziona almeno un tipo di sport"
 
 #: src/containers/Settings/Settings.tsx:101
 #: src/containers/Settings/Settings.tsx:106
@@ -564,13 +594,13 @@ msgstr "Seleziona lingua"
 #~ msgid "Select option"
 #~ msgstr "Seleziona opzione"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:372
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:363
 msgid "Select the sports you participate in"
-msgstr ""
+msgstr "Seleziona gli sport che pratichi"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:164
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:152
 msgid "Set up your profile to get started"
-msgstr ""
+msgstr "Configura il tuo profilo per iniziare"
 
 #: src/containers/MainContainer/MainContainer.tsx:52
 #: src/containers/Settings/Settings.tsx:40
@@ -581,43 +611,48 @@ msgstr "Impostazioni"
 #: src/components/login/LoginForm/LoginForm.tsx:154
 #: src/components/login/LoginForm/LoginForm.tsx:299
 msgid "Sign Up"
-msgstr ""
+msgstr "Registrati"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:243
 #~ msgid "Slider"
 #~ msgstr "Cursore"
 
-#: src/containers/Profile/Profile.tsx:361
+#: src/containers/Profile/Profile.tsx:346
 msgid "Social"
-msgstr ""
+msgstr "Social"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:378
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:369
 msgid "Social Links (Optional)"
-msgstr ""
+msgstr "Link Social (Opzionale)"
 
-#: src/containers/Profile/ProfileEditForm.tsx:161
-#: src/containers/Profile/ProfileEditForm.tsx:176
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:327
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:343
+#: src/containers/Profile/ProfileEditForm.tsx:149
+#: src/containers/Profile/ProfileEditForm.tsx:166
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:315
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:333
 msgid "Sport Types"
-msgstr ""
+msgstr "Tipi di Sport"
 
-#: src/containers/Profile/Profile.tsx:430
+#: src/containers/Profile/Profile.tsx:415
 msgid "Sports & Activities"
-msgstr ""
+msgstr "Sport e Attività"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:281
 #~ msgid "Standard"
 #~ msgstr "Standard"
 
-#: src/containers/Profile/ProfileEditForm.tsx:210
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:384
+#: src/containers/Profile/ProfileEditForm.tsx:201
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:375
 msgid "Strava Profile"
-msgstr ""
+msgstr "Profilo Strava"
 
 #: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:140
 #~ msgid "Success"
 #~ msgstr "Successo"
+
+#: src/helpers/sportTypes/sportTypeLabels.ts:12
+#: src/helpers/sportTypes/sportTypeLabels.ts:32
+msgid "Swimming"
+msgstr "Nuoto"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:259
 #~ msgid "Switch"
@@ -681,7 +716,7 @@ msgstr "Esiste già un utente con questo indirizzo email"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:74
 msgid "This email is already registered."
-msgstr ""
+msgstr "Questa email è già registrata."
 
 #: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:160
 #~ msgid "This is a sample dialog content. You can put any content here."
@@ -701,7 +736,7 @@ msgstr ""
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:70
 msgid "This nickname is already taken. Please choose another."
-msgstr ""
+msgstr "Questo nickname è già in uso. Per favore, scegline un altro."
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:26
 msgid "This password has been compromised in a data breach. Please choose a different password to protect your account"
@@ -711,9 +746,9 @@ msgstr "Questa password è stata compromessa in una violazione dei dati. Scegli 
 msgid "This username is already in use"
 msgstr "Questo nome utente è già in uso"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:253
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:241
 msgid "This will be your public username"
-msgstr ""
+msgstr "Questo sarà il tuo nome utente pubblico"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:122
 #~ msgid "Three"
@@ -731,9 +766,19 @@ msgstr "Troppi tentativi. Riprova tra qualche minuto"
 msgid "Too many characters"
 msgstr "Troppi caratteri"
 
+#: src/helpers/sportTypes/sportTypeLabels.ts:14
+#: src/helpers/sportTypes/sportTypeLabels.ts:34
+msgid "Trail Running"
+msgstr "Trail Running"
+
+#: src/helpers/sportTypes/sportTypeLabels.ts:13
+#: src/helpers/sportTypes/sportTypeLabels.ts:33
+msgid "Triathlon"
+msgstr "Triathlon"
+
 #: src/components/login/LoginForm/LoginForm.tsx:337
 msgid "Try alternative login"
-msgstr ""
+msgstr "Prova un accesso alternativo"
 
 #: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:231
 #~ msgid "Twenty"
@@ -768,6 +813,11 @@ msgstr "L'utente ha respinto l'installazione dell'app"
 #~ msgid "Username is required"
 #~ msgstr "Nome utente è necessario"
 
+#: src/helpers/sportTypes/sportTypeLabels.ts:16
+#: src/helpers/sportTypes/sportTypeLabels.ts:36
+msgid "Walking"
+msgstr "Camminata"
+
 #: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:141
 #~ msgid "With Icon"
 #~ msgstr "Con icona"
@@ -782,17 +832,17 @@ msgstr "L'utente ha respinto l'installazione dell'app"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:78
 msgid "You already have a profile. Redirecting to dashboard..."
-msgstr ""
+msgstr "Hai già un profilo. Reindirizzamento alla dashboard..."
 
-#: src/containers/Profile/ProfileEditForm.tsx:150
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:308
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:316
+#: src/containers/Profile/ProfileEditForm.tsx:138
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:296
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:304
 msgid "You must be at least 13 years old"
-msgstr ""
+msgstr "Devi avere almeno 13 anni"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:83
 msgid "You must be at least 13 years old to sign up."
-msgstr ""
+msgstr "Devi avere almeno 13 anni per registrarti."
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:98
 msgid "You must log in"

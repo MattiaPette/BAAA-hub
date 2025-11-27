@@ -18,23 +18,11 @@ import {
   TextField,
 } from '@mui/material';
 import { SportType } from '@baaa-hub/shared-types';
+import {
+  getSportTypeLabel,
+  getSportTypeLabels,
+} from '../../helpers/sportTypes';
 import { ProfileEditFormInput, ProfileEditProps } from './Profile.model';
-
-/**
- * Sport type labels for display
- */
-const sportTypeLabels: Record<SportType, string> = {
-  [SportType.RUNNING]: 'Running',
-  [SportType.CYCLING]: 'Cycling',
-  [SportType.SWIMMING]: 'Swimming',
-  [SportType.TRIATHLON]: 'Triathlon',
-  [SportType.TRAIL_RUNNING]: 'Trail Running',
-  [SportType.HIKING]: 'Hiking',
-  [SportType.WALKING]: 'Walking',
-  [SportType.GYM]: 'Gym',
-  [SportType.CROSS_FIT]: 'CrossFit',
-  [SportType.OTHER]: 'Other',
-};
 
 /**
  * Calculate minimum date of birth (13 years ago)
@@ -167,38 +155,41 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
             validate: value =>
               (value && value.length > 0) || t`Select at least one sport type`,
           }}
-          render={({ field }) => (
-            <Select
-              {...field}
-              labelId="sport-types-label"
-              id="sportTypes"
-              multiple
-              input={<OutlinedInput label={t`Sport Types`} />}
-              renderValue={selected => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {(selected as SportType[]).map(value => (
-                    <Chip
-                      key={value}
-                      label={sportTypeLabels[value]}
-                      size="small"
+          render={({ field }) => {
+            const sportTypeLabels = getSportTypeLabels();
+            return (
+              <Select
+                {...field}
+                labelId="sport-types-label"
+                id="sportTypes"
+                multiple
+                input={<OutlinedInput label={t`Sport Types`} />}
+                renderValue={selected => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {(selected as SportType[]).map(value => (
+                      <Chip
+                        key={value}
+                        label={getSportTypeLabel(value)}
+                        size="small"
+                      />
+                    ))}
+                  </Box>
+                )}
+              >
+                {Object.values(SportType).map(sport => (
+                  <MenuItem key={sport} value={sport}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox checked={field.value?.includes(sport)} />
+                      }
+                      label={sportTypeLabels[sport]}
+                      sx={{ m: 0 }}
                     />
-                  ))}
-                </Box>
-              )}
-            >
-              {Object.values(SportType).map(sport => (
-                <MenuItem key={sport} value={sport}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={field.value?.includes(sport)} />
-                    }
-                    label={sportTypeLabels[sport]}
-                    sx={{ m: 0 }}
-                  />
-                </MenuItem>
-              ))}
-            </Select>
-          )}
+                  </MenuItem>
+                ))}
+              </Select>
+            );
+          }}
         />
         <FormHelperText>{errors.sportTypes?.message}</FormHelperText>
       </FormControl>
