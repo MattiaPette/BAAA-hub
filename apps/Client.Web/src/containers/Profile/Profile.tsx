@@ -26,8 +26,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import EmailIcon from '@mui/icons-material/Email';
 import CakeIcon from '@mui/icons-material/Cake';
 import SportsIcon from '@mui/icons-material/Sports';
-import LinkIcon from '@mui/icons-material/Link';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 import { SportType } from '@baaa-hub/shared-types';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
@@ -35,6 +36,12 @@ import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { updateUserProfile } from '../../services/userService';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
+
+const StravaIcon = (props: SvgIconProps) => (
+  <SvgIcon {...props} viewBox="0 0 24 24">
+    <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.477 0 4.51 11.173h4.171" />
+  </SvgIcon>
+);
 
 /**
  * Sport type labels for display
@@ -360,13 +367,18 @@ export const Profile: FC = () => {
                         href={user.stravaLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        startIcon={<LinkIcon />}
+                        startIcon={<StravaIcon />}
                         fullWidth
                         variant="outlined"
                         color="inherit"
                         sx={{
                           justifyContent: 'flex-start',
-                          borderColor: 'divider',
+                          color: '#FC4C02', // Strava brand color
+                          borderColor: alpha('#FC4C02', 0.5),
+                          '&:hover': {
+                            borderColor: '#FC4C02',
+                            bgcolor: alpha('#FC4C02', 0.05),
+                          },
                         }}
                       >
                         Strava
@@ -378,13 +390,18 @@ export const Profile: FC = () => {
                         href={user.instagramLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        startIcon={<LinkIcon />}
+                        startIcon={<InstagramIcon />}
                         fullWidth
                         variant="outlined"
                         color="inherit"
                         sx={{
                           justifyContent: 'flex-start',
-                          borderColor: 'divider',
+                          color: '#E1306C', // Instagram brand color
+                          borderColor: alpha('#E1306C', 0.5),
+                          '&:hover': {
+                            borderColor: '#E1306C',
+                            bgcolor: alpha('#E1306C', 0.05),
+                          },
                         }}
                       >
                         Instagram
