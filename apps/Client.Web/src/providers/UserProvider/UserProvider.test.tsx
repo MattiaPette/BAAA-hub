@@ -63,7 +63,7 @@ describe('UserProvider', () => {
         user: mockUser,
       });
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -83,7 +83,7 @@ describe('UserProvider', () => {
         hasProfile: false,
       });
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -100,7 +100,7 @@ describe('UserProvider', () => {
         new Error('Network error'),
       );
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -119,7 +119,7 @@ describe('UserProvider', () => {
         user: mockUser,
       });
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -150,7 +150,7 @@ describe('UserProvider', () => {
         user: mockUser,
       });
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -173,7 +173,7 @@ describe('UserProvider', () => {
         user: mockUser,
       });
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -194,7 +194,7 @@ describe('UserProvider', () => {
         new Error('Network error'),
       );
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -233,7 +233,7 @@ describe('UserProvider', () => {
     });
 
     it('should not fetch profile when not authenticated', async () => {
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -270,7 +270,7 @@ describe('UserProvider', () => {
         user: mockUser,
       });
 
-      const { result, rerender } = renderHook(() => useUser(), {
+      const { result, rerender } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 
@@ -309,7 +309,7 @@ describe('UserProvider', () => {
         .mockImplementation(() => {});
 
       expect(() => {
-        renderHook(() => useUser());
+        renderHook(useUser);
       }).toThrow('useUser must be used within a UserProvider');
 
       consoleSpy.mockRestore();
@@ -341,7 +341,7 @@ describe('UserProvider', () => {
         user: mockUser,
       });
 
-      const { result } = renderHook(() => useUser(), {
+      const { result } = renderHook(useUser, {
         wrapper: createWrapper(),
       });
 

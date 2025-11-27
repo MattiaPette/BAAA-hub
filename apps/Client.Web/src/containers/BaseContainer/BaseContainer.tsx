@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
 import { SidebarProps } from '../../components/commons/navigation/Sidebar/Sidebar.model';
-import { useAuth } from '../../providers/AuthProvider/AuthProvider';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import logo from '../../assets/shrimp.png';
 
 type BaseContainerProps = {
@@ -103,7 +103,7 @@ export const BaseContainer: FC<BaseContainerProps> = ({
   providers = [],
 }) => {
   const { pathname } = useLocation();
-  const { token } = useAuth();
+  const { data: user } = useCurrentUser();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const currentPath = pathname.split('/').filter(Boolean).join('/');
@@ -196,8 +196,8 @@ export const BaseContainer: FC<BaseContainerProps> = ({
         currentPath={currentPath}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        userName={token?.idTokenPayload?.name}
-        userEmail={token?.idTokenPayload?.email}
+        userName={user ? `${user.name} ${user.surname}` : undefined}
+        userEmail={user?.email}
       />
     </FlexContainer>
   );

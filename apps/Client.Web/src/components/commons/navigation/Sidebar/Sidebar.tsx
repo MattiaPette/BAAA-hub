@@ -281,8 +281,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <AnimatedContent>
         {/* Animated Header */}
         <SidebarHeader>
-          <Typography className="header-title">BAAA Hub</Typography>
-          <Typography className="header-subtitle">Activity Tracker</Typography>
+          <Typography className="header-title">Community Hub</Typography>
+          <Typography className="header-subtitle">
+            Boss Anna Athlete Army
+          </Typography>
         </SidebarHeader>
 
         {/* Main navigation list */}
