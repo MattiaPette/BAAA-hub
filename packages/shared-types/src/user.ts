@@ -15,6 +15,25 @@ export enum SportType {
 }
 
 /**
+ * Privacy levels for user profile fields
+ */
+export enum PrivacyLevel {
+  PUBLIC = 'PUBLIC',
+  FOLLOWERS = 'FOLLOWERS',
+  PRIVATE = 'PRIVATE',
+}
+
+/**
+ * User privacy settings configuration
+ */
+export interface UserPrivacySettings {
+  email: PrivacyLevel;
+  dateOfBirth: PrivacyLevel;
+  sportTypes: PrivacyLevel;
+  socialLinks: PrivacyLevel;
+}
+
+/**
  * User roles for access control
  */
 export enum UserRole {
@@ -35,6 +54,7 @@ export interface UserProfileData {
   profilePicture?: string;
   stravaLink?: string;
   instagramLink?: string;
+  privacySettings: UserPrivacySettings;
 }
 
 /**

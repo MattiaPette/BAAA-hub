@@ -2,7 +2,7 @@ import { screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
-import { SportType, User } from '@baaa-hub/shared-types';
+import { SportType, User, PrivacyLevel } from '@baaa-hub/shared-types';
 import { renderWithProviders as render } from '../../test-utils';
 import { ProfileEditForm } from './ProfileEditForm';
 
@@ -23,6 +23,12 @@ const mockUser: User = {
   isBlocked: false,
   isEmailVerified: true,
   roles: [],
+  privacySettings: {
+    email: PrivacyLevel.PUBLIC,
+    dateOfBirth: PrivacyLevel.PUBLIC,
+    sportTypes: PrivacyLevel.PUBLIC,
+    socialLinks: PrivacyLevel.PUBLIC,
+  },
 };
 
 describe('ProfileEditForm', () => {
@@ -308,5 +314,10 @@ describe('ProfileEditForm', () => {
       // All sport type options should be visible
       expect(screen.getAllByText('Running').length).toBeGreaterThanOrEqual(1);
     });
+  });
+
+  it('should render privacy selectors', () => {
+    renderForm();
+    expect(screen.getByText('Email Privacy')).toBeInTheDocument();
   });
 });
