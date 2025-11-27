@@ -75,13 +75,13 @@ jobs:
       - name: Build shared types
         run: pnpm --filter @baaa-hub/shared-types build
 
-      - name: Run tests with coverage
-        id: tests
+      - name: Run frontend tests with coverage
+        id: fe-tests
         run: pnpm fe:test:coverage --run
         timeout-minutes: 5
         continue-on-error: true
 
-      - name: Generate coverage badge
+      - name: Generate frontend coverage badge
         if: always() && github.event_name == 'pull_request'
         uses: codecov/codecov-action@v5
         with:
@@ -90,7 +90,7 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
 
-      - name: Coverage Summary
+      - name: Frontend coverage summary
         if: always() && github.event_name == 'pull_request'
         uses: romeovs/lcov-reporter-action@v0.4.0
         with:
@@ -98,7 +98,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           delete-old-comments: true
 
-      - name: Upload coverage reports
+      - name: Upload frontend coverage reports
         if: always()
         uses: actions/upload-artifact@v5
         with:
@@ -107,12 +107,52 @@ jobs:
             apps/Client.Web/coverage/
           retention-days: 30
 
-      - name: Comment coverage on PR
+      - name: Comment frontend coverage on PR
         if: always() && github.event_name == 'pull_request'
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           working-directory: ./apps/Client.Web
 
+      - name: Run backend tests with coverage
+        id: be-tests
+        run: pnpm be:test:coverage --run
+        timeout-minutes: 5
+        continue-on-error: true
+
+      - name: Generate backend coverage badge
+        if: always() && github.event_name == 'pull_request'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./apps/Server.API/coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+      - name: backend coverage summary
+        if: always() && github.event_name == 'pull_request'
+        uses: romeovs/lcov-reporter-action@v0.4.0
+        with:
+          lcov-file: ./apps/Server.API/coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          delete-old-comments: true
+
+      - name: Upload backend coverage reports
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: coverage-reports
+          path: |
+            apps/Server.API/coverage/
+          retention-days: 30
+
+      - name: Comment backend coverage on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          working-directory: ./apps/Server.API
+
       - name: Check test result
-        if: steps.tests.outcome == 'failure'
+        if:
+          steps.fe-tests.outcome == 'failure' || steps.be-tests.outcome ==
+          'failure'
         run: exit 1

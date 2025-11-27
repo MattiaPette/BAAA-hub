@@ -8,6 +8,7 @@
     "lint": "eslint . --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "build": "pnpm --filter @baaa-hub/shared-types build && pnpm --filter frontend build && pnpm --filter backend build",
     "fe:lint": "pnpm --filter frontend lint",
     "fe:format": "pnpm --filter frontend format",
     "fe:format:check": "pnpm --filter frontend format --check",

@@ -40,8 +40,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run ESLint
-        run: pnpm fe:lint
+      - name: Build shared-types package
+        run: pnpm --filter @baaa-hub/shared-types build
 
-      - name: Run Prettier check
-        run: pnpm fe:format:check
+      - name: Run Frontend ESLint
+        run: pnpm --filter frontend lint
+
+      - name: Run Frontend Prettier check
+        run: pnpm --filter frontend format:check
+
+      - name: Run Backend ESLint
+        run: pnpm --filter backend lint
+
+      - name: Run Backend Prettier check
+        run: pnpm --filter backend format:check

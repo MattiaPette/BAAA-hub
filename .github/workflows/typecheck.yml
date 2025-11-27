@@ -38,5 +38,8 @@ jobs:
       - name: Build shared-types package
         run: pnpm --filter @baaa-hub/shared-types build
 
-      - name: Run TypeScript type check
+      - name: Run Frontend TypeScript type check
         run: pnpm fe:type-check
+
+      - name: Run Backend TypeScript type check
+        run: pnpm --filter backend type-check

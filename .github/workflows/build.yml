@@ -40,6 +40,9 @@ jobs:
       - name: Build application
         run: pnpm fe:build
 
+      - name: Build backend
+        run: pnpm --filter backend build
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v5
         with:
