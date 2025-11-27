@@ -9,6 +9,7 @@ export enum SportType {
   TRAIL_RUNNING = 'TRAIL_RUNNING',
   HIKING = 'HIKING',
   WALKING = 'WALKING',
+  GYM = 'GYM',
   CROSS_FIT = 'CROSS_FIT',
   OTHER = 'OTHER',
 }

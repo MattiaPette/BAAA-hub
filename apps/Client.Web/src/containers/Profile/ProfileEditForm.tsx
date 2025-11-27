@@ -31,6 +31,7 @@ const sportTypeLabels: Record<SportType, string> = {
   [SportType.TRAIL_RUNNING]: 'Trail Running',
   [SportType.HIKING]: 'Hiking',
   [SportType.WALKING]: 'Walking',
+  [SportType.GYM]: 'Gym',
   [SportType.CROSS_FIT]: 'CrossFit',
   [SportType.OTHER]: 'Other',
 };

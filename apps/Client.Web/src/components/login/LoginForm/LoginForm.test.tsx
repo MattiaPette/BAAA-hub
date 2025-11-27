@@ -130,7 +130,7 @@ describe('LoginForm', () => {
   });
 
   it('should render signup mode when isSignupMode is true', () => {
-    render(<LoginForm isSignupMode={true} onToggleMode={vi.fn()} />);
+    render(<LoginForm isSignupMode onToggleMode={vi.fn()} />);
 
     expect(
       screen.getByRole('heading', { name: /sign up/i }),
@@ -143,7 +143,7 @@ describe('LoginForm', () => {
 
   it('should call onSignup when form is submitted in signup mode', async () => {
     const mockOnSignup = vi.fn();
-    render(<LoginForm isSignupMode={true} onSignup={mockOnSignup} />);
+    render(<LoginForm isSignupMode onSignup={mockOnSignup} />);
 
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
