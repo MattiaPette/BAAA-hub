@@ -10,10 +10,12 @@ import {
   Avatar,
   Stack,
   Link,
+  Zoom,
 } from '@mui/material';
 import { styled, alpha, keyframes } from '@mui/material/styles';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
+import baaaLogo from '../../../../assets/baaa.png';
 import { SidebarProps, SidebarRoute, RoutePermission } from './Sidebar.model';
 import { SidebarItem } from '../SidebarItem/SidebarItem';
 import { InstallApp } from '../../../prompts/InstallApp/InstallApp';
@@ -43,6 +45,13 @@ const slideIn = keyframes`
     transform: translateX(0);
     opacity: 1;
   }
+`;
+
+// Logo glow animation
+const glowAnimation = keyframes`
+  0% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)); transform: scale(1.05); }
+  100% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1)); transform: scale(1); }
 `;
 
 /**
@@ -112,25 +121,54 @@ const AnimatedContent = styled(Box)(() => ({
  * Styled header with gradient
  */
 const SidebarHeader = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(3, 2, 2),
+  padding: theme.spacing(4, 2, 3),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
   position: 'relative',
+  userSelect: 'none',
+  cursor: 'default',
+
+  '& .logo-container': {
+    position: 'relative',
+    marginBottom: theme.spacing(2),
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '120%',
+      height: '120%',
+      background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.4)} 0%, transparent 70%)`,
+      zIndex: -1,
+      animation: `${glowAnimation} 3s infinite ease-in-out`,
+    },
+  },
 
   '& .header-title': {
-    fontWeight: 700,
-    fontSize: '1.25rem',
-    background: `linear-gradient(135deg, 
-      ${theme.palette.primary.main} 0%,
-      ${theme.palette.secondary.main} 100%)`,
+    fontWeight: 800,
+    fontSize: '1.5rem',
+    background:
+      theme.palette.mode === 'dark'
+        ? `linear-gradient(135deg, ${theme.palette.common.white} 0%, ${theme.palette.primary.light} 100%)`
+        : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    letterSpacing: '0.5px',
+    letterSpacing: '1px',
+    textTransform: 'uppercase',
+    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
   },
 
   '& .header-subtitle': {
-    fontSize: '0.75rem',
-    color: alpha(theme.palette.text.secondary, 0.7),
+    fontSize: '0.7rem',
+    color: theme.palette.text.secondary,
     marginTop: theme.spacing(0.5),
+    letterSpacing: '2px',
+    textTransform: 'uppercase',
+    fontWeight: 500,
   },
 }));
 
@@ -283,7 +321,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <AnimatedContent>
         {/* Animated Header */}
         <SidebarHeader>
-          <Typography className="header-title">Community Hub</Typography>
+          <Box className="logo-container">
+            <Box
+              component="img"
+              src={baaaLogo}
+              alt="BAAA Hub"
+              sx={{
+                width: 120,
+                height: 120,
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
+                transition: 'transform 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.1) rotate(5deg)',
+                },
+              }}
+            />
+          </Box>
+          <Typography className="header-title">BAAA Hub</Typography>
           <Typography className="header-subtitle">
             Boss Anna Athlete Army
           </Typography>
@@ -298,7 +353,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             px: 1,
           }}
         >
-          {visibleRoutes.map(route => {
+          {visibleRoutes.map((route, index) => {
             if (route.isDivider) {
               return (
                 <Divider
@@ -312,15 +367,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
             }
 
             return (
-              <SidebarItem
+              <Zoom
+                in={open}
+                style={{ transitionDelay: `${index * 50}ms` }}
                 key={route.id || route.path}
-                path={route.path}
-                selected={route.path === currentPath}
-                open // Always show full width in overlay mode
-                icon={route.icon}
-                text={route.label}
-                onClick={() => handleNavigate(route)}
-              />
+              >
+                <Box>
+                  <SidebarItem
+                    path={route.path}
+                    selected={route.path === currentPath}
+                    open // Always show full width in overlay mode
+                    icon={route.icon}
+                    text={route.label}
+                    onClick={() => handleNavigate(route)}
+                  />
+                </Box>
+              </Zoom>
             );
           })}
 
@@ -369,7 +431,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <Divider
                 orientation="vertical"
                 flexItem
-                sx={{ height: 12, my: 'auto' }}
+                sx={{
+                  height: 12,
+                  my: 'auto',
+                  borderColor: 'divider',
+                }}
               />
               <Link
                 href="https://github.com/mattiapette/baaa-hub"
