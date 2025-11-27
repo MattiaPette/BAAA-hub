@@ -21,10 +21,6 @@ msgstr "A server error has occurred. Please try again later"
 msgid "About"
 msgstr "About"
 
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:154
-#~ msgid "Above Divider"
-#~ msgstr "Above Divider"
-
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:20
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
@@ -33,18 +29,9 @@ msgstr "Access denied. Incorrect username and/or password"
 msgid "Activity Statistics"
 msgstr "Activity Statistics"
 
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:267
-#~ msgid "Add"
-#~ msgstr "Add"
-
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:102
 msgid "Additional interaction is required"
 msgstr "Additional interaction is required"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:223
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:227
-#~ msgid "Age"
-#~ msgstr "Age"
 
 #: src/components/login/LoginForm/LoginForm.tsx:258
 msgid "Already have an account?"
@@ -62,51 +49,9 @@ msgstr "App is already installed"
 msgid "Authentication required. Please try logging in again."
 msgstr "Authentication required. Please try logging in again."
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:84
-#~ msgid "Autocomplete"
-#~ msgstr "Autocomplete"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:136
-#~ msgid "Basic Chip"
-#~ msgstr "Basic Chip"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:156
-#~ msgid "Below Divider"
-#~ msgstr "Below Divider"
-
-#: src/containers/Books/Books.tsx:50
-#: src/containers/Books/Books.tsx:265
-#: src/containers/MainContainer/MainContainer.tsx:34
-#~ msgid "Books"
-#~ msgstr "Books"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:102
-#~ msgid "Button"
-#~ msgstr "Button"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:117
-#~ msgid "Button Group"
-#~ msgstr "Button Group"
-
 #: src/containers/Profile/ProfileEditForm.tsx:416
 msgid "Cancel"
 msgstr "Cancel"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:309
-#~ msgid "Center"
-#~ msgstr "Center"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:157
-#~ msgid "CENTER"
-#~ msgstr "CENTER"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:132
-#~ msgid "Checkbox"
-#~ msgstr "Checkbox"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:141
-#~ msgid "Checkbox Label"
-#~ msgstr "Checkbox Label"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:249
 msgid "Choose a unique nickname"
@@ -115,10 +60,6 @@ msgstr "Choose a unique nickname"
 #: src/containers/Settings/Settings.tsx:114
 msgid "Choose your preferred language"
 msgstr "Choose your preferred language"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:137
-#~ msgid "Clickable"
-#~ msgstr "Clickable"
 
 #: src/containers/Profile/Profile.tsx:462
 msgid "Coming soon..."
@@ -132,29 +73,9 @@ msgstr "Complete Setup"
 msgid "Complete Your Profile"
 msgstr "Complete Your Profile"
 
-#: src/containers/MainContainer/MainContainer.tsx:41
-#~ msgid "Components Demo"
-#~ msgstr "Components Demo"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:48
-#~ msgid "Components Demo - Data Display"
-#~ msgstr "Components Demo - Data Display"
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:41
-#~ msgid "Components Demo - Feedbacks"
-#~ msgstr "Components Demo - Feedbacks"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:57
-#~ msgid "Components Demo - Inputs"
-#~ msgstr "Components Demo - Inputs"
-
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:100
 msgid "Consent is required"
 msgstr "Consent is required"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:105
-#~ msgid "Contained"
-#~ msgstr "Contained"
 
 #: src/components/login/LoginForm/LoginForm.tsx:245
 msgid "Create Account"
@@ -185,14 +106,6 @@ msgstr "Dark Mode"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/containers/ComponentsDemo/ComponentsDemo.tsx:75
-#~ msgid "Data Display"
-#~ msgstr "Data Display"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:72
-#~ msgid "Data Display Components"
-#~ msgstr "Data Display Components"
-
 #: src/containers/Profile/Profile.tsx:304
 #: src/containers/Profile/ProfileEditForm.tsx:235
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:301
@@ -203,22 +116,6 @@ msgstr "Date of Birth"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:312
 msgid "Date of birth is required"
 msgstr "Date of birth is required"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:138
-#~ msgid "Deletable"
-#~ msgstr "Deletable"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:264
-#~ msgid "Delete"
-#~ msgstr "Delete"
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:157
-#~ msgid "Dialog Title"
-#~ msgstr "Dialog Title"
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:164
-#~ msgid "Disagree"
-#~ msgstr "Disagree"
 
 #: src/components/login/LoginForm/LoginForm.tsx:281
 msgid "Don't have an account?"
@@ -262,25 +159,9 @@ msgstr "Enter your last name"
 msgid "Failed to create profile. Please try again."
 msgstr "Failed to create profile. Please try again."
 
-#: src/containers/Books/Books.tsx:240
-#~ msgid "Failed to load books"
-#~ msgstr "Failed to load books"
-
 #: src/containers/Profile/Profile.tsx:117
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:85
-#~ msgid "Feedback Components"
-#~ msgstr "Feedback Components"
-
-#: src/containers/ComponentsDemo/ComponentsDemo.tsx:76
-#~ msgid "Feedbacks"
-#~ msgstr "Feedbacks"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:282
-#~ msgid "Filled"
-#~ msgstr "Filled"
 
 #: src/containers/Profile/ProfileEditForm.tsx:196
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:208
@@ -296,10 +177,6 @@ msgstr "First name is required"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:219
 msgid "First name must be 50 characters or less"
 msgstr "First name must be 50 characters or less"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:151
-#~ msgid "Floating Action Button"
-#~ msgstr "Floating Action Button"
 
 #: src/containers/Profile/ProfileEditForm.tsx:99
 msgid "Followers"
@@ -322,14 +199,6 @@ msgstr "Hiking"
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:24
 msgid "Incorrect username or password"
 msgstr "Incorrect username or password"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:65
-#~ msgid "Input Components"
-#~ msgstr "Input Components"
-
-#: src/containers/ComponentsDemo/ComponentsDemo.tsx:74
-#~ msgid "Inputs"
-#~ msgstr "Inputs"
 
 #: src/containers/Profile/ProfileEditForm.tsx:355
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:415
@@ -414,10 +283,6 @@ msgstr "Last name is required"
 msgid "Last name must be 50 characters or less"
 msgstr "Last name must be 50 characters or less"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:306
-#~ msgid "Left"
-#~ msgstr "Left"
-
 #: src/containers/Settings/Settings.tsx:86
 msgid "Light Mode"
 msgstr "Light Mode"
@@ -452,10 +317,6 @@ msgstr "Member"
 msgid "Multi-factor authentication is required"
 msgstr "Multi-factor authentication is required"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:162
-#~ msgid "Navigate"
-#~ msgstr "Navigate"
-
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:90
 msgid "Network error. Check your internet connection"
 msgstr "Network error. Check your internet connection"
@@ -484,21 +345,9 @@ msgstr "No sports selected yet."
 msgid "Oh no! Something went wrong..."
 msgstr "Oh no! Something went wrong..."
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:120
-#~ msgid "One"
-#~ msgstr "One"
-
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:268
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Only letters, numbers, and underscores allowed"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:182
-#~ msgid "Option 1"
-#~ msgstr "Option 1"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:187
-#~ msgid "Option 2"
-#~ msgstr "Option 2"
 
 #: src/components/login/LoginForm/LoginForm.tsx:309
 msgid "or"
@@ -508,11 +357,6 @@ msgstr "or"
 #: src/helpers/sportTypes/sportTypeLabels.ts:39
 msgid "Other"
 msgstr "Other"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:106
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:283
-#~ msgid "Outlined"
-#~ msgstr "Outlined"
 
 #: src/components/login/LoginForm/LoginForm.tsx:205
 msgid "Password"
@@ -525,14 +369,6 @@ msgstr "Password is required"
 #: src/components/login/LoginForm/LoginForm.tsx:222
 msgid "Password must be at least 8 characters"
 msgstr "Password must be at least 8 characters"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:194
-#~ msgid "Photos"
-#~ msgstr "Photos"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:139
-#~ msgid "Primary"
-#~ msgstr "Primary"
 
 #. placeholder {0}: getLabel(value)
 #: src/containers/Profile/ProfileEditForm.tsx:109
@@ -565,25 +401,9 @@ msgstr "Profile updated successfully!"
 msgid "Public"
 msgstr "Public"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:173
-#~ msgid "Radio Group"
-#~ msgstr "Radio Group"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:198
-#~ msgid "Rating"
-#~ msgstr "Rating"
-
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:108
 msgid "Response type not supported"
 msgstr "Response type not supported"
-
-#: src/containers/Books/Books.tsx:246
-#~ msgid "Retry"
-#~ msgstr "Retry"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:312
-#~ msgid "Right"
-#~ msgstr "Right"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:10
 #: src/helpers/sportTypes/sportTypeLabels.ts:30
@@ -598,10 +418,6 @@ msgstr "Save Changes"
 msgid "Saving..."
 msgstr "Saving..."
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:220
-#~ msgid "Select"
-#~ msgstr "Select"
-
 #: src/containers/Profile/ProfileEditForm.tsx:276
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:336
 msgid "Select at least one sport type"
@@ -611,10 +427,6 @@ msgstr "Select at least one sport type"
 #: src/containers/Settings/Settings.tsx:106
 msgid "Select Language"
 msgstr "Select Language"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:91
-#~ msgid "Select option"
-#~ msgstr "Select option"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:373
 msgid "Select the sports you participate in"
@@ -635,10 +447,6 @@ msgstr "Settings"
 msgid "Sign Up"
 msgstr "Sign Up"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:243
-#~ msgid "Slider"
-#~ msgstr "Slider"
-
 #: src/containers/Profile/Profile.tsx:346
 msgid "Social"
 msgstr "Social"
@@ -658,35 +466,19 @@ msgstr "Sport Types"
 msgid "Sports & Activities"
 msgstr "Sports & Activities"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:281
-#~ msgid "Standard"
-#~ msgstr "Standard"
-
 #: src/containers/Profile/ProfileEditForm.tsx:328
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:385
 msgid "Strava Profile"
 msgstr "Strava Profile"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:140
-#~ msgid "Success"
-#~ msgstr "Success"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:12
 #: src/helpers/sportTypes/sportTypeLabels.ts:32
 msgid "Swimming"
 msgstr "Swimming"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:259
-#~ msgid "Switch"
-#~ msgstr "Switch"
-
 #: src/containers/Settings/Settings.tsx:89
 msgid "Switch between light and dark theme"
 msgstr "Switch between light and dark theme"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:268
-#~ msgid "Switch Label"
-#~ msgstr "Switch Label"
 
 #: src/containers/Settings/Settings.tsx:49
 msgid "Switched to dark theme"
@@ -695,18 +487,6 @@ msgstr "Switched to dark theme"
 #: src/containers/Settings/Settings.tsx:48
 msgid "Switched to light theme"
 msgstr "Switched to light theme"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:230
-#~ msgid "Ten"
-#~ msgstr "Ten"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:107
-#~ msgid "Text"
-#~ msgstr "Text"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:278
-#~ msgid "Text Field"
-#~ msgstr "Text Field"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:78
 msgid "The password cannot contain personal information"
@@ -732,29 +512,9 @@ msgstr "Theme"
 msgid "There is already a user with this email address"
 msgstr "There is already a user with this email address"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:232
-#~ msgid "Thirty"
-#~ msgstr "Thirty"
-
 #: src/containers/ProfileSetup/ProfileSetup.tsx:84
 msgid "This email is already registered."
 msgstr "This email is already registered."
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:160
-#~ msgid "This is a sample dialog content. You can put any content here."
-#~ msgstr "This is a sample dialog content. You can put any content here."
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:110
-#~ msgid "This is a success alert"
-#~ msgstr "This is a success alert"
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:107
-#~ msgid "This is an error alert"
-#~ msgstr "This is an error alert"
-
-#: src/containers/ComponentsDemo/FeedbacksDemo/FeedbacksDemo.tsx:109
-#~ msgid "This is an info alert"
-#~ msgstr "This is an info alert"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:80
 msgid "This nickname is already taken. Please choose another."
@@ -771,14 +531,6 @@ msgstr "This username is already in use"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:254
 msgid "This will be your public username"
 msgstr "This will be your public username"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:122
-#~ msgid "Three"
-#~ msgstr "Three"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:293
-#~ msgid "Toggle Button"
-#~ msgstr "Toggle Button"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:86
 msgid "Too many attempts. Please try again in a few minutes"
@@ -802,14 +554,6 @@ msgstr "Triathlon"
 msgid "Try alternative login"
 msgstr "Try alternative login"
 
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:231
-#~ msgid "Twenty"
-#~ msgstr "Twenty"
-
-#: src/containers/ComponentsDemo/InputsDemo/InputsDemo.tsx:121
-#~ msgid "Two"
-#~ msgstr "Two"
-
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:106
 msgid "Unauthorized client"
 msgstr "Unauthorized client"
@@ -830,31 +574,10 @@ msgstr "User installed the app"
 msgid "User rejected app installation"
 msgstr "User rejected app installation"
 
-#: src/components/login/LoginForm/LoginForm.tsx:146
-#: src/components/login/LoginForm/LoginForm.tsx:147
-#~ msgid "Username"
-#~ msgstr "Username"
-
-#: src/components/login/LoginForm/LoginForm.tsx:161
-#~ msgid "Username is required"
-#~ msgstr "Username is required"
-
 #: src/helpers/sportTypes/sportTypeLabels.ts:16
 #: src/helpers/sportTypes/sportTypeLabels.ts:36
 msgid "Walking"
 msgstr "Walking"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:141
-#~ msgid "With Icon"
-#~ msgstr "With Icon"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:158
-#~ msgid "With Text"
-#~ msgstr "With Text"
-
-#: src/containers/ComponentsDemo/DataDisplayDemo/DataDisplayDemo.tsx:202
-#~ msgid "Work"
-#~ msgstr "Work"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:88
 msgid "You already have a profile. Redirecting to dashboard..."
