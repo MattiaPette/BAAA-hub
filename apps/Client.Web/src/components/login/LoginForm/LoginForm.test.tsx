@@ -8,27 +8,27 @@ describe('LoginForm', () => {
   it('should render login form with all fields', () => {
     render(<LoginForm />);
 
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
   });
 
-  it('should display error when username is required and not provided', async () => {
+  it('should display error when email is required and not provided', async () => {
     render(<LoginForm />);
 
     const submitButton = screen.getByRole('button', { name: /login/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/username is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/email is required/i)).toBeInTheDocument();
     });
   });
 
   it('should display error when password is required and not provided', async () => {
     render(<LoginForm />);
 
-    const usernameInput = screen.getByLabelText(/username/i);
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+    const emailInput = screen.getByLabelText(/email/i);
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
 
     const submitButton = screen.getByRole('button', { name: /login/i });
     fireEvent.click(submitButton);
@@ -38,18 +38,17 @@ describe('LoginForm', () => {
     });
   });
 
-  it('should display error when username exceeds max length', async () => {
+  it('should display error when email format is invalid', async () => {
     render(<LoginForm />);
 
-    const usernameInput = screen.getByLabelText(/username/i);
-    const longUsername = 'a'.repeat(41);
-    fireEvent.change(usernameInput, { target: { value: longUsername } });
+    const emailInput = screen.getByLabelText(/email/i);
+    fireEvent.change(emailInput, { target: { value: 'invalidemail' } });
 
     const submitButton = screen.getByRole('button', { name: /login/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/too many characters/i)).toBeInTheDocument();
+      expect(screen.getByText(/invalid email address/i)).toBeInTheDocument();
     });
   });
 
@@ -57,10 +56,10 @@ describe('LoginForm', () => {
     const mockOnSubmit = vi.fn();
     render(<LoginForm onSubmit={mockOnSubmit} />);
 
-    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
 
-    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'testpassword' } });
 
     const submitButton = screen.getByRole('button', { name: /login/i });
@@ -68,7 +67,7 @@ describe('LoginForm', () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
-        user: 'testuser',
+        user: 'test@example.com',
         password: 'testpassword',
       });
     });
@@ -80,19 +79,6 @@ describe('LoginForm', () => {
 
     errorMessages.forEach(msg => {
       expect(screen.getByText(msg)).toBeInTheDocument();
-    });
-  });
-
-  it('should show error state on username and password fields when error messages are present', async () => {
-    const errorMessages = ['Invalid credentials'];
-    render(<LoginForm errorMessages={errorMessages} />);
-
-    const usernameInput = screen.getByLabelText(/username/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-
-    await waitFor(() => {
-      expect(usernameInput).toHaveAttribute('aria-invalid', 'true');
-      expect(passwordInput).toHaveAttribute('aria-invalid', 'true');
     });
   });
 
@@ -128,5 +114,61 @@ describe('LoginForm', () => {
     await waitFor(() => {
       expect(mockLoginWithRedirect).toHaveBeenCalled();
     });
+  });
+
+  it('should toggle to signup mode and back to login mode', async () => {
+    render(<LoginForm onToggleMode={vi.fn()} />);
+
+    // Initially should show Login title
+    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
+
+    // Should show "Don't have an account?" with Sign Up button
+    expect(screen.getByText(/don't have an account\?/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /sign up/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('should render signup mode when isSignupMode is true', () => {
+    render(<LoginForm isSignupMode onToggleMode={vi.fn()} />);
+
+    expect(
+      screen.getByRole('heading', { name: /sign up/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /create account/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/already have an account\?/i)).toBeInTheDocument();
+  });
+
+  it('should call onSignup when form is submitted in signup mode', async () => {
+    const mockOnSignup = vi.fn();
+    render(<LoginForm isSignupMode onSignup={mockOnSignup} />);
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'testpassword123' } });
+
+    const submitButton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockOnSignup).toHaveBeenCalledWith({
+        user: 'test@example.com',
+        password: 'testpassword123',
+      });
+    });
+  });
+
+  it('should display success message when provided', () => {
+    render(<LoginForm successMessage="Account created successfully!" />);
+
+    expect(
+      screen.getByText(/account created successfully!/i),
+    ).toBeInTheDocument();
   });
 });

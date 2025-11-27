@@ -14,6 +14,10 @@ interface Config {
   cors: {
     origin: string;
   };
+  auth0: {
+    domain: string;
+    audience: string;
+  };
 }
 
 const config: Config = {
@@ -25,6 +29,10 @@ const config: Config = {
   },
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:4000',
+  },
+  auth0: {
+    domain: process.env.AUTH0_DOMAIN || '',
+    audience: process.env.AUTH0_AUDIENCE || '',
   },
 };
 

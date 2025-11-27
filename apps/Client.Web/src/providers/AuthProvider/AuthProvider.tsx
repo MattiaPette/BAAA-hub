@@ -240,6 +240,48 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   );
 
   /**
+   * Signup — register a new user using Auth0 database connection.
+   *
+   * Creates a new user account using Auth0's signup endpoint. After successful
+   * registration, the user will need to log in with their credentials.
+   * The function triggers asynchronous work via Auth0 callbacks and will
+   * call the optional callbacks based on success or failure.
+   *
+   * @param {{ email: string; password: string; onSuccessCallback?: () => void; onErrorCallback?: (errorCode?: AuthErrorCode) => void }} params -
+   *   Object containing signup credentials and optional callbacks.
+   * @param {string} params.email - The user's email address.
+   * @param {string} params.password - The user's password.
+   * @param {() => void} [params.onSuccessCallback] -
+   *   Callback invoked after successful signup.
+   * @param {(errorCode?: AuthErrorCode) => void} [params.onErrorCallback] -
+   *   Callback invoked with an `AuthErrorCode` in case of failure.
+   * @returns {void}
+   * @example
+   * // Example usage
+   * signup({ email: 'alice@example.com', password: 'secret', onSuccessCallback: () => { ... }, onErrorCallback: code => { console.log(code); } });
+   */
+  const signup = useCallback<AuthContextValue['signup']>(
+    ({ email, password, onSuccessCallback, onErrorCallback }) => {
+      auth.signup(
+        {
+          email,
+          password,
+          connection: userDatabaseConnection,
+        },
+        err => {
+          if (err) {
+            console.error('Errore nella registrazione:', err.description);
+            onErrorCallback?.(err.code as AuthErrorCode);
+          } else {
+            onSuccessCallback?.();
+          }
+        },
+      );
+    },
+    [auth, userDatabaseConnection],
+  );
+
+  /**
    * Login with redirect — initiates authentication via the Auth0 hosted login page.
    *
    * Redirects the user to the Auth0 Universal Login page for authentication.
@@ -410,6 +452,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       token,
       userPermissions,
       login,
+      signup,
       loginWithRedirect,
       logout,
       isAuthenticated,
@@ -424,6 +467,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       loading,
       localStorageAvailable,
       login,
+      signup,
       loginWithRedirect,
       logout,
       token,
