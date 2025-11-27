@@ -38,7 +38,7 @@ describe('ProfileSetup', () => {
     // Mock auth provider
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
-        accessToken: 'test-access-token',
+        idToken: 'test-id-token',
         idTokenPayload: {
           email: 'test@example.com',
           name: 'John Doe',
@@ -152,7 +152,7 @@ describe('ProfileSetup', () => {
   it('should render with partial token (only email)', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
-        accessToken: 'test-access-token',
+        idToken: 'test-id-token',
         idTokenPayload: {
           email: 'only@email.com',
         },

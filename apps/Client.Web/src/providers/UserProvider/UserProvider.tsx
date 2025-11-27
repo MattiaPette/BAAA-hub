@@ -45,7 +45,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
 
   const refreshUser = useCallback(async () => {
-    if (!token?.accessToken || !isAuthenticated) {
+    if (!token?.idToken || !isAuthenticated) {
       setUser(null);
       setHasProfile(false);
       setIsLoading(false);
@@ -56,7 +56,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     setError(null);
 
     try {
-      const response = await checkProfileStatus(token.accessToken);
+      const response = await checkProfileStatus(token.idToken);
       setHasProfile(response.hasProfile);
       setUser(response.user || null);
     } catch (err) {

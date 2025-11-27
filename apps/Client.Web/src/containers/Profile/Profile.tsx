@@ -94,11 +94,11 @@ export const Profile: FC = () => {
   // Fetch user profile
   useEffect(() => {
     const fetchUser = async () => {
-      if (!token?.accessToken) return;
+      if (!token?.idToken) return;
 
       setIsLoading(true);
       try {
-        const userData = await getCurrentUser(token.accessToken);
+        const userData = await getCurrentUser(token.idToken);
         setUser(userData);
       } catch (err) {
         console.error('Failed to fetch user:', err);
@@ -116,11 +116,11 @@ export const Profile: FC = () => {
 
   const handleUpdate = useCallback(
     async (data: Readonly<ProfileEditFormInput>) => {
-      if (!token?.accessToken || !user) return;
+      if (!token?.idToken || !user) return;
 
       setIsSubmitting(true);
       try {
-        const updatedUser = await updateUserProfile(token.accessToken, {
+        const updatedUser = await updateUserProfile(token.idToken, {
           name: data.name.trim(),
           surname: data.surname.trim(),
           dateOfBirth: data.dateOfBirth,

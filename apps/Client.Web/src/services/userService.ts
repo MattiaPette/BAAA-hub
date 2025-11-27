@@ -13,11 +13,11 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 /**
  * Create axios instance with default configuration
  */
-const createApiClient = (accessToken?: string) => {
-  const headers: Readonly<Record<string, string>> = accessToken
+const createApiClient = (idToken?: string) => {
+  const headers: Readonly<Record<string, string>> = idToken
     ? {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${idToken}`,
       }
     : {
         'Content-Type': 'application/json',
@@ -33,9 +33,9 @@ const createApiClient = (accessToken?: string) => {
  * Check if user has completed profile setup
  */
 export const checkProfileStatus = async (
-  accessToken: string,
+  idToken: string,
 ): Promise<UserProfileStatusResponse> => {
-  const client = createApiClient(accessToken);
+  const client = createApiClient(idToken);
   const response = await client.get<UserProfileStatusResponse>(
     '/api/users/profile/status',
   );
@@ -46,10 +46,10 @@ export const checkProfileStatus = async (
  * Create a new user profile
  */
 export const createUserProfile = async (
-  accessToken: string,
+  idToken: string,
   data: Readonly<CreateUserRequest>,
 ): Promise<User> => {
-  const client = createApiClient(accessToken);
+  const client = createApiClient(idToken);
   const response = await client.post<UserResponse>('/api/users', data);
   return response.data.user;
 };
@@ -57,8 +57,8 @@ export const createUserProfile = async (
 /**
  * Get the current user's profile
  */
-export const getCurrentUser = async (accessToken: string): Promise<User> => {
-  const client = createApiClient(accessToken);
+export const getCurrentUser = async (idToken: string): Promise<User> => {
+  const client = createApiClient(idToken);
   const response = await client.get<UserResponse>('/api/users/me');
   return response.data.user;
 };
@@ -67,10 +67,10 @@ export const getCurrentUser = async (accessToken: string): Promise<User> => {
  * Update the current user's profile
  */
 export const updateUserProfile = async (
-  accessToken: string,
+  idToken: string,
   data: Readonly<UpdateUserRequest>,
 ): Promise<User> => {
-  const client = createApiClient(accessToken);
+  const client = createApiClient(idToken);
   const response = await client.patch<UserResponse>('/api/users/me', data);
   return response.data.user;
 };

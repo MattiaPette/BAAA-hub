@@ -145,7 +145,7 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
 
-    expect(mockLocalStorage.getItem).toHaveBeenCalledWith('access_token');
+    expect(mockLocalStorage.getItem).toHaveBeenCalledWith('auth_token');
   });
 
   it('authenticate success saves token and marks authenticated', async () => {
@@ -293,7 +293,7 @@ describe('AuthProvider', () => {
     );
 
     await waitFor(() =>
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('access_token'),
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('auth_token'),
     );
   });
 
@@ -682,7 +682,7 @@ describe('AuthProvider', () => {
 
     await waitFor(() => expect(checkSessionMock).toHaveBeenCalled());
     await waitFor(() =>
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('access_token'),
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('auth_token'),
     );
 
     vi.useRealTimers();
@@ -721,7 +721,7 @@ describe('AuthProvider', () => {
     await vi.advanceTimersByTimeAsync(30 * 1000 + 100);
 
     await waitFor(() =>
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('access_token'),
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('auth_token'),
     );
 
     vi.useRealTimers();

@@ -22,7 +22,7 @@ export const ProfileSetup: FC = () => {
 
   const handleSubmit = useCallback(
     async (data: Readonly<ProfileSetupFormInput>) => {
-      if (!token?.accessToken) {
+      if (!token?.idToken) {
         setErrorMessage(
           t`Authentication required. Please try logging in again.`,
         );
@@ -45,7 +45,7 @@ export const ProfileSetup: FC = () => {
           instagramLink: data.instagramLink?.trim() || undefined,
         };
 
-        await createUserProfile(token.accessToken, createData);
+        await createUserProfile(token.idToken || '', createData);
 
         enqueueSnackbar(t`Profile created successfully!`, {
           variant: 'success',

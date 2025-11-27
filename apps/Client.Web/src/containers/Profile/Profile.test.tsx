@@ -51,7 +51,7 @@ describe('Profile', () => {
     // Mock auth provider
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
-        accessToken: 'test-access-token',
+        idToken: 'test-id-token',
         idTokenPayload: { email: 'test@example.com' },
       },
       isAuthenticated: true,

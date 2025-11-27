@@ -42,7 +42,7 @@ describe('UserProvider', () => {
     beforeEach(() => {
       vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
         token: {
-          accessToken: 'test-access-token',
+          idToken: 'test-id-token',
           idTokenPayload: { email: 'test@example.com' },
         },
         isAuthenticated: true,
@@ -72,7 +72,7 @@ describe('UserProvider', () => {
       });
 
       expect(userService.checkProfileStatus).toHaveBeenCalledWith(
-        'test-access-token',
+        'test-id-token',
       );
       expect(result.current.hasProfile).toBe(true);
       expect(result.current.user).toEqual(mockUser);
@@ -251,7 +251,7 @@ describe('UserProvider', () => {
       const authMock = vi.spyOn(AuthProviderModule, 'useAuth');
       authMock.mockReturnValue({
         token: {
-          accessToken: 'test-access-token',
+          idToken: 'test-id-token',
           idTokenPayload: { email: 'test@example.com' },
         },
         isAuthenticated: true,
@@ -320,7 +320,7 @@ describe('UserProvider', () => {
     beforeEach(() => {
       vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
         token: {
-          accessToken: 'test-access-token',
+          idToken: 'test-id-token',
           idTokenPayload: { email: 'test@example.com' },
         },
         isAuthenticated: true,

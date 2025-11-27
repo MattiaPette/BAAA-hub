@@ -17,7 +17,7 @@ import {
   AuthToken,
 } from './AuthProvider.model';
 
-const ACCESS_TOKEN_FIELD = 'access_token';
+const AUTH_TOKEN_FIELD = 'auth_token';
 const REFRESH_TOKEN_INTERVAL = 60 * 60 * 1000;
 const CHECK_TOKEN_EXPIRATION_INTERVAL = 30 * 1000;
 
@@ -109,7 +109,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
 
   const [token, setToken] = useState<AuthToken | null>(
     localStorageAvailable
-      ? JSON.parse(window.localStorage.getItem(ACCESS_TOKEN_FIELD) || 'null')
+      ? JSON.parse(window.localStorage.getItem(AUTH_TOKEN_FIELD) || 'null')
       : null,
   );
 
@@ -121,29 +121,29 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   }, [token]);
 
   /**
-   * Save the parsed access token and update local authentication state.
+   * Save the parsed auth token and update local authentication state.
    *
    * Persists the provided Auth0 decoded hash to `window.localStorage` when
    * available, updates React state (`token`, `userPermissions`) and clears
    * the loading flag. This function itself is synchronous.
    *
    * @function
-   * @name saveAccessToken
-   * @type {AuthContextValue['saveAccessToken']}
+   * @name saveAuthToken
+   * @type {Function}
    *
-   * @param {Readonly<Auth0DecodedHash>} accessToken - The decoded Auth0 hash
+   * @param {Readonly<Auth0DecodedHash>} authToken - The decoded Auth0 hash
    *   object (typically returned by `auth.parseHash()` / `checkSession()`).
    * @returns {void}
    *
    * @example
    * // Called after a successful parse/validation
-   * saveAccessToken(authResult);
+   * saveAuthToken(authResult);
    */
-  const saveAccessToken = useCallback(
+  const saveAuthToken = useCallback(
     (accessToken: Readonly<Auth0DecodedHash>) => {
       if (localStorageAvailable) {
         window.localStorage.setItem(
-          ACCESS_TOKEN_FIELD,
+          AUTH_TOKEN_FIELD,
           JSON.stringify(accessToken),
         );
 
@@ -159,7 +159,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
    * Parse and validate authentication tokens found in the URL hash.
    *
    * Parses the URL fragment produced by Auth0 after redirect, validates the
-   * id token and, on success, saves the token via `saveAccessToken`. On
+   * id token and, on success, saves the token via `saveAuthToken`. On
    * failure it calls the optional `onErrorCallback` with an `AuthErrorCode`.
    * This function triggers asynchronous work via the auth0 callbacks.
    *
@@ -190,14 +190,14 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
                 setLoading(false);
                 onErrorCallback?.(validationErr.error as AuthErrorCode);
               } else {
-                saveAccessToken(authResult);
+                saveAuthToken(authResult);
               }
             },
           );
         }
       });
     },
-    [auth, saveAccessToken],
+    [auth, saveAuthToken],
   );
 
   /**
@@ -327,7 +327,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     // auth.logout({ returnTo: window.location.origin });
 
     if (localStorageAvailable) {
-      window.localStorage.removeItem(ACCESS_TOKEN_FIELD);
+      window.localStorage.removeItem(AUTH_TOKEN_FIELD);
       setToken(null);
     }
 
@@ -365,21 +365,21 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
    *
    * Starts an interval (every REFRESH_TOKEN_INTERVAL) that calls Auth0's
    * `checkSession()` to refresh tokens when a token is present. If a new
-   * token is returned it is saved via `saveAccessToken`, otherwise the user
+   * token is returned it is saved via `saveAuthToken`, otherwise the user
    * is logged out. The effect cleans up the interval on unmount.
    *
    * @returns {void}
    * @example
    * useEffect(() => {
    *   // Periodically refresh auth session while the provider is mounted
-   * }, [auth, logout, saveAccessToken, token]);
+   * }, [auth, logout, saveAuthToken, token]);
    */
   useEffect(() => {
     const interval = setInterval(() => {
       if (token) {
         auth.checkSession({}, (_, res) => {
           if (res) {
-            saveAccessToken(res);
+            saveAuthToken(res);
           } else {
             logout();
           }
@@ -388,7 +388,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     }, REFRESH_TOKEN_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [auth, logout, saveAccessToken, token]);
+  }, [auth, logout, saveAuthToken, token]);
 
   /**
    * Effect hook that periodically check token expiration and logout when expired.
@@ -401,7 +401,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
    * @example
    * useEffect(() => {
    *   // Periodically check token expiration while the provider is mounted
-   * }, [auth, logout, saveAccessToken, token]);
+   * }, [auth, logout, saveAuthToken, token]);
    */
   useEffect(() => {
     const interval = setInterval(() => {
@@ -416,7 +416,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     }, CHECK_TOKEN_EXPIRATION_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [auth, logout, saveAccessToken, token]);
+  }, [auth, logout, saveAuthToken, token]);
 
   const isAuthenticated = useMemo(
     () =>

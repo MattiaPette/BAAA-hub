@@ -578,7 +578,7 @@ enum AuthErrorCode {
 }
 
 interface AuthToken {
-  accessToken: string;
+  idToken: string;
   expiresAt: number;
   // ... other token fields
 }
