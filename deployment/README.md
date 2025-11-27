@@ -13,6 +13,37 @@ application to production.
 - **deploy.sh** - Automated deployment script
 - **README.md** - This file
 
+## 🐳 Automated Container Builds
+
+**Pre-built Docker images are automatically published to GitHub Container
+Registry (GHCR) on every push to the master branch.**
+
+- **Frontend**: `ghcr.io/mattiapette/baaa-hub/frontend:latest`
+- **Backend**: `ghcr.io/mattiapette/baaa-hub/backend:latest`
+
+Images are tagged with:
+
+- `latest` - Most recent build from master branch
+- `<commit-sha>` - Specific commit version for rollbacks
+
+### Using Pre-built Images (Recommended)
+
+For production deployments, use the pre-built images from GHCR instead of
+building locally:
+
+```bash
+# Pull the latest images
+docker pull ghcr.io/mattiapette/baaa-hub/frontend:latest
+docker pull ghcr.io/mattiapette/baaa-hub/backend:latest
+```
+
+To update your deployment with new container versions, simply pull and restart:
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
 ## 🚀 Quick Start
 
 ### First-time Deployment
@@ -259,7 +290,18 @@ docker compose up -d
 
 ## 🔄 Updates and Maintenance
 
-### Update to latest version
+### Update using pre-built images (Recommended)
+
+The easiest way to update your deployment is to pull the latest pre-built images
+from GitHub Container Registry:
+
+```bash
+docker compose pull
+docker compose down
+docker compose up -d
+```
+
+### Update to latest version (local build)
 
 ```bash
 ./deploy.sh update
