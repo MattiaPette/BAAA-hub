@@ -4,6 +4,7 @@ import {
   SportType,
   CreateUserRequest,
   UpdateUserRequest,
+  PrivacyLevel,
 } from '@baaa-hub/shared-types';
 import {
   checkProfileStatus,
@@ -102,6 +103,12 @@ describe('userService', () => {
         email: 'john@example.com',
         dateOfBirth: '1990-05-15',
         sportTypes: [SportType.RUNNING],
+        privacySettings: {
+          email: PrivacyLevel.PUBLIC,
+          dateOfBirth: PrivacyLevel.PUBLIC,
+          sportTypes: PrivacyLevel.PUBLIC,
+          socialLinks: PrivacyLevel.PUBLIC,
+        },
       };
 
       const mockUser = {
@@ -138,6 +145,12 @@ describe('userService', () => {
         sportTypes: [SportType.RUNNING, SportType.CYCLING],
         stravaLink: 'https://www.strava.com/athletes/12345',
         instagramLink: 'https://www.instagram.com/johndoe',
+        privacySettings: {
+          email: PrivacyLevel.PUBLIC,
+          dateOfBirth: PrivacyLevel.PUBLIC,
+          sportTypes: PrivacyLevel.PUBLIC,
+          socialLinks: PrivacyLevel.PUBLIC,
+        },
       };
 
       const mockUser = {
