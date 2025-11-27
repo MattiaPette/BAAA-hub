@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
   useTheme,
+  Alert,
 } from '@mui/material';
 
 import MuiCard from '@mui/material/Card';
@@ -57,30 +58,39 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 /**
- * This is a React functional component that manages the login form.
+ * This is a React functional component that manages the login/signup form.
  * It uses the useForm hook to handle form state and input validation.
  * It also uses the useTheme hook to access the application's current theme.
  * If an error is detected during form submission, an error message is displayed.
  *
  * @param {Object} props - The properties passed to the component.
  * @param {boolean} props.error - A flag indicating if there is an error in the login form.
- * @param {Function} props.onSubmit - The function to call when the form is submitted.
+ * @param {Function} props.onSubmit - The function to call when the form is submitted for login.
+ * @param {Function} props.onSignup - The function to call when the form is submitted for signup.
  * @param {Function} props.onLoginWithRedirect - The function to call for redirect-based login.
+ * @param {boolean} props.isSignupMode - Whether the form is in signup mode.
+ * @param {Function} props.onToggleMode - Function to toggle between login and signup modes.
+ * @param {string} props.successMessage - Success message to display.
  *
- * @returns {JSX.Element} The rendered login form.
+ * @returns {JSX.Element} The rendered login/signup form.
  *
  * @example
- * <LoginForm error={false} onSubmit={handleLogin} onLoginWithRedirect={handleRedirectLogin} />
+ * <LoginForm error={false} onSubmit={handleLogin} onSignup={handleSignup} onLoginWithRedirect={handleRedirectLogin} />
  */
 export const LoginForm: FC<LoginFormProps> = ({
   errorMessages,
+  successMessage,
+  isSignupMode = false,
   onSubmit,
+  onSignup,
   onLoginWithRedirect,
+  onToggleMode,
 }) => {
   const {
     register,
     handleSubmit: handleSubmitForm,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm<IFormInput>({ mode: 'onSubmit' });
 
@@ -105,7 +115,11 @@ export const LoginForm: FC<LoginFormProps> = ({
    * handleSubmit({ user: 'username', password: 'password' });
    */
   const handleSubmit: SubmitHandler<IFormInput> = data => {
-    onSubmit?.({ user: data.user, password: data.password });
+    if (isSignupMode) {
+      onSignup?.({ user: data.user, password: data.password });
+    } else {
+      onSubmit?.({ user: data.user, password: data.password });
+    }
 
     if (errorMessages && errorMessages.length > 0) {
       setLoginError();
@@ -117,6 +131,11 @@ export const LoginForm: FC<LoginFormProps> = ({
       setLoginError();
     }
   }, [setLoginError, errorMessages]);
+
+  // Clear errors when toggling mode
+  useEffect(() => {
+    clearErrors();
+  }, [isSignupMode, clearErrors]);
 
   return (
     <SignInContainer direction="column" justifyContent="space-between">
@@ -132,8 +151,15 @@ export const LoginForm: FC<LoginFormProps> = ({
           variant="h4"
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
-          <Trans>Login</Trans>
+          {isSignupMode ? <Trans>Sign Up</Trans> : <Trans>Login</Trans>}
         </Typography>
+
+        {successMessage && (
+          <Alert severity="success" sx={{ mt: 1 }}>
+            {successMessage}
+          </Alert>
+        )}
+
         <Box
           component="form"
           onSubmit={handleSubmitForm(handleSubmit)}
@@ -148,9 +174,9 @@ export const LoginForm: FC<LoginFormProps> = ({
           <FormControl>
             <TextField
               id="user"
-              label={t({ message: 'Username' })}
-              placeholder={t({ message: 'Username' })}
-              autoComplete="user"
+              label={t({ message: 'Email' })}
+              placeholder={t({ message: 'Email' })}
+              autoComplete="email"
               autoFocus
               fullWidth
               variant="outlined"
@@ -158,12 +184,16 @@ export const LoginForm: FC<LoginFormProps> = ({
               helperText={errors?.user?.message ?? errors?.user?.types?.error}
               {...register('user', {
                 maxLength: {
-                  value: 40,
+                  value: 100,
                   message: t({ message: 'Too many characters' }),
                 },
                 required: {
                   value: true,
-                  message: t({ message: 'Username is required' }),
+                  message: t({ message: 'Email is required' }),
+                },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: t({ message: 'Invalid email address' }),
                 },
               })}
             />
@@ -174,7 +204,7 @@ export const LoginForm: FC<LoginFormProps> = ({
               type="password"
               label={t({ message: 'Password' })}
               placeholder="••••••"
-              autoComplete="current-password"
+              autoComplete={isSignupMode ? 'new-password' : 'current-password'}
               fullWidth
               variant="outlined"
               error={!!errors?.password}
@@ -186,6 +216,14 @@ export const LoginForm: FC<LoginFormProps> = ({
                   value: true,
                   message: t({ message: 'Password is required' }),
                 },
+                ...(isSignupMode && {
+                  minLength: {
+                    value: 8,
+                    message: t({
+                      message: 'Password must be at least 8 characters',
+                    }),
+                  },
+                }),
               })}
             />
           </FormControl>
@@ -203,9 +241,68 @@ export const LoginForm: FC<LoginFormProps> = ({
             ))}
           </Typography>
           <Button type="submit" fullWidth variant="contained">
-            <Trans>Login</Trans>
+            {isSignupMode ? (
+              <Trans>Create Account</Trans>
+            ) : (
+              <Trans>Login</Trans>
+            )}
           </Button>
-          {onLoginWithRedirect && (
+
+          {/* Toggle between login and signup */}
+          <Typography
+            variant="body2"
+            sx={{ textAlign: 'center', color: 'text.secondary' }}
+          >
+            {isSignupMode ? (
+              <>
+                <Trans>Already have an account?</Trans>{' '}
+                <Button
+                  variant="text"
+                  onClick={onToggleMode}
+                  sx={{
+                    padding: 0,
+                    minWidth: 'auto',
+                    textTransform: 'none',
+                    fontWeight: 'inherit',
+                    fontSize: 'inherit',
+                    verticalAlign: 'baseline',
+                    color: 'primary.main',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      textDecoration: 'underline',
+                    },
+                  }}
+                >
+                  <Trans>Login</Trans>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Trans>Don&apos;t have an account?</Trans>{' '}
+                <Button
+                  variant="text"
+                  onClick={onToggleMode}
+                  sx={{
+                    padding: 0,
+                    minWidth: 'auto',
+                    textTransform: 'none',
+                    fontWeight: 'inherit',
+                    fontSize: 'inherit',
+                    verticalAlign: 'baseline',
+                    color: 'primary.main',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      textDecoration: 'underline',
+                    },
+                  }}
+                >
+                  <Trans>Sign Up</Trans>
+                </Button>
+              </>
+            )}
+          </Typography>
+
+          {onLoginWithRedirect && !isSignupMode && (
             <>
               <Divider>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>

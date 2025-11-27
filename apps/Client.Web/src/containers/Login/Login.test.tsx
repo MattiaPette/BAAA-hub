@@ -8,12 +8,14 @@ import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 
 describe('Login', () => {
   const mockLogin = vi.fn();
+  const mockSignup = vi.fn();
   const mockLoginWithRedirect = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       login: mockLogin,
+      signup: mockSignup,
       loginWithRedirect: mockLoginWithRedirect,
       isAuthenticated: false,
       localStorageAvailable: true,
@@ -32,7 +34,7 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
   });
 
@@ -43,11 +45,11 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /^login$/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(submitButton);
 
@@ -73,11 +75,11 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /^login$/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
     fireEvent.click(submitButton);
 
@@ -108,11 +110,11 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /^login$/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(submitButton);
 
@@ -148,5 +150,18 @@ describe('Login', () => {
     await waitFor(() => {
       expect(mockLoginWithRedirect).toHaveBeenCalled();
     });
+  });
+
+  it('should show signup link', () => {
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(/don't have an account\?/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /sign up/i }),
+    ).toBeInTheDocument();
   });
 });
