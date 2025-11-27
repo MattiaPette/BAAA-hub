@@ -51,6 +51,36 @@ pnpm fe:test --coverage
 - Address any failing tests by fixing the code or updating tests if the changes
   are intentional
 
+### 5. Internationalization (i18n)
+
+```bash
+pnpm fe:extract
+# Translate the strings in the .po files
+pnpm fe:compile
+```
+
+- **All visible user-facing strings MUST be wrapped** in `@lingui` translation
+  macros
+- Use `t` macro for strings in JavaScript/TypeScript code:
+  ```tsx
+  import { t } from '@lingui/core/macro';
+  const message = t`Hello World`;
+  ```
+- Use `<Trans>` component for JSX content:
+  ```tsx
+  import { Trans } from '@lingui/react/macro';
+  <Trans>Hello World</Trans>;
+  ```
+- After adding or modifying visible strings:
+  1. Run `pnpm fe:extract` to extract new strings
+  2. Translate the strings in the `.po` files (located in
+     `apps/Client.Web/src/locales/`)
+  3. Run `pnpm fe:compile` to compile translations
+- **This process MUST be run on every iteration** when visible strings are added
+  or modified
+- Check that the Italian translations file (`it/messages.po`) has no empty
+  `msgstr` entries for new strings
+
 ## Workflow
 
 When working on any issue or feature:
@@ -65,14 +95,17 @@ When working on any issue or feature:
    - Run relevant checks frequently (e.g., `pnpm fe:type-check` after TypeScript
      changes)
    - Write or update tests alongside your code changes
+   - **Wrap all visible strings in lingui macros** (`t` or `<Trans>`)
 
 3. **Before committing:**
-   - Run ALL four quality checks listed above
+   - Run ALL quality checks listed above (lint, format, type-check, test)
+   - **Run translation commands** (`pnpm fe:extract` → translate →
+     `pnpm fe:compile`)
    - Fix any issues introduced by your changes
    - Ensure all checks pass (except pre-existing unrelated failures)
 
 4. **Before creating PR:**
-   - Run a final check of all four commands
+   - Run a final check of all commands
    - Verify that any file changes from `pnpm fe:format` are committed
    - Review your changes to ensure they are minimal and focused
    - Ensure commit messages are clear and descriptive
@@ -108,6 +141,16 @@ When working on any issue or feature:
 - **Solution:** Ensure there are no `.prettierignore` patterns accidentally
   excluding files. Check for syntax errors that might prevent Prettier from
   parsing files.
+
+### Issue: Missing translations after adding new UI strings
+
+- **Solution:** All visible strings must be wrapped in lingui macros:
+  1. Use `t\`string\`` for JavaScript/TypeScript strings
+  2. Use `<Trans>string</Trans>` for JSX content
+  3. Run `pnpm fe:extract` to extract new strings
+  4. Add translations to `apps/Client.Web/src/locales/it/messages.po`
+  5. Run `pnpm fe:compile` to compile translations
+  6. Verify no empty `msgstr ""` entries remain in the `.po` files
 
 ## Repository-Specific Information
 
