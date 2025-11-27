@@ -1,7 +1,7 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { User, UserRole } from '@baaa-hub/shared-types';
+import { User, UserRole, PrivacyLevel } from '@baaa-hub/shared-types';
 import { BrowserRouter } from 'react-router';
 import { renderWithProviders as render } from '../../test-utils';
 import { BaseContainer } from './BaseContainer';
@@ -27,6 +27,12 @@ describe('BaseContainer', () => {
     isBlocked: false,
     isEmailVerified: true,
     roles: [UserRole.USER],
+    privacySettings: {
+      email: PrivacyLevel.PUBLIC,
+      dateOfBirth: PrivacyLevel.PUBLIC,
+      sportTypes: PrivacyLevel.PUBLIC,
+      socialLinks: PrivacyLevel.PUBLIC,
+    },
   };
 
   const mockRoutes = [

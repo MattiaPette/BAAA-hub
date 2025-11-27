@@ -395,8 +395,8 @@ describe('Sidebar', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('BAAA Hub')).toBeInTheDocument();
-    expect(screen.getByText('Activity Tracker')).toBeInTheDocument();
+    expect(screen.getByText('Community Hub')).toBeInTheDocument();
+    expect(screen.getByText('Boss Anna Athlete Army')).toBeInTheDocument();
   });
 
   it('should handle routes without order property', () => {

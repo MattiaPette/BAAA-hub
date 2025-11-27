@@ -33,6 +33,5 @@ export const useCurrentUser = () => {
     },
     enabled: isAuthenticated && !!token?.idToken,
     staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
-    retry: 2,
   });
 };

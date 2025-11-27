@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { SnackbarProvider } from 'notistack';
-import { SportType, User } from '@baaa-hub/shared-types';
+import { SportType, User, PrivacyLevel } from '@baaa-hub/shared-types';
 import { renderWithProviders as render } from '../../test-utils';
 import { Profile } from './Profile';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
@@ -23,11 +23,15 @@ vi.mock('../../hooks/useCurrentUser', () => ({
 
 // Mock useQueryClient
 const mockInvalidateQueries = vi.fn();
-vi.mock('@tanstack/react-query', () => ({
-  useQueryClient: () => ({
-    invalidateQueries: mockInvalidateQueries,
-  }),
-}));
+vi.mock('@tanstack/react-query', async importOriginal => {
+  const actual = await importOriginal<typeof import('@tanstack/react-query')>();
+  return {
+    ...actual,
+    useQueryClient: () => ({
+      invalidateQueries: mockInvalidateQueries,
+    }),
+  };
+});
 
 const mockUser: User = {
   id: '1',
@@ -46,6 +50,12 @@ const mockUser: User = {
   isBlocked: false,
   isEmailVerified: true,
   roles: [],
+  privacySettings: {
+    email: PrivacyLevel.PUBLIC,
+    dateOfBirth: PrivacyLevel.PUBLIC,
+    sportTypes: PrivacyLevel.PUBLIC,
+    socialLinks: PrivacyLevel.PUBLIC,
+  },
 };
 
 const renderWithSnackbar = (ui: React.ReactElement) =>

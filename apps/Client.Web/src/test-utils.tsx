@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeModeProvider } from './providers/ThemeProvider/ThemeProvider';
 import { LanguageProvider } from './providers/LanguageProvider/LanguageProvider';
 import { TranslationProvider } from './providers/TranslationProvider/TranslationProvider';
@@ -26,17 +27,26 @@ export function renderWithProviders(
   options?: Omit<RenderOptions, 'wrapper'>,
 ): RenderResult {
   const theme = initTheme('dark');
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
   return render(
-    <AuthProvider {...mockAuthProps}>
-      <LanguageProvider>
-        <TranslationProvider>
-          <ThemeModeProvider>
-            <ThemeProvider theme={theme}>{ui}</ThemeProvider>
-          </ThemeModeProvider>
-        </TranslationProvider>
-      </LanguageProvider>
-    </AuthProvider>,
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider {...mockAuthProps}>
+        <LanguageProvider>
+          <TranslationProvider>
+            <ThemeModeProvider>
+              <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+            </ThemeModeProvider>
+          </TranslationProvider>
+        </LanguageProvider>
+      </AuthProvider>
+    </QueryClientProvider>,
     options,
   );
 }
