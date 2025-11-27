@@ -102,7 +102,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: coverage-reports
+          name: fe-coverage-reports
           path: |
             apps/Client.Web/coverage/
           retention-days: 30
@@ -140,7 +140,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: coverage-reports
+          name: be-coverage-reports
           path: |
             apps/Server.API/coverage/
           retention-days: 30
