@@ -2,9 +2,11 @@ import { FC, useEffect, useState, useCallback } from 'react';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useSnackbar } from 'notistack';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   Chip,
@@ -13,22 +15,24 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  IconButton,
+  Paper,
   Skeleton,
   Stack,
   Typography,
   alpha,
+  useTheme,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import CakeIcon from '@mui/icons-material/Cake';
 import SportsIcon from '@mui/icons-material/Sports';
 import LinkIcon from '@mui/icons-material/Link';
-import { SportType, User } from '@baaa-hub/shared-types';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { SportType } from '@baaa-hub/shared-types';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
-import { getCurrentUser, updateUserProfile } from '../../services/userService';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { updateUserProfile } from '../../services/userService';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
 
@@ -80,47 +84,28 @@ export const Profile: FC = () => {
   const { token } = useAuth();
   const { setTitle } = useBreadcrum();
   const { enqueueSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+  const theme = useTheme();
 
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: user, isLoading, error } = useCurrentUser();
+
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string>();
 
   useEffect(() => {
     setTitle(t`Profile`);
   }, [setTitle]);
-
-  // Fetch user profile
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (!token?.idToken) return;
-
-      setIsLoading(true);
-      try {
-        const userData = await getCurrentUser(token.idToken);
-        setUser(userData);
-      } catch (err) {
-        console.error('Failed to fetch user:', err);
-        setError(t`Failed to load profile`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [token]);
 
   const handleEditOpen = () => setIsEditOpen(true);
   const handleEditClose = () => setIsEditOpen(false);
 
   const handleUpdate = useCallback(
     async (data: Readonly<ProfileEditFormInput>) => {
-      if (!token?.idToken || !user) return;
+      if (!token?.idToken) return;
 
       setIsSubmitting(true);
       try {
-        const updatedUser = await updateUserProfile(token.idToken, {
+        await updateUserProfile(token.idToken, {
           name: data.name.trim(),
           surname: data.surname.trim(),
           dateOfBirth: data.dateOfBirth,
@@ -129,7 +114,8 @@ export const Profile: FC = () => {
           instagramLink: data.instagramLink?.trim() || undefined,
         });
 
-        setUser(updatedUser);
+        await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+
         setIsEditOpen(false);
         enqueueSnackbar(t`Profile updated successfully!`, {
           variant: 'success',
@@ -143,7 +129,7 @@ export const Profile: FC = () => {
         setIsSubmitting(false);
       }
     },
-    [token, user, enqueueSnackbar],
+    [token, enqueueSnackbar, queryClient],
   );
 
   if (isLoading) {
@@ -169,7 +155,7 @@ export const Profile: FC = () => {
         <Card>
           <CardContent>
             <Typography color="error" textAlign="center">
-              {error || t`Profile not found`}
+              {t`Profile not found`}
             </Typography>
           </CardContent>
         </Card>
@@ -178,173 +164,306 @@ export const Profile: FC = () => {
   }
 
   return (
-    <Box sx={{ p: 3, maxWidth: 800, mx: 'auto' }}>
-      <Card>
-        <CardContent>
-          {/* Header with Avatar */}
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={3}
-            alignItems={{ xs: 'center', sm: 'flex-start' }}
-            sx={{ mb: 3 }}
+    <Box sx={{ maxWidth: 1000, mx: 'auto', pb: 4 }}>
+      {/* Cover Image Banner */}
+      <Paper
+        elevation={0}
+        sx={{
+          height: { xs: 160, md: 240 },
+          borderRadius: { xs: 0, sm: 3 },
+          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+          position: 'relative',
+          mb: { xs: 8, md: 6 },
+          overflow: 'visible',
+        }}
+      >
+        {/* Avatar overlapping the banner */}
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+            left: { xs: '50%', md: 48 },
+            transform: { xs: 'translate(-50%, 50%)', md: 'translate(0, 50%)' },
+            zIndex: 2,
+          }}
+        >
+          <Avatar
+            src={user.profilePicture}
+            sx={{
+              width: { xs: 120, md: 150 },
+              height: { xs: 120, md: 150 },
+              border: `4px solid ${theme.palette.background.paper}`,
+              fontSize: '3rem',
+              fontWeight: 700,
+              bgcolor: theme.palette.secondary.main,
+              boxShadow: theme.shadows[3],
+            }}
           >
-            <Avatar
-              src={user.profilePicture}
-              sx={theme => ({
-                width: 100,
-                height: 100,
-                fontSize: '2.5rem',
-                fontWeight: 600,
-                backgroundColor: theme.palette.primary.main,
-                boxShadow: `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`,
-              })}
+            {!user.profilePicture && getInitials(user.name, user.surname)}
+          </Avatar>
+        </Box>
+      </Paper>
+
+      <Box sx={{ px: { xs: 2, sm: 4 } }}>
+        {/* Header Section */}
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          justifyContent="space-between"
+          alignItems={{ xs: 'center', md: 'flex-start' }}
+          spacing={2}
+          sx={{ mb: 5, ml: { md: 22 } }}
+        >
+          <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            <Typography variant="h4" fontWeight={700} gutterBottom>
+              {user.name} {user.surname}
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent={{ xs: 'center', md: 'flex-start' }}
             >
-              {!user.profilePicture && getInitials(user.name, user.surname)}
-            </Avatar>
-            <Box sx={{ flex: 1, textAlign: { xs: 'center', sm: 'left' } }}>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                fontWeight={500}
+              >
+                @{user.nickname}
+              </Typography>
+              <Chip
+                label={t`Member`}
+                size="small"
+                color="primary"
+                variant="outlined"
+                sx={{ height: 24 }}
+              />
+            </Stack>
+          </Box>
+
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={handleEditOpen}
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              textTransform: 'none',
+              fontWeight: 600,
+            }}
+          >
+            <Trans>Edit Profile</Trans>
+          </Button>
+        </Stack>
+
+        {/* Content Grid */}
+        <Grid container spacing={4}>
+          {/* Left Column - About & Contact */}
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Stack spacing={3}>
+              <Paper variant="outlined" sx={{ p: 3, borderRadius: 3 }}>
+                <Typography
+                  variant="h6"
+                  fontWeight={600}
+                  gutterBottom
+                  sx={{ mb: 2 }}
+                >
+                  <Trans>About</Trans>
+                </Typography>
+
+                <Stack spacing={2.5}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: 'primary.main',
+                      }}
+                    >
+                      <EmailIcon fontSize="small" />
+                    </Avatar>
+                    <Box>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        display="block"
+                      >
+                        <Trans>Email</Trans>
+                      </Typography>
+                      <Typography variant="body2" fontWeight={500}>
+                        {user.email}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: 'primary.main',
+                      }}
+                    >
+                      <CakeIcon fontSize="small" />
+                    </Avatar>
+                    <Box>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        display="block"
+                      >
+                        <Trans>Date of Birth</Trans>
+                      </Typography>
+                      <Typography variant="body2" fontWeight={500}>
+                        {formatDate(user.dateOfBirth)}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: 'primary.main',
+                      }}
+                    >
+                      <CalendarMonthIcon fontSize="small" />
+                    </Avatar>
+                    <Box>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        display="block"
+                      >
+                        <Trans>Joined</Trans>
+                      </Typography>
+                      <Typography variant="body2" fontWeight={500}>
+                        {formatDate(user.createdAt)}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Stack>
+              </Paper>
+
+              {/* Social Links */}
+              {(user.stravaLink || user.instagramLink) && (
+                <Paper variant="outlined" sx={{ p: 3, borderRadius: 3 }}>
+                  <Typography
+                    variant="h6"
+                    fontWeight={600}
+                    gutterBottom
+                    sx={{ mb: 2 }}
+                  >
+                    <Trans>Social</Trans>
+                  </Typography>
+                  <Stack spacing={2}>
+                    {user.stravaLink && (
+                      <Button
+                        component="a"
+                        href={user.stravaLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        startIcon={<LinkIcon />}
+                        fullWidth
+                        variant="outlined"
+                        color="inherit"
+                        sx={{
+                          justifyContent: 'flex-start',
+                          borderColor: 'divider',
+                        }}
+                      >
+                        Strava
+                      </Button>
+                    )}
+                    {user.instagramLink && (
+                      <Button
+                        component="a"
+                        href={user.instagramLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        startIcon={<LinkIcon />}
+                        fullWidth
+                        variant="outlined"
+                        color="inherit"
+                        sx={{
+                          justifyContent: 'flex-start',
+                          borderColor: 'divider',
+                        }}
+                      >
+                        Instagram
+                      </Button>
+                    )}
+                  </Stack>
+                </Paper>
+              )}
+            </Stack>
+          </Grid>
+
+          {/* Right Column - Sports & Stats */}
+          <Grid size={{ xs: 12, md: 8 }}>
+            <Paper
+              variant="outlined"
+              sx={{ p: 3, borderRadius: 3, height: '100%' }}
+            >
               <Stack
                 direction="row"
                 alignItems="center"
-                justifyContent={{ xs: 'center', sm: 'flex-start' }}
                 spacing={1}
+                sx={{ mb: 3 }}
               >
-                <Typography variant="h4" fontWeight={600}>
-                  {user.name} {user.surname}
+                <SportsIcon color="primary" />
+                <Typography variant="h6" fontWeight={600}>
+                  <Trans>Sports & Activities</Trans>
                 </Typography>
-                <IconButton
-                  onClick={handleEditOpen}
-                  size="small"
-                  aria-label={t`Edit profile`}
+              </Stack>
+
+              {user.sportTypes.length > 0 ? (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+                  {user.sportTypes.map(sport => (
+                    <Chip
+                      key={sport}
+                      label={sportTypeLabels[sport as SportType] || sport}
+                      color="primary"
+                      variant="filled"
+                      sx={{
+                        borderRadius: 2,
+                        px: 1,
+                        py: 2.5,
+                        fontWeight: 500,
+                        fontSize: '0.95rem',
+                      }}
+                    />
+                  ))}
+                </Box>
+              ) : (
+                <Typography color="text.secondary" fontStyle="italic">
+                  <Trans>No sports selected yet.</Trans>
+                </Typography>
+              )}
+
+              <Divider sx={{ my: 4 }} />
+
+              {/* Placeholder for future stats */}
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  py: 4,
+                  bgcolor: alpha(theme.palette.background.default, 0.5),
+                  borderRadius: 2,
+                }}
+              >
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  gutterBottom
                 >
-                  <EditIcon />
-                </IconButton>
-              </Stack>
-              <Typography variant="body1" color="text.secondary">
-                @{user.nickname}
-              </Typography>
-            </Box>
-          </Stack>
-
-          <Divider sx={{ my: 3 }} />
-
-          {/* Profile Details */}
-          <Grid container spacing={3}>
-            {/* Email */}
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <EmailIcon color="action" />
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    <Trans>Email</Trans>
-                  </Typography>
-                  <Typography variant="body1">{user.email}</Typography>
-                </Box>
-              </Stack>
-            </Grid>
-
-            {/* Date of Birth */}
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <CakeIcon color="action" />
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    <Trans>Date of Birth</Trans>
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatDate(user.dateOfBirth)}
-                  </Typography>
-                </Box>
-              </Stack>
-            </Grid>
-
-            {/* Sport Types */}
-            <Grid size={{ xs: 12 }}>
-              <Stack direction="row" spacing={2} alignItems="flex-start">
-                <SportsIcon color="action" sx={{ mt: 0.5 }} />
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    <Trans>Sport Types</Trans>
-                  </Typography>
-                  <Box
-                    sx={{ mt: 1, display: 'flex', flexWrap: 'wrap', gap: 1 }}
-                  >
-                    {user.sportTypes.map(sport => (
-                      <Chip
-                        key={sport}
-                        label={sportTypeLabels[sport as SportType] || sport}
-                        size="small"
-                        color="primary"
-                        variant="outlined"
-                      />
-                    ))}
-                  </Box>
-                </Box>
-              </Stack>
-            </Grid>
-
-            {/* Social Links */}
-            {(user.stravaLink || user.instagramLink) && (
-              <Grid size={{ xs: 12 }}>
-                <Stack direction="row" spacing={2} alignItems="flex-start">
-                  <LinkIcon color="action" sx={{ mt: 0.5 }} />
-                  <Box>
-                    <Typography variant="caption" color="text.secondary">
-                      <Trans>Social Links</Trans>
-                    </Typography>
-                    <Stack spacing={1} sx={{ mt: 1 }}>
-                      {user.stravaLink && (
-                        <Typography
-                          component="a"
-                          href={user.stravaLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          sx={{
-                            color: 'primary.main',
-                            textDecoration: 'none',
-                            '&:hover': { textDecoration: 'underline' },
-                          }}
-                        >
-                          Strava Profile
-                        </Typography>
-                      )}
-                      {user.instagramLink && (
-                        <Typography
-                          component="a"
-                          href={user.instagramLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          sx={{
-                            color: 'primary.main',
-                            textDecoration: 'none',
-                            '&:hover': { textDecoration: 'underline' },
-                          }}
-                        >
-                          Instagram Profile
-                        </Typography>
-                      )}
-                    </Stack>
-                  </Box>
-                </Stack>
-              </Grid>
-            )}
-
-            {/* Member Since */}
-            <Grid size={{ xs: 12 }}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <PersonIcon color="action" />
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    <Trans>Member Since</Trans>
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatDate(user.createdAt)}
-                  </Typography>
-                </Box>
-              </Stack>
-            </Grid>
+                  <Trans>Activity Statistics</Trans>
+                </Typography>
+                <Typography variant="body2" color="text.disabled">
+                  <Trans>Coming soon...</Trans>
+                </Typography>
+              </Box>
+            </Paper>
           </Grid>
-        </CardContent>
-      </Card>
+        </Grid>
+      </Box>
 
       {/* Edit Dialog */}
       <Dialog
@@ -352,17 +471,24 @@ export const Profile: FC = () => {
         onClose={handleEditClose}
         maxWidth="sm"
         fullWidth
+        PaperProps={{
+          sx: { borderRadius: 3 },
+        }}
       >
-        <DialogTitle>
-          <Trans>Edit Profile</Trans>
+        <DialogTitle sx={{ pb: 1 }}>
+          <Typography variant="h5" component="span" fontWeight={600}>
+            <Trans>Edit Profile</Trans>
+          </Typography>
         </DialogTitle>
         <DialogContent>
-          <ProfileEditForm
-            user={user}
-            onUpdate={handleUpdate}
-            onCancel={handleEditClose}
-            isSubmitting={isSubmitting}
-          />
+          <Box sx={{ mt: 1 }}>
+            <ProfileEditForm
+              user={user}
+              onUpdate={handleUpdate}
+              onCancel={handleEditClose}
+              isSubmitting={isSubmitting}
+            />
+          </Box>
         </DialogContent>
       </Dialog>
     </Box>

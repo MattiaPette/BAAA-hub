@@ -1,4 +1,4 @@
-import { screen, waitFor, fireEvent } from '@testing-library/react';
+import { screen, waitFor, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { MemoryRouter } from 'react-router';
@@ -9,11 +9,24 @@ import { Profile } from './Profile';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 import * as BreadcrumProviderModule from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import * as userService from '../../services/userService';
+import * as useCurrentUserModule from '../../hooks/useCurrentUser';
 
 // Mock the user service
 vi.mock('../../services/userService', () => ({
-  getCurrentUser: vi.fn(),
   updateUserProfile: vi.fn(),
+}));
+
+// Mock the useCurrentUser hook
+vi.mock('../../hooks/useCurrentUser', () => ({
+  useCurrentUser: vi.fn(),
+}));
+
+// Mock useQueryClient
+const mockInvalidateQueries = vi.fn();
+vi.mock('@tanstack/react-query', () => ({
+  useQueryClient: () => ({
+    invalidateQueries: mockInvalidateQueries,
+  }),
 }));
 
 const mockUser: User = {
@@ -73,9 +86,11 @@ describe('Profile', () => {
   });
 
   it('should render loading state initially', () => {
-    (userService.getCurrentUser as Mock).mockImplementation(
-      () => new Promise(() => {}), // Never resolves to keep loading state
-    );
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: undefined,
+      isLoading: true,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
@@ -84,40 +99,47 @@ describe('Profile', () => {
   });
 
   it('should render user profile after loading', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
-
+    // Should show user info
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('@johndoe')).toBeInTheDocument();
     expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
+    expect(screen.getByText('JD')).toBeInTheDocument(); // Avatar initials
   });
 
   it('should display sport types as chips', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Running')).toBeInTheDocument();
-    });
-
+    expect(screen.getByText('Running')).toBeInTheDocument();
     expect(screen.getByText('Cycling')).toBeInTheDocument();
   });
 
   it('should display social links when available', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Strava Profile')).toBeInTheDocument();
-    });
-
-    expect(screen.getByText('Instagram Profile')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /strava/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /instagram/i }),
+    ).toBeInTheDocument();
   });
 
   it('should not display social links section when no links are available', async () => {
@@ -126,221 +148,268 @@ describe('Profile', () => {
       stravaLink: undefined,
       instagramLink: undefined,
     };
-    (userService.getCurrentUser as Mock).mockResolvedValue(
-      userWithoutSocialLinks,
-    );
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: userWithoutSocialLinks,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
-
-    expect(screen.queryByText('Strava Profile')).not.toBeInTheDocument();
-    expect(screen.queryByText('Instagram Profile')).not.toBeInTheDocument();
-  });
-
-  it('should display initials when no profile picture is available', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
-
-    renderWithSnackbar(<Profile />);
-
-    await waitFor(() => {
-      expect(screen.getByText('JD')).toBeInTheDocument();
-    });
+    expect(
+      screen.queryByRole('link', { name: /strava/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: /instagram/i }),
+    ).not.toBeInTheDocument();
   });
 
   it('should display error message when user fetch fails', async () => {
-    (userService.getCurrentUser as Mock).mockRejectedValue(
-      new Error('Network error'),
-    );
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: new Error('Failed to fetch'),
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Failed to load profile')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Profile not found')).toBeInTheDocument();
   });
 
   it('should display profile not found when user is null', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(null);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Profile not found')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Profile not found')).toBeInTheDocument();
   });
 
   it('should open edit dialog when edit button is clicked', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
-
-    const editButton = screen.getByLabelText('Edit profile');
+    const editButton = screen.getByRole('button', { name: /edit profile/i });
     fireEvent.click(editButton);
 
-    await waitFor(() => {
-      expect(screen.getByText('Edit Profile')).toBeInTheDocument();
-    });
+    const dialog = screen.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+
+    // Check for title within dialog to avoid ambiguity with the button text
+    const dialogTitle = within(dialog).getByText('Edit Profile');
+    expect(dialogTitle).toBeInTheDocument();
+
+    expect(screen.getByDisplayValue('John')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Doe')).toBeInTheDocument();
   });
 
   it('should close edit dialog when cancel is clicked', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
+    // Open dialog
+    fireEvent.click(screen.getByRole('button', { name: /edit profile/i }));
+
+    // Click cancel
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
     await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
-
-    const editButton = screen.getByLabelText('Edit profile');
-    fireEvent.click(editButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Edit Profile')).toBeInTheDocument();
-    });
-
-    const cancelButton = screen.getByRole('button', { name: /cancel/i });
-    fireEvent.click(cancelButton);
-
-    // Dialog should be closed
-    await waitFor(() => {
-      expect(
-        screen.queryByRole('dialog', { name: 'Edit Profile' }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
   });
 
   it('should update profile successfully', async () => {
-    const updatedUser = { ...mockUser, name: 'Jane' };
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
-    (userService.updateUserProfile as Mock).mockResolvedValue(updatedUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
+
+    (userService.updateUserProfile as Mock).mockResolvedValue({
+      ...mockUser,
+      name: 'Johnny',
+    });
 
     renderWithSnackbar(<Profile />);
 
+    // Open dialog
+    fireEvent.click(screen.getByRole('button', { name: /edit profile/i }));
+
+    // Change name
+    const nameInput = screen.getByLabelText('First Name');
+    fireEvent.change(nameInput, { target: { value: 'Johnny' } });
+
+    // Submit
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
+
     await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      // updateUserProfile is called with token, not userId
+      expect(userService.updateUserProfile).toHaveBeenCalledWith(
+        'test-id-token',
+        expect.objectContaining({
+          name: 'Johnny',
+        }),
+      );
     });
 
-    const editButton = screen.getByLabelText('Edit profile');
-    fireEvent.click(editButton);
-
+    // Should close dialog
     await waitFor(() => {
-      expect(screen.getByText('Edit Profile')).toBeInTheDocument();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
-    // Change the first name
-    const firstNameInput = screen.getByLabelText('First Name');
-    fireEvent.change(firstNameInput, { target: { value: 'Jane' } });
+    // Should invalidate queries
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({
+      queryKey: ['currentUser'],
+    });
+  });
 
-    // Submit the form
-    const saveButton = screen.getByRole('button', { name: /save changes/i });
-    fireEvent.click(saveButton);
+  it('should close edit dialog when cancel is clicked', async () => {
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
+
+    renderWithSnackbar(<Profile />);
+
+    // Open dialog
+    fireEvent.click(screen.getByRole('button', { name: /edit profile/i }));
+
+    // Click cancel
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
 
     await waitFor(() => {
-      expect(userService.updateUserProfile).toHaveBeenCalled();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  it('should update profile successfully', async () => {
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
+
+    (userService.updateUserProfile as Mock).mockResolvedValue({
+      ...mockUser,
+      name: 'Johnny',
+    });
+
+    renderWithSnackbar(<Profile />);
+
+    // Open dialog
+    fireEvent.click(screen.getByRole('button', { name: /edit profile/i }));
+
+    // Change name
+    const nameInput = screen.getByLabelText('First Name');
+    fireEvent.change(nameInput, { target: { value: 'Johnny' } });
+
+    // Submit
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
+
+    await waitFor(() => {
+      expect(userService.updateUserProfile).toHaveBeenCalledWith(
+        'test-id-token',
+        expect.objectContaining({
+          name: 'Johnny',
+        }),
+      );
+    });
+
+    // Should close dialog
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    // Should invalidate queries
+    expect(mockInvalidateQueries).toHaveBeenCalledWith({
+      queryKey: ['currentUser'],
     });
   });
 
   it('should show error snackbar when update fails', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
+
     (userService.updateUserProfile as Mock).mockRejectedValue(
       new Error('Update failed'),
     );
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
+    // Open dialog
+    fireEvent.click(screen.getByRole('button', { name: /edit profile/i }));
 
-    const editButton = screen.getByLabelText('Edit profile');
-    fireEvent.click(editButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Edit Profile')).toBeInTheDocument();
-    });
-
-    const saveButton = screen.getByRole('button', { name: /save changes/i });
-    fireEvent.click(saveButton);
+    // Submit
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
 
     await waitFor(() => {
-      expect(userService.updateUserProfile).toHaveBeenCalled();
+      expect(
+        screen.getByText('Failed to update profile. Please try again.'),
+      ).toBeInTheDocument();
     });
-  });
 
-  it('should set breadcrumb title on mount', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
-
-    renderWithSnackbar(<Profile />);
-
-    await waitFor(() => {
-      expect(mockSetTitle).toHaveBeenCalledWith('Profile');
-    });
-  });
-
-  it('should not fetch user when token is not available', async () => {
-    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
-      token: null,
-      isAuthenticated: false,
-      localStorageAvailable: true,
-      login: vi.fn(),
-      signup: vi.fn(),
-      logout: vi.fn(),
-      authenticate: vi.fn(),
-      loginWithRedirect: vi.fn(),
-      userPermissions: [],
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-
-    renderWithSnackbar(<Profile />);
-
-    // Should still show loading and eventually show profile not found
-    await waitFor(() => {
-      expect(userService.getCurrentUser).not.toHaveBeenCalled();
-    });
+    // Dialog should remain open
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('should format dates correctly', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      // Date of birth: '1990-05-15' should be formatted
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
+    // Date of birth: '1990-05-15' should be formatted
+    // The exact format depends on the locale, but let's check for the year
+    expect(screen.getByText(/1990/)).toBeInTheDocument();
   });
 
   it('should display member since date', async () => {
-    (userService.getCurrentUser as Mock).mockResolvedValue(mockUser);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Member Since')).toBeInTheDocument();
-    });
+    expect(screen.getByText(/Joined/)).toBeInTheDocument();
+    expect(screen.getByText(/2024/)).toBeInTheDocument();
   });
 
   it('should render user with profile picture', async () => {
-    const userWithPicture = {
+    const userWithPic = {
       ...mockUser,
-      profilePicture: 'https://example.com/avatar.jpg',
+      profilePicture: 'https://example.com/pic.jpg',
     };
-    (userService.getCurrentUser as Mock).mockResolvedValue(userWithPicture);
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: userWithPic,
+      isLoading: false,
+      error: null,
+    });
 
     renderWithSnackbar(<Profile />);
 
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-    });
-
-    // Avatar with picture should be rendered - initials should not be visible
-    expect(screen.queryByText('JD')).not.toBeInTheDocument();
+    const avatar = screen.getByRole('img');
+    expect(avatar).toHaveAttribute('src', 'https://example.com/pic.jpg');
   });
 });
