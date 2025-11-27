@@ -9,8 +9,10 @@ import {
   Typography,
   Avatar,
   Stack,
+  Link,
 } from '@mui/material';
 import { styled, alpha, keyframes } from '@mui/material/styles';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 import { SidebarProps, SidebarRoute, RoutePermission } from './Sidebar.model';
 import { SidebarItem } from '../SidebarItem/SidebarItem';
@@ -325,6 +327,71 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* PWA Install prompt */}
           {showInstallPrompt && <InstallApp handler={handleInstallApp} open />}
         </List>
+
+        {/* Footer Credits */}
+        <Box sx={{ p: 2, pb: 1 }}>
+          <Stack spacing={1} alignItems="center">
+            <Typography
+              variant="caption"
+              sx={{
+                fontSize: '0.7rem',
+                color: 'text.secondary',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+              }}
+            >
+              Made with ❤️ by
+              <Link
+                href="https://github.com/mattiapette"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="inherit"
+                sx={{ fontWeight: 600, textDecoration: 'none' }}
+              >
+                Mattia
+              </Link>
+            </Typography>
+
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              sx={{ opacity: 0.7 }}
+            >
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ fontSize: '0.65rem' }}
+              >
+                with Copilot
+              </Typography>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ height: 12, my: 'auto' }}
+              />
+              <Link
+                href="https://github.com/mattiapette/baaa-hub"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="text.secondary"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  textDecoration: 'none',
+                  '&:hover': { color: 'primary.main' },
+                }}
+              >
+                <GitHubIcon sx={{ fontSize: '0.9rem' }} />
+                <Typography variant="caption" sx={{ fontSize: '0.65rem' }}>
+                  Source
+                </Typography>
+              </Link>
+            </Stack>
+          </Stack>
+        </Box>
 
         {/* User Information Section */}
         {(userName || userEmail) && (
