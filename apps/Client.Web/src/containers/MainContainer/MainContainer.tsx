@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import { useLingui } from '@lingui/react';
 import { t } from '@lingui/core/macro';
 
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -17,6 +18,7 @@ import { BaseContainer } from '../BaseContainer/BaseContainer';
  */
 export const MainContainer: FC = () => {
   const { title } = useBreadcrum();
+  const { i18n } = useLingui();
 
   const routes = useMemo<SidebarProps['routes']>(
     () => [
@@ -64,7 +66,8 @@ export const MainContainer: FC = () => {
         permission: 'user',
       },
     ],
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- i18n.locale triggers re-translation when language changes
+    [i18n.locale],
   );
 
   return (
