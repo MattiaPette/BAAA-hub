@@ -1,41 +1,45 @@
-import { FC, useState, useMemo } from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { FC, useState } from 'react';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import {
   Box,
   Button,
   Card,
-  Checkbox,
-  Chip,
   FormControl,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Stack,
-  styled,
   TextField,
   Typography,
   useTheme,
   Alert,
   Avatar,
+  Stack,
+  styled,
+  Stepper,
+  Step,
+  StepLabel,
+  useMediaQuery,
+  MobileStepper,
+  Chip,
+  Select,
+  MenuItem,
+  InputLabel,
+  OutlinedInput,
   InputAdornment,
   SvgIcon,
   SvgIconProps,
+  FormHelperText,
+  Checkbox,
 } from '@mui/material';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import { SportType } from '@baaa-hub/shared-types';
-import {
-  getSportTypeLabel,
-  getSportTypeLabels,
-} from '../../helpers/sportTypes';
+import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
+import { getSportTypeLabel } from '../../helpers/sportTypes';
 import {
   ProfileSetupFormInput,
   ProfileSetupFormProps,
 } from './ProfileSetup.model';
+import { PrivacySelector } from '../../components/commons/inputs/PrivacySelector/PrivacySelector';
 import logo from '../../assets/baaa.png';
 
 const StravaIcon = (props: SvgIconProps) => (
@@ -50,11 +54,12 @@ const StyledCard = styled(Card)(({ theme }) => ({
   flexDirection: 'column',
   alignSelf: 'center',
   width: '100%',
-  padding: theme.spacing(4),
+  padding: theme.spacing(3),
   gap: theme.spacing(2),
   margin: 'auto',
   [theme.breakpoints.up('sm')]: {
     maxWidth: '600px',
+    padding: theme.spacing(4),
   },
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
@@ -72,9 +77,6 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-/**
- * Calculate minimum date of birth (13 years ago)
- */
 const getMaxDateOfBirth = (): string => {
   const today = new Date();
   const minDate = new Date(
@@ -85,18 +87,12 @@ const getMaxDateOfBirth = (): string => {
   return minDate.toISOString().split('T')[0];
 };
 
-/**
- * Generate initials from name and surname
- */
 const getInitials = (name: string, surname: string): string => {
   const firstInitial = name ? name.charAt(0).toUpperCase() : '';
   const lastInitial = surname ? surname.charAt(0).toUpperCase() : '';
   return `${firstInitial}${lastInitial}`;
 };
 
-/**
- * Profile setup form component
- */
 export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   defaultEmail = '',
   defaultName = '',
@@ -105,6 +101,9 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   onSubmit,
 }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [activeStep, setActiveStep] = useState(0);
+
   const [nameParts] = useState(() => {
     const parts = defaultName.split(' ');
     return {
@@ -118,6 +117,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
     handleSubmit,
     control,
     watch,
+    trigger,
     formState: { errors },
   } = useForm<ProfileSetupFormInput>({
     mode: 'onBlur',
@@ -130,42 +130,364 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
       sportTypes: [],
       stravaLink: '',
       instagramLink: '',
+      privacySettings: {
+        email: PrivacyLevel.PUBLIC,
+        dateOfBirth: PrivacyLevel.PUBLIC,
+        sportTypes: PrivacyLevel.PUBLIC,
+        socialLinks: PrivacyLevel.PUBLIC,
+      },
     },
   });
 
-  // Memoize translated sport type labels to avoid re-computation on every render
-  const sportTypeLabels = useMemo(getSportTypeLabels, []);
-
   const watchedName = watch('name');
   const watchedSurname = watch('surname');
+
+  const steps = [
+    t`Personal Details`,
+    t`Sports`,
+    t`Contact & Social`,
+    t`Privacy`,
+  ];
+
+  const handleNext = async () => {
+    const getFieldsToValidate = (
+      step: number,
+    ): (keyof ProfileSetupFormInput)[] => {
+      switch (step) {
+        case 0:
+          return ['name', 'surname', 'nickname', 'dateOfBirth'];
+        case 1:
+          return ['sportTypes'];
+        case 2:
+          return ['stravaLink', 'instagramLink'];
+        default:
+          return [];
+      }
+    };
+
+    const fieldsToValidate = getFieldsToValidate(activeStep);
+    const valid =
+      fieldsToValidate.length > 0 ? await trigger(fieldsToValidate) : true;
+
+    if (valid) {
+      setActiveStep(prev => prev + 1);
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep(prev => prev - 1);
+  };
 
   const handleFormSubmit: SubmitHandler<ProfileSetupFormInput> = data => {
     onSubmit(data);
   };
 
+  const renderStepContent = (step: number) => {
+    switch (step) {
+      case 0:
+        return (
+          <Stack spacing={2}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+              <Avatar
+                sx={{
+                  width: 80,
+                  height: 80,
+                  backgroundColor: theme.palette.primary.main,
+                  fontSize: '2rem',
+                  fontWeight: 600,
+                }}
+              >
+                {getInitials(watchedName, watchedSurname) || '?'}
+              </Avatar>
+            </Box>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <FormControl fullWidth>
+                <TextField
+                  id="name"
+                  label={t`First Name`}
+                  placeholder={t`Enter your first name`}
+                  autoFocus
+                  fullWidth
+                  variant="outlined"
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  {...register('name', {
+                    required: t`First name is required`,
+                    maxLength: {
+                      value: 50,
+                      message: t`First name must be 50 characters or less`,
+                    },
+                  })}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <TextField
+                  id="surname"
+                  label={t`Last Name`}
+                  placeholder={t`Enter your last name`}
+                  fullWidth
+                  variant="outlined"
+                  error={!!errors.surname}
+                  helperText={errors.surname?.message}
+                  {...register('surname', {
+                    required: t`Last name is required`,
+                    maxLength: {
+                      value: 50,
+                      message: t`Last name must be 50 characters or less`,
+                    },
+                  })}
+                />
+              </FormControl>
+            </Stack>
+            <FormControl fullWidth>
+              <TextField
+                id="nickname"
+                label={t`Nickname`}
+                placeholder={t`Choose a unique nickname`}
+                fullWidth
+                variant="outlined"
+                error={!!errors.nickname}
+                helperText={
+                  errors.nickname?.message ||
+                  t`This will be your public username`
+                }
+                {...register('nickname', {
+                  required: t`Nickname is required`,
+                  minLength: {
+                    value: 3,
+                    message: t`Nickname must be at least 3 characters`,
+                  },
+                  maxLength: {
+                    value: 30,
+                    message: t`Nickname must be 30 characters or less`,
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9_]+$/,
+                    message: t`Only letters, numbers, and underscores allowed`,
+                  },
+                })}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
+                id="dateOfBirth"
+                type="date"
+                label={t`Date of Birth`}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ max: getMaxDateOfBirth() }}
+                error={!!errors.dateOfBirth}
+                helperText={
+                  errors.dateOfBirth?.message ||
+                  t`You must be at least 13 years old`
+                }
+                {...register('dateOfBirth', {
+                  required: t`Date of birth is required`,
+                  validate: value => {
+                    const date = new Date(value);
+                    const maxDate = new Date(getMaxDateOfBirth());
+                    return (
+                      date <= maxDate || t`You must be at least 13 years old`
+                    );
+                  },
+                })}
+              />
+            </FormControl>
+          </Stack>
+        );
+      case 1:
+        return (
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <Box>
+              <FormControl fullWidth error={!!errors.sportTypes}>
+                <InputLabel id="sport-types-label">
+                  <Trans>Favorite Sports</Trans>
+                </InputLabel>
+                <Controller
+                  name="sportTypes"
+                  control={control}
+                  rules={{
+                    required: t`Please select at least one sport`,
+                  }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      labelId="sport-types-label"
+                      id="sportTypes"
+                      multiple
+                      input={<OutlinedInput label={t`Favorite Sports`} />}
+                      renderValue={selected => (
+                        <Box
+                          sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
+                        >
+                          {(selected as SportType[]).map(value => (
+                            <Chip
+                              key={value}
+                              label={getSportTypeLabel(value)}
+                              size="small"
+                            />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      {Object.values(SportType).map(sport => (
+                        <MenuItem key={sport} value={sport}>
+                          <Checkbox checked={field.value.indexOf(sport) > -1} />
+                          <Typography>{getSportTypeLabel(sport)}</Typography>
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+                {errors.sportTypes && (
+                  <FormHelperText>{errors.sportTypes.message}</FormHelperText>
+                )}
+              </FormControl>
+            </Box>
+          </Stack>
+        );
+      case 2:
+        return (
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <FormControl fullWidth>
+              <TextField
+                id="stravaLink"
+                label={t`Strava Profile URL`}
+                placeholder="https://www.strava.com/athletes/..."
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <StravaIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+                error={!!errors.stravaLink}
+                helperText={errors.stravaLink?.message}
+                {...register('stravaLink', {
+                  pattern: {
+                    value: /^https?:\/\/(www\.)?strava\.com\/athletes\/[0-9]+$/,
+                    message: t`Invalid Strava profile URL`,
+                  },
+                })}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
+                id="instagramLink"
+                label={t`Instagram Profile URL`}
+                placeholder="https://www.instagram.com/..."
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <InstagramIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+                error={!!errors.instagramLink}
+                helperText={errors.instagramLink?.message}
+                {...register('instagramLink', {
+                  pattern: {
+                    value:
+                      /^https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?$/,
+                    message: t`Invalid Instagram profile URL`,
+                  },
+                })}
+              />
+            </FormControl>
+          </Stack>
+        );
+      case 3:
+        return (
+          <Stack spacing={2}>
+            <Typography variant="subtitle1" gutterBottom>
+              <Trans>Who can see your information?</Trans>
+            </Typography>
+
+            <Controller
+              name="privacySettings.email"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value}
+                  onChange={field.onChange}
+                  label={t`Email Privacy`}
+                />
+              )}
+            />
+
+            <Controller
+              name="privacySettings.dateOfBirth"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value}
+                  onChange={field.onChange}
+                  label={t`Date of Birth Privacy`}
+                />
+              )}
+            />
+
+            <Controller
+              name="privacySettings.sportTypes"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value}
+                  onChange={field.onChange}
+                  label={t`Sports Privacy`}
+                />
+              )}
+            />
+
+            <Controller
+              name="privacySettings.socialLinks"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value}
+                  onChange={field.onChange}
+                  label={t`Social Links Privacy`}
+                />
+              )}
+            />
+          </Stack>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <SignUpContainer direction="column" justifyContent="center">
       <StyledCard sx={{ borderColor: theme.palette.grey[600] }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
           <img
             src={logo}
-            width={80}
+            width={60}
             style={{ placeSelf: 'center' }}
             alt="BAAA Hub Logo"
           />
           <Box>
-            <Typography
-              component="h1"
-              variant="h4"
-              sx={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)' }}
-            >
+            <Typography component="h1" variant="h5">
               <Trans>Complete Your Profile</Trans>
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              <Trans>Set up your profile to get started</Trans>
             </Typography>
           </Box>
         </Box>
+
+        {!isMobile && (
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map(label => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        )}
 
         {errorMessage && (
           <Alert severity="error" sx={{ mt: 2 }}>
@@ -183,273 +505,55 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             width: '100%',
             gap: 2,
             mt: 2,
+            flexGrow: 1,
+            overflowY: 'auto',
+            maxHeight: '60vh',
+            px: 1,
           }}
         >
-          {/* Avatar Preview */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-            <Avatar
-              sx={{
-                width: 80,
-                height: 80,
-                backgroundColor: theme.palette.primary.main,
-                fontSize: '2rem',
-                fontWeight: 600,
-              }}
+          {renderStepContent(activeStep)}
+        </Box>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+          {isMobile && (
+            <MobileStepper
+              variant="dots"
+              steps={steps.length}
+              position="static"
+              activeStep={activeStep}
+              sx={{ flexGrow: 1, bgcolor: 'transparent' }}
+              nextButton={null}
+              backButton={null}
+            />
+          )}
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+              disabled={activeStep === 0 || isSubmitting}
+              onClick={handleBack}
+              startIcon={<KeyboardArrowLeft />}
             >
-              {getInitials(watchedName, watchedSurname) || '?'}
-            </Avatar>
+              <Trans>Back</Trans>
+            </Button>
+
+            {activeStep === steps.length - 1 ? (
+              <Button
+                variant="contained"
+                onClick={handleSubmit(handleFormSubmit)}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? t`Creating...` : t`Create Profile`}
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={handleNext}
+                endIcon={<KeyboardArrowRight />}
+              >
+                <Trans>Next</Trans>
+              </Button>
+            )}
           </Box>
-
-          {/* Name Fields */}
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="name"
-                label={t`First Name`}
-                placeholder={t`Enter your first name`}
-                autoFocus
-                fullWidth
-                variant="outlined"
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                {...register('name', {
-                  required: t`First name is required`,
-                  maxLength: {
-                    value: 50,
-                    message: t`First name must be 50 characters or less`,
-                  },
-                })}
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                id="surname"
-                label={t`Last Name`}
-                placeholder={t`Enter your last name`}
-                fullWidth
-                variant="outlined"
-                error={!!errors.surname}
-                helperText={errors.surname?.message}
-                {...register('surname', {
-                  required: t`Last name is required`,
-                  maxLength: {
-                    value: 50,
-                    message: t`Last name must be 50 characters or less`,
-                  },
-                })}
-              />
-            </FormControl>
-          </Stack>
-
-          {/* Nickname */}
-          <FormControl fullWidth>
-            <TextField
-              id="nickname"
-              label={t`Nickname`}
-              placeholder={t`Choose a unique nickname`}
-              fullWidth
-              variant="outlined"
-              error={!!errors.nickname}
-              helperText={
-                errors.nickname?.message || t`This will be your public username`
-              }
-              {...register('nickname', {
-                required: t`Nickname is required`,
-                minLength: {
-                  value: 3,
-                  message: t`Nickname must be at least 3 characters`,
-                },
-                maxLength: {
-                  value: 30,
-                  message: t`Nickname must be 30 characters or less`,
-                },
-                pattern: {
-                  value: /^[a-zA-Z0-9_]+$/,
-                  message: t`Only letters, numbers, and underscores allowed`,
-                },
-              })}
-            />
-          </FormControl>
-
-          {/* Email */}
-          <FormControl fullWidth>
-            <TextField
-              id="email"
-              type="email"
-              label={t`Email`}
-              placeholder={t`Enter your email`}
-              fullWidth
-              variant="outlined"
-              disabled={!!defaultEmail}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              {...register('email', {
-                required: t`Email is required`,
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: t`Invalid email address`,
-                },
-              })}
-            />
-          </FormControl>
-
-          {/* Date of Birth */}
-          <FormControl fullWidth>
-            <TextField
-              id="dateOfBirth"
-              type="date"
-              label={t`Date of Birth`}
-              fullWidth
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ max: getMaxDateOfBirth() }}
-              error={!!errors.dateOfBirth}
-              helperText={
-                errors.dateOfBirth?.message ||
-                t`You must be at least 13 years old`
-              }
-              {...register('dateOfBirth', {
-                required: t`Date of birth is required`,
-                validate: value => {
-                  const dob = new Date(value);
-                  const maxDate = new Date(getMaxDateOfBirth());
-                  if (dob > maxDate) {
-                    return t`You must be at least 13 years old`;
-                  }
-                  return true;
-                },
-              })}
-            />
-          </FormControl>
-
-          {/* Sport Types */}
-          <FormControl fullWidth error={!!errors.sportTypes}>
-            <InputLabel id="sport-types-label">
-              <Trans>Sport Types</Trans>
-            </InputLabel>
-            <Controller
-              name="sportTypes"
-              control={control}
-              rules={{
-                validate: value =>
-                  (value && value.length > 0) ||
-                  t`Select at least one sport type`,
-              }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  labelId="sport-types-label"
-                  id="sportTypes"
-                  multiple
-                  input={<OutlinedInput label={t`Sport Types`} />}
-                  renderValue={selected => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {(selected as SportType[]).map(value => (
-                        <Chip
-                          key={value}
-                          label={getSportTypeLabel(value)}
-                          size="small"
-                        />
-                      ))}
-                    </Box>
-                  )}
-                >
-                  {Object.values(SportType).map(sport => (
-                    <MenuItem key={sport} value={sport}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox checked={field.value?.includes(sport)} />
-                        }
-                        label={sportTypeLabels[sport]}
-                        sx={{ m: 0 }}
-                      />
-                    </MenuItem>
-                  ))}
-                </Select>
-              )}
-            />
-            <FormHelperText>
-              {errors.sportTypes?.message ||
-                t`Select the sports you participate in`}
-            </FormHelperText>
-          </FormControl>
-
-          {/* Optional Social Links */}
-          <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
-            <Trans>Social Links (Optional)</Trans>
-          </Typography>
-
-          <FormControl fullWidth>
-            <TextField
-              id="stravaLink"
-              label={t`Strava Profile`}
-              placeholder="https://www.strava.com/athletes/12345"
-              fullWidth
-              variant="outlined"
-              error={!!errors.stravaLink}
-              helperText={
-                errors.stravaLink?.message ||
-                t`Link to your Strava athlete profile`
-              }
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <StravaIcon sx={{ color: '#FC4C02' }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('stravaLink', {
-                pattern: {
-                  value: /^(https:\/\/(www\.)?strava\.com\/athletes\/\d+)?$/,
-                  message: t`Invalid Strava profile URL`,
-                },
-              })}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <TextField
-              id="instagramLink"
-              label={t`Instagram Profile`}
-              placeholder="https://www.instagram.com/username"
-              fullWidth
-              variant="outlined"
-              error={!!errors.instagramLink}
-              helperText={
-                errors.instagramLink?.message ||
-                t`Link to your Instagram profile`
-              }
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <InstagramIcon sx={{ color: '#E1306C' }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('instagramLink', {
-                pattern: {
-                  value:
-                    /^(https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?)?$/,
-                  message: t`Invalid Instagram profile URL`,
-                },
-              })}
-            />
-          </FormControl>
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            size="large"
-            disabled={isSubmitting}
-            sx={{ mt: 2 }}
-          >
-            {isSubmitting ? t`Creating Profile...` : t`Complete Setup`}
-          </Button>
         </Box>
       </StyledCard>
     </SignUpContainer>
