@@ -183,6 +183,8 @@ export const updateCurrentUser = async (ctx: AuthContext): Promise<void> => {
     user.stravaLink = data.stravaLink || undefined;
   if (data.instagramLink !== undefined)
     user.instagramLink = data.instagramLink || undefined;
+  if (data.privacySettings !== undefined)
+    user.privacySettings = data.privacySettings;
 
   await user.save();
 
