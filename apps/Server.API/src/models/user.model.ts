@@ -82,7 +82,15 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       trim: true,
     },
+    avatarThumbKey: {
+      type: String,
+      trim: true,
+    },
     bannerKey: {
+      type: String,
+      trim: true,
+    },
+    bannerThumbKey: {
       type: String,
       trim: true,
     },

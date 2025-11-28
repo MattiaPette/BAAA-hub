@@ -1,5 +1,16 @@
 import { describe, it, expect, vi } from 'vitest';
 
+// Mock sharp before importing the module
+vi.mock('sharp', () => {
+  return {
+    default: vi.fn(() => ({
+      resize: vi.fn().mockReturnThis(),
+      jpeg: vi.fn().mockReturnThis(),
+      toBuffer: vi.fn().mockResolvedValue(Buffer.from('thumbnail-data')),
+    })),
+  };
+});
+
 // Mock the S3 client before importing the module
 vi.mock('@aws-sdk/client-s3', () => {
   return {
@@ -19,8 +30,11 @@ import {
   validateImage,
   getExtensionFromMimeType,
   generateImageKey,
+  generateThumbnailKey,
+  generateThumbnail,
   ALLOWED_IMAGE_TYPES,
   MAX_IMAGE_SIZE,
+  THUMBNAIL_SIZE,
   ImageType,
 } from '../storage.service';
 
@@ -123,6 +137,73 @@ describe('Storage Service', () => {
   describe('MAX_IMAGE_SIZE', () => {
     it('should be 5MB', () => {
       expect(MAX_IMAGE_SIZE).toBe(5 * 1024 * 1024);
+    });
+  });
+
+  describe('THUMBNAIL_SIZE', () => {
+    it('should be 128 pixels', () => {
+      expect(THUMBNAIL_SIZE).toBe(128);
+    });
+  });
+
+  describe('generateThumbnailKey', () => {
+    it('should generate thumbnail key for jpg image', () => {
+      const originalKey = 'avatars/user123/1234567890.jpg';
+      const thumbKey = generateThumbnailKey(originalKey);
+      expect(thumbKey).toBe('avatars/user123/1234567890_thumb.jpg');
+    });
+
+    it('should generate thumbnail key for png image', () => {
+      const originalKey = 'banners/user456/9876543210.png';
+      const thumbKey = generateThumbnailKey(originalKey);
+      expect(thumbKey).toBe('banners/user456/9876543210_thumb.png');
+    });
+
+    it('should throw error for empty key', () => {
+      expect(() => generateThumbnailKey('')).toThrow(
+        'Original key cannot be empty',
+      );
+    });
+
+    it('should throw error for whitespace-only key', () => {
+      expect(() => generateThumbnailKey('   ')).toThrow(
+        'Original key cannot be empty',
+      );
+    });
+
+    it('should generate thumbnail key for webp image', () => {
+      const originalKey = 'avatars/user789/1111111111.webp';
+      const thumbKey = generateThumbnailKey(originalKey);
+      expect(thumbKey).toBe('avatars/user789/1111111111_thumb.webp');
+    });
+
+    it('should handle key without extension', () => {
+      const originalKey = 'avatars/user123/noextension';
+      const thumbKey = generateThumbnailKey(originalKey);
+      expect(thumbKey).toBe('avatars/user123/noextension_thumb');
+    });
+  });
+
+  describe('generateThumbnail', () => {
+    it('should generate a thumbnail buffer', async () => {
+      const imageData = Buffer.from('fake-image-data');
+      const result = await generateThumbnail(imageData);
+      expect(result).toBeInstanceOf(Buffer);
+    });
+
+    it('should use default size when not specified', async () => {
+      const imageData = Buffer.from('fake-image-data');
+      await generateThumbnail(imageData);
+      // The mock sharp is called - we just verify it returns a buffer
+      const result = await generateThumbnail(imageData);
+      expect(result).toBeInstanceOf(Buffer);
+    });
+
+    it('should accept custom size parameter', async () => {
+      const imageData = Buffer.from('fake-image-data');
+      const customSize = 256;
+      const result = await generateThumbnail(imageData, customSize);
+      expect(result).toBeInstanceOf(Buffer);
     });
   });
 });

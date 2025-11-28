@@ -7,6 +7,7 @@ import {
   CreateBucketCommand,
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
+import sharp from 'sharp';
 import config from '../config/index.js';
 
 /**
@@ -63,6 +64,11 @@ export const ALLOWED_IMAGE_TYPES = [
  * Maximum file size in bytes (5MB)
  */
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
+/**
+ * Default thumbnail size in pixels (width and height for resize)
+ */
+export const THUMBNAIL_SIZE = 128;
 
 /**
  * Image type enum for storage paths
@@ -136,6 +142,44 @@ export const generateImageKey = (
   const timestamp = Date.now();
   const sanitizedUserId = userId.replace(/[^a-zA-Z0-9-_]/g, '_');
   return `${imageType}/${sanitizedUserId}/${timestamp}.${extension}`;
+};
+
+/**
+ * Generate a thumbnail key from an original image key
+ * @param originalKey - The original image key
+ * @returns The thumbnail key
+ * @throws Error if originalKey is empty
+ */
+export const generateThumbnailKey = (originalKey: string): string => {
+  if (!originalKey || originalKey.trim().length === 0) {
+    throw new Error('Original key cannot be empty');
+  }
+  const lastDotIndex = originalKey.lastIndexOf('.');
+  if (lastDotIndex === -1) {
+    return `${originalKey}_thumb`;
+  }
+  const base = originalKey.substring(0, lastDotIndex);
+  const ext = originalKey.substring(lastDotIndex);
+  return `${base}_thumb${ext}`;
+};
+
+/**
+ * Generate a thumbnail from an image buffer
+ * @param imageData - The original image data as Buffer
+ * @param size - The target size for the thumbnail (default: THUMBNAIL_SIZE)
+ * @returns The thumbnail image as Buffer
+ */
+export const generateThumbnail = async (
+  imageData: Buffer,
+  size: number = THUMBNAIL_SIZE,
+): Promise<Buffer> => {
+  return sharp(imageData)
+    .resize(size, size, {
+      fit: 'cover',
+      position: 'center',
+    })
+    .jpeg({ quality: 80 })
+    .toBuffer();
 };
 
 /**

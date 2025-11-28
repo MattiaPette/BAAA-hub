@@ -55,8 +55,12 @@ export interface UserProfileData {
   profilePicture?: string;
   /** Object storage key for avatar image (stored in MinIO) */
   avatarKey?: string;
+  /** Object storage key for avatar thumbnail image (stored in MinIO) */
+  avatarThumbKey?: string;
   /** Object storage key for banner image (stored in MinIO) */
   bannerKey?: string;
+  /** Object storage key for banner thumbnail image (stored in MinIO) */
+  bannerThumbKey?: string;
   stravaLink?: string;
   instagramLink?: string;
   privacySettings: UserPrivacySettings;
