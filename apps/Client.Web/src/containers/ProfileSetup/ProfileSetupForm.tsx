@@ -1,4 +1,11 @@
-import { FC, useState, useEffect } from 'react';
+import {
+  FC,
+  useState,
+  useEffect,
+  useRef,
+  ChangeEvent,
+  useCallback,
+} from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -39,16 +46,22 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import LanguageIcon from '@mui/icons-material/Language';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import {
   ProfileSetupFormInput,
   ProfileSetupFormProps,
+  ProfileSetupFormData,
 } from './ProfileSetup.model';
 import { PrivacySelector } from '../../components/commons/inputs/PrivacySelector/PrivacySelector';
 import { checkNicknameAvailability } from '../../services/userService';
 import { useLanguageContext } from '../../providers/LanguageProvider/LanguageProvider';
 import { Language } from '../../providers/LanguageProvider/LanguageProvider.model';
+import {
+  ImageCropDialog,
+  validateImageFile,
+} from '../../components/commons/inputs/ImageUpload';
 import logo from '../../assets/baaa.png';
 
 const StravaIcon = (props: SvgIconProps) => (
@@ -115,6 +128,19 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   const [activeStep, setActiveStep] = useState(0);
   const [language, setLanguage] = useLanguageContext();
 
+  // Image upload state
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [cropDialogOpen, setCropDialogOpen] = useState(false);
+  const [cropDialogVariant, setCropDialogVariant] = useState<
+    'avatar' | 'banner'
+  >('avatar');
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
+
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     setLanguage(event.target.value as Language);
   };
@@ -163,6 +189,8 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
         dateOfBirth: PrivacyLevel.PUBLIC,
         sportTypes: PrivacyLevel.PUBLIC,
         socialLinks: PrivacyLevel.PUBLIC,
+        avatar: PrivacyLevel.PUBLIC,
+        banner: PrivacyLevel.PUBLIC,
       },
     },
   });
@@ -238,8 +266,106 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
     }
   }, [nicknameStatus.available, errors.nickname?.type, clearErrors]);
 
+  // Image file selection handlers
+  const handleImageSelect = useCallback(
+    (event: ChangeEvent<HTMLInputElement>, variant: 'avatar' | 'banner') => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const validation = validateImageFile(file);
+      if (!validation.valid) {
+        // Reset the input
+        if (variant === 'avatar' && avatarInputRef.current) {
+          // eslint-disable-next-line functional/immutable-data
+          avatarInputRef.current.value = '';
+        } else if (variant === 'banner' && bannerInputRef.current) {
+          // eslint-disable-next-line functional/immutable-data
+          bannerInputRef.current.value = '';
+        }
+        return;
+      }
+
+      setSelectedImageFile(file);
+      setCropDialogVariant(variant);
+      setCropDialogOpen(true);
+
+      // Reset file input to allow selecting the same file again
+      if (variant === 'avatar' && avatarInputRef.current) {
+        // eslint-disable-next-line functional/immutable-data
+        avatarInputRef.current.value = '';
+      } else if (variant === 'banner' && bannerInputRef.current) {
+        // eslint-disable-next-line functional/immutable-data
+        bannerInputRef.current.value = '';
+      }
+    },
+    [],
+  );
+
+  const handleCropConfirm = useCallback(
+    (croppedFile: File) => {
+      setCropDialogOpen(false);
+
+      // Create preview URL
+      const objectUrl = URL.createObjectURL(croppedFile);
+
+      if (cropDialogVariant === 'avatar') {
+        // Revoke old preview URL if exists
+        if (avatarPreview) {
+          URL.revokeObjectURL(avatarPreview);
+        }
+        setAvatarFile(croppedFile);
+        setAvatarPreview(objectUrl);
+      } else {
+        // Revoke old preview URL if exists
+        if (bannerPreview) {
+          URL.revokeObjectURL(bannerPreview);
+        }
+        setBannerFile(croppedFile);
+        setBannerPreview(objectUrl);
+      }
+
+      setSelectedImageFile(null);
+    },
+    [cropDialogVariant, avatarPreview, bannerPreview],
+  );
+
+  const handleCropCancel = useCallback(() => {
+    setCropDialogOpen(false);
+    setSelectedImageFile(null);
+  }, []);
+
+  const handleRemoveAvatar = useCallback(() => {
+    if (avatarPreview) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+    setAvatarFile(null);
+    setAvatarPreview(null);
+  }, [avatarPreview]);
+
+  const handleRemoveBanner = useCallback(() => {
+    if (bannerPreview) {
+      URL.revokeObjectURL(bannerPreview);
+    }
+    setBannerFile(null);
+    setBannerPreview(null);
+  }, [bannerPreview]);
+
+  // Cleanup preview URLs on unmount
+  useEffect(
+    () => () => {
+      if (avatarPreview) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+      if (bannerPreview) {
+        URL.revokeObjectURL(bannerPreview);
+      }
+    },
+    [avatarPreview, bannerPreview],
+  );
+
   const steps = [
     t`Personal Details`,
+    t`Profile Picture`,
     t`Sports`,
     t`Contact & Social`,
     t`Privacy`,
@@ -253,8 +379,11 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
         case 0:
           return ['name', 'surname', 'nickname', 'dateOfBirth'];
         case 1:
-          return ['sportTypes'];
+          // Profile Picture step - no form validation needed
+          return [];
         case 2:
+          return ['sportTypes'];
+        case 3:
           return ['stravaLink', 'instagramLink'];
         default:
           return [];
@@ -284,7 +413,12 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   };
 
   const handleFormSubmit: SubmitHandler<ProfileSetupFormInput> = data => {
-    onSubmit(data);
+    const formData: ProfileSetupFormData = {
+      ...data,
+      avatarFile: avatarFile || undefined,
+      bannerFile: bannerFile || undefined,
+    };
+    onSubmit(formData);
   };
 
   const renderStepContent = (step: number) => {
@@ -431,6 +565,169 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
           </Stack>
         );
       case 1:
+        // Profile Picture step
+        return (
+          <Stack spacing={3} alignItems="center">
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              textAlign="center"
+            >
+              <Trans>
+                Add a profile picture and banner to personalize your profile
+              </Trans>
+            </Typography>
+
+            {/* Banner Upload */}
+            <Box sx={{ width: '100%' }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                <Trans>Banner Image</Trans>
+              </Typography>
+              <Box
+                sx={{
+                  position: 'relative',
+                  height: 120,
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  bgcolor: bannerPreview ? 'transparent' : 'action.hover',
+                  backgroundImage: bannerPreview
+                    ? `url(${bannerPreview})`
+                    : 'none',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  border: '2px dashed',
+                  borderColor: 'divider',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    bgcolor: bannerPreview ? 'transparent' : 'action.selected',
+                  },
+                }}
+                onClick={() => bannerInputRef.current?.click()}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    bannerInputRef.current?.click();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={t`Upload banner image`}
+              >
+                {!bannerPreview && (
+                  <Stack alignItems="center" spacing={1}>
+                    <PhotoCameraIcon color="action" />
+                    <Typography variant="caption" color="text.secondary">
+                      <Trans>Click to upload banner</Trans>
+                    </Typography>
+                  </Stack>
+                )}
+                <input
+                  ref={bannerInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                  onChange={e => handleImageSelect(e, 'banner')}
+                  style={{ display: 'none' }}
+                  aria-label={t`Upload banner image`}
+                />
+              </Box>
+              {bannerPreview && (
+                <Button
+                  size="small"
+                  color="error"
+                  onClick={handleRemoveBanner}
+                  sx={{ mt: 1 }}
+                >
+                  <Trans>Remove banner</Trans>
+                </Button>
+              )}
+            </Box>
+
+            {/* Avatar Upload */}
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                <Trans>Profile Picture</Trans>
+              </Typography>
+              <Box
+                sx={{
+                  position: 'relative',
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                }}
+                onClick={() => avatarInputRef.current?.click()}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    avatarInputRef.current?.click();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={t`Upload profile picture`}
+              >
+                <Avatar
+                  src={avatarPreview || undefined}
+                  sx={{
+                    width: 100,
+                    height: 100,
+                    bgcolor: avatarPreview
+                      ? 'transparent'
+                      : theme.palette.primary.main,
+                    fontSize: '2.5rem',
+                    fontWeight: 600,
+                    border: '3px dashed',
+                    borderColor: 'divider',
+                    '&:hover': {
+                      borderColor: 'primary.main',
+                    },
+                  }}
+                >
+                  {!avatarPreview &&
+                    (getInitials(watchedName, watchedSurname) || (
+                      <PhotoCameraIcon />
+                    ))}
+                </Avatar>
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                  onChange={e => handleImageSelect(e, 'avatar')}
+                  style={{ display: 'none' }}
+                  aria-label={t`Upload profile picture`}
+                />
+              </Box>
+              {avatarPreview && (
+                <Box>
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={handleRemoveAvatar}
+                    sx={{ mt: 1 }}
+                  >
+                    <Trans>Remove photo</Trans>
+                  </Button>
+                </Box>
+              )}
+            </Box>
+
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              textAlign="center"
+            >
+              <Trans>Supports JPG, PNG, WEBP, HEIC. Max 5MB.</Trans>
+            </Typography>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              textAlign="center"
+            >
+              <Trans>You can skip this step and add photos later.</Trans>
+            </Typography>
+          </Stack>
+        );
+      case 2:
         return (
           <Stack spacing={2} sx={{ mt: 1 }}>
             <Box>
@@ -484,7 +781,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             </Box>
           </Stack>
         );
-      case 2:
+      case 3:
         return (
           <Stack spacing={2} sx={{ mt: 1 }}>
             <FormControl fullWidth>
@@ -538,7 +835,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             </FormControl>
           </Stack>
         );
-      case 3:
+      case 4:
         return (
           <Stack spacing={2}>
             <Typography variant="subtitle1" gutterBottom>
@@ -589,6 +886,30 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                   value={field.value}
                   onChange={field.onChange}
                   label={t`Social Links Privacy`}
+                />
+              )}
+            />
+
+            <Controller
+              name="privacySettings.avatar"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value || PrivacyLevel.PUBLIC}
+                  onChange={field.onChange}
+                  label={t`Profile Picture Privacy`}
+                />
+              )}
+            />
+
+            <Controller
+              name="privacySettings.banner"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value || PrivacyLevel.PUBLIC}
+                  onChange={field.onChange}
+                  label={t`Banner Privacy`}
                 />
               )}
             />
@@ -732,6 +1053,16 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
           </Box>
         </Box>
       </StyledCard>
+
+      {/* Image Crop Dialog */}
+      <ImageCropDialog
+        open={cropDialogOpen}
+        onClose={handleCropCancel}
+        onConfirm={handleCropConfirm}
+        imageFile={selectedImageFile}
+        aspectRatio={cropDialogVariant === 'avatar' ? 1 : 3}
+        variant={cropDialogVariant}
+      />
     </SignUpContainer>
   );
 };

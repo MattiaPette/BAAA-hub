@@ -16,6 +16,14 @@ export interface ProfileSetupFormInput {
 }
 
 /**
+ * Extended form data with image files (for the container)
+ */
+export interface ProfileSetupFormData extends ProfileSetupFormInput {
+  avatarFile?: File;
+  bannerFile?: File;
+}
+
+/**
  * Props for ProfileSetupForm component
  */
 export interface ProfileSetupFormProps {
@@ -23,6 +31,6 @@ export interface ProfileSetupFormProps {
   readonly defaultName?: string;
   readonly isSubmitting: boolean;
   readonly errorMessage?: string;
-  readonly onSubmit: (data: Readonly<ProfileSetupFormInput>) => void;
+  readonly onSubmit: (data: Readonly<ProfileSetupFormData>) => void;
   readonly onLogout: () => void;
 }

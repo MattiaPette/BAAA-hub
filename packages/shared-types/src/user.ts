@@ -31,6 +31,10 @@ export interface UserPrivacySettings {
   dateOfBirth: PrivacyLevel;
   sportTypes: PrivacyLevel;
   socialLinks: PrivacyLevel;
+  /** Privacy setting for profile picture/avatar */
+  avatar?: PrivacyLevel;
+  /** Privacy setting for banner image */
+  banner?: PrivacyLevel;
 }
 
 /**

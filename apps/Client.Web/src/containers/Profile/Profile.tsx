@@ -5,7 +5,6 @@ import { useLingui } from '@lingui/react';
 import { useSnackbar } from 'notistack';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -22,6 +21,8 @@ import {
   Typography,
   alpha,
   useTheme,
+  useMediaQuery,
+  Avatar,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import EmailIcon from '@mui/icons-material/Email';
@@ -34,10 +35,16 @@ import { SportType } from '@baaa-hub/shared-types';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { updateUserProfile, getUserImageUrl } from '../../services/userService';
+import {
+  updateUserProfile,
+  getUserImageUrl,
+  uploadUserImage,
+  deleteUserImage,
+} from '../../services/userService';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
+import { ImageUpload } from '../../components/commons/inputs/ImageUpload';
 
 const StravaIcon = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 24 24">
@@ -102,8 +109,63 @@ export const Profile: FC = () => {
     return user.profilePicture;
   }, [user]);
 
+  /**
+   * Get the user's banner image URL
+   */
+  const bannerUrl = useMemo(() => {
+    if (!user) return undefined;
+    if (user.bannerKey) {
+      return getUserImageUrl(user.id, 'banner');
+    }
+    return undefined;
+  }, [user]);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleEditOpen = () => setIsEditOpen(true);
   const handleEditClose = () => setIsEditOpen(false);
+
+  /**
+   * Handle avatar upload
+   */
+  const handleAvatarUpload = useCallback(
+    async (file: File) => {
+      if (!token?.idToken) return;
+      await uploadUserImage(token.idToken, 'avatar', file);
+      await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+    },
+    [token, queryClient],
+  );
+
+  /**
+   * Handle avatar delete
+   */
+  const handleAvatarDelete = useCallback(async () => {
+    if (!token?.idToken) return;
+    await deleteUserImage(token.idToken, 'avatar');
+    await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+  }, [token, queryClient]);
+
+  /**
+   * Handle banner upload
+   */
+  const handleBannerUpload = useCallback(
+    async (file: File) => {
+      if (!token?.idToken) return;
+      await uploadUserImage(token.idToken, 'banner', file);
+      await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+    },
+    [token, queryClient],
+  );
+
+  /**
+   * Handle banner delete
+   */
+  const handleBannerDelete = useCallback(async () => {
+    if (!token?.idToken) return;
+    await deleteUserImage(token.idToken, 'banner');
+    await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+  }, [token, queryClient]);
 
   const handleUpdate = useCallback(
     async (data: Readonly<ProfileEditFormInput>) => {
@@ -172,18 +234,21 @@ export const Profile: FC = () => {
 
   return (
     <Box sx={{ maxWidth: 1000, mx: 'auto', pb: 4 }}>
-      {/* Cover Image Banner */}
-      <Paper
-        elevation={0}
+      {/* Cover Image Banner with Edit Overlay */}
+      <Box
         sx={{
-          height: { xs: 160, md: 240 },
-          borderRadius: { xs: 0, sm: 3 },
-          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
           position: 'relative',
           mb: { xs: 8, md: 6 },
           overflow: 'visible',
         }}
       >
+        <ImageUpload
+          variant="banner"
+          imageUrl={bannerUrl}
+          onUpload={handleBannerUpload}
+          onDelete={user.bannerKey ? handleBannerDelete : undefined}
+        />
+
         {/* Avatar overlapping the banner */}
         <Box
           sx={{
@@ -194,22 +259,16 @@ export const Profile: FC = () => {
             zIndex: 2,
           }}
         >
-          <Avatar
-            src={avatarUrl}
-            sx={{
-              width: { xs: 120, md: 150 },
-              height: { xs: 120, md: 150 },
-              border: `4px solid ${theme.palette.background.paper}`,
-              fontSize: '3rem',
-              fontWeight: 700,
-              bgcolor: theme.palette.secondary.main,
-              boxShadow: theme.shadows[3],
-            }}
-          >
-            {!avatarUrl && getInitials(user.name, user.surname)}
-          </Avatar>
+          <ImageUpload
+            variant="avatar"
+            imageUrl={avatarUrl}
+            onUpload={handleAvatarUpload}
+            onDelete={user.avatarKey ? handleAvatarDelete : undefined}
+            fallbackText={getInitials(user.name, user.surname)}
+            size={isMobile ? 120 : 150}
+          />
         </Box>
-      </Paper>
+      </Box>
 
       <Box sx={{ px: { xs: 2, sm: 4 } }}>
         {/* Header Section */}
