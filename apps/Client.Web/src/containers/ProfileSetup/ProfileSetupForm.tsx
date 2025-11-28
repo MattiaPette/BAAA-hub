@@ -503,7 +503,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
               onChange={handleLanguageChange}
               startAdornment={
                 <InputAdornment position="start">
-                  <LanguageIcon fontSize="small" />
+                  <LanguageIcon fontSize="small" aria-hidden="true" />
                 </InputAdornment>
               }
               sx={{ '& .MuiSelect-select': { py: 1 } }}
