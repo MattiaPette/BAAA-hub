@@ -45,6 +45,7 @@ const userSchema = new Schema<UserDocument>(
       required: [true, 'Nickname is required'],
       unique: true,
       trim: true,
+      lowercase: true,
       minlength: [3, 'Nickname must be at least 3 characters'],
       maxlength: [30, 'Nickname must be 30 characters or less'],
       match: [
@@ -177,7 +178,7 @@ userSchema.statics.findByEmail = function (
 userSchema.statics.findByNickname = function (
   nickname: string,
 ): Promise<UserDocument | null> {
-  return this.findOne({ nickname });
+  return this.findOne({ nickname: nickname.toLowerCase() });
 };
 
 export const User = mongoose.model<UserDocument, IUserModel>(

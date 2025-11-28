@@ -51,7 +51,8 @@ export const createUserSchema = z.object({
       /^[a-zA-Z0-9_]+$/,
       'Nickname can only contain letters, numbers, and underscores',
     )
-    .trim(),
+    .trim()
+    .toLowerCase(),
   email: z.string().email('Invalid email address').trim().toLowerCase(),
   dateOfBirth: z
     .string()
