@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { SportType } from '@baaa-hub/shared-types';
+import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
 
 /**
  * Minimum age requirement in years
@@ -32,6 +32,16 @@ const instagramUrlRegex =
   /^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?$/;
 
 /**
+ * Privacy settings schema
+ */
+const privacySettingsSchema = z.object({
+  email: z.nativeEnum(PrivacyLevel),
+  dateOfBirth: z.nativeEnum(PrivacyLevel),
+  sportTypes: z.nativeEnum(PrivacyLevel),
+  socialLinks: z.nativeEnum(PrivacyLevel),
+});
+
+/**
  * Zod schema for creating a new user profile
  */
 export const createUserSchema = z.object({
@@ -53,7 +63,8 @@ export const createUserSchema = z.object({
       /^[a-zA-Z0-9_]+$/,
       'Nickname can only contain letters, numbers, and underscores',
     )
-    .trim(),
+    .trim()
+    .toLowerCase(),
   email: z.string().email('Invalid email address').trim().toLowerCase(),
   dateOfBirth: z
     .string()
@@ -78,6 +89,7 @@ export const createUserSchema = z.object({
     .regex(instagramUrlRegex, 'Invalid Instagram profile URL')
     .optional()
     .or(z.literal('')),
+  privacySettings: privacySettingsSchema,
 });
 
 /**
@@ -127,6 +139,7 @@ export const updateUserSchema = z.object({
     .optional()
     .or(z.literal(''))
     .nullable(),
+  privacySettings: privacySettingsSchema.optional(),
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;

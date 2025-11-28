@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SportType } from '@baaa-hub/shared-types';
+import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
 import {
   createUserSchema,
   updateUserSchema,
@@ -23,6 +23,12 @@ describe('createUserSchema', () => {
     email: 'john@example.com',
     dateOfBirth: getDateYearsAgo(25),
     sportTypes: [SportType.RUNNING],
+    privacySettings: {
+      email: PrivacyLevel.PUBLIC,
+      dateOfBirth: PrivacyLevel.PUBLIC,
+      sportTypes: PrivacyLevel.PUBLIC,
+      socialLinks: PrivacyLevel.PUBLIC,
+    },
   };
 
   describe('name validation', () => {
@@ -110,6 +116,17 @@ describe('createUserSchema', () => {
         nickname: 'john doe',
       });
       expect(result.success).toBe(false);
+    });
+
+    it('should convert nickname to lowercase for case-insensitive uniqueness', () => {
+      const result = createUserSchema.safeParse({
+        ...validUser,
+        nickname: 'JohnDoe_123',
+      });
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.nickname).toBe('johndoe_123');
+      }
     });
   });
 

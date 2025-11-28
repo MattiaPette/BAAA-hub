@@ -24,4 +24,5 @@ export interface ProfileSetupFormProps {
   readonly isSubmitting: boolean;
   readonly errorMessage?: string;
   readonly onSubmit: (data: Readonly<ProfileSetupFormInput>) => void;
+  readonly onLogout: () => void;
 }

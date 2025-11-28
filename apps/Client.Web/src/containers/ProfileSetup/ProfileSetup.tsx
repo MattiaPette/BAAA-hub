@@ -13,12 +13,17 @@ import { ProfileSetupFormInput } from './ProfileSetup.model';
  * ProfileSetup container - handles the profile creation flow after Auth0 signup
  */
 export const ProfileSetup: FC = () => {
-  const { token, setLoading } = useAuth();
+  const { token, setLoading, logout } = useAuth();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+
+  const handleLogout = useCallback(() => {
+    logout();
+    navigate('/login', { replace: true });
+  }, [logout, navigate]);
 
   const handleSubmit = useCallback(
     async (data: Readonly<ProfileSetupFormInput>) => {
@@ -60,10 +65,17 @@ export const ProfileSetup: FC = () => {
         // Handle specific error cases
         if (error instanceof Error) {
           const axiosError = error as {
-            response?: { data?: { code?: string; error?: string } };
+            response?: {
+              data?: {
+                code?: string;
+                error?: string;
+                details?: Array<{ path: string; message: string }>;
+              };
+            };
           };
           const errorCode = axiosError.response?.data?.code;
           const errorMsg = axiosError.response?.data?.error;
+          const errorDetails = axiosError.response?.data?.details;
 
           switch (errorCode) {
             case 'NICKNAME_TAKEN':
@@ -82,6 +94,19 @@ export const ProfileSetup: FC = () => {
               break;
             case 'AGE_REQUIREMENT_NOT_MET':
               setErrorMessage(t`You must be at least 13 years old to sign up.`);
+              break;
+            case 'VALIDATION_ERROR':
+              // Show detailed validation errors
+              if (errorDetails && errorDetails.length > 0) {
+                const messages = errorDetails
+                  .map(detail => `${detail.path}: ${detail.message}`)
+                  .join(', ');
+                setErrorMessage(messages);
+              } else {
+                setErrorMessage(
+                  errorMsg || t`Please check your input and try again.`,
+                );
+              }
               break;
             default:
               setErrorMessage(
@@ -111,6 +136,7 @@ export const ProfileSetup: FC = () => {
         isSubmitting={isSubmitting}
         errorMessage={errorMessage}
         onSubmit={handleSubmit}
+        onLogout={handleLogout}
       />
     </FlexContainer>
   );

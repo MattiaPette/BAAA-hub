@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -29,12 +29,16 @@ import {
   SvgIconProps,
   FormHelperText,
   Checkbox,
+  CircularProgress,
   SelectChangeEvent,
 } from '@mui/material';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 import LanguageIcon from '@mui/icons-material/Language';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import {
@@ -42,6 +46,7 @@ import {
   ProfileSetupFormProps,
 } from './ProfileSetup.model';
 import { PrivacySelector } from '../../components/commons/inputs/PrivacySelector/PrivacySelector';
+import { checkNicknameAvailability } from '../../services/userService';
 import { useLanguageContext } from '../../providers/LanguageProvider/LanguageProvider';
 import { Language } from '../../providers/LanguageProvider/LanguageProvider.model';
 import logo from '../../assets/baaa.png';
@@ -103,6 +108,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   isSubmitting,
   errorMessage,
   onSubmit,
+  onLogout,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -112,6 +118,17 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     setLanguage(event.target.value as Language);
   };
+
+  // Nickname availability state
+  const [nicknameStatus, setNicknameStatus] = useState<{
+    checking: boolean;
+    available: boolean | null;
+    checkedNickname: string;
+  }>({
+    checking: false,
+    available: null,
+    checkedNickname: '',
+  });
 
   const [nameParts] = useState(() => {
     const parts = defaultName.split(' ');
@@ -127,6 +144,8 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
     control,
     watch,
     trigger,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<ProfileSetupFormInput>({
     mode: 'onBlur',
@@ -150,6 +169,74 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
 
   const watchedName = watch('name');
   const watchedSurname = watch('surname');
+  const watchedNickname = watch('nickname');
+
+  // Debounced nickname availability check
+  useEffect(() => {
+    // Validate nickname format first
+    const rawNickname = (watchedNickname || '').trim();
+    const trimmedNickname = rawNickname.toLowerCase();
+
+    // Check format before lowercasing to use correct regex
+    if (rawNickname.length < 3 || !/^[a-zA-Z0-9_]+$/.test(rawNickname)) {
+      setNicknameStatus({
+        checking: false,
+        available: null,
+        checkedNickname: '',
+      });
+      return undefined;
+    }
+
+    // Set checking state
+    setNicknameStatus(prev => ({
+      ...prev,
+      checking: true,
+    }));
+
+    // Debounce the API call
+    const timeoutId = setTimeout(() => {
+      checkNicknameAvailability(trimmedNickname)
+        .then(result => {
+          setNicknameStatus({
+            checking: false,
+            available: result.available,
+            checkedNickname: trimmedNickname,
+          });
+
+          // Set or clear form error based on availability
+          if (!result.available) {
+            setError('nickname', {
+              type: 'nicknameTaken',
+              message: t`This nickname is already taken`,
+            });
+          }
+        })
+        .catch((error: unknown) => {
+          // Log error but don't block the form
+          console.warn('Nickname availability check failed:', error);
+          setNicknameStatus({
+            checking: false,
+            available: null,
+            checkedNickname: '',
+          });
+        });
+    }, 500);
+
+    // Cleanup timeout on unmount or when nickname changes
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [watchedNickname, setError]);
+
+  // Clear nickname taken error when user types a new valid nickname
+  useEffect(() => {
+    if (
+      errors.nickname?.type === 'nicknameTaken' &&
+      nicknameStatus.available === true
+    ) {
+      clearErrors('nickname');
+    }
+  }, [nicknameStatus.available, errors.nickname?.type, clearErrors]);
 
   const steps = [
     t`Personal Details`,
@@ -177,6 +264,15 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
     const fieldsToValidate = getFieldsToValidate(activeStep);
     const valid =
       fieldsToValidate.length > 0 ? await trigger(fieldsToValidate) : true;
+
+    // Also check if nickname is taken (for step 0)
+    if (activeStep === 0 && nicknameStatus.available === false) {
+      setError('nickname', {
+        type: 'manual',
+        message: t`This nickname is already taken`,
+      });
+      return;
+    }
 
     if (valid) {
       setActiveStep(prev => prev + 1);
@@ -255,11 +351,40 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                 placeholder={t`Choose a unique nickname`}
                 fullWidth
                 variant="outlined"
-                error={!!errors.nickname}
+                error={!!errors.nickname || nicknameStatus.available === false}
                 helperText={
                   errors.nickname?.message ||
-                  t`This will be your public username`
+                  (nicknameStatus.available === true
+                    ? t`This nickname is available`
+                    : t`This will be your public username`)
                 }
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {nicknameStatus.checking && (
+                          <CircularProgress size={20} />
+                        )}
+                        {!nicknameStatus.checking &&
+                          nicknameStatus.available === true && (
+                            <CheckCircleIcon color="success" />
+                          )}
+                        {!nicknameStatus.checking &&
+                          nicknameStatus.available === false && (
+                            <ErrorIcon color="error" />
+                          )}
+                      </InputAdornment>
+                    ),
+                  },
+                  formHelperText: {
+                    sx: {
+                      color:
+                        nicknameStatus.available === true
+                          ? 'success.main'
+                          : undefined,
+                    },
+                  },
+                }}
                 {...register('nickname', {
                   required: t`Nickname is required`,
                   minLength: {
@@ -318,6 +443,9 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                   control={control}
                   rules={{
                     required: t`Please select at least one sport`,
+                    validate: value =>
+                      (value && value.length <= 5) ||
+                      t`You can select up to 5 sports`,
                   }}
                   render={({ field }) => (
                     <Select
@@ -495,23 +623,36 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
               </Typography>
             </Box>
           </Box>
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <Select
-              id="language-selector"
-              aria-label={t`Select Language`}
-              value={language}
-              onChange={handleLanguageChange}
-              startAdornment={
-                <InputAdornment position="start">
-                  <LanguageIcon fontSize="small" aria-hidden="true" />
-                </InputAdornment>
-              }
-              sx={{ '& .MuiSelect-select': { py: 1 } }}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <FormControl size="small" sx={{ minWidth: 120 }}>
+              <Select
+                id="language-selector"
+                aria-label={t`Select Language`}
+                value={language}
+                onChange={handleLanguageChange}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LanguageIcon fontSize="small" aria-hidden="true" />
+                  </InputAdornment>
+                }
+                sx={{ '& .MuiSelect-select': { py: 1 } }}
+              >
+                <MenuItem value={Language.EN}>English</MenuItem>
+                <MenuItem value={Language.IT}>Italiano</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<LogoutIcon />}
+              onClick={onLogout}
+              disabled={isSubmitting}
+              sx={{ textTransform: 'none' }}
             >
-              <MenuItem value={Language.EN}>English</MenuItem>
-              <MenuItem value={Language.IT}>Italiano</MenuItem>
-            </Select>
-          </FormControl>
+              <Trans>Logout</Trans>
+            </Button>
+          </Stack>
         </Box>
 
         {!isMobile && (
