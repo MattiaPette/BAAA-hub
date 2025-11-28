@@ -11,6 +11,11 @@ import {
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 /**
+ * Image type for upload operations
+ */
+export type ImageType = 'avatar' | 'banner';
+
+/**
  * Create axios instance with default configuration
  */
 const createApiClient = (idToken?: string) => {
@@ -87,3 +92,59 @@ export const checkNicknameAvailability = async (
   );
   return response.data;
 };
+
+/**
+ * Upload a user image (avatar or banner)
+ * @param idToken - Authentication token
+ * @param imageType - Type of image (avatar or banner)
+ * @param file - The image file to upload
+ * @returns The uploaded image key
+ */
+export const uploadUserImage = async (
+  idToken: string,
+  imageType: ImageType,
+  file: File,
+): Promise<{ key: string }> => {
+  const arrayBuffer = await file.arrayBuffer();
+  const response = await axios.put<{ key: string; message: string }>(
+    `${API_BASE_URL}/api/images/me/${imageType}`,
+    arrayBuffer,
+    {
+      headers: {
+        'Content-Type': file.type,
+        Authorization: `Bearer ${idToken}`,
+      },
+    },
+  );
+  return { key: response.data.key };
+};
+
+/**
+ * Delete a user image (avatar or banner)
+ * @param idToken - Authentication token
+ * @param imageType - Type of image (avatar or banner)
+ */
+export const deleteUserImage = async (
+  idToken: string,
+  imageType: ImageType,
+): Promise<void> => {
+  const client = createApiClient(idToken);
+  await client.delete(`/api/images/me/${imageType}`);
+};
+
+/**
+ * Get the URL for a user's image
+ * @param userId - User ID
+ * @param imageType - Type of image (avatar or banner)
+ * @returns The image URL
+ */
+export const getUserImageUrl = (userId: string, imageType: ImageType): string =>
+  `${API_BASE_URL}/api/images/user/${userId}/${imageType}`;
+
+/**
+ * Get the URL for the current user's image
+ * @param imageType - Type of image (avatar or banner)
+ * @returns The image URL (requires authentication header)
+ */
+export const getMyImageUrl = (imageType: ImageType): string =>
+  `${API_BASE_URL}/api/images/me/${imageType}`;

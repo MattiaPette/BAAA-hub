@@ -7,6 +7,8 @@ import config from './config/index.js';
 import { connectDatabase } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { userRouter } from './routes/user.routes.js';
+import { imageRouter } from './routes/image.routes.js';
+import { initializeStorage } from './services/storage.service.js';
 import path from 'path';
 
 /**
@@ -24,7 +26,45 @@ app.use(
     credentials: true,
   }),
 );
-app.use(bodyParser());
+
+/**
+ * Raw body middleware for image uploads
+ * Must run BEFORE body parser to capture raw binary data
+ */
+app.use(async (ctx, next) => {
+  const isImageUpload =
+    ctx.method === 'PUT' &&
+    ctx.path.startsWith('/api/images/') &&
+    ctx.request.headers['content-type']?.startsWith('image/');
+
+  if (isImageUpload) {
+    const chunks: Buffer[] = [];
+    await new Promise<void>((resolve, reject) => {
+      ctx.req.on('data', (chunk: Buffer) => chunks.push(chunk));
+      ctx.req.on('end', () => {
+        ctx.request.body = Buffer.concat(chunks);
+        resolve();
+      });
+      ctx.req.on('error', reject);
+    });
+    await next();
+  } else {
+    await next();
+  }
+});
+
+/**
+ * Configure body parser for non-image requests
+ */
+app.use(
+  bodyParser({
+    enableTypes: ['json', 'form', 'text'],
+    // Increase limit for larger payloads
+    formLimit: '1mb',
+    jsonLimit: '1mb',
+    textLimit: '1mb',
+  }),
+);
 
 /**
  * Health check route
@@ -77,6 +117,7 @@ app.use(
  */
 app.use(healthRouter.routes()).use(healthRouter.allowedMethods());
 app.use(userRouter.routes()).use(userRouter.allowedMethods());
+app.use(imageRouter.routes()).use(imageRouter.allowedMethods());
 
 /**
  * Start server
@@ -86,6 +127,9 @@ const startServer = async (): Promise<void> => {
   try {
     // Connect to database
     await connectDatabase();
+
+    // Initialize object storage (MinIO)
+    await initializeStorage();
 
     // Start listening
     app.listen(config.port, () => {
