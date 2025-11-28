@@ -1,6 +1,7 @@
 import { FC, useEffect, useState, useCallback } from 'react';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react';
 import { useSnackbar } from 'notistack';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -78,6 +79,7 @@ export const Profile: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
   const theme = useTheme();
+  const { i18n } = useLingui();
 
   const { data: user, isLoading, error } = useCurrentUser();
 
@@ -86,7 +88,7 @@ export const Profile: FC = () => {
 
   useEffect(() => {
     setTitle(t`Profile`);
-  }, [setTitle]);
+  }, [setTitle, i18n.locale]);
 
   const handleEditOpen = () => setIsEditOpen(true);
   const handleEditClose = () => setIsEditOpen(false);

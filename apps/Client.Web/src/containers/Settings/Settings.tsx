@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { t } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import {
   Box,
   Card,
@@ -35,10 +36,11 @@ export const Settings: FC = () => {
   const [mode, setMode] = useThemeModeContext();
   const { enqueueSnackbar } = useSnackbar();
   const { setTitle } = useBreadcrum();
+  const { i18n } = useLingui();
 
   useEffect(() => {
     setTitle(t`Settings`);
-  }, [setTitle]);
+  }, [setTitle, i18n.locale]);
 
   const handleThemeToggle = () => {
     const newMode = mode === 'dark' ? 'light' : 'dark';

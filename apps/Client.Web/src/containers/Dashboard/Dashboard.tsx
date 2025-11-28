@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { t } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import { Box, Typography } from '@mui/material';
 
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
@@ -14,10 +15,11 @@ import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvide
  */
 export const Dashboard: FC = () => {
   const { setTitle } = useBreadcrum();
+  const { i18n } = useLingui();
 
   useEffect(() => {
     setTitle(t`Dashboard`);
-  }, [setTitle]);
+  }, [setTitle, i18n.locale]);
 
   return (
     <Box sx={{ padding: 3 }}>

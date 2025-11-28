@@ -1,12 +1,11 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { SnackbarProvider } from 'notistack';
 import { Settings } from './Settings';
+import { renderWithProviders as render } from '../../test-utils';
 
 import { BreadcrumProvider } from '../../providers/BreadcrumProvider/BreadcrumProvider';
-import { LanguageProvider } from '../../providers/LanguageProvider/LanguageProvider';
-import { ThemeModeProvider } from '../../providers/ThemeProvider/ThemeProvider';
 
 describe('Settings', () => {
   beforeEach(() => {
@@ -16,15 +15,11 @@ describe('Settings', () => {
 
   const renderSettings = () =>
     render(
-      <LanguageProvider>
-        <ThemeModeProvider>
-          <SnackbarProvider>
-            <BreadcrumProvider>
-              <Settings />
-            </BreadcrumProvider>
-          </SnackbarProvider>
-        </ThemeModeProvider>
-      </LanguageProvider>,
+      <SnackbarProvider>
+        <BreadcrumProvider>
+          <Settings />
+        </BreadcrumProvider>
+      </SnackbarProvider>,
     );
 
   it('should render Settings component', () => {
