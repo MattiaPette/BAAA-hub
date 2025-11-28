@@ -5,15 +5,26 @@ import { MemoryRouter } from 'react-router';
 import { SportType } from '@baaa-hub/shared-types';
 import { renderWithProviders as render } from '../../test-utils';
 import { ProfileSetupForm } from './ProfileSetupForm';
+import * as userService from '../../services/userService';
 
 // Mock scrollIntoView since it's not implemented in jsdom
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
+// Mock the userService
+vi.mock('../../services/userService', () => ({
+  checkNicknameAvailability: vi.fn(),
+}));
 
 describe('ProfileSetupForm', () => {
   const mockOnSubmit = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
+    // Default mock: nickname is available
+    vi.mocked(userService.checkNicknameAvailability).mockResolvedValue({
+      available: true,
+      nickname: 'johndoe',
+    });
   });
 
   const renderForm = (props = {}) =>
@@ -242,5 +253,141 @@ describe('ProfileSetupForm', () => {
 
     expect(screen.getByLabelText(/First Name/i)).toHaveValue('Jane');
     expect(screen.getByLabelText(/Last Name/i)).toHaveValue('Doe');
+  });
+
+  describe('nickname availability', () => {
+    it('should show available indicator when nickname is available', async () => {
+      vi.mocked(userService.checkNicknameAvailability).mockResolvedValue({
+        available: true,
+        nickname: 'validnick',
+      });
+
+      renderForm();
+
+      // Enter a valid nickname
+      const nicknameInput = screen.getByLabelText(/Nickname/i);
+      fireEvent.change(nicknameInput, { target: { value: 'validnick' } });
+
+      // Wait for the debounced check and the available message
+      await waitFor(
+        () => {
+          expect(
+            screen.getByText(/This nickname is available/i),
+          ).toBeInTheDocument();
+        },
+        { timeout: 1000 },
+      );
+
+      // Verify the API was called with lowercase nickname
+      expect(userService.checkNicknameAvailability).toHaveBeenCalledWith(
+        'validnick',
+      );
+    });
+
+    it('should show error when nickname is already taken', async () => {
+      vi.mocked(userService.checkNicknameAvailability).mockResolvedValue({
+        available: false,
+        nickname: 'takennick',
+      });
+
+      renderForm();
+
+      // Enter a taken nickname
+      const nicknameInput = screen.getByLabelText(/Nickname/i);
+      fireEvent.change(nicknameInput, { target: { value: 'takennick' } });
+
+      // Wait for the debounced check and the taken message
+      await waitFor(
+        () => {
+          expect(
+            screen.getByText(/This nickname is already taken/i),
+          ).toBeInTheDocument();
+        },
+        { timeout: 1000 },
+      );
+    });
+
+    it('should not check availability for nicknames shorter than 3 characters', async () => {
+      renderForm();
+
+      // Enter a short nickname
+      const nicknameInput = screen.getByLabelText(/Nickname/i);
+      fireEvent.change(nicknameInput, { target: { value: 'ab' } });
+
+      // Wait a bit to ensure no API call is made
+      await new Promise(resolve => {
+        setTimeout(resolve, 600);
+      });
+
+      expect(userService.checkNicknameAvailability).not.toHaveBeenCalled();
+    });
+
+    it('should prevent moving to next step when nickname is taken', async () => {
+      vi.mocked(userService.checkNicknameAvailability).mockResolvedValue({
+        available: false,
+        nickname: 'takennick',
+      });
+
+      renderForm();
+
+      // Fill in valid data with a taken nickname
+      fireEvent.change(screen.getByLabelText(/First Name/i), {
+        target: { value: 'John' },
+      });
+      fireEvent.change(screen.getByLabelText(/Last Name/i), {
+        target: { value: 'Doe' },
+      });
+      fireEvent.change(screen.getByLabelText(/Nickname/i), {
+        target: { value: 'takennick' },
+      });
+      fireEvent.change(screen.getByLabelText(/Date of Birth/i), {
+        target: { value: '2000-01-01' },
+      });
+      fireEvent.blur(screen.getByLabelText(/Date of Birth/i));
+
+      // Wait for nickname availability check
+      await waitFor(
+        () => {
+          expect(
+            screen.getByText(/This nickname is already taken/i),
+          ).toBeInTheDocument();
+        },
+        { timeout: 1000 },
+      );
+
+      // Try to go to next step
+      const nextButton = screen.getByRole('button', { name: /next/i });
+      fireEvent.click(nextButton);
+
+      // Should still be on step 1
+      await waitFor(() => {
+        expect(
+          screen.queryByLabelText(/Favorite Sports/i),
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    it('should normalize nickname to lowercase before checking', async () => {
+      vi.mocked(userService.checkNicknameAvailability).mockResolvedValue({
+        available: true,
+        nickname: 'johndoe',
+      });
+
+      renderForm();
+
+      // Enter a nickname with mixed case
+      const nicknameInput = screen.getByLabelText(/Nickname/i);
+      fireEvent.change(nicknameInput, { target: { value: 'JohnDoe' } });
+
+      // Wait for the debounced check
+      await waitFor(
+        () => {
+          expect(userService.checkNicknameAvailability).toHaveBeenCalledWith(
+            'johndoe',
+          );
+        },
+        { timeout: 1000 },
+      );
+    });
   });
 });
