@@ -29,10 +29,12 @@ import {
   SvgIconProps,
   FormHelperText,
   Checkbox,
+  SelectChangeEvent,
 } from '@mui/material';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import LanguageIcon from '@mui/icons-material/Language';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import {
@@ -40,6 +42,8 @@ import {
   ProfileSetupFormProps,
 } from './ProfileSetup.model';
 import { PrivacySelector } from '../../components/commons/inputs/PrivacySelector/PrivacySelector';
+import { useLanguageContext } from '../../providers/LanguageProvider/LanguageProvider';
+import { Language } from '../../providers/LanguageProvider/LanguageProvider.model';
 import logo from '../../assets/baaa.png';
 
 const StravaIcon = (props: SvgIconProps) => (
@@ -103,6 +107,11 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [activeStep, setActiveStep] = useState(0);
+  const [language, setLanguage] = useLanguageContext();
+
+  const handleLanguageChange = (event: SelectChangeEvent<string>) => {
+    setLanguage(event.target.value as Language);
+  };
 
   const [nameParts] = useState(() => {
     const parts = defaultName.split(' ');
@@ -465,18 +474,44 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   return (
     <SignUpContainer direction="column" justifyContent="center">
       <StyledCard sx={{ borderColor: theme.palette.grey[600] }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-          <img
-            src={logo}
-            width={60}
-            style={{ placeSelf: 'center' }}
-            alt="BAAA Hub Logo"
-          />
-          <Box>
-            <Typography component="h1" variant="h5">
-              <Trans>Complete Your Profile</Trans>
-            </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: 2,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <img
+              src={logo}
+              width={60}
+              style={{ placeSelf: 'center' }}
+              alt="BAAA Hub Logo"
+            />
+            <Box>
+              <Typography component="h1" variant="h5">
+                <Trans>Complete Your Profile</Trans>
+              </Typography>
+            </Box>
           </Box>
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <Select
+              id="language-selector"
+              value={language}
+              onChange={handleLanguageChange}
+              displayEmpty
+              startAdornment={
+                <InputAdornment position="start">
+                  <LanguageIcon fontSize="small" />
+                </InputAdornment>
+              }
+              sx={{ '& .MuiSelect-select': { py: 1 } }}
+            >
+              <MenuItem value={Language.EN}>English</MenuItem>
+              <MenuItem value={Language.IT}>Italiano</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
 
         {!isMobile && (
