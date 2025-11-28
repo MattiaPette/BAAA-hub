@@ -1,4 +1,4 @@
-import { SportType } from '@baaa-hub/shared-types';
+import { SportType, UserPrivacySettings } from '@baaa-hub/shared-types';
 
 /**
  * Form input for profile setup
@@ -12,6 +12,7 @@ export interface ProfileSetupFormInput {
   sportTypes: SportType[];
   stravaLink: string;
   instagramLink: string;
+  privacySettings: UserPrivacySettings;
 }
 
 /**
