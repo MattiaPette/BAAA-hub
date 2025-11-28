@@ -28,25 +28,8 @@ app.use(
 );
 
 /**
- * Configure body parser with raw body support for image uploads
- */
-app.use(
-  bodyParser({
-    enableTypes: ['json', 'form', 'text'],
-    extendTypes: {
-      // Enable raw body parsing for image content types
-      text: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-    },
-    // Increase limit for image uploads (5MB)
-    formLimit: '5mb',
-    jsonLimit: '5mb',
-    textLimit: '5mb',
-  }),
-);
-
-/**
  * Raw body middleware for image uploads
- * Captures raw binary data for image routes
+ * Must run BEFORE body parser to capture raw binary data
  */
 app.use(async (ctx, next) => {
   const isImageUpload =
@@ -64,10 +47,24 @@ app.use(async (ctx, next) => {
       });
       ctx.req.on('error', reject);
     });
+    await next();
+  } else {
+    await next();
   }
-
-  await next();
 });
+
+/**
+ * Configure body parser for non-image requests
+ */
+app.use(
+  bodyParser({
+    enableTypes: ['json', 'form', 'text'],
+    // Increase limit for larger payloads
+    formLimit: '1mb',
+    jsonLimit: '1mb',
+    textLimit: '1mb',
+  }),
+);
 
 /**
  * Health check route

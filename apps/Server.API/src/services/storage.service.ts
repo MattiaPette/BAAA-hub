@@ -10,17 +10,44 @@ import { Readable } from 'stream';
 import config from '../config/index.js';
 
 /**
+ * Flag to track if MinIO is available
+ */
+let minioAvailable = true;
+
+/**
+ * Create S3/MinIO client with configuration validation
+ */
+const createS3Client = (): S3Client => {
+  const { endpoint, port, useSSL, accessKey, secretKey, region } = config.minio;
+
+  // Validate required configuration
+  if (!endpoint || !accessKey || !secretKey) {
+    console.warn(
+      '⚠️ MinIO configuration incomplete. Image storage will be unavailable.',
+    );
+    minioAvailable = false;
+  }
+
+  return new S3Client({
+    endpoint: `http${useSSL ? 's' : ''}://${endpoint}:${port}`,
+    region: region,
+    credentials: {
+      accessKeyId: accessKey,
+      secretAccessKey: secretKey,
+    },
+    forcePathStyle: true, // Required for MinIO
+  });
+};
+
+/**
  * S3/MinIO client instance
  */
-const s3Client = new S3Client({
-  endpoint: `http${config.minio.useSSL ? 's' : ''}://${config.minio.endpoint}:${config.minio.port}`,
-  region: config.minio.region,
-  credentials: {
-    accessKeyId: config.minio.accessKey,
-    secretAccessKey: config.minio.secretKey,
-  },
-  forcePathStyle: true, // Required for MinIO
-});
+const s3Client = createS3Client();
+
+/**
+ * Check if MinIO storage is available
+ */
+export const isStorageAvailable = (): boolean => minioAvailable;
 
 /**
  * Allowed MIME types for image uploads
@@ -49,23 +76,47 @@ export enum ImageType {
  * Initialize the storage bucket if it doesn't exist
  */
 export const initializeStorage = async (): Promise<void> => {
+  if (!minioAvailable) {
+    console.warn(
+      '⚠️ MinIO storage is not configured. Image storage will be unavailable.',
+    );
+    return;
+  }
+
   try {
     await s3Client.send(new HeadBucketCommand({ Bucket: config.minio.bucket }));
     console.log(`✅ Storage bucket '${config.minio.bucket}' is accessible`);
   } catch (error: unknown) {
-    const err = error as { name?: string };
+    const err = error as { name?: string; code?: string };
     if (err.name === 'NotFound' || err.name === 'NoSuchBucket') {
-      console.log(`📦 Creating storage bucket '${config.minio.bucket}'...`);
-      await s3Client.send(
-        new CreateBucketCommand({ Bucket: config.minio.bucket }),
+      try {
+        console.log(`📦 Creating storage bucket '${config.minio.bucket}'...`);
+        await s3Client.send(
+          new CreateBucketCommand({ Bucket: config.minio.bucket }),
+        );
+        console.log(`✅ Storage bucket '${config.minio.bucket}' created`);
+      } catch (createError) {
+        console.warn(
+          `⚠️ Failed to create storage bucket: ${(createError as Error).message}`,
+        );
+        minioAvailable = false;
+      }
+    } else if (
+      err.code === 'ECONNREFUSED' ||
+      err.name === 'NetworkingError' ||
+      err.name === 'CredentialsProviderError'
+    ) {
+      console.warn(
+        `⚠️ Cannot connect to MinIO at ${config.minio.endpoint}:${config.minio.port}. Image storage will be unavailable.`,
       );
-      console.log(`✅ Storage bucket '${config.minio.bucket}' created`);
+      minioAvailable = false;
     } else {
       console.warn(
         `⚠️ Storage initialization warning: ${(error as Error).message}`,
       );
       // Don't throw - allow the app to start even if MinIO is not available
       // Image operations will fail gracefully
+      minioAvailable = false;
     }
   }
 };
