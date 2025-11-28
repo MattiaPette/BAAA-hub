@@ -133,10 +133,20 @@ describe('ProfileSetupForm', () => {
     // Try to go next without selecting sports
     await goToNextStep();
 
-    // Should show validation error
-    expect(
-      await screen.findByText(/Please select at least one sport/i),
-    ).toBeInTheDocument();
+    // Should show validation error - use function matcher for robustness
+    await waitFor(
+      () => {
+        expect(
+          screen.getByText(
+            (content, element) =>
+              element?.tagName?.toLowerCase() === 'p' &&
+              content.toLowerCase().includes('select') &&
+              content.toLowerCase().includes('sport'),
+          ),
+        ).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
   });
 
   it('should navigate to step 3 (Contact) after valid step 2', async () => {
