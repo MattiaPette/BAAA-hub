@@ -111,6 +111,17 @@ describe('createUserSchema', () => {
       });
       expect(result.success).toBe(false);
     });
+
+    it('should convert nickname to lowercase for case-insensitive uniqueness', () => {
+      const result = createUserSchema.safeParse({
+        ...validUser,
+        nickname: 'JohnDoe_123',
+      });
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.nickname).toBe('johndoe_123');
+      }
+    });
   });
 
   describe('email validation', () => {
