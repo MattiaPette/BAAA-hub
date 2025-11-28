@@ -148,8 +148,12 @@ export const generateImageKey = (
  * Generate a thumbnail key from an original image key
  * @param originalKey - The original image key
  * @returns The thumbnail key
+ * @throws Error if originalKey is empty
  */
 export const generateThumbnailKey = (originalKey: string): string => {
+  if (!originalKey || originalKey.trim().length === 0) {
+    throw new Error('Original key cannot be empty');
+  }
   const lastDotIndex = originalKey.lastIndexOf('.');
   if (lastDotIndex === -1) {
     return `${originalKey}_thumb`;

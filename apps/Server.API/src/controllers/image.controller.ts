@@ -1,6 +1,9 @@
 import type { Context } from 'koa';
 import { ErrorCode } from '@baaa-hub/shared-types';
-import { User as UserMongooseModel } from '../models/user.model.js';
+import {
+  User as UserMongooseModel,
+  UserDocument,
+} from '../models/user.model.js';
 import { ApiError } from '../middleware/errorHandler.js';
 import { AuthContext } from '../middleware/auth.js';
 import {
@@ -26,6 +29,27 @@ const validateImageType = (type: string): ImageType => {
     'Invalid image type. Must be "avatar" or "banner"',
     ErrorCode.VALIDATION_ERROR,
   );
+};
+
+/**
+ * Get the appropriate image key based on image type and whether original is requested
+ * Falls back to original if thumbnail is not available
+ * @param user - The user document
+ * @param imageType - The type of image (avatar or banner)
+ * @param wantOriginal - Whether the original image is requested
+ * @returns The image key or undefined if not found
+ */
+const getImageKey = (
+  user: UserDocument,
+  imageType: ImageType,
+  wantOriginal: boolean,
+): string | undefined => {
+  if (imageType === ImageType.AVATAR) {
+    return wantOriginal
+      ? user.avatarKey
+      : user.avatarThumbKey || user.avatarKey;
+  }
+  return wantOriginal ? user.bannerKey : user.bannerThumbKey || user.bannerKey;
 };
 
 /**
@@ -143,15 +167,7 @@ export const getUserImage = async (ctx: Context): Promise<void> => {
     throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
   }
 
-  // Get the appropriate key based on whether thumbnail or original is requested
-  let key: string | undefined;
-
-  if (imageType === ImageType.AVATAR) {
-    // Prefer thumbnail unless original is explicitly requested
-    key = wantOriginal ? user.avatarKey : user.avatarThumbKey || user.avatarKey;
-  } else {
-    key = wantOriginal ? user.bannerKey : user.bannerThumbKey || user.bannerKey;
-  }
+  const key = getImageKey(user, imageType, wantOriginal);
 
   if (!key) {
     throw new ApiError(404, 'Image not found', ErrorCode.NOT_FOUND);
@@ -182,14 +198,7 @@ export const getMyImage = async (ctx: AuthContext): Promise<void> => {
     throw new ApiError(404, 'User profile not found', ErrorCode.USER_NOT_FOUND);
   }
 
-  // Get the appropriate key based on whether thumbnail or original is requested
-  let key: string | undefined;
-
-  if (imageType === ImageType.AVATAR) {
-    key = wantOriginal ? user.avatarKey : user.avatarThumbKey || user.avatarKey;
-  } else {
-    key = wantOriginal ? user.bannerKey : user.bannerThumbKey || user.bannerKey;
-  }
+  const key = getImageKey(user, imageType, wantOriginal);
 
   if (!key) {
     throw new ApiError(404, 'Image not found', ErrorCode.NOT_FOUND);

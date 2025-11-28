@@ -159,6 +159,18 @@ describe('Storage Service', () => {
       expect(thumbKey).toBe('banners/user456/9876543210_thumb.png');
     });
 
+    it('should throw error for empty key', () => {
+      expect(() => generateThumbnailKey('')).toThrow(
+        'Original key cannot be empty',
+      );
+    });
+
+    it('should throw error for whitespace-only key', () => {
+      expect(() => generateThumbnailKey('   ')).toThrow(
+        'Original key cannot be empty',
+      );
+    });
+
     it('should generate thumbnail key for webp image', () => {
       const originalKey = 'avatars/user789/1111111111.webp';
       const thumbKey = generateThumbnailKey(originalKey);
