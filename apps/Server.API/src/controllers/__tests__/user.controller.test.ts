@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Context } from 'koa';
-import { ErrorCode, SportType, UserRole } from '@baaa-hub/shared-types';
+import {
+  ErrorCode,
+  SportType,
+  UserRole,
+  PrivacyLevel,
+} from '@baaa-hub/shared-types';
 import { AuthContext } from '../../middleware/auth';
 import {
   checkProfileStatus,
@@ -136,6 +141,12 @@ describe('user.controller', () => {
       email: 'jane@example.com',
       dateOfBirth: '1995-05-15',
       sportTypes: [SportType.CYCLING],
+      privacySettings: {
+        email: PrivacyLevel.PUBLIC,
+        dateOfBirth: PrivacyLevel.PUBLIC,
+        sportTypes: PrivacyLevel.PUBLIC,
+        socialLinks: PrivacyLevel.PUBLIC,
+      },
     };
 
     it('should create a new user successfully', async () => {

@@ -104,6 +104,7 @@ export const Profile: FC = () => {
           sportTypes: data.sportTypes,
           stravaLink: data.stravaLink?.trim() || undefined,
           instagramLink: data.instagramLink?.trim() || undefined,
+          privacySettings: data.privacySettings,
         });
 
         await queryClient.invalidateQueries({ queryKey: ['currentUser'] });

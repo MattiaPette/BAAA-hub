@@ -38,6 +38,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import LanguageIcon from '@mui/icons-material/Language';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import {
@@ -107,6 +108,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   isSubmitting,
   errorMessage,
   onSubmit,
+  onLogout,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -441,6 +443,9 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                   control={control}
                   rules={{
                     required: t`Please select at least one sport`,
+                    validate: value =>
+                      (value && value.length <= 5) ||
+                      t`You can select up to 5 sports`,
                   }}
                   render={({ field }) => (
                     <Select
@@ -618,23 +623,36 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
               </Typography>
             </Box>
           </Box>
-          <FormControl size="small" sx={{ minWidth: 120 }}>
-            <Select
-              id="language-selector"
-              aria-label={t`Select Language`}
-              value={language}
-              onChange={handleLanguageChange}
-              startAdornment={
-                <InputAdornment position="start">
-                  <LanguageIcon fontSize="small" aria-hidden="true" />
-                </InputAdornment>
-              }
-              sx={{ '& .MuiSelect-select': { py: 1 } }}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <FormControl size="small" sx={{ minWidth: 120 }}>
+              <Select
+                id="language-selector"
+                aria-label={t`Select Language`}
+                value={language}
+                onChange={handleLanguageChange}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LanguageIcon fontSize="small" aria-hidden="true" />
+                  </InputAdornment>
+                }
+                sx={{ '& .MuiSelect-select': { py: 1 } }}
+              >
+                <MenuItem value={Language.EN}>English</MenuItem>
+                <MenuItem value={Language.IT}>Italiano</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              startIcon={<LogoutIcon />}
+              onClick={onLogout}
+              disabled={isSubmitting}
+              sx={{ textTransform: 'none' }}
             >
-              <MenuItem value={Language.EN}>English</MenuItem>
-              <MenuItem value={Language.IT}>Italiano</MenuItem>
-            </Select>
-          </FormControl>
+              <Trans>Logout</Trans>
+            </Button>
+          </Stack>
         </Box>
 
         {!isMobile && (

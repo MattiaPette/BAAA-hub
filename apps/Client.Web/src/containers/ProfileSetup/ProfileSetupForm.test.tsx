@@ -27,6 +27,8 @@ describe('ProfileSetupForm', () => {
     });
   });
 
+  const mockOnLogout = vi.fn();
+
   const renderForm = (props = {}) =>
     render(
       <MemoryRouter>
@@ -35,6 +37,7 @@ describe('ProfileSetupForm', () => {
           defaultName=""
           isSubmitting={false}
           onSubmit={mockOnSubmit}
+          onLogout={mockOnLogout}
           {...props}
         />
       </MemoryRouter>,
