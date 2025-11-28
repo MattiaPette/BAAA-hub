@@ -2,11 +2,7 @@ import { FC, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useSnackbar } from 'notistack';
 import { t } from '@lingui/core/macro';
-import {
-  CreateUserRequest,
-  SportType,
-  PrivacyLevel,
-} from '@baaa-hub/shared-types';
+import { CreateUserRequest, SportType } from '@baaa-hub/shared-types';
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { createUserProfile } from '../../services/userService';
@@ -47,12 +43,7 @@ export const ProfileSetup: FC = () => {
           sportTypes: data.sportTypes as SportType[],
           stravaLink: data.stravaLink?.trim() || undefined,
           instagramLink: data.instagramLink?.trim() || undefined,
-          privacySettings: {
-            email: PrivacyLevel.PUBLIC,
-            dateOfBirth: PrivacyLevel.PUBLIC,
-            sportTypes: PrivacyLevel.PUBLIC,
-            socialLinks: PrivacyLevel.PUBLIC,
-          },
+          privacySettings: data.privacySettings,
         };
 
         await createUserProfile(token.idToken || '', createData);

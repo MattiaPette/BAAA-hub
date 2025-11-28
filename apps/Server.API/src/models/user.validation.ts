@@ -12,9 +12,11 @@ export const MIN_AGE_YEARS = 13;
 const getMinDateOfBirth = (): Date => {
   const today = new Date();
   return new Date(
-    today.getFullYear() - MIN_AGE_YEARS,
-    today.getMonth(),
-    today.getDate(),
+    Date.UTC(
+      today.getFullYear() - MIN_AGE_YEARS,
+      today.getMonth(),
+      today.getDate(),
+    ),
   );
 };
 
