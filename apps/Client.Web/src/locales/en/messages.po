@@ -471,6 +471,7 @@ msgstr "Saving..."
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:501
 #: src/containers/Settings/Settings.tsx:101
 #: src/containers/Settings/Settings.tsx:106
 msgid "Select Language"

@@ -498,9 +498,9 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <Select
               id="language-selector"
+              aria-label={t`Select Language`}
               value={language}
               onChange={handleLanguageChange}
-              displayEmpty
               startAdornment={
                 <InputAdornment position="start">
                   <LanguageIcon fontSize="small" />
