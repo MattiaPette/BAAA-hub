@@ -49,7 +49,7 @@ msgstr "Applicazione già installata"
 msgid "Authentication required. Please try logging in again."
 msgstr "Autenticazione richiesta. Per favore, effettua nuovamente l'accesso."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:659
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:694
 msgid "Back"
 msgstr "Indietro"
 
@@ -57,7 +57,7 @@ msgstr "Indietro"
 msgid "Cancel"
 msgstr "Annulla"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:340
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:349
 msgid "Choose a unique nickname"
 msgstr "Scegli un nickname unico"
 
@@ -69,11 +69,7 @@ msgstr "Scegli la tua lingua preferita"
 msgid "Coming soon..."
 msgstr "Prossimamente..."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:451
-#~ msgid "Complete Setup"
-#~ msgstr "Completa Configurazione"
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:600
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:617
 msgid "Complete Your Profile"
 msgstr "Completa il Tuo Profilo"
 
@@ -81,7 +77,7 @@ msgstr "Completa il Tuo Profilo"
 msgid "Consent is required"
 msgstr "È richiesto il consenso"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:233
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:242
 msgid "Contact & Social"
 msgstr "Contatti e Social"
 
@@ -89,15 +85,11 @@ msgstr "Contatti e Social"
 msgid "Create Account"
 msgstr "Crea Account"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:668
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:703
 msgid "Create Profile"
 msgstr "Crea Profilo"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:451
-#~ msgid "Creating Profile..."
-#~ msgstr "Creazione Profilo..."
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:668
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:703
 msgid "Creating..."
 msgstr "Creazione in corso..."
 
@@ -124,16 +116,16 @@ msgstr "Dashboard"
 
 #: src/containers/Profile/Profile.tsx:304
 #: src/containers/Profile/ProfileEditForm.tsx:235
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:398
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:407
 msgid "Date of Birth"
 msgstr "Data di Nascita"
 
 #: src/containers/Profile/ProfileEditForm.tsx:243
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:409
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:418
 msgid "Date of birth is required"
 msgstr "La data di nascita è obbligatoria"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:562
 msgid "Date of Birth Privacy"
 msgstr "Privacy Data di Nascita"
 
@@ -157,19 +149,15 @@ msgid "Email is required"
 msgstr "L'email è obbligatoria"
 
 #: src/containers/Profile/ProfileEditForm.tsx:398
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:541
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:550
 msgid "Email Privacy"
 msgstr "Privacy Email"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:354
-#~ msgid "Enter your email"
-#~ msgstr "Inserisci la tua email"
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:302
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:311
 msgid "Enter your first name"
 msgstr "Inserisci il tuo nome"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:321
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:330
 msgid "Enter your last name"
 msgstr "Inserisci il tuo cognome"
 
@@ -182,23 +170,23 @@ msgstr "Impossibile creare il profilo. Riprova."
 msgid "Failed to update profile. Please try again."
 msgstr "Impossibile aggiornare il profilo. Riprova."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:428
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:442
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:437
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:451
 msgid "Favorite Sports"
 msgstr "Sport Preferiti"
 
 #: src/containers/Profile/ProfileEditForm.tsx:196
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:301
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:310
 msgid "First Name"
 msgstr "Nome"
 
 #: src/containers/Profile/ProfileEditForm.tsx:202
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:309
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:318
 msgid "First name is required"
 msgstr "Il nome è obbligatorio"
 
 #: src/containers/Profile/ProfileEditForm.tsx:205
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:312
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:321
 msgid "First name must be 50 characters or less"
 msgstr "Il nome deve essere di 50 caratteri o meno"
 
@@ -232,7 +220,7 @@ msgstr "Nome utente o password non corretti"
 msgid "Instagram Profile"
 msgstr "Profilo Instagram"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:503
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:512
 msgid "Instagram Profile URL"
 msgstr "URL Profilo Instagram"
 
@@ -257,7 +245,7 @@ msgid "Invalid email address"
 msgstr "Indirizzo email non valido"
 
 #: src/containers/Profile/ProfileEditForm.tsx:374
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:520
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:529
 msgid "Invalid Instagram profile URL"
 msgstr "URL profilo Instagram non valido"
 
@@ -274,7 +262,7 @@ msgid "Invalid scope"
 msgstr "Ambito non valido"
 
 #: src/containers/Profile/ProfileEditForm.tsx:346
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:495
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:504
 msgid "Invalid Strava profile URL"
 msgstr "URL profilo Strava non valido"
 
@@ -299,31 +287,23 @@ msgid "Language changed to Italian"
 msgstr "Lingua cambiata in Italiano"
 
 #: src/containers/Profile/ProfileEditForm.tsx:213
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:320
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:329
 msgid "Last Name"
 msgstr "Cognome"
 
 #: src/containers/Profile/ProfileEditForm.tsx:219
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:327
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:336
 msgid "Last name is required"
 msgstr "Il cognome è obbligatorio"
 
 #: src/containers/Profile/ProfileEditForm.tsx:222
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:330
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:339
 msgid "Last name must be 50 characters or less"
 msgstr "Il cognome deve essere di 50 caratteri o meno"
 
 #: src/containers/Settings/Settings.tsx:86
 msgid "Light Mode"
 msgstr "Modalità chiara"
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:422
-#~ msgid "Link to your Instagram profile"
-#~ msgstr "Link al tuo profilo Instagram"
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:392
-#~ msgid "Link to your Strava athlete profile"
-#~ msgstr "Link al tuo profilo atleta Strava"
 
 #: src/components/login/LoginForm/LoginForm.tsx:154
 #: src/components/login/LoginForm/LoginForm.tsx:247
@@ -351,23 +331,23 @@ msgstr "È richiesta l'autenticazione a più fattori"
 msgid "Network error. Check your internet connection"
 msgstr "Errore di rete. Verifica la connessione internet"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:676
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:711
 msgid "Next"
 msgstr "Avanti"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:339
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:348
 msgid "Nickname"
 msgstr "Nickname"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:378
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:387
 msgid "Nickname is required"
 msgstr "Il nickname è obbligatorio"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:385
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:394
 msgid "Nickname must be 30 characters or less"
 msgstr "Il nickname deve essere di 30 caratteri o meno"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:381
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:390
 msgid "Nickname must be at least 3 characters"
 msgstr "Il nickname deve essere di almeno 3 caratteri"
 
@@ -379,7 +359,7 @@ msgstr "Nessuno sport selezionato."
 msgid "Oh no! Something went wrong..."
 msgstr "Oh no! Qualcosa è andato storto..."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:389
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:398
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Sono consentite solo lettere, numeri e underscore"
 
@@ -404,16 +384,16 @@ msgstr "Password necessaria"
 msgid "Password must be at least 8 characters"
 msgstr "La password deve essere di almeno 8 caratteri"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:231
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:240
 msgid "Personal Details"
 msgstr "Dettagli Personali"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:434
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:443
 msgid "Please select at least one sport"
 msgstr "Seleziona almeno uno sport"
 
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:30
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:234
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:243
 msgid "Privacy"
 msgstr "Privacy"
 
@@ -471,18 +451,11 @@ msgstr "Salvataggio..."
 msgid "Select at least one sport type"
 msgstr "Seleziona almeno un tipo di sport"
 
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:624
 #: src/containers/Settings/Settings.tsx:101
 #: src/containers/Settings/Settings.tsx:106
 msgid "Select Language"
 msgstr "Seleziona lingua"
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:373
-#~ msgid "Select the sports you participate in"
-#~ msgstr "Seleziona gli sport che pratichi"
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:165
-#~ msgid "Set up your profile to get started"
-#~ msgstr "Configura il tuo profilo per iniziare"
 
 #: src/containers/MainContainer/MainContainer.tsx:52
 #: src/containers/Settings/Settings.tsx:40
@@ -499,11 +472,7 @@ msgstr "Registrati"
 msgid "Social"
 msgstr "Social"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:379
-#~ msgid "Social Links (Optional)"
-#~ msgstr "Link Social (Opzionale)"
-
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:577
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:586
 msgid "Social Links Privacy"
 msgstr "Privacy Link Social"
 
@@ -512,7 +481,7 @@ msgstr "Privacy Link Social"
 msgid "Sport Types"
 msgstr "Tipi di Sport"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:232
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:241
 msgid "Sports"
 msgstr "Sport"
 
@@ -520,7 +489,7 @@ msgstr "Sport"
 msgid "Sports & Activities"
 msgstr "Sport e Attività"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:565
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:574
 msgid "Sports Privacy"
 msgstr "Privacy Sport"
 
@@ -528,7 +497,7 @@ msgstr "Privacy Sport"
 msgid "Strava Profile"
 msgstr "Profilo Strava"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:479
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:488
 msgid "Strava Profile URL"
 msgstr "URL Profilo Strava"
 
@@ -577,9 +546,8 @@ msgstr "Esiste già un utente con questo indirizzo email"
 msgid "This email is already registered."
 msgstr "Questa email è già registrata."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:200
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:223
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:261
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:208
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:270
 msgid "This nickname is already taken"
 msgstr "Questo nickname è già in uso"
 
@@ -587,7 +555,7 @@ msgstr "Questo nickname è già in uso"
 msgid "This nickname is already taken. Please choose another."
 msgstr "Questo nickname è già in uso. Per favore, scegline un altro."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:347
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:356
 msgid "This nickname is available"
 msgstr "Questo nickname è disponibile"
 
@@ -599,7 +567,7 @@ msgstr "Questa password è stata compromessa in una violazione dei dati. Scegli 
 msgid "This username is already in use"
 msgstr "Questo nome utente è già in uso"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:348
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:357
 msgid "This will be your public username"
 msgstr "Questo sarà il tuo nome utente pubblico"
 
@@ -650,7 +618,7 @@ msgstr "L'utente ha respinto l'installazione dell'app"
 msgid "Walking"
 msgstr "Camminata"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:531
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:540
 msgid "Who can see your information?"
 msgstr "Chi può vedere le tue informazioni?"
 
@@ -659,8 +627,8 @@ msgid "You already have a profile. Redirecting to dashboard..."
 msgstr "Hai già un profilo. Reindirizzamento alla dashboard..."
 
 #: src/containers/Profile/ProfileEditForm.tsx:248
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:406
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:414
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:415
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:423
 msgid "You must be at least 13 years old"
 msgstr "Devi avere almeno 13 anni"
 
