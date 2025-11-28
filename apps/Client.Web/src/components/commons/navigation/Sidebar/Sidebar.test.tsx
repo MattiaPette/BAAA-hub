@@ -395,7 +395,7 @@ describe('Sidebar', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('Community Hub')).toBeInTheDocument();
+    expect(screen.getByText('BAAA Hub')).toBeInTheDocument();
     expect(screen.getByText('Boss Anna Athlete Army')).toBeInTheDocument();
   });
 

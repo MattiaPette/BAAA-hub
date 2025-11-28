@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -28,6 +28,10 @@ import {
 } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import { SportType } from '@baaa-hub/shared-types';
+import {
+  getSportTypeLabel,
+  getSportTypeLabels,
+} from '../../helpers/sportTypes';
 import {
   ProfileSetupFormInput,
   ProfileSetupFormProps,
@@ -67,22 +71,6 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
     borderWidth: 1,
   },
 }));
-
-/**
- * Sport type labels for display
- */
-const sportTypeLabels: Record<SportType, string> = {
-  [SportType.RUNNING]: 'Running',
-  [SportType.CYCLING]: 'Cycling',
-  [SportType.SWIMMING]: 'Swimming',
-  [SportType.TRIATHLON]: 'Triathlon',
-  [SportType.TRAIL_RUNNING]: 'Trail Running',
-  [SportType.HIKING]: 'Hiking',
-  [SportType.WALKING]: 'Walking',
-  [SportType.GYM]: 'Gym',
-  [SportType.CROSS_FIT]: 'CrossFit',
-  [SportType.OTHER]: 'Other',
-};
 
 /**
  * Calculate minimum date of birth (13 years ago)
@@ -144,6 +132,9 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
       instagramLink: '',
     },
   });
+
+  // Memoize translated sport type labels to avoid re-computation on every render
+  const sportTypeLabels = useMemo(getSportTypeLabels, []);
 
   const watchedName = watch('name');
   const watchedSurname = watch('surname');
@@ -356,7 +347,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                       {(selected as SportType[]).map(value => (
                         <Chip
                           key={value}
-                          label={sportTypeLabels[value]}
+                          label={getSportTypeLabel(value)}
                           size="small"
                         />
                       ))}

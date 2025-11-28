@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -31,6 +31,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import GroupIcon from '@mui/icons-material/Group';
 import LockIcon from '@mui/icons-material/Lock';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
+import { getSportTypeLabels } from '../../helpers/sportTypes';
 import { ProfileEditFormInput, ProfileEditProps } from './Profile.model';
 
 const StravaIcon = (props: SvgIconProps) => (
@@ -38,22 +39,6 @@ const StravaIcon = (props: SvgIconProps) => (
     <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.477 0 4.51 11.173h4.171" />
   </SvgIcon>
 );
-
-/**
- * Sport type labels for display
- */
-const sportTypeLabels: Record<SportType, string> = {
-  [SportType.RUNNING]: 'Running',
-  [SportType.CYCLING]: 'Cycling',
-  [SportType.SWIMMING]: 'Swimming',
-  [SportType.TRIATHLON]: 'Triathlon',
-  [SportType.TRAIL_RUNNING]: 'Trail Running',
-  [SportType.HIKING]: 'Hiking',
-  [SportType.WALKING]: 'Walking',
-  [SportType.GYM]: 'Gym',
-  [SportType.CROSS_FIT]: 'CrossFit',
-  [SportType.OTHER]: 'Other',
-};
 
 /**
  * Calculate minimum date of birth (13 years ago)
@@ -183,6 +168,9 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
       },
     },
   });
+
+  // Memoize translated sport type labels to avoid re-computation on every render
+  const sportTypeLabels = useMemo(getSportTypeLabels, []);
 
   const handleFormSubmit: SubmitHandler<ProfileEditFormInput> = data => {
     onUpdate(data);

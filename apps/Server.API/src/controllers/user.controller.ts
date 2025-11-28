@@ -41,6 +41,7 @@ const toUserResponse = (doc: UserDocument): User => {
     isBlocked: obj.isBlocked,
     isEmailVerified: obj.isEmailVerified,
     roles: obj.roles,
+    privacySettings: obj.privacySettings,
   };
 };
 
