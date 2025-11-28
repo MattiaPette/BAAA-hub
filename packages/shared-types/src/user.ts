@@ -51,7 +51,12 @@ export interface UserProfileData {
   email: string;
   dateOfBirth: string; // ISO date string
   sportTypes: SportType[];
+  /** @deprecated Use avatarKey instead for MinIO storage */
   profilePicture?: string;
+  /** Object storage key for avatar image (stored in MinIO) */
+  avatarKey?: string;
+  /** Object storage key for banner image (stored in MinIO) */
+  bannerKey?: string;
   stravaLink?: string;
   instagramLink?: string;
   privacySettings: UserPrivacySettings;

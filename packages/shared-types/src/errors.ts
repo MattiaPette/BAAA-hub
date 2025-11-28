@@ -8,6 +8,7 @@ export enum ErrorCode {
   // Resource errors
   RESOURCE_ALREADY_EXISTS = 'RESOURCE_ALREADY_EXISTS',
   RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND',
+  NOT_FOUND = 'NOT_FOUND',
 
   // Authentication errors
   UNAUTHORIZED = 'UNAUTHORIZED',
@@ -25,6 +26,7 @@ export enum ErrorCode {
 
   // Server errors
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
+  SERVER_ERROR = 'SERVER_ERROR',
 }
 
 /**

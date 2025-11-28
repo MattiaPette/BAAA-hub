@@ -169,7 +169,7 @@ Then remove the `mongodb` service from `docker-compose.yml`.
 
 ## 🏗️ Architecture
 
-The application is now deployed as **4 separate Docker containers** for better
+The application is now deployed as **5 separate Docker containers** for better
 debugging, scaling, and deployment:
 
 ```
@@ -189,12 +189,13 @@ debugging, scaling, and deployment:
 │  - Port 80      │       │  - Port 3000         │
 └─────────────────┘       └──────────┬───────────┘
                                      │
-                                     ▼
-                          ┌──────────────────────┐
-                          │  MongoDB Container   │
-                          │  - Database          │
-                          │  - Port 27017        │
-                          └──────────────────────┘
+                    ┌────────────────┴────────────────┐
+                    ▼                                 ▼
+         ┌──────────────────────┐         ┌──────────────────────┐
+         │  MongoDB Container   │         │  MinIO Container     │
+         │  - Database          │         │  - Object Storage    │
+         │  - Port 27017        │         │  - Port 9000/9001    │
+         └──────────────────────┘         └──────────────────────┘
 ```
 
 ### Container Details:
@@ -203,6 +204,7 @@ debugging, scaling, and deployment:
 - **frontend-prod**: Nginx serving static React frontend files (internal)
 - **backend-prod**: Node.js API server with Koa.js (internal)
 - **mongodb-prod**: MongoDB database (internal)
+- **minio-prod**: MinIO object storage for user images (internal)
 
 All containers communicate through a private Docker network (`app-network`) and
 only the nginx reverse proxy is exposed to the host.
@@ -215,6 +217,7 @@ Containers use short, simple names:
 - `frontend-prod` - Frontend static files served by nginx
 - `backend-prod` - Backend API server
 - `mongodb-prod` - MongoDB database
+- `minio-prod` - MinIO object storage for images
 
 ## 🔍 Troubleshooting
 
@@ -243,6 +246,7 @@ docker compose logs -f nginx     # Nginx reverse proxy logs
 docker compose logs -f frontend  # Frontend logs
 docker compose logs -f backend   # Backend API logs
 docker compose logs -f mongodb   # MongoDB logs
+docker compose logs -f minio     # MinIO object storage logs
 ```
 
 ### Health check
@@ -325,15 +329,32 @@ docker compose up -d              # Start with new images
 ### Backup database
 
 ```bash
-# Backup
+# Backup MongoDB
 docker compose exec mongodb mongodump --out=/data/backup
 
 # Copy backup to host
 docker cp mongodb-prod:/data/backup ./mongodb-backup
 
-# Restore
+# Restore MongoDB
 docker cp ./mongodb-backup mongodb-prod:/data/backup
 docker compose exec mongodb mongorestore /data/backup
+```
+
+### Backup MinIO images
+
+```bash
+# Create backup directory
+mkdir -p ./minio-backup
+
+# Backup using mc (MinIO Client) - run from inside minio container
+docker compose exec minio mc mirror local/baaa-hub-images /data/backup
+
+# Copy backup to host
+docker cp minio-prod:/data/backup ./minio-backup
+
+# Restore MinIO
+docker cp ./minio-backup minio-prod:/data/restore
+docker compose exec minio mc mirror /data/restore local/baaa-hub-images
 ```
 
 ## 🔐 Security Notes
@@ -342,7 +363,9 @@ docker compose exec mongodb mongorestore /data/backup
 2. **Use HTTPS in production** - Configure your reverse proxy (nginx, Traefik,
    etc.)
 3. **Update MongoDB credentials** - Use authentication in production
-4. **Keep images updated** - Regularly rebuild with latest dependencies
+4. **Update MinIO credentials** - Change default `minioadmin/minioadmin` in
+   production
+5. **Keep images updated** - Regularly rebuild with latest dependencies
 
 ## 📝 Advanced Usage
 

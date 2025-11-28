@@ -78,6 +78,14 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       trim: true,
     },
+    avatarKey: {
+      type: String,
+      trim: true,
+    },
+    bannerKey: {
+      type: String,
+      trim: true,
+    },
     stravaLink: {
       type: String,
       trim: true,

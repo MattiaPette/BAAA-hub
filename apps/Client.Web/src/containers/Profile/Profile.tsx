@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useCallback } from 'react';
+import { FC, useEffect, useState, useCallback, useMemo } from 'react';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
@@ -34,7 +34,7 @@ import { SportType } from '@baaa-hub/shared-types';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
-import { updateUserProfile } from '../../services/userService';
+import { updateUserProfile, getUserImageUrl } from '../../services/userService';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
@@ -89,6 +89,18 @@ export const Profile: FC = () => {
   useEffect(() => {
     setTitle(t`Profile`);
   }, [setTitle, i18n.locale]);
+
+  /**
+   * Get the user's avatar image URL
+   * Prefer avatarKey (MinIO storage) over deprecated profilePicture URL
+   */
+  const avatarUrl = useMemo(() => {
+    if (!user) return undefined;
+    if (user.avatarKey) {
+      return getUserImageUrl(user.id, 'avatar');
+    }
+    return user.profilePicture;
+  }, [user]);
 
   const handleEditOpen = () => setIsEditOpen(true);
   const handleEditClose = () => setIsEditOpen(false);
@@ -183,7 +195,7 @@ export const Profile: FC = () => {
           }}
         >
           <Avatar
-            src={user.profilePicture}
+            src={avatarUrl}
             sx={{
               width: { xs: 120, md: 150 },
               height: { xs: 120, md: 150 },
@@ -194,7 +206,7 @@ export const Profile: FC = () => {
               boxShadow: theme.shadows[3],
             }}
           >
-            {!user.profilePicture && getInitials(user.name, user.surname)}
+            {!avatarUrl && getInitials(user.name, user.surname)}
           </Avatar>
         </Box>
       </Paper>

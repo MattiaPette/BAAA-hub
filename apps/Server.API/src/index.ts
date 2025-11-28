@@ -7,6 +7,8 @@ import config from './config/index.js';
 import { connectDatabase } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { userRouter } from './routes/user.routes.js';
+import { imageRouter } from './routes/image.routes.js';
+import { initializeStorage } from './services/storage.service.js';
 import path from 'path';
 
 /**
@@ -24,7 +26,48 @@ app.use(
     credentials: true,
   }),
 );
-app.use(bodyParser());
+
+/**
+ * Configure body parser with raw body support for image uploads
+ */
+app.use(
+  bodyParser({
+    enableTypes: ['json', 'form', 'text'],
+    extendTypes: {
+      // Enable raw body parsing for image content types
+      text: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+    },
+    // Increase limit for image uploads (5MB)
+    formLimit: '5mb',
+    jsonLimit: '5mb',
+    textLimit: '5mb',
+  }),
+);
+
+/**
+ * Raw body middleware for image uploads
+ * Captures raw binary data for image routes
+ */
+app.use(async (ctx, next) => {
+  const isImageUpload =
+    ctx.method === 'PUT' &&
+    ctx.path.startsWith('/api/images/') &&
+    ctx.request.headers['content-type']?.startsWith('image/');
+
+  if (isImageUpload) {
+    const chunks: Buffer[] = [];
+    await new Promise<void>((resolve, reject) => {
+      ctx.req.on('data', (chunk: Buffer) => chunks.push(chunk));
+      ctx.req.on('end', () => {
+        ctx.request.body = Buffer.concat(chunks);
+        resolve();
+      });
+      ctx.req.on('error', reject);
+    });
+  }
+
+  await next();
+});
 
 /**
  * Health check route
@@ -77,6 +120,7 @@ app.use(
  */
 app.use(healthRouter.routes()).use(healthRouter.allowedMethods());
 app.use(userRouter.routes()).use(userRouter.allowedMethods());
+app.use(imageRouter.routes()).use(imageRouter.allowedMethods());
 
 /**
  * Start server
@@ -86,6 +130,9 @@ const startServer = async (): Promise<void> => {
   try {
     // Connect to database
     await connectDatabase();
+
+    // Initialize object storage (MinIO)
+    await initializeStorage();
 
     // Start listening
     app.listen(config.port, () => {

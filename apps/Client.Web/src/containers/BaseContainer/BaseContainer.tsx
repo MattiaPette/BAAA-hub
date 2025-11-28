@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import {
   IconButton,
@@ -15,6 +15,7 @@ import { FlexContainer } from '../../components/commons/layouts/FlexContainer/Fl
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
 import { SidebarProps } from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { getUserImageUrl } from '../../services/userService';
 import logo from '../../assets/shrimp.png';
 
 type BaseContainerProps = {
@@ -118,6 +119,18 @@ export const BaseContainer: FC<BaseContainerProps> = ({
 
   const currentPath = pathname.split('/').filter(Boolean).join('/');
 
+  /**
+   * Get the user's avatar image URL
+   * Prefer avatarKey (MinIO storage) over deprecated profilePicture URL
+   */
+  const userPicture = useMemo(() => {
+    if (!user) return undefined;
+    if (user.avatarKey) {
+      return getUserImageUrl(user.id, 'avatar');
+    }
+    return user.profilePicture;
+  }, [user]);
+
   // Wrap children with any providers passed
   const wrapWithProviders = (children: Readonly<React.ReactNode>) =>
     providers.reduceRight(
@@ -220,6 +233,7 @@ export const BaseContainer: FC<BaseContainerProps> = ({
         onClose={() => setDrawerOpen(false)}
         userName={user ? `${user.name} ${user.surname}` : undefined}
         userEmail={user?.email}
+        userPicture={userPicture}
       />
     </FlexContainer>
   );

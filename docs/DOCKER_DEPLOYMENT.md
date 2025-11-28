@@ -461,13 +461,19 @@ Changes require rebuilding the Docker image.
 These variables are used when the container starts. Changes take effect after
 container restart.
 
-| Variable       | Description               | Default                            | Example               |
-| -------------- | ------------------------- | ---------------------------------- | --------------------- |
-| `BACKEND_PORT` | Port for backend server   | `3000`                             | `3000`                |
-| `NODE_ENV`     | Node environment          | `production`                       | `production`          |
-| `MONGODB_URI`  | MongoDB connection string | `mongodb://mongodb:27017/baaa-hub` | See below             |
-| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:8080`            | `https://yourapp.com` |
-| `DEBUG`        | Enable debug logging      | `false`                            | `true` or `false`     |
+| Variable           | Description               | Default                            | Example               |
+| ------------------ | ------------------------- | ---------------------------------- | --------------------- |
+| `BACKEND_PORT`     | Port for backend server   | `3000`                             | `3000`                |
+| `NODE_ENV`         | Node environment          | `production`                       | `production`          |
+| `MONGODB_URI`      | MongoDB connection string | `mongodb://mongodb:27017/baaa-hub` | See below             |
+| `CORS_ORIGIN`      | Allowed CORS origin       | `http://localhost:8080`            | `https://yourapp.com` |
+| `DEBUG`            | Enable debug logging      | `false`                            | `true` or `false`     |
+| `MINIO_ENDPOINT`   | MinIO server hostname     | `minio`                            | `minio`               |
+| `MINIO_PORT`       | MinIO server port         | `9000`                             | `9000`                |
+| `MINIO_USE_SSL`    | Use HTTPS for MinIO       | `false`                            | `true` or `false`     |
+| `MINIO_ACCESS_KEY` | MinIO access key          | `minioadmin`                       | `your-access-key`     |
+| `MINIO_SECRET_KEY` | MinIO secret key          | `minioadmin`                       | `your-secret-key`     |
+| `MINIO_BUCKET`     | MinIO bucket name         | `baaa-hub-images`                  | `baaa-hub-images`     |
 
 ### MongoDB URI Examples
 

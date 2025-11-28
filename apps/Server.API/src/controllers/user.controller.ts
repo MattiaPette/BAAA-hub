@@ -33,6 +33,8 @@ const toUserResponse = (doc: UserDocument): User => {
     dateOfBirth: obj.dateOfBirth,
     sportTypes: obj.sportTypes,
     profilePicture: obj.profilePicture,
+    avatarKey: obj.avatarKey,
+    bannerKey: obj.bannerKey,
     stravaLink: obj.stravaLink,
     instagramLink: obj.instagramLink,
     authId: obj.authId,
