@@ -110,7 +110,8 @@ Authorization: Bearer <jwt-token>
 ### Image Endpoints
 
 Images are stored in MinIO (S3-compatible object storage) and served via
-authenticated backend proxy.
+authenticated backend proxy. Thumbnails (128px) are automatically generated
+during upload to optimize bandwidth usage.
 
 | Method | Endpoint                         | Auth     | Description                         |
 | ------ | -------------------------------- | -------- | ----------------------------------- |
@@ -131,6 +132,27 @@ authenticated backend proxy.
 - `image/gif`
 - `image/webp`
 
+**Thumbnail Support:**
+
+By default, GET endpoints return optimized thumbnails (128px) for faster
+loading. Use the `original=true` query parameter to retrieve the full-size
+image.
+
+| Query Parameter | Description                             |
+| --------------- | --------------------------------------- |
+| `original=true` | Returns the full-size original image    |
+| (default)       | Returns the optimized thumbnail (128px) |
+
+**Examples:**
+
+```bash
+# Get thumbnail (default - recommended for normal display)
+curl http://localhost:3000/api/images/user/123/avatar
+
+# Get original full-size image (for enlarged view)
+curl http://localhost:3000/api/images/user/123/avatar?original=true
+```
+
 **Upload Example:**
 
 ```bash
@@ -139,6 +161,16 @@ curl -X PUT \
   -H "Content-Type: image/png" \
   --data-binary @avatar.png \
   http://localhost:3000/api/images/me/avatar
+```
+
+**Upload Response:**
+
+```json
+{
+  "key": "avatars/user123/1234567890.png",
+  "thumbKey": "avatars/user123/1234567890_thumb.png",
+  "message": "Image uploaded successfully"
+}
 ```
 
 ### Health Check

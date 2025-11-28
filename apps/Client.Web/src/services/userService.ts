@@ -136,15 +136,28 @@ export const deleteUserImage = async (
  * Get the URL for a user's image
  * @param userId - User ID
  * @param imageType - Type of image (avatar or banner)
+ * @param original - If true, returns full-size image; otherwise returns thumbnail
  * @returns The image URL
  */
-export const getUserImageUrl = (userId: string, imageType: ImageType): string =>
-  `${API_BASE_URL}/api/images/user/${userId}/${imageType}`;
+export const getUserImageUrl = (
+  userId: string,
+  imageType: ImageType,
+  original: boolean = false,
+): string => {
+  const url = `${API_BASE_URL}/api/images/user/${userId}/${imageType}`;
+  return original ? `${url}?original=true` : url;
+};
 
 /**
  * Get the URL for the current user's image
  * @param imageType - Type of image (avatar or banner)
+ * @param original - If true, returns full-size image; otherwise returns thumbnail
  * @returns The image URL (requires authentication header)
  */
-export const getMyImageUrl = (imageType: ImageType): string =>
-  `${API_BASE_URL}/api/images/me/${imageType}`;
+export const getMyImageUrl = (
+  imageType: ImageType,
+  original: boolean = false,
+): string => {
+  const url = `${API_BASE_URL}/api/images/me/${imageType}`;
+  return original ? `${url}?original=true` : url;
+};

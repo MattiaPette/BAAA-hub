@@ -9,6 +9,8 @@ import {
   deleteImage,
   validateImage,
   generateImageKey,
+  generateThumbnailKey,
+  generateThumbnail,
   getExtensionFromMimeType,
   ImageType,
 } from '../services/storage.service.js';
@@ -28,6 +30,7 @@ const validateImageType = (type: string): ImageType => {
 
 /**
  * Upload an image (avatar or banner) for the current user
+ * Generates and stores both original and thumbnail versions
  */
 export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
   const { userId } = ctx.state.auth;
@@ -65,20 +68,29 @@ export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
     );
   }
 
-  // Generate key and upload
+  // Generate key and upload original image
   const extension = getExtensionFromMimeType(contentType);
   const key = generateImageKey(userId, imageType, extension);
+  const thumbKey = generateThumbnailKey(key);
 
   try {
+    // Upload original image
     await uploadImage(key, body, contentType);
+
+    // Generate and upload thumbnail
+    const thumbnailData = await generateThumbnail(body);
+    await uploadImage(thumbKey, thumbnailData, 'image/jpeg');
   } catch (error) {
     console.error('Failed to upload image:', error);
     throw new ApiError(500, 'Failed to upload image', ErrorCode.SERVER_ERROR);
   }
 
-  // Delete old image if exists
+  // Delete old images if they exist
   const oldKey =
     imageType === ImageType.AVATAR ? user.avatarKey : user.bannerKey;
+  const oldThumbKey =
+    imageType === ImageType.AVATAR ? user.avatarThumbKey : user.bannerThumbKey;
+
   if (oldKey) {
     try {
       await deleteImage(oldKey);
@@ -88,17 +100,28 @@ export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
     }
   }
 
-  // Update user record with new key
+  if (oldThumbKey) {
+    try {
+      await deleteImage(oldThumbKey);
+    } catch (error) {
+      console.warn('Failed to delete old thumbnail:', error);
+    }
+  }
+
+  // Update user record with new keys
   if (imageType === ImageType.AVATAR) {
     user.avatarKey = key;
+    user.avatarThumbKey = thumbKey;
   } else {
     user.bannerKey = key;
+    user.bannerThumbKey = thumbKey;
   }
   await user.save();
 
   ctx.status = 200;
   ctx.body = {
     key,
+    thumbKey,
     message: 'Image uploaded successfully',
   };
 };
@@ -107,10 +130,12 @@ export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
  * Get user image by type (avatar or banner)
  * This is a public endpoint - no authentication required
  * But we validate that the user exists
+ * By default returns thumbnail; use ?original=true for full-size image
  */
 export const getUserImage = async (ctx: Context): Promise<void> => {
   const { userId, type } = ctx.params;
   const imageType = validateImageType(type);
+  const wantOriginal = ctx.query.original === 'true';
 
   // Find user by ID
   const user = await UserMongooseModel.findById(userId);
@@ -118,8 +143,16 @@ export const getUserImage = async (ctx: Context): Promise<void> => {
     throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
   }
 
-  // Get the appropriate key
-  const key = imageType === ImageType.AVATAR ? user.avatarKey : user.bannerKey;
+  // Get the appropriate key based on whether thumbnail or original is requested
+  let key: string | undefined;
+
+  if (imageType === ImageType.AVATAR) {
+    // Prefer thumbnail unless original is explicitly requested
+    key = wantOriginal ? user.avatarKey : user.avatarThumbKey || user.avatarKey;
+  } else {
+    key = wantOriginal ? user.bannerKey : user.bannerThumbKey || user.bannerKey;
+  }
+
   if (!key) {
     throw new ApiError(404, 'Image not found', ErrorCode.NOT_FOUND);
   }
@@ -137,17 +170,27 @@ export const getUserImage = async (ctx: Context): Promise<void> => {
 
 /**
  * Get current user's image by type (avatar or banner)
+ * By default returns thumbnail; use ?original=true for full-size image
  */
 export const getMyImage = async (ctx: AuthContext): Promise<void> => {
   const { userId } = ctx.state.auth;
   const imageType = validateImageType(ctx.params.type);
+  const wantOriginal = ctx.query.original === 'true';
 
   const user = await UserMongooseModel.findByAuthId(userId);
   if (!user) {
     throw new ApiError(404, 'User profile not found', ErrorCode.USER_NOT_FOUND);
   }
 
-  const key = imageType === ImageType.AVATAR ? user.avatarKey : user.bannerKey;
+  // Get the appropriate key based on whether thumbnail or original is requested
+  let key: string | undefined;
+
+  if (imageType === ImageType.AVATAR) {
+    key = wantOriginal ? user.avatarKey : user.avatarThumbKey || user.avatarKey;
+  } else {
+    key = wantOriginal ? user.bannerKey : user.bannerThumbKey || user.bannerKey;
+  }
+
   if (!key) {
     throw new ApiError(404, 'Image not found', ErrorCode.NOT_FOUND);
   }
@@ -165,6 +208,7 @@ export const getMyImage = async (ctx: AuthContext): Promise<void> => {
 
 /**
  * Delete current user's image by type (avatar or banner)
+ * Deletes both original and thumbnail versions
  */
 export const deleteUserImage = async (ctx: AuthContext): Promise<void> => {
   const { userId } = ctx.state.auth;
@@ -180,10 +224,14 @@ export const deleteUserImage = async (ctx: AuthContext): Promise<void> => {
   }
 
   const key = imageType === ImageType.AVATAR ? user.avatarKey : user.bannerKey;
+  const thumbKey =
+    imageType === ImageType.AVATAR ? user.avatarThumbKey : user.bannerThumbKey;
+
   if (!key) {
     throw new ApiError(404, 'Image not found', ErrorCode.NOT_FOUND);
   }
 
+  // Delete original image
   try {
     await deleteImage(key);
   } catch (error) {
@@ -191,11 +239,23 @@ export const deleteUserImage = async (ctx: AuthContext): Promise<void> => {
     throw new ApiError(500, 'Failed to delete image', ErrorCode.SERVER_ERROR);
   }
 
-  // Clear the key from user record
+  // Delete thumbnail if exists
+  if (thumbKey) {
+    try {
+      await deleteImage(thumbKey);
+    } catch (error) {
+      console.warn('Failed to delete thumbnail:', error);
+      // Don't fail if thumbnail deletion fails
+    }
+  }
+
+  // Clear the keys from user record
   if (imageType === ImageType.AVATAR) {
     user.avatarKey = undefined;
+    user.avatarThumbKey = undefined;
   } else {
     user.bannerKey = undefined;
+    user.bannerThumbKey = undefined;
   }
   await user.save();
 
