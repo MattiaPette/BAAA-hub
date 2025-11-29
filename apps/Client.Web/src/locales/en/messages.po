@@ -129,7 +129,7 @@ msgid "Blocked"
 msgstr "Blocked"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
-#: src/containers/Administration/EditRolesDialog.tsx:111
+#: src/containers/Administration/EditRolesDialog.tsx:158
 #: src/containers/Profile/ProfileEditForm.tsx:460
 msgid "Cancel"
 msgstr "Cancel"
@@ -274,7 +274,7 @@ msgstr "Edit Profile"
 
 #. placeholder {0}: user.name
 #. placeholder {1}: user.surname
-#: src/containers/Administration/EditRolesDialog.tsx:80
+#: src/containers/Administration/EditRolesDialog.tsx:121
 msgid "Edit Roles for {0} {1}"
 msgstr "Edit Roles for {0} {1}"
 
@@ -752,7 +752,7 @@ msgstr "Rows per page:"
 msgid "Running"
 msgstr "Running"
 
-#: src/containers/Administration/EditRolesDialog.tsx:118
+#: src/containers/Administration/EditRolesDialog.tsx:165
 msgid "Save"
 msgstr "Save"
 
@@ -760,7 +760,7 @@ msgstr "Save"
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/containers/Administration/EditRolesDialog.tsx:118
+#: src/containers/Administration/EditRolesDialog.tsx:165
 #: src/containers/Profile/ProfileEditForm.tsx:463
 msgid "Saving..."
 msgstr "Saving..."
@@ -779,7 +779,7 @@ msgstr "Select at least one sport type"
 msgid "Select Language"
 msgstr "Select Language"
 
-#: src/containers/Administration/EditRolesDialog.tsx:83
+#: src/containers/Administration/EditRolesDialog.tsx:129
 msgid "Select the roles to assign to this user."
 msgstr "Select the roles to assign to this user."
 
@@ -836,6 +836,10 @@ msgstr "Strava Profile URL"
 #: src/helpers/roleLabels/roleLabels.ts:10
 msgid "Super Admin"
 msgstr "Super Admin"
+
+#: src/containers/Administration/EditRolesDialog.tsx:125
+msgid "Super Admin roles cannot be modified."
+msgstr "Super Admin roles cannot be modified."
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:729
 msgid "Supports JPG, PNG, WEBP, HEIC. Max 5MB."

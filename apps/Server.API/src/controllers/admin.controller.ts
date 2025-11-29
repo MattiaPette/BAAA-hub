@@ -52,8 +52,8 @@ const toUserResponse = (doc: UserDocument): User => {
  * Get all users with pagination and search.
  *
  * Permission hierarchy:
- * - Super-admins can see all users
- * - Regular admins can only see non-admin users (members)
+ * - Super-admins can see all users except themselves
+ * - Regular admins can see all users except themselves and other admins/super-admins
  */
 export const listUsers = async (ctx: AdminContext): Promise<void> => {
   const page = Math.max(1, parseInt(ctx.query.page as string) || 1);
@@ -69,8 +69,11 @@ export const listUsers = async (ctx: AdminContext): Promise<void> => {
   // Build query
   const query: Record<string, unknown> = {};
 
+  // Always exclude the current user from the list
+  query._id = { $ne: ctx.state.adminUser.id };
+
   // Regular admins can only see non-admin users
-  // Super-admins can see all users
+  // Super-admins can see all users (except themselves, handled above)
   if (!ctx.state.adminUser.isSuperAdmin) {
     query.roles = { $nin: [UserRole.ADMIN, UserRole.SUPER_ADMIN] };
   }
@@ -214,7 +217,7 @@ export const updateUserRoles = async (ctx: AdminContext): Promise<void> => {
   if (!canManageAdminRole(ctx.state.adminUser.roles, user.roles, roles)) {
     throw new ApiError(
       403,
-      'Only super-admins can assign or revoke admin privileges',
+      'Admin cannot promote other users to admin. Please ask the super admin for permission.',
       ErrorCode.FORBIDDEN,
     );
   }

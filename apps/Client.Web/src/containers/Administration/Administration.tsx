@@ -461,10 +461,11 @@ export const Administration: FC = () => {
       </Paper>
 
       {/* Edit Roles Dialog */}
-      {selectedUser && (
+      {selectedUser && currentUser && (
         <EditRolesDialog
           open={editRolesDialogOpen}
           user={selectedUser}
+          currentUserRoles={currentUser.roles}
           onClose={() => {
             setEditRolesDialogOpen(false);
             setSelectedUser(null);
