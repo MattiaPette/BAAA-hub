@@ -1,7 +1,7 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { User, UserRole, PrivacyLevel } from '@baaa-hub/shared-types';
+import { User, UserRole, PrivacyLevel, MfaType } from '@baaa-hub/shared-types';
 import { BrowserRouter } from 'react-router';
 import { renderWithProviders as render } from '../../test-utils';
 import { BaseContainer } from './BaseContainer';
@@ -26,6 +26,8 @@ describe('BaseContainer', () => {
     updatedAt: '2024-01-01T00:00:00.000Z',
     isBlocked: false,
     isEmailVerified: true,
+    mfaEnabled: false,
+    mfaType: MfaType.NONE,
     roles: [UserRole.MEMBER],
     privacySettings: {
       email: PrivacyLevel.PUBLIC,

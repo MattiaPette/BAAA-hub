@@ -209,6 +209,26 @@ export interface UserProfileData {
 }
 
 /**
+ * Types of MFA methods supported by Auth0
+ */
+export enum MfaType {
+  /** No MFA enabled */
+  NONE = 'NONE',
+  /** Time-based One-Time Password (authenticator apps) */
+  TOTP = 'TOTP',
+  /** SMS-based verification */
+  SMS = 'SMS',
+  /** Email-based verification */
+  EMAIL = 'EMAIL',
+  /** Push notification (e.g., Guardian app) */
+  PUSH = 'PUSH',
+  /** WebAuthn/FIDO2 security keys */
+  WEBAUTHN = 'WEBAUTHN',
+  /** Recovery codes */
+  RECOVERY_CODE = 'RECOVERY_CODE',
+}
+
+/**
  * Full user entity including system fields
  */
 export interface User extends UserProfileData {
@@ -218,6 +238,10 @@ export interface User extends UserProfileData {
   updatedAt: string;
   isBlocked: boolean;
   isEmailVerified: boolean;
+  /** Whether the user has MFA enabled (synced from Auth0 via webhook) */
+  mfaEnabled: boolean;
+  /** Primary MFA type used by the user (synced from Auth0 via webhook) */
+  mfaType: MfaType;
   roles: UserRole[];
 }
 
@@ -279,3 +303,20 @@ export interface PaginatedResponse<T> {
  * Admin API: List users response
  */
 export type AdminUsersListResponse = PaginatedResponse<User>;
+
+/**
+ * Auth0 Post-Login Action webhook payload
+ * Sent by Auth0 to sync MFA and email verification status
+ */
+export interface Auth0UserUpdateWebhookPayload {
+  /** Auth0 user ID (e.g., "auth0|xxxxx") */
+  user_id: string;
+  /** User's email address */
+  email: string;
+  /** Whether the user's email is verified in Auth0 */
+  email_verified: boolean;
+  /** Whether MFA is enabled for the user */
+  mfa_enabled: boolean;
+  /** Primary MFA type if MFA is enabled */
+  mfa_type?: string;
+}

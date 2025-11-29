@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { SnackbarProvider } from 'notistack';
-import { SportType, User, PrivacyLevel } from '@baaa-hub/shared-types';
+import { SportType, User, PrivacyLevel, MfaType } from '@baaa-hub/shared-types';
 import { renderWithProviders as render } from '../../test-utils';
 import { Profile } from './Profile';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
@@ -49,6 +49,8 @@ const mockUser: User = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   isBlocked: false,
   isEmailVerified: true,
+  mfaEnabled: false,
+  mfaType: MfaType.NONE,
   roles: [],
   privacySettings: {
     email: PrivacyLevel.PUBLIC,

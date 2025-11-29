@@ -8,6 +8,7 @@ considerations for the BAAA Hub project.
 - [Reporting Security Vulnerabilities](#reporting-security-vulnerabilities)
 - [Security Practices](#security-practices)
 - [Authentication and Authorization](#authentication-and-authorization)
+- [MFA and Email Verification Sync](#mfa-and-email-verification-sync)
 - [Data Protection](#data-protection)
 - [Dependency Management](#dependency-management)
 - [Environment Variables](#environment-variables)
@@ -57,6 +58,71 @@ BAAA Hub uses Auth0 for authentication:
 - Implement proper session management
 - Validate tokens on the server side
 
+## MFA and Email Verification Sync
+
+### Overview
+
+User MFA status and email verification are synced from Auth0 to the local
+database via a webhook-based approach. This ensures:
+
+- **Scalability**: No polling of Auth0 Management API (avoids rate limits)
+- **Reliability**: Data stored locally for admin visibility
+- **Event-driven**: Updates occur on user login
+
+### Architecture
+
+```
+┌──────────┐     Login      ┌──────────┐   Post-Login   ┌─────────────┐
+│   User   │ ───────────────► │  Auth0   │ ──────────────► │   Action    │
+└──────────┘                └──────────┘                └──────┬──────┘
+                                                               │
+                                                               │ Webhook
+                                                               ▼
+┌──────────┐     Query      ┌──────────┐   Update DB    ┌─────────────┐
+│  Admin   │ ◄───────────── │ Backend  │ ◄───────────── │  /api/      │
+│   UI     │                │   API    │                │  webhooks/  │
+└──────────┘                └──────────┘                └─────────────┘
+```
+
+### Auth0 Post-Login Action
+
+An Auth0 Action runs after each successful login and sends MFA/email status to
+the backend webhook. The action is managed via Auth0 Deploy CLI (Infrastructure
+as Code).
+
+**Configuration files:**
+
+- `auth0/tenant.yaml` - Main configuration
+- `auth0/actions/sync-user-to-db.js` - Action code
+
+### Webhook Security
+
+The webhook endpoint (`/api/webhooks/auth0/user-update`) is secured with:
+
+1. **Shared Secret**: The `x-webhook-secret` header must match
+   `AUTH0_WEBHOOK_SECRET`
+2. **Constant-time Comparison**: Prevents timing attacks
+3. **Input Validation**: Zod schema validates all incoming data
+
+### Setting Up Auth0 Actions
+
+1. Configure the Auth0 Deploy CLI (see `auth0/README.md`)
+2. Set the required secrets in Auth0 Dashboard:
+   - `API_URL`: Backend webhook URL
+   - `API_SECRET`: Matches `AUTH0_WEBHOOK_SECRET`
+3. Deploy: `a0deploy import --input_file ./auth0/tenant.yaml`
+
+### Admin API
+
+The admin user list endpoint returns MFA status directly from the database:
+
+- `mfaEnabled`: Whether MFA is enabled
+- `mfaType`: Type of MFA (TOTP, SMS, EMAIL, PUSH, WEBAUTHN, RECOVERY_CODE)
+- `isEmailVerified`: Email verification status
+
+**Important**: These values are synced on user login. Users who haven't logged
+in since enabling MFA may show stale data until their next login.
+
 ## Data Protection
 
 ### Frontend
@@ -101,6 +167,7 @@ All sensitive configuration should be stored in environment variables:
 - Database connection strings
 - Authentication credentials
 - Third-party service tokens
+- **AUTH0_WEBHOOK_SECRET** - Webhook authentication secret
 
 ### Best Practices
 
@@ -144,6 +211,8 @@ When deploying with Docker:
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [Node.js Security Best Practices](https://nodejs.org/en/docs/guides/security/)
 - [Auth0 Security Documentation](https://auth0.com/docs/security)
+- [Auth0 Deploy CLI](https://github.com/auth0/auth0-deploy-cli)
+- [Auth0 Post-Login Actions](https://auth0.com/docs/customize/actions/flows-and-triggers/login-flow)
 
 ## License
 

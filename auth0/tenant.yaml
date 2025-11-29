@@ -1,0 +1,40 @@
+# Auth0 Tenant Configuration
+# ===========================
+#
+# This file defines Auth0 Actions and triggers managed via Auth0 Deploy CLI.
+# See README.md for setup and deployment instructions.
+#
+# IMPORTANT:
+# - Replace placeholder values with actual configuration
+# - Never commit actual secrets - use Auth0 Dashboard to configure secrets
+# - Test in a development tenant before deploying to production
+
+# Actions Configuration
+# ---------------------
+# Actions are serverless functions that execute during Auth0 flows
+actions:
+  - name: Sync User to Database
+    code: ./actions/sync-user-to-db.js
+    runtime: node18
+    dependencies:
+      - name: node-fetch
+        version: '2.6.12'
+      - name: abort-controller
+        version: '3.0.0'
+    deployed: true
+    # Secrets are configured in Auth0 Dashboard, not in this file
+    # Required secrets:
+    #   - API_URL: Backend webhook endpoint URL
+    #   - API_SECRET: Webhook authentication secret
+    secrets: []
+    supported_triggers:
+      - id: post-login
+        version: v3
+
+# Triggers Configuration
+# ----------------------
+# Binds actions to specific Auth0 flows
+triggers:
+  post-login:
+    - action_name: Sync User to Database
+      display_name: Sync User to Database

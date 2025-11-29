@@ -27,6 +27,10 @@ interface Config {
     bucket: string;
     region: string;
   };
+  webhook: {
+    /** Secret for Auth0 post-login action webhook authentication */
+    auth0Secret: string;
+  };
 }
 
 const config: Config = {
@@ -51,6 +55,9 @@ const config: Config = {
     secretKey: process.env.MINIO_SECRET_KEY || 'minioadmin',
     bucket: process.env.MINIO_BUCKET || 'baaa-hub-images',
     region: process.env.MINIO_REGION || 'us-east-1',
+  },
+  webhook: {
+    auth0Secret: process.env.AUTH0_WEBHOOK_SECRET || '',
   },
 };
 

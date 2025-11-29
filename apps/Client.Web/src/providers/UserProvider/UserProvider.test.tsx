@@ -2,7 +2,7 @@ import { waitFor, renderHook, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { ReactNode } from 'react';
-import { User, SportType, PrivacyLevel } from '@baaa-hub/shared-types';
+import { User, SportType, PrivacyLevel, MfaType } from '@baaa-hub/shared-types';
 import { UserProvider, useUser } from './UserProvider';
 import * as AuthProviderModule from '../AuthProvider/AuthProvider';
 import * as userService from '../../services/userService';
@@ -25,6 +25,8 @@ const mockUser: User = {
   updatedAt: '2024-01-01T00:00:00.000Z',
   isBlocked: false,
   isEmailVerified: true,
+  mfaEnabled: false,
+  mfaType: MfaType.NONE,
   roles: [],
   privacySettings: {
     email: PrivacyLevel.PUBLIC,
