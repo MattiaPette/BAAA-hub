@@ -67,6 +67,7 @@ export const listUsers = async (ctx: AdminContext): Promise<void> => {
   const roleFilter = ctx.query.role as string;
   const blockedFilter = ctx.query.blocked as string;
   const emailVerifiedFilter = ctx.query.emailVerified as string;
+  const mfaEnabledFilter = ctx.query.mfaEnabled as string;
 
   // Build query
   const query: Record<string, unknown> = {};
@@ -122,6 +123,11 @@ export const listUsers = async (ctx: AdminContext): Promise<void> => {
   // Filter by email verification status
   if (emailVerifiedFilter === 'true' || emailVerifiedFilter === 'false') {
     query.isEmailVerified = emailVerifiedFilter === 'true';
+  }
+
+  // Filter by MFA enabled status
+  if (mfaEnabledFilter === 'true' || mfaEnabledFilter === 'false') {
+    query.mfaEnabled = mfaEnabledFilter === 'true';
   }
 
   // Get total count for pagination

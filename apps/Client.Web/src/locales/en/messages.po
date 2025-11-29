@@ -25,12 +25,12 @@ msgstr "About"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
 
-#: src/containers/Administration/Administration.tsx:335
+#: src/containers/Administration/Administration.tsx:361
 msgid "Actions"
 msgstr "Actions"
 
-#: src/containers/Administration/Administration.tsx:296
-#: src/containers/Administration/Administration.tsx:402
+#: src/containers/Administration/Administration.tsx:309
+#: src/containers/Administration/Administration.tsx:446
 msgid "Active"
 msgstr "Active"
 
@@ -58,18 +58,19 @@ msgstr "Adjust Profile Picture"
 msgid "Admin"
 msgstr "Admin"
 
-#: src/containers/Administration/Administration.tsx:100
-#: src/containers/Administration/Administration.tsx:248
+#: src/containers/Administration/Administration.tsx:106
+#: src/containers/Administration/Administration.tsx:261
 #: src/containers/MainContainer/MainContainer.tsx:70
 msgid "Administration"
 msgstr "Administration"
 
-#: src/containers/Administration/Administration.tsx:295
-#: src/containers/Administration/Administration.tsx:307
+#: src/containers/Administration/Administration.tsx:308
+#: src/containers/Administration/Administration.tsx:320
+#: src/containers/Administration/Administration.tsx:332
 msgid "All"
 msgstr "All"
 
-#: src/containers/Administration/Administration.tsx:280
+#: src/containers/Administration/Administration.tsx:293
 msgid "All Roles"
 msgstr "All Roles"
 
@@ -93,9 +94,21 @@ msgstr "Apply"
 msgid "Authentication required. Please try logging in again."
 msgstr "Authentication required. Please try logging in again."
 
+#: src/helpers/mfaLabels/mfaLabels.ts:9
+msgid "Authenticator App"
+msgstr "Authenticator App"
+
+#: src/containers/Settings/Settings.tsx:163
+msgid "Available MFA Methods:"
+msgstr "Available MFA Methods:"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1075
 msgid "Back"
 msgstr "Back"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:40
+msgid "Backup recovery codes"
+msgstr "Backup recovery codes"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:594
 msgid "Banner Image"
@@ -119,12 +132,12 @@ msgstr "Banner updated successfully!"
 msgid "Basic member role (required)"
 msgstr "Basic member role (required)"
 
-#: src/containers/Administration/Administration.tsx:428
+#: src/containers/Administration/Administration.tsx:472
 msgid "Block User"
 msgstr "Block User"
 
-#: src/containers/Administration/Administration.tsx:297
-#: src/containers/Administration/Administration.tsx:395
+#: src/containers/Administration/Administration.tsx:310
+#: src/containers/Administration/Administration.tsx:439
 msgid "Blocked"
 msgstr "Blocked"
 
@@ -154,7 +167,7 @@ msgstr "Change profile picture"
 msgid "Choose a unique nickname"
 msgstr "Choose a unique nickname"
 
-#: src/containers/Settings/Settings.tsx:116
+#: src/containers/Settings/Settings.tsx:259
 msgid "Choose your preferred language"
 msgstr "Choose your preferred language"
 
@@ -207,7 +220,7 @@ msgstr "Create Account"
 msgid "Create Profile"
 msgstr "Create Profile"
 
-#: src/containers/Administration/Administration.tsx:334
+#: src/containers/Administration/Administration.tsx:360
 msgid "Created"
 msgstr "Created"
 
@@ -225,7 +238,7 @@ msgstr "CrossFit"
 msgid "Cycling"
 msgstr "Cycling"
 
-#: src/containers/Settings/Settings.tsx:88
+#: src/containers/Settings/Settings.tsx:231
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
@@ -250,6 +263,10 @@ msgstr "Date of birth is required"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:874
 msgid "Date of Birth Privacy"
 msgstr "Date of Birth Privacy"
+
+#: src/containers/Administration/Administration.tsx:334
+msgid "Disabled"
+msgstr "Disabled"
 
 #: src/components/login/LoginForm/LoginForm.tsx:281
 msgid "Don't have an account?"
@@ -280,8 +297,10 @@ msgstr "Edit Roles for {0} {1}"
 
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Administration/Administration.tsx:329
+#: src/containers/Administration/Administration.tsx:354
 #: src/containers/Profile/Profile.tsx:431
+#: src/helpers/mfaLabels/mfaLabels.ts:11
+#: src/helpers/mfaLabels/mfaLabels.ts:24
 msgid "Email"
 msgstr "Email"
 
@@ -289,7 +308,7 @@ msgstr "Email"
 msgid "Email is required"
 msgstr "Email is required"
 
-#: src/containers/Administration/Administration.tsx:387
+#: src/containers/Administration/Administration.tsx:413
 msgid "Email Not Verified"
 msgstr "Email Not Verified"
 
@@ -298,12 +317,20 @@ msgstr "Email Not Verified"
 msgid "Email Privacy"
 msgstr "Email Privacy"
 
-#: src/containers/Administration/Administration.tsx:301
-#: src/containers/Administration/Administration.tsx:304
-#: src/containers/Administration/Administration.tsx:332
-#: src/containers/Administration/Administration.tsx:383
+#: src/containers/Settings/Settings.tsx:199
+msgid "Email Verification"
+msgstr "Email Verification"
+
+#: src/containers/Administration/Administration.tsx:314
+#: src/containers/Administration/Administration.tsx:317
+#: src/containers/Administration/Administration.tsx:357
+#: src/containers/Administration/Administration.tsx:409
 msgid "Email Verified"
 msgstr "Email Verified"
+
+#: src/containers/Administration/Administration.tsx:333
+msgid "Enabled"
+msgstr "Enabled"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:457
 msgid "Enter your first name"
@@ -318,7 +345,7 @@ msgstr "Enter your last name"
 msgid "Failed to create profile. Please try again."
 msgstr "Failed to create profile. Please try again."
 
-#: src/containers/Administration/Administration.tsx:148
+#: src/containers/Administration/Administration.tsx:156
 msgid "Failed to load users. Please try again."
 msgstr "Failed to load users. Please try again."
 
@@ -338,11 +365,11 @@ msgstr "Failed to update profile picture. Please try again."
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
 
-#: src/containers/Administration/Administration.tsx:234
+#: src/containers/Administration/Administration.tsx:247
 msgid "Failed to update user roles"
 msgstr "Failed to update user roles"
 
-#: src/containers/Administration/Administration.tsx:206
+#: src/containers/Administration/Administration.tsx:219
 msgid "Failed to update user status"
 msgstr "Failed to update user status"
 
@@ -487,15 +514,15 @@ msgstr "Invalid token"
 msgid "Joined"
 msgstr "Joined"
 
-#: src/containers/Settings/Settings.tsx:100
+#: src/containers/Settings/Settings.tsx:243
 msgid "Language"
 msgstr "Language"
 
-#: src/containers/Settings/Settings.tsx:61
+#: src/containers/Settings/Settings.tsx:78
 msgid "Language changed to English"
 msgstr "Language changed to English"
 
-#: src/containers/Settings/Settings.tsx:62
+#: src/containers/Settings/Settings.tsx:79
 msgid "Language changed to Italian"
 msgstr "Language changed to Italian"
 
@@ -514,7 +541,7 @@ msgstr "Last name is required"
 msgid "Last name must be 50 characters or less"
 msgstr "Last name must be 50 characters or less"
 
-#: src/containers/Settings/Settings.tsx:88
+#: src/containers/Settings/Settings.tsx:231
 msgid "Light Mode"
 msgstr "Light Mode"
 
@@ -534,11 +561,11 @@ msgstr "Logout"
 msgid "Logout page"
 msgstr "Logout page"
 
-#: src/containers/Administration/Administration.tsx:416
+#: src/containers/Administration/Administration.tsx:460
 msgid "Manage User Roles"
 msgstr "Manage User Roles"
 
-#: src/containers/Administration/Administration.tsx:251
+#: src/containers/Administration/Administration.tsx:264
 msgid "Manage users, roles, and account status."
 msgstr "Manage users, roles, and account status."
 
@@ -546,11 +573,26 @@ msgstr "Manage users, roles, and account status."
 msgid "Member"
 msgstr "Member"
 
+#: src/containers/Administration/Administration.tsx:326
+#: src/containers/Administration/Administration.tsx:329
+#: src/containers/Administration/Administration.tsx:358
+msgid "MFA"
+msgstr "MFA"
+
+#: src/containers/Administration/Administration.tsx:431
+msgid "MFA Disabled"
+msgstr "MFA Disabled"
+
+#. placeholder {0}: mfaTypeLabels[user.mfaType]
+#: src/containers/Administration/Administration.tsx:421
+msgid "MFA Enabled: {0}"
+msgstr "MFA Enabled: {0}"
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:42
 msgid "Multi-factor authentication is required"
 msgstr "Multi-factor authentication is required"
 
-#: src/containers/Administration/Administration.tsx:328
+#: src/containers/Administration/Administration.tsx:353
 msgid "Name"
 msgstr "Name"
 
@@ -562,7 +604,7 @@ msgstr "Network error. Check your internet connection"
 msgid "Next"
 msgstr "Next"
 
-#: src/containers/Administration/Administration.tsx:330
+#: src/containers/Administration/Administration.tsx:355
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:494
 msgid "Nickname"
 msgstr "Nickname"
@@ -583,17 +625,39 @@ msgstr "Nickname must be at least 3 characters"
 msgid "No sports selected yet."
 msgstr "No sports selected yet."
 
-#: src/containers/Administration/Administration.tsx:350
+#: src/helpers/mfaLabels/mfaLabels.ts:34
+msgid "No two-factor authentication enabled"
+msgstr "No two-factor authentication enabled"
+
+#: src/containers/Administration/Administration.tsx:376
 msgid "No users found"
 msgstr "No users found"
 
-#: src/containers/Administration/Administration.tsx:309
+#: src/helpers/mfaLabels/mfaLabels.ts:8
+#: src/helpers/mfaLabels/mfaLabels.ts:21
+msgid "None"
+msgstr "None"
+
+#: src/containers/Settings/Settings.tsx:132
+msgid "Not Enabled"
+msgstr "Not Enabled"
+
+#: src/containers/Administration/Administration.tsx:322
+#: src/containers/Settings/Settings.tsx:205
 msgid "Not Verified"
 msgstr "Not Verified"
 
 #: src/components/commons/errors/RootErrorFallback/RootErrorFallback.tsx:97
 msgid "Oh no! Something went wrong..."
 msgstr "Oh no! Something went wrong..."
+
+#: src/helpers/mfaLabels/mfaLabels.ts:37
+msgid "One-time codes sent to your email address. Convenient but lower security than authenticator apps."
+msgstr "One-time codes sent to your email address. Convenient but lower security than authenticator apps."
+
+#: src/helpers/mfaLabels/mfaLabels.ts:36
+msgid "One-time codes sent via SMS to your phone number"
+msgstr "One-time codes sent via SMS to your phone number"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:544
 msgid "Only letters, numbers, and underscores allowed"
@@ -636,6 +700,10 @@ msgstr "Personal Details"
 msgid "Photo Privacy"
 msgstr "Photo Privacy"
 
+#: src/helpers/mfaLabels/mfaLabels.ts:39
+msgid "Physical security key (FIDO2/WebAuthn)"
+msgstr "Physical security key (FIDO2/WebAuthn)"
+
 #: src/containers/ProfileSetup/ProfileSetup.tsx:141
 msgid "Please check your input and try again."
 msgstr "Please check your input and try again."
@@ -643,6 +711,10 @@ msgstr "Please check your input and try again."
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:752
 msgid "Please select at least one sport"
 msgstr "Please select at least one sport"
+
+#: src/containers/Settings/Settings.tsx:210
+msgid "Please verify your email address for enhanced security."
+msgstr "Please verify your email address for enhanced security."
 
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:30
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:381
@@ -712,6 +784,30 @@ msgstr "Profile updated successfully!"
 msgid "Public"
 msgstr "Public"
 
+#: src/helpers/mfaLabels/mfaLabels.ts:25
+msgid "Push"
+msgstr "Push"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:12
+msgid "Push Notification"
+msgstr "Push Notification"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:38
+msgid "Push notifications via Guardian app"
+msgstr "Push notifications via Guardian app"
+
+#: src/containers/Settings/Settings.tsx:175
+msgid "Recommended"
+msgstr "Recommended"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:27
+msgid "Recovery"
+msgstr "Recovery"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:14
+msgid "Recovery Code"
+msgstr "Recovery Code"
+
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:429
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:653
 msgid "Remove banner"
@@ -734,16 +830,16 @@ msgstr "Remove profile picture"
 msgid "Response type not supported"
 msgstr "Response type not supported"
 
-#: src/containers/Administration/Administration.tsx:274
-#: src/containers/Administration/Administration.tsx:277
+#: src/containers/Administration/Administration.tsx:287
+#: src/containers/Administration/Administration.tsx:290
 msgid "Role"
 msgstr "Role"
 
-#: src/containers/Administration/Administration.tsx:331
+#: src/containers/Administration/Administration.tsx:356
 msgid "Roles"
 msgstr "Roles"
 
-#: src/containers/Administration/Administration.tsx:459
+#: src/containers/Administration/Administration.tsx:503
 msgid "Rows per page:"
 msgstr "Rows per page:"
 
@@ -765,17 +861,25 @@ msgstr "Save Changes"
 msgid "Saving..."
 msgstr "Saving..."
 
-#: src/containers/Administration/Administration.tsx:258
+#: src/containers/Administration/Administration.tsx:271
 msgid "Search by name, email, or nickname..."
 msgstr "Search by name, email, or nickname..."
+
+#: src/containers/Settings/Settings.tsx:101
+msgid "Security"
+msgstr "Security"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:13
+msgid "Security Key"
+msgstr "Security Key"
 
 #: src/containers/Profile/ProfileEditForm.tsx:278
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
-#: src/containers/Settings/Settings.tsx:103
-#: src/containers/Settings/Settings.tsx:108
+#: src/containers/Settings/Settings.tsx:246
+#: src/containers/Settings/Settings.tsx:251
 msgid "Select Language"
 msgstr "Select Language"
 
@@ -784,8 +888,8 @@ msgid "Select the roles to assign to this user."
 msgstr "Select the roles to assign to this user."
 
 #: src/containers/MainContainer/MainContainer.tsx:86
-#: src/containers/Settings/Settings.tsx:42
-#: src/containers/Settings/Settings.tsx:70
+#: src/containers/Settings/Settings.tsx:59
+#: src/containers/Settings/Settings.tsx:87
 msgid "Settings"
 msgstr "Settings"
 
@@ -793,6 +897,11 @@ msgstr "Settings"
 #: src/components/login/LoginForm/LoginForm.tsx:299
 msgid "Sign Up"
 msgstr "Sign Up"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:10
+#: src/helpers/mfaLabels/mfaLabels.ts:23
+msgid "SMS"
+msgstr "SMS"
 
 #: src/containers/Profile/Profile.tsx:496
 msgid "Social"
@@ -819,9 +928,9 @@ msgstr "Sports & Activities"
 msgid "Sports Privacy"
 msgstr "Sports Privacy"
 
-#: src/containers/Administration/Administration.tsx:289
-#: src/containers/Administration/Administration.tsx:292
-#: src/containers/Administration/Administration.tsx:333
+#: src/containers/Administration/Administration.tsx:302
+#: src/containers/Administration/Administration.tsx:305
+#: src/containers/Administration/Administration.tsx:359
 msgid "Status"
 msgstr "Status"
 
@@ -850,15 +959,15 @@ msgstr "Supports JPG, PNG, WEBP, HEIC. Max 5MB."
 msgid "Swimming"
 msgstr "Swimming"
 
-#: src/containers/Settings/Settings.tsx:91
+#: src/containers/Settings/Settings.tsx:234
 msgid "Switch between light and dark theme"
 msgstr "Switch between light and dark theme"
 
-#: src/containers/Settings/Settings.tsx:51
+#: src/containers/Settings/Settings.tsx:68
 msgid "Switched to dark theme"
 msgstr "Switched to dark theme"
 
-#: src/containers/Settings/Settings.tsx:50
+#: src/containers/Settings/Settings.tsx:67
 msgid "Switched to light theme"
 msgstr "Switched to light theme"
 
@@ -878,7 +987,7 @@ msgstr "The request has expired. Please try again"
 msgid "The service is temporarily unavailable. Please try again later"
 msgstr "The service is temporarily unavailable. Please try again later"
 
-#: src/containers/Settings/Settings.tsx:78
+#: src/containers/Settings/Settings.tsx:221
 msgid "Theme"
 msgstr "Theme"
 
@@ -915,6 +1024,10 @@ msgstr "This username is already in use"
 msgid "This will be your public username"
 msgstr "This will be your public username"
 
+#: src/helpers/mfaLabels/mfaLabels.ts:35
+msgid "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
+msgstr "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:86
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Too many attempts. Please try again in a few minutes"
@@ -922,6 +1035,10 @@ msgstr "Too many attempts. Please try again in a few minutes"
 #: src/components/login/LoginForm/LoginForm.tsx:188
 msgid "Too many characters"
 msgstr "Too many characters"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:22
+msgid "TOTP"
+msgstr "TOTP"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:14
 #: src/helpers/sportTypes/sportTypeLabels.ts:34
@@ -937,6 +1054,14 @@ msgstr "Triathlon"
 msgid "Try alternative login"
 msgstr "Try alternative login"
 
+#: src/containers/Settings/Settings.tsx:107
+msgid "Two-Factor Authentication (2FA)"
+msgstr "Two-Factor Authentication (2FA)"
+
+#: src/containers/Settings/Settings.tsx:145
+msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
+msgstr "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:106
 msgid "Unauthorized client"
 msgstr "Unauthorized client"
@@ -945,7 +1070,7 @@ msgstr "Unauthorized client"
 msgid "Unauthorized. Please verify your credentials"
 msgstr "Unauthorized. Please verify your credentials"
 
-#: src/containers/Administration/Administration.tsx:428
+#: src/containers/Administration/Administration.tsx:472
 msgid "Unblock User"
 msgstr "Unblock User"
 
@@ -973,7 +1098,7 @@ msgstr "Uploading banner"
 msgid "Uploading image"
 msgstr "Uploading image"
 
-#: src/containers/Administration/Administration.tsx:201
+#: src/containers/Administration/Administration.tsx:214
 msgid "User blocked successfully"
 msgstr "User blocked successfully"
 
@@ -985,15 +1110,16 @@ msgstr "User installed the app"
 msgid "User rejected app installation"
 msgstr "User rejected app installation"
 
-#: src/containers/Administration/Administration.tsx:227
+#: src/containers/Administration/Administration.tsx:240
 msgid "User roles updated successfully"
 msgstr "User roles updated successfully"
 
-#: src/containers/Administration/Administration.tsx:200
+#: src/containers/Administration/Administration.tsx:213
 msgid "User unblocked successfully"
 msgstr "User unblocked successfully"
 
-#: src/containers/Administration/Administration.tsx:308
+#: src/containers/Administration/Administration.tsx:321
+#: src/containers/Settings/Settings.tsx:203
 msgid "Verified"
 msgstr "Verified"
 
@@ -1014,6 +1140,10 @@ msgstr "View full size profile picture"
 #: src/helpers/sportTypes/sportTypeLabels.ts:36
 msgid "Walking"
 msgstr "Walking"
+
+#: src/helpers/mfaLabels/mfaLabels.ts:26
+msgid "WebAuthn"
+msgstr "WebAuthn"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:852
 msgid "Who can see your information?"
@@ -1049,6 +1179,10 @@ msgstr "You must log in"
 msgid "You must register for multi-factor authentication"
 msgstr "You must register for multi-factor authentication"
 
+#: src/containers/Settings/Settings.tsx:137
+msgid "Your account does not have two-factor authentication enabled."
+msgstr "Your account does not have two-factor authentication enabled."
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:36
 msgid "Your account has been blocked for security reasons"
 msgstr "Your account has been blocked for security reasons"
@@ -1056,6 +1190,10 @@ msgstr "Your account has been blocked for security reasons"
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:31
 msgid "Your account has been locked after too many consecutive login attempts. We have sent you an email with instructions on how to unlock it"
 msgstr "Your account has been locked after too many consecutive login attempts. We have sent you an email with instructions on how to unlock it"
+
+#: src/containers/Settings/Settings.tsx:209
+msgid "Your email address has been verified."
+msgstr "Your email address has been verified."
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:82
 msgid "Your password is too common. Choose a more secure one"
