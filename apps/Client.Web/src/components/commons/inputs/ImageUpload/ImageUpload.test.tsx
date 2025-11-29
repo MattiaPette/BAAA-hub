@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SnackbarProvider } from 'notistack';
@@ -98,6 +98,42 @@ describe('ImageUpload', () => {
       });
 
       expect(screen.queryByLabelText(/photo privacy/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Cache invalidation', () => {
+    it('should update displayed image when imageUrl prop changes with cache buster', async () => {
+      // Start with an existing image
+      const { rerender } = renderComponent({
+        imageUrl: 'https://example.com/old-avatar.jpg',
+      });
+
+      // Verify initial image is shown
+      const initialImg = document.querySelector('img');
+      expect(initialImg).toHaveAttribute(
+        'src',
+        'https://example.com/old-avatar.jpg',
+      );
+
+      // Simulate parent updating the imageUrl prop with cache buster after upload
+      rerender(
+        <SnackbarProvider>
+          <ImageUpload
+            variant="avatar"
+            onUpload={mockOnUpload}
+            imageUrl="https://example.com/new-avatar.jpg?t=1234567890"
+          />
+        </SnackbarProvider>,
+      );
+
+      // After rerender with new URL, component should display the new image
+      await waitFor(() => {
+        const updatedImg = document.querySelector('img');
+        expect(updatedImg).toHaveAttribute(
+          'src',
+          'https://example.com/new-avatar.jpg?t=1234567890',
+        );
+      });
     });
   });
 });
