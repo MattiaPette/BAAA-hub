@@ -64,10 +64,10 @@ const getInitials = (name?: string, surname?: string): string => {
 /**
  * Format date for display
  */
-const formatDate = (dateString: string): string => {
+const formatDate = (dateString: string, locale: string): string => {
   try {
     const date = new Date(dateString);
-    return date.toLocaleDateString(undefined, {
+    return date.toLocaleDateString(locale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -391,7 +391,7 @@ export const Profile: FC = () => {
                         <Trans>Date of Birth</Trans>
                       </Typography>
                       <Typography variant="body2" fontWeight={500}>
-                        {formatDate(user.dateOfBirth)}
+                        {formatDate(user.dateOfBirth, i18n.locale)}
                       </Typography>
                     </Box>
                   </Box>
@@ -414,7 +414,7 @@ export const Profile: FC = () => {
                         <Trans>Joined</Trans>
                       </Typography>
                       <Typography variant="body2" fontWeight={500}>
-                        {formatDate(user.createdAt)}
+                        {formatDate(user.createdAt, i18n.locale)}
                       </Typography>
                     </Box>
                   </Box>
