@@ -61,7 +61,7 @@ export const handleAuth0UserUpdate = async (
   // Update user's MFA and email verification status
   user.isEmailVerified = email_verified;
   user.mfaEnabled = mfa_enabled;
-  user.mfaType = mfa_enabled ? mapMfaType(mfa_type) : MfaType.NONE;
+  user.mfaType = mfa_enabled ? mapMfaType(mfa_type ?? undefined) : MfaType.NONE;
 
   await user.save();
 

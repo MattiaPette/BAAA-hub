@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MfaType } from '@baaa-hub/shared-types';
 import { handleAuth0UserUpdate } from '../webhook.controller.js';
-import { WebhookContext } from '../../middleware/webhook.js';
+import { type WebhookContext } from '../../middleware/webhook.js';
 
 // Mock the user model
 const mockFindByAuthId = vi.fn();
@@ -94,6 +94,21 @@ describe('handleAuth0UserUpdate', () => {
       });
 
       await expect(handleAuth0UserUpdate(ctx)).rejects.toThrow();
+    });
+
+    it('should accept null mfa_type when mfa is disabled', async () => {
+      mockFindByAuthId.mockResolvedValue(createMockUser());
+
+      const ctx = createMockContext({
+        user_id: 'auth0|123',
+        email: 'test@example.com',
+        email_verified: true,
+        mfa_enabled: false,
+        mfa_type: null,
+      });
+
+      await expect(handleAuth0UserUpdate(ctx)).resolves.not.toThrow();
+      expect(ctx.status).toBe(200);
     });
   });
 
