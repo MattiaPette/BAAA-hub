@@ -6,6 +6,7 @@ import { SnackbarProvider } from 'notistack';
 import { renderWithProviders as render } from '../../test-utils';
 import { ProfileSetup } from './ProfileSetup';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
+import * as UserProviderModule from '../../providers/UserProvider/UserProvider';
 import { createUserProfile } from '../../services/userService';
 
 // Mock react-router
@@ -67,6 +68,7 @@ const renderWithSnackbar = (ui: React.ReactElement) =>
 
 describe('ProfileSetup', () => {
   const mockSetLoading = vi.fn();
+  const mockRefreshUser = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -91,6 +93,17 @@ describe('ProfileSetup', () => {
       setLoading: mockSetLoading,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
+
+    // Mock user provider
+    mockRefreshUser.mockResolvedValue(undefined);
+    vi.spyOn(UserProviderModule, 'useUser').mockReturnValue({
+      user: null,
+      hasProfile: false,
+      isLoading: false,
+      error: null,
+      refreshUser: mockRefreshUser,
+      setUser: vi.fn(),
+    });
   });
 
   it('should render profile setup form', () => {
@@ -132,6 +145,11 @@ describe('ProfileSetup', () => {
           socialLinks: 'PUBLIC',
         },
       });
+    });
+
+    // Should refresh user before navigating
+    await waitFor(() => {
+      expect(mockRefreshUser).toHaveBeenCalled();
     });
 
     await waitFor(() => {

@@ -137,15 +137,25 @@ export const deleteUserImage = async (
  * @param userId - User ID
  * @param imageType - Type of image (avatar or banner)
  * @param original - If true, returns full-size image; otherwise returns thumbnail
+ * @param cacheBuster - Optional timestamp to bust browser cache after image update
  * @returns The image URL
  */
 export const getUserImageUrl = (
   userId: string,
   imageType: ImageType,
   original: boolean = false,
+  cacheBuster?: number,
 ): string => {
   const url = `${API_BASE_URL}/api/images/user/${userId}/${imageType}`;
-  return original ? `${url}?original=true` : url;
+  const params = new URLSearchParams();
+  if (original) {
+    params.append('original', 'true');
+  }
+  if (cacheBuster) {
+    params.append('t', cacheBuster.toString());
+  }
+  const queryString = params.toString();
+  return queryString ? `${url}?${queryString}` : url;
 };
 
 /**

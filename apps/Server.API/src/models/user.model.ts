@@ -123,6 +123,16 @@ const userSchema = new Schema<UserDocument>(
         enum: Object.values(PrivacyLevel),
         default: PrivacyLevel.PUBLIC,
       },
+      avatar: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      banner: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
     },
 
     // System fields

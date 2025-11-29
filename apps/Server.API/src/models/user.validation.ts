@@ -33,12 +33,16 @@ const instagramUrlRegex =
 
 /**
  * Privacy settings schema
+ * Note: avatar and banner are optional for backward compatibility with existing users.
+ * Mongoose schema provides defaults for these fields.
  */
 const privacySettingsSchema = z.object({
   email: z.nativeEnum(PrivacyLevel),
   dateOfBirth: z.nativeEnum(PrivacyLevel),
   sportTypes: z.nativeEnum(PrivacyLevel),
   socialLinks: z.nativeEnum(PrivacyLevel),
+  avatar: z.nativeEnum(PrivacyLevel).optional().default(PrivacyLevel.PUBLIC),
+  banner: z.nativeEnum(PrivacyLevel).optional().default(PrivacyLevel.PUBLIC),
 });
 
 /**

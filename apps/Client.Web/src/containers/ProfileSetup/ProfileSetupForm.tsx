@@ -1,4 +1,11 @@
-import { FC, useState, useEffect } from 'react';
+import {
+  FC,
+  useState,
+  useEffect,
+  useRef,
+  ChangeEvent,
+  useCallback,
+} from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -31,6 +38,8 @@ import {
   Checkbox,
   CircularProgress,
   SelectChangeEvent,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -39,16 +48,23 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import LanguageIcon from '@mui/icons-material/Language';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
+import { useSnackbar } from 'notistack';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import {
   ProfileSetupFormInput,
   ProfileSetupFormProps,
+  ProfileSetupFormData,
 } from './ProfileSetup.model';
 import { PrivacySelector } from '../../components/commons/inputs/PrivacySelector/PrivacySelector';
 import { checkNicknameAvailability } from '../../services/userService';
 import { useLanguageContext } from '../../providers/LanguageProvider/LanguageProvider';
 import { Language } from '../../providers/LanguageProvider/LanguageProvider.model';
+import {
+  ImageCropDialog,
+  validateImageFile,
+} from '../../components/commons/inputs/ImageUpload';
 import logo from '../../assets/baaa.png';
 
 const StravaIcon = (props: SvgIconProps) => (
@@ -67,8 +83,11 @@ const StyledCard = styled(Card)(({ theme }) => ({
   gap: theme.spacing(2),
   margin: 'auto',
   [theme.breakpoints.up('sm')]: {
-    maxWidth: '600px',
+    maxWidth: '700px',
     padding: theme.spacing(4),
+  },
+  [theme.breakpoints.up('md')]: {
+    maxWidth: '800px',
   },
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
@@ -112,8 +131,22 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { enqueueSnackbar } = useSnackbar();
   const [activeStep, setActiveStep] = useState(0);
   const [language, setLanguage] = useLanguageContext();
+
+  // Image upload state
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [cropDialogOpen, setCropDialogOpen] = useState(false);
+  const [cropDialogVariant, setCropDialogVariant] = useState<
+    'avatar' | 'banner'
+  >('avatar');
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
 
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     setLanguage(event.target.value as Language);
@@ -163,6 +196,8 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
         dateOfBirth: PrivacyLevel.PUBLIC,
         sportTypes: PrivacyLevel.PUBLIC,
         socialLinks: PrivacyLevel.PUBLIC,
+        avatar: PrivacyLevel.PUBLIC,
+        banner: PrivacyLevel.PUBLIC,
       },
     },
   });
@@ -238,8 +273,109 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
     }
   }, [nicknameStatus.available, errors.nickname?.type, clearErrors]);
 
+  // Image file selection handlers
+  const handleImageSelect = useCallback(
+    (event: ChangeEvent<HTMLInputElement>, variant: 'avatar' | 'banner') => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const validation = validateImageFile(file);
+      if (!validation.valid) {
+        enqueueSnackbar(validation.error || t`Invalid file`, {
+          variant: 'error',
+        });
+        // Reset the input
+        if (variant === 'avatar' && avatarInputRef.current) {
+          // eslint-disable-next-line functional/immutable-data
+          avatarInputRef.current.value = '';
+        } else if (variant === 'banner' && bannerInputRef.current) {
+          // eslint-disable-next-line functional/immutable-data
+          bannerInputRef.current.value = '';
+        }
+        return;
+      }
+
+      setSelectedImageFile(file);
+      setCropDialogVariant(variant);
+      setCropDialogOpen(true);
+
+      // Reset file input to allow selecting the same file again
+      if (variant === 'avatar' && avatarInputRef.current) {
+        // eslint-disable-next-line functional/immutable-data
+        avatarInputRef.current.value = '';
+      } else if (variant === 'banner' && bannerInputRef.current) {
+        // eslint-disable-next-line functional/immutable-data
+        bannerInputRef.current.value = '';
+      }
+    },
+    [enqueueSnackbar],
+  );
+
+  const handleCropConfirm = useCallback(
+    (croppedFile: File) => {
+      setCropDialogOpen(false);
+
+      // Create preview URL
+      const objectUrl = URL.createObjectURL(croppedFile);
+
+      if (cropDialogVariant === 'avatar') {
+        // Revoke old preview URL if exists
+        if (avatarPreview) {
+          URL.revokeObjectURL(avatarPreview);
+        }
+        setAvatarFile(croppedFile);
+        setAvatarPreview(objectUrl);
+      } else {
+        // Revoke old preview URL if exists
+        if (bannerPreview) {
+          URL.revokeObjectURL(bannerPreview);
+        }
+        setBannerFile(croppedFile);
+        setBannerPreview(objectUrl);
+      }
+
+      setSelectedImageFile(null);
+    },
+    [cropDialogVariant, avatarPreview, bannerPreview],
+  );
+
+  const handleCropCancel = useCallback(() => {
+    setCropDialogOpen(false);
+    setSelectedImageFile(null);
+  }, []);
+
+  const handleRemoveAvatar = useCallback(() => {
+    if (avatarPreview) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+    setAvatarFile(null);
+    setAvatarPreview(null);
+  }, [avatarPreview]);
+
+  const handleRemoveBanner = useCallback(() => {
+    if (bannerPreview) {
+      URL.revokeObjectURL(bannerPreview);
+    }
+    setBannerFile(null);
+    setBannerPreview(null);
+  }, [bannerPreview]);
+
+  // Cleanup preview URLs on unmount
+  useEffect(
+    () => () => {
+      if (avatarPreview) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+      if (bannerPreview) {
+        URL.revokeObjectURL(bannerPreview);
+      }
+    },
+    [avatarPreview, bannerPreview],
+  );
+
   const steps = [
     t`Personal Details`,
+    t`Profile Picture`,
     t`Sports`,
     t`Contact & Social`,
     t`Privacy`,
@@ -253,8 +389,11 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
         case 0:
           return ['name', 'surname', 'nickname', 'dateOfBirth'];
         case 1:
-          return ['sportTypes'];
+          // Profile Picture step - no form validation needed
+          return [];
         case 2:
+          return ['sportTypes'];
+        case 3:
           return ['stravaLink', 'instagramLink'];
         default:
           return [];
@@ -284,7 +423,12 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
   };
 
   const handleFormSubmit: SubmitHandler<ProfileSetupFormInput> = data => {
-    onSubmit(data);
+    const formData: ProfileSetupFormData = {
+      ...data,
+      avatarFile: avatarFile || undefined,
+      bannerFile: bannerFile || undefined,
+    };
+    onSubmit(formData);
   };
 
   const renderStepContent = (step: number) => {
@@ -431,6 +575,169 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
           </Stack>
         );
       case 1:
+        // Profile Picture step
+        return (
+          <Stack spacing={3} alignItems="center">
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              textAlign="center"
+            >
+              <Trans>
+                Add a profile picture and banner to personalize your profile
+              </Trans>
+            </Typography>
+
+            {/* Banner Upload */}
+            <Box sx={{ width: '100%' }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                <Trans>Banner Image</Trans>
+              </Typography>
+              <Box
+                sx={{
+                  position: 'relative',
+                  height: 120,
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  bgcolor: bannerPreview ? 'transparent' : 'action.hover',
+                  backgroundImage: bannerPreview
+                    ? `url(${bannerPreview})`
+                    : 'none',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  border: '2px dashed',
+                  borderColor: 'divider',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    bgcolor: bannerPreview ? 'transparent' : 'action.selected',
+                  },
+                }}
+                onClick={() => bannerInputRef.current?.click()}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    bannerInputRef.current?.click();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={t`Upload banner image`}
+              >
+                {!bannerPreview && (
+                  <Stack alignItems="center" spacing={1}>
+                    <PhotoCameraIcon color="action" />
+                    <Typography variant="caption" color="text.secondary">
+                      <Trans>Click to upload banner</Trans>
+                    </Typography>
+                  </Stack>
+                )}
+                <input
+                  ref={bannerInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                  onChange={e => handleImageSelect(e, 'banner')}
+                  style={{ display: 'none' }}
+                  aria-label={t`Upload banner image`}
+                />
+              </Box>
+              {bannerPreview && (
+                <Button
+                  size="small"
+                  color="error"
+                  onClick={handleRemoveBanner}
+                  sx={{ mt: 1 }}
+                >
+                  <Trans>Remove banner</Trans>
+                </Button>
+              )}
+            </Box>
+
+            {/* Avatar Upload */}
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                <Trans>Profile Picture</Trans>
+              </Typography>
+              <Box
+                sx={{
+                  position: 'relative',
+                  display: 'inline-block',
+                  cursor: 'pointer',
+                }}
+                onClick={() => avatarInputRef.current?.click()}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    avatarInputRef.current?.click();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={t`Upload profile picture`}
+              >
+                <Avatar
+                  src={avatarPreview || undefined}
+                  sx={{
+                    width: 100,
+                    height: 100,
+                    bgcolor: avatarPreview
+                      ? 'transparent'
+                      : theme.palette.primary.main,
+                    fontSize: '2.5rem',
+                    fontWeight: 600,
+                    border: '3px dashed',
+                    borderColor: 'divider',
+                    '&:hover': {
+                      borderColor: 'primary.main',
+                    },
+                  }}
+                >
+                  {!avatarPreview &&
+                    (getInitials(watchedName, watchedSurname) || (
+                      <PhotoCameraIcon />
+                    ))}
+                </Avatar>
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                  onChange={e => handleImageSelect(e, 'avatar')}
+                  style={{ display: 'none' }}
+                  aria-label={t`Upload profile picture`}
+                />
+              </Box>
+              {avatarPreview && (
+                <Box>
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={handleRemoveAvatar}
+                    sx={{ mt: 1 }}
+                  >
+                    <Trans>Remove photo</Trans>
+                  </Button>
+                </Box>
+              )}
+            </Box>
+
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              textAlign="center"
+            >
+              <Trans>Supports JPG, PNG, WEBP, HEIC. Max 5MB.</Trans>
+            </Typography>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              textAlign="center"
+            >
+              <Trans>You can skip this step and add photos later.</Trans>
+            </Typography>
+          </Stack>
+        );
+      case 2:
         return (
           <Stack spacing={2} sx={{ mt: 1 }}>
             <Box>
@@ -484,7 +791,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             </Box>
           </Stack>
         );
-      case 2:
+      case 3:
         return (
           <Stack spacing={2} sx={{ mt: 1 }}>
             <FormControl fullWidth>
@@ -538,7 +845,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             </FormControl>
           </Stack>
         );
-      case 3:
+      case 4:
         return (
           <Stack spacing={2}>
             <Typography variant="subtitle1" gutterBottom>
@@ -592,6 +899,30 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                 />
               )}
             />
+
+            <Controller
+              name="privacySettings.avatar"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value || PrivacyLevel.PUBLIC}
+                  onChange={field.onChange}
+                  label={t`Profile Picture Privacy`}
+                />
+              )}
+            />
+
+            <Controller
+              name="privacySettings.banner"
+              control={control}
+              render={({ field }) => (
+                <PrivacySelector
+                  value={field.value || PrivacyLevel.PUBLIC}
+                  onChange={field.onChange}
+                  label={t`Banner Privacy`}
+                />
+              )}
+            />
           </Stack>
         );
       default:
@@ -608,23 +939,43 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             mb: 2,
+            flexWrap: { xs: 'wrap', sm: 'nowrap' },
+            gap: 1,
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: { xs: 1, sm: 2 },
+              flexShrink: 1,
+              minWidth: 0,
+            }}
+          >
             <img
               src={logo}
-              width={60}
-              style={{ placeSelf: 'center' }}
+              width={isMobile ? 40 : 60}
+              style={{ placeSelf: 'center', flexShrink: 0 }}
               alt="BAAA Hub Logo"
             />
-            <Box>
-              <Typography component="h1" variant="h5">
-                <Trans>Complete Your Profile</Trans>
-              </Typography>
-            </Box>
+            <Typography
+              component="h1"
+              variant={isMobile ? 'subtitle1' : 'h5'}
+              sx={{
+                whiteSpace: { xs: 'normal', sm: 'nowrap' },
+                fontWeight: 600,
+              }}
+            >
+              <Trans>Complete Your Profile</Trans>
+            </Typography>
           </Box>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <FormControl size="small" sx={{ minWidth: 120 }}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            alignItems="center"
+            sx={{ flexShrink: 0, ml: 'auto' }}
+          >
+            <FormControl size="small" sx={{ minWidth: isMobile ? 70 : 120 }}>
               <Select
                 id="language-selector"
                 aria-label={t`Select Language`}
@@ -637,21 +988,33 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                 }
                 sx={{ '& .MuiSelect-select': { py: 1 } }}
               >
-                <MenuItem value={Language.EN}>English</MenuItem>
-                <MenuItem value={Language.IT}>Italiano</MenuItem>
+                <MenuItem value={Language.EN}>
+                  {isMobile ? 'EN' : 'English'}
+                </MenuItem>
+                <MenuItem value={Language.IT}>
+                  {isMobile ? 'IT' : 'Italiano'}
+                </MenuItem>
               </Select>
             </FormControl>
-            <Button
-              variant="outlined"
-              color="error"
-              size="small"
-              startIcon={<LogoutIcon />}
-              onClick={onLogout}
-              disabled={isSubmitting}
-              sx={{ textTransform: 'none' }}
-            >
-              <Trans>Logout</Trans>
-            </Button>
+            <Tooltip title={t`Logout`}>
+              <IconButton
+                color="error"
+                size="small"
+                onClick={onLogout}
+                disabled={isSubmitting}
+                aria-label={t`Logout`}
+                sx={{
+                  border: 1,
+                  borderColor: 'error.main',
+                  '&:hover': {
+                    bgcolor: 'error.main',
+                    color: 'white',
+                  },
+                }}
+              >
+                <LogoutIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Box>
 
@@ -683,7 +1046,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             mt: 2,
             flexGrow: 1,
             overflowY: 'auto',
-            maxHeight: '60vh',
+            maxHeight: { xs: '55vh', sm: '60vh', md: '65vh' },
             px: 1,
           }}
         >
@@ -732,6 +1095,16 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
           </Box>
         </Box>
       </StyledCard>
+
+      {/* Image Crop Dialog */}
+      <ImageCropDialog
+        open={cropDialogOpen}
+        onClose={handleCropCancel}
+        onConfirm={handleCropConfirm}
+        imageFile={selectedImageFile}
+        aspectRatio={cropDialogVariant === 'avatar' ? 1 : 3}
+        variant={cropDialogVariant}
+      />
     </SignUpContainer>
   );
 };

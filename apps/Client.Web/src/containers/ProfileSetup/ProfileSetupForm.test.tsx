@@ -112,23 +112,37 @@ describe('ProfileSetupForm', () => {
     expect(screen.queryByLabelText(/Favorite Sports/i)).not.toBeInTheDocument();
   });
 
-  it('should navigate to step 2 (Sports) after valid step 1', async () => {
+  it('should navigate to step 2 (Profile Picture) after valid step 1', async () => {
     renderForm();
 
     await fillStep0();
     await goToNextStep();
 
-    // Should be on step 2
+    // Should be on step 2 (Profile Picture)
+    expect(
+      await screen.findByText(/Add a profile picture/i),
+    ).toBeInTheDocument();
+  });
+
+  it('should navigate to step 3 (Sports) after step 2', async () => {
+    renderForm();
+
+    await fillStep0();
+    await goToNextStep(); // Go to Profile Picture
+    await goToNextStep(); // Go to Sports
+
+    // Should be on step 3 (Sports)
     expect(
       await screen.findByLabelText(/Favorite Sports/i),
     ).toBeInTheDocument();
   });
 
-  it('should validate step 2 before moving to step 3', async () => {
+  it('should validate step 3 before moving to step 4', async () => {
     renderForm();
 
     await fillStep0();
-    await goToNextStep();
+    await goToNextStep(); // Go to Profile Picture
+    await goToNextStep(); // Go to Sports
 
     // Try to go next without selecting sports
     await goToNextStep();
@@ -149,11 +163,12 @@ describe('ProfileSetupForm', () => {
     );
   });
 
-  it('should navigate to step 3 (Contact) after valid step 2', async () => {
+  it('should navigate to step 4 (Contact) after valid step 3', async () => {
     renderForm();
 
     await fillStep0();
-    await goToNextStep();
+    await goToNextStep(); // Go to Profile Picture
+    await goToNextStep(); // Go to Sports
 
     // Select a sport
     const select = await screen.findByLabelText(/Favorite Sports/i);
@@ -170,11 +185,12 @@ describe('ProfileSetupForm', () => {
     expect(screen.getByLabelText(/Instagram Profile URL/i)).toBeInTheDocument();
   });
 
-  it('should validate step 3 before moving to step 4', async () => {
+  it('should validate step 4 (Contact) before moving to step 5', async () => {
     renderForm();
 
     await fillStep0();
-    await goToNextStep();
+    await goToNextStep(); // Go to Profile Picture
+    await goToNextStep(); // Go to Sports
 
     // Select sport
     const select = await screen.findByLabelText(/Favorite Sports/i);
@@ -183,7 +199,7 @@ describe('ProfileSetupForm', () => {
     fireEvent.click(option);
     closeSelect();
 
-    await goToNextStep();
+    await goToNextStep(); // Go to Contact
 
     // Try to enter invalid Strava URL
     const stravaInput = await screen.findByLabelText(/Strava Profile URL/i);
@@ -196,11 +212,12 @@ describe('ProfileSetupForm', () => {
     ).toBeInTheDocument();
   });
 
-  it('should navigate to step 4 (Privacy) after valid step 3', async () => {
+  it('should navigate to step 5 (Privacy) after valid step 4', async () => {
     renderForm({ defaultEmail: 'test@example.com' });
 
     await fillStep0();
-    await goToNextStep();
+    await goToNextStep(); // Go to Profile Picture
+    await goToNextStep(); // Go to Sports
 
     // Select sport
     const select = await screen.findByLabelText(/Favorite Sports/i);
@@ -209,12 +226,12 @@ describe('ProfileSetupForm', () => {
     fireEvent.click(option);
     closeSelect();
 
-    await goToNextStep();
+    await goToNextStep(); // Go to Contact
 
     // Email is pre-filled, so just go next
-    await goToNextStep();
+    await goToNextStep(); // Go to Privacy
 
-    // Should be on step 4
+    // Should be on step 5 (Privacy)
     expect(
       await screen.findByText(/Who can see your information\?/i),
     ).toBeInTheDocument();
@@ -224,11 +241,14 @@ describe('ProfileSetupForm', () => {
   it('should submit the form on the last step', async () => {
     renderForm({ defaultEmail: 'test@example.com' });
 
-    // Step 1
+    // Step 1 - Personal Details
     await fillStep0();
     await goToNextStep();
 
-    // Step 2
+    // Step 2 - Profile Picture (skip)
+    await goToNextStep();
+
+    // Step 3 - Sports
     const select = await screen.findByLabelText(/Favorite Sports/i);
     fireEvent.mouseDown(select);
     const option = await screen.findByText('Running');
@@ -236,10 +256,10 @@ describe('ProfileSetupForm', () => {
     closeSelect();
     await goToNextStep();
 
-    // Step 3
+    // Step 4 - Contact (skip)
     await goToNextStep();
 
-    // Step 4
+    // Step 5 - Privacy (submit)
     const submitButton = await screen.findByRole('button', {
       name: /Create Profile/i,
     });

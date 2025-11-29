@@ -160,11 +160,13 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
       sportTypes: user.sportTypes as SportType[],
       stravaLink: user.stravaLink || '',
       instagramLink: user.instagramLink || '',
-      privacySettings: user.privacySettings || {
-        email: PrivacyLevel.PUBLIC,
-        dateOfBirth: PrivacyLevel.PUBLIC,
-        sportTypes: PrivacyLevel.PUBLIC,
-        socialLinks: PrivacyLevel.PUBLIC,
+      privacySettings: {
+        email: user.privacySettings?.email || PrivacyLevel.PUBLIC,
+        dateOfBirth: user.privacySettings?.dateOfBirth || PrivacyLevel.PUBLIC,
+        sportTypes: user.privacySettings?.sportTypes || PrivacyLevel.PUBLIC,
+        socialLinks: user.privacySettings?.socialLinks || PrivacyLevel.PUBLIC,
+        avatar: user.privacySettings?.avatar || PrivacyLevel.PUBLIC,
+        banner: user.privacySettings?.banner || PrivacyLevel.PUBLIC,
       },
     },
   });
@@ -401,6 +403,48 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
           control={control}
           render={({ field }) => (
             <PrivacySelector value={field.value} onChange={field.onChange} />
+          )}
+        />
+      </Box>
+
+      {/* Profile Picture Privacy */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="body1">{t`Profile Picture Privacy`}</Typography>
+        <Controller
+          name="privacySettings.avatar"
+          control={control}
+          render={({ field }) => (
+            <PrivacySelector
+              value={field.value || PrivacyLevel.PUBLIC}
+              onChange={field.onChange}
+            />
+          )}
+        />
+      </Box>
+
+      {/* Banner Privacy */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="body1">{t`Banner Privacy`}</Typography>
+        <Controller
+          name="privacySettings.banner"
+          control={control}
+          render={({ field }) => (
+            <PrivacySelector
+              value={field.value || PrivacyLevel.PUBLIC}
+              onChange={field.onChange}
+            />
           )}
         />
       </Box>
