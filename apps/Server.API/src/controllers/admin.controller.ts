@@ -4,6 +4,10 @@ import {
   UserResponse,
   UserRole,
   AdminUsersListResponse,
+  canManageUser,
+  canManageAdminRole,
+  hasAdminPrivileges,
+  isSuperAdmin,
 } from '@baaa-hub/shared-types';
 import {
   User as UserMongooseModel,
@@ -46,7 +50,11 @@ const toUserResponse = (doc: UserDocument): User => {
 };
 
 /**
- * Get all users with pagination and search
+ * Get all users with pagination and search.
+ *
+ * Permission hierarchy:
+ * - Super-admins can see all users
+ * - Regular admins can only see non-admin users (members)
  */
 export const listUsers = async (ctx: AdminContext): Promise<void> => {
   const page = Math.max(1, parseInt(ctx.query.page as string) || 1);
@@ -62,6 +70,12 @@ export const listUsers = async (ctx: AdminContext): Promise<void> => {
   // Build query
   const query: Record<string, unknown> = {};
 
+  // Regular admins can only see non-admin users
+  // Super-admins can see all users
+  if (!ctx.state.adminUser.isSuperAdmin) {
+    query.roles = { $nin: [UserRole.ADMIN, UserRole.SUPER_ADMIN] };
+  }
+
   // Search by name, surname, nickname, or email
   if (search) {
     const searchRegex = new RegExp(search, 'i');
@@ -73,8 +87,26 @@ export const listUsers = async (ctx: AdminContext): Promise<void> => {
     ];
   }
 
-  // Filter by role
+  // Filter by role (respect visibility restrictions)
   if (roleFilter && Object.values(UserRole).includes(roleFilter as UserRole)) {
+    // Non-super-admins cannot filter by admin roles
+    if (
+      !ctx.state.adminUser.isSuperAdmin &&
+      (roleFilter === UserRole.ADMIN || roleFilter === UserRole.SUPER_ADMIN)
+    ) {
+      // Return empty results - they can't see these users
+      ctx.status = 200;
+      ctx.body = {
+        data: [],
+        pagination: {
+          page,
+          perPage,
+          total: 0,
+          totalPages: 0,
+        },
+      } satisfies AdminUsersListResponse;
+      return;
+    }
     query.roles = roleFilter;
   }
 
@@ -113,7 +145,11 @@ export const listUsers = async (ctx: AdminContext): Promise<void> => {
 };
 
 /**
- * Get a specific user by ID
+ * Get a specific user by ID.
+ *
+ * Permission hierarchy:
+ * - Super-admins can view any user
+ * - Regular admins can only view non-admin users
  */
 export const getUserById = async (ctx: AdminContext): Promise<void> => {
   const { userId } = ctx.params;
@@ -122,6 +158,15 @@ export const getUserById = async (ctx: AdminContext): Promise<void> => {
 
   if (!user) {
     throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
+  }
+
+  // Check if actor can view this user
+  if (!canManageUser(ctx.state.adminUser.roles, user.roles)) {
+    throw new ApiError(
+      403,
+      'Cannot view admin or super-admin users',
+      ErrorCode.FORBIDDEN,
+    );
   }
 
   const response: UserResponse = {
@@ -133,7 +178,12 @@ export const getUserById = async (ctx: AdminContext): Promise<void> => {
 };
 
 /**
- * Update user roles
+ * Update user roles.
+ *
+ * Permission hierarchy:
+ * - Only super-admins can assign/revoke admin roles
+ * - Regular admins can only modify non-admin user roles
+ * - Nobody can modify super-admin roles
  */
 export const updateUserRoles = async (ctx: AdminContext): Promise<void> => {
   const { userId } = ctx.params;
@@ -152,8 +202,30 @@ export const updateUserRoles = async (ctx: AdminContext): Promise<void> => {
     throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
   }
 
+  // Check if actor can manage this user
+  if (!canManageUser(ctx.state.adminUser.roles, user.roles)) {
+    throw new ApiError(
+      403,
+      'Cannot modify admin or super-admin users',
+      ErrorCode.FORBIDDEN,
+    );
+  }
+
+  // Check if actor can perform the role change
+  if (!canManageAdminRole(ctx.state.adminUser.roles, user.roles, roles)) {
+    throw new ApiError(
+      403,
+      'Only super-admins can assign or revoke admin privileges',
+      ErrorCode.FORBIDDEN,
+    );
+  }
+
   // Prevent admin from removing their own admin role
-  if (user.id === ctx.state.adminUser.id && !roles.includes(UserRole.ADMIN)) {
+  const isSelf = user.id === ctx.state.adminUser.id;
+  const selfHasAdmin = hasAdminPrivileges(ctx.state.adminUser.roles);
+  const newRolesHaveAdmin = hasAdminPrivileges(roles);
+
+  if (isSelf && selfHasAdmin && !newRolesHaveAdmin) {
     throw new ApiError(
       400,
       'Cannot remove your own admin privileges',
@@ -173,7 +245,11 @@ export const updateUserRoles = async (ctx: AdminContext): Promise<void> => {
 };
 
 /**
- * Update user blocked status
+ * Update user blocked status.
+ *
+ * Permission hierarchy:
+ * - Super-admins can block/unblock any user (except themselves)
+ * - Regular admins can only block/unblock non-admin users
  */
 export const updateUserBlocked = async (ctx: AdminContext): Promise<void> => {
   const { userId } = ctx.params;
@@ -192,11 +268,29 @@ export const updateUserBlocked = async (ctx: AdminContext): Promise<void> => {
     throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
   }
 
+  // Check if actor can manage this user
+  if (!canManageUser(ctx.state.adminUser.roles, user.roles)) {
+    throw new ApiError(
+      403,
+      'Cannot block/unblock admin or super-admin users',
+      ErrorCode.FORBIDDEN,
+    );
+  }
+
   // Prevent admin from blocking themselves
   if (user.id === ctx.state.adminUser.id && isBlocked) {
     throw new ApiError(
       400,
       'Cannot block your own account',
+      ErrorCode.FORBIDDEN,
+    );
+  }
+
+  // Prevent blocking super-admins entirely (even by other super-admins)
+  if (isSuperAdmin(user.roles) && isBlocked) {
+    throw new ApiError(
+      403,
+      'Cannot block a super-admin account',
       ErrorCode.FORBIDDEN,
     );
   }

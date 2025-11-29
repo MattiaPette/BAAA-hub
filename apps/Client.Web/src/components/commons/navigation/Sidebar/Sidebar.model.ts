@@ -4,8 +4,14 @@ import { DrawerProps, SvgIconProps } from '@mui/material';
 
 /**
  * Permission levels for route access control.
+ *
+ * Hierarchy (highest to lowest):
+ * - 'super-admin': Can access all routes, manage all users including admins
+ * - 'admin': Can access admin routes, manage regular users only
+ * - 'user': Can access authenticated user routes
+ * - 'public': Can access public routes (no authentication required)
  */
-export type RoutePermission = 'admin' | 'user' | 'public';
+export type RoutePermission = 'super-admin' | 'admin' | 'user' | 'public';
 
 /**
  * Navigation target configuration for sidebar routes.

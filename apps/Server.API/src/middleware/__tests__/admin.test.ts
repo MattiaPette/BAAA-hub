@@ -1,6 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ErrorCode, UserRole } from '@baaa-hub/shared-types';
-import { adminMiddleware, AdminContext } from '../admin.js';
+import {
+  adminMiddleware,
+  superAdminMiddleware,
+  AdminContext,
+} from '../admin.js';
 
 // Mock the user model
 const mockFindByAuthId = vi.fn();
@@ -105,6 +109,7 @@ describe('adminMiddleware', () => {
     expect(ctx.state.adminUser).toEqual({
       id: 'user-123',
       roles: [UserRole.MEMBER, UserRole.ADMIN],
+      isSuperAdmin: false,
     });
   });
 
@@ -133,5 +138,136 @@ describe('adminMiddleware', () => {
     await adminMiddleware(ctx, mockNext);
 
     expect(mockFindByAuthId).toHaveBeenCalledWith('custom-auth-id');
+  });
+
+  it('should allow super-admin access and mark isSuperAdmin true', async () => {
+    mockFindByAuthId.mockResolvedValue({
+      id: 'user-123',
+      isBlocked: false,
+      roles: [UserRole.SUPER_ADMIN],
+    });
+    const ctx = createMockContext();
+
+    await adminMiddleware(ctx, mockNext);
+
+    expect(mockNext).toHaveBeenCalled();
+    expect(ctx.state.adminUser).toEqual({
+      id: 'user-123',
+      roles: [UserRole.SUPER_ADMIN],
+      isSuperAdmin: true,
+    });
+  });
+
+  it('should allow user with both admin and super-admin roles', async () => {
+    mockFindByAuthId.mockResolvedValue({
+      id: 'user-123',
+      isBlocked: false,
+      roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
+    });
+    const ctx = createMockContext();
+
+    await adminMiddleware(ctx, mockNext);
+
+    expect(mockNext).toHaveBeenCalled();
+    expect(ctx.state.adminUser.isSuperAdmin).toBe(true);
+  });
+});
+
+describe('superAdminMiddleware', () => {
+  const mockNext = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockNext.mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('should return 404 if user is not found', async () => {
+    mockFindByAuthId.mockResolvedValue(null);
+    const ctx = createMockContext();
+
+    await superAdminMiddleware(ctx, mockNext);
+
+    expect(ctx.status).toBe(404);
+    expect(ctx.body).toEqual({
+      error: 'User not found',
+      code: ErrorCode.USER_NOT_FOUND,
+    });
+    expect(mockNext).not.toHaveBeenCalled();
+  });
+
+  it('should return 403 if user is blocked', async () => {
+    mockFindByAuthId.mockResolvedValue({
+      id: 'user-123',
+      isBlocked: true,
+      roles: [UserRole.SUPER_ADMIN],
+    });
+    const ctx = createMockContext();
+
+    await superAdminMiddleware(ctx, mockNext);
+
+    expect(ctx.status).toBe(403);
+    expect(ctx.body).toEqual({
+      error: 'User account is blocked',
+      code: ErrorCode.USER_BLOCKED,
+    });
+    expect(mockNext).not.toHaveBeenCalled();
+  });
+
+  it('should return 403 if user is regular admin but not super-admin', async () => {
+    mockFindByAuthId.mockResolvedValue({
+      id: 'user-123',
+      isBlocked: false,
+      roles: [UserRole.ADMIN],
+    });
+    const ctx = createMockContext();
+
+    await superAdminMiddleware(ctx, mockNext);
+
+    expect(ctx.status).toBe(403);
+    expect(ctx.body).toEqual({
+      error: 'Super-admin privileges required',
+      code: ErrorCode.FORBIDDEN,
+    });
+    expect(mockNext).not.toHaveBeenCalled();
+  });
+
+  it('should return 403 if user is a regular member', async () => {
+    mockFindByAuthId.mockResolvedValue({
+      id: 'user-123',
+      isBlocked: false,
+      roles: [UserRole.MEMBER],
+    });
+    const ctx = createMockContext();
+
+    await superAdminMiddleware(ctx, mockNext);
+
+    expect(ctx.status).toBe(403);
+    expect(ctx.body).toEqual({
+      error: 'Super-admin privileges required',
+      code: ErrorCode.FORBIDDEN,
+    });
+    expect(mockNext).not.toHaveBeenCalled();
+  });
+
+  it('should call next if user has super-admin role', async () => {
+    mockFindByAuthId.mockResolvedValue({
+      id: 'user-123',
+      isBlocked: false,
+      roles: [UserRole.SUPER_ADMIN],
+    });
+    const ctx = createMockContext();
+
+    await superAdminMiddleware(ctx, mockNext);
+
+    expect(mockNext).toHaveBeenCalled();
+    expect(ctx.state.adminUser).toEqual({
+      id: 'user-123',
+      roles: [UserRole.SUPER_ADMIN],
+      isSuperAdmin: true,
+    });
   });
 });
