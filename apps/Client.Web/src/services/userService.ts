@@ -136,7 +136,7 @@ export const deleteUserImage = async (
  * Get the URL for a user's image
  * @param userId - User ID
  * @param imageType - Type of image (avatar or banner)
- * @param original - If true, returns full-size image; otherwise returns thumbnail
+ * @param original - If true, returns full-size image; otherwise returns thumbnail (ignored for banners, which always return original)
  * @param cacheBuster - Optional timestamp to bust browser cache after image update
  * @returns The image URL
  */
@@ -148,6 +148,7 @@ export const getUserImageUrl = (
 ): string => {
   const url = `${API_BASE_URL}/api/images/user/${userId}/${imageType}`;
   const params = new URLSearchParams();
+  // For banners, original is always used (no thumbnails), but we still pass it for consistency
   if (original) {
     params.append('original', 'true');
   }
@@ -161,7 +162,7 @@ export const getUserImageUrl = (
 /**
  * Get the URL for the current user's image
  * @param imageType - Type of image (avatar or banner)
- * @param original - If true, returns full-size image; otherwise returns thumbnail
+ * @param original - If true, returns full-size image; otherwise returns thumbnail (ignored for banners, which always return original)
  * @returns The image URL (requires authentication header)
  */
 export const getMyImageUrl = (

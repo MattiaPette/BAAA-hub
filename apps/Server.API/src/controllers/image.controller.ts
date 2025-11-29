@@ -34,6 +34,7 @@ const validateImageType = (type: string): ImageType => {
 /**
  * Get the appropriate image key based on image type and whether original is requested
  * Falls back to original if thumbnail is not available
+ * Note: Banners always return the original image (no thumbnails)
  * @param user - The user document
  * @param imageType - The type of image (avatar or banner)
  * @param wantOriginal - Whether the original image is requested
@@ -49,12 +50,14 @@ const getImageKey = (
       ? user.avatarKey
       : user.avatarThumbKey || user.avatarKey;
   }
-  return wantOriginal ? user.bannerKey : user.bannerThumbKey || user.bannerKey;
+  // Banners always return the original image (no thumbnails)
+  return user.bannerKey;
 };
 
 /**
  * Upload an image (avatar or banner) for the current user
- * Generates and stores both original and thumbnail versions
+ * Generates and stores both original and thumbnail versions for avatars
+ * Stores only original version for banners (no thumbnails)
  */
 export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
   const { userId } = ctx.state.auth;
@@ -95,15 +98,18 @@ export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
   // Generate key and upload original image
   const extension = getExtensionFromMimeType(contentType);
   const key = generateImageKey(userId, imageType, extension);
-  const thumbKey = generateThumbnailKey(key);
+  let thumbKey: string | undefined;
 
   try {
     // Upload original image
     await uploadImage(key, body, contentType);
 
-    // Generate and upload thumbnail
-    const thumbnailData = await generateThumbnail(body);
-    await uploadImage(thumbKey, thumbnailData, 'image/jpeg');
+    // Generate and upload thumbnail only for avatars
+    if (imageType === ImageType.AVATAR) {
+      thumbKey = generateThumbnailKey(key);
+      const thumbnailData = await generateThumbnail(body);
+      await uploadImage(thumbKey, thumbnailData, 'image/jpeg');
+    }
   } catch (error) {
     console.error('Failed to upload image:', error);
     throw new ApiError(500, 'Failed to upload image', ErrorCode.SERVER_ERROR);
@@ -113,7 +119,7 @@ export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
   const oldKey =
     imageType === ImageType.AVATAR ? user.avatarKey : user.bannerKey;
   const oldThumbKey =
-    imageType === ImageType.AVATAR ? user.avatarThumbKey : user.bannerThumbKey;
+    imageType === ImageType.AVATAR ? user.avatarThumbKey : undefined;
 
   if (oldKey) {
     try {
@@ -138,7 +144,6 @@ export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
     user.avatarThumbKey = thumbKey;
   } else {
     user.bannerKey = key;
-    user.bannerThumbKey = thumbKey;
   }
   await user.save();
 
@@ -154,7 +159,8 @@ export const uploadUserImage = async (ctx: AuthContext): Promise<void> => {
  * Get user image by type (avatar or banner)
  * This is a public endpoint - no authentication required
  * But we validate that the user exists
- * By default returns thumbnail; use ?original=true for full-size image
+ * For avatars: By default returns thumbnail; use ?original=true for full-size image
+ * For banners: Always returns original (no thumbnails)
  */
 export const getUserImage = async (ctx: Context): Promise<void> => {
   const { userId, type } = ctx.params;
@@ -186,7 +192,8 @@ export const getUserImage = async (ctx: Context): Promise<void> => {
 
 /**
  * Get current user's image by type (avatar or banner)
- * By default returns thumbnail; use ?original=true for full-size image
+ * For avatars: By default returns thumbnail; use ?original=true for full-size image
+ * For banners: Always returns original (no thumbnails)
  */
 export const getMyImage = async (ctx: AuthContext): Promise<void> => {
   const { userId } = ctx.state.auth;
@@ -217,7 +224,8 @@ export const getMyImage = async (ctx: AuthContext): Promise<void> => {
 
 /**
  * Delete current user's image by type (avatar or banner)
- * Deletes both original and thumbnail versions
+ * Deletes both original and thumbnail versions for avatars
+ * Deletes only original version for banners (no thumbnails)
  */
 export const deleteUserImage = async (ctx: AuthContext): Promise<void> => {
   const { userId } = ctx.state.auth;
@@ -233,8 +241,9 @@ export const deleteUserImage = async (ctx: AuthContext): Promise<void> => {
   }
 
   const key = imageType === ImageType.AVATAR ? user.avatarKey : user.bannerKey;
+  // Only avatars have thumbnails
   const thumbKey =
-    imageType === ImageType.AVATAR ? user.avatarThumbKey : user.bannerThumbKey;
+    imageType === ImageType.AVATAR ? user.avatarThumbKey : undefined;
 
   if (!key) {
     throw new ApiError(404, 'Image not found', ErrorCode.NOT_FOUND);
@@ -248,7 +257,7 @@ export const deleteUserImage = async (ctx: AuthContext): Promise<void> => {
     throw new ApiError(500, 'Failed to delete image', ErrorCode.SERVER_ERROR);
   }
 
-  // Delete thumbnail if exists
+  // Delete thumbnail if exists (only for avatars)
   if (thumbKey) {
     try {
       await deleteImage(thumbKey);
@@ -264,7 +273,6 @@ export const deleteUserImage = async (ctx: AuthContext): Promise<void> => {
     user.avatarThumbKey = undefined;
   } else {
     user.bannerKey = undefined;
-    user.bannerThumbKey = undefined;
   }
   await user.save();
 
