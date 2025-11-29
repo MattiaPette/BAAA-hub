@@ -38,12 +38,62 @@ export interface UserPrivacySettings {
 }
 
 /**
- * User roles for access control
+ * User roles for access control.
+ * These roles define the permissions and access levels within the application.
  */
 export enum UserRole {
-  USER = 'USER',
+  /** Basic member role - default for all registered users */
+  MEMBER = 'MEMBER',
+  /** Administrator role with full system access */
   ADMIN = 'ADMIN',
+  /** Organization committee member with elevated privileges */
+  ORGANIZATION_COMMITTEE = 'ORGANIZATION_COMMITTEE',
+  /** Community leader with community management capabilities */
+  COMMUNITY_LEADER = 'COMMUNITY_LEADER',
+  /** Community star recognition role */
+  COMMUNITY_STAR = 'COMMUNITY_STAR',
+  /** Gamer role for gaming-related features */
+  GAMER = 'GAMER',
 }
+
+/**
+ * Checks if a user has a specific role
+ * @param userRoles - Array of roles assigned to the user
+ * @param role - The role to check for
+ * @returns true if user has the specified role
+ */
+export const hasRole = (userRoles: UserRole[], role: UserRole): boolean => {
+  return userRoles.includes(role);
+};
+
+/**
+ * Checks if a user has admin privileges
+ * @param userRoles - Array of roles assigned to the user
+ * @returns true if user has the ADMIN role
+ */
+export const isAdmin = (userRoles: UserRole[]): boolean => {
+  return hasRole(userRoles, UserRole.ADMIN);
+};
+
+/**
+ * Checks if a user has any of the specified roles
+ * @param userRoles - Array of roles assigned to the user
+ * @param roles - Array of roles to check for
+ * @returns true if user has at least one of the specified roles
+ */
+export const hasAnyRole = (userRoles: UserRole[], roles: UserRole[]): boolean => {
+  return roles.some(role => hasRole(userRoles, role));
+};
+
+/**
+ * Checks if a user has all of the specified roles
+ * @param userRoles - Array of roles assigned to the user
+ * @param roles - Array of roles to check for
+ * @returns true if user has all of the specified roles
+ */
+export const hasAllRoles = (userRoles: UserRole[], roles: UserRole[]): boolean => {
+  return roles.every(role => hasRole(userRoles, role));
+};
 
 /**
  * Base user data that can be set by the user

@@ -50,7 +50,7 @@ describe('useCurrentUser', () => {
     updatedAt: '2024-01-01T00:00:00.000Z',
     isBlocked: false,
     isEmailVerified: true,
-    roles: [UserRole.USER],
+    roles: [UserRole.MEMBER],
     privacySettings: {
       email: PrivacyLevel.PUBLIC,
       dateOfBirth: PrivacyLevel.PUBLIC,

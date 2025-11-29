@@ -112,7 +112,7 @@ export const createUser = async (ctx: AuthContext): Promise<void> => {
     ...data,
     authId: userId,
     isEmailVerified: emailVerified || false,
-    roles: [UserRole.USER],
+    roles: [UserRole.MEMBER],
     stravaLink: data.stravaLink || undefined,
     instagramLink: data.instagramLink || undefined,
   });
