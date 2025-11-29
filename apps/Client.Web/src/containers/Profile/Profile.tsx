@@ -359,7 +359,7 @@ export const Profile: FC = () => {
               alignItems="center"
               justifyContent={{ xs: 'center', md: 'flex-start' }}
               flexWrap="wrap"
-              useFlexGap
+              sx={{ gap: 1 }}
             >
               <Typography
                 variant="subtitle1"
