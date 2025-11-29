@@ -25,12 +25,12 @@ msgstr "About"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
 
-#: src/containers/Administration/Administration.tsx:340
+#: src/containers/Administration/Administration.tsx:332
 msgid "Actions"
 msgstr "Actions"
 
-#: src/containers/Administration/Administration.tsx:301
-#: src/containers/Administration/Administration.tsx:407
+#: src/containers/Administration/Administration.tsx:293
+#: src/containers/Administration/Administration.tsx:399
 msgid "Active"
 msgstr "Active"
 
@@ -54,18 +54,22 @@ msgstr "Adjust Banner Image"
 msgid "Adjust Profile Picture"
 msgstr "Adjust Profile Picture"
 
-#: src/containers/Administration/Administration.tsx:105
-#: src/containers/Administration/Administration.tsx:253
+#: src/helpers/roleLabels/roleLabels.ts:9
+msgid "Admin"
+msgstr "Admin"
+
+#: src/containers/Administration/Administration.tsx:97
+#: src/containers/Administration/Administration.tsx:245
 #: src/containers/MainContainer/MainContainer.tsx:70
 msgid "Administration"
 msgstr "Administration"
 
-#: src/containers/Administration/Administration.tsx:300
-#: src/containers/Administration/Administration.tsx:312
+#: src/containers/Administration/Administration.tsx:292
+#: src/containers/Administration/Administration.tsx:304
 msgid "All"
 msgstr "All"
 
-#: src/containers/Administration/Administration.tsx:285
+#: src/containers/Administration/Administration.tsx:277
 msgid "All Roles"
 msgstr "All Roles"
 
@@ -111,17 +115,21 @@ msgstr "Banner removed successfully!"
 msgid "Banner updated successfully!"
 msgstr "Banner updated successfully!"
 
-#: src/containers/Administration/Administration.tsx:431
+#: src/helpers/roleLabels/roleLabels.ts:20
+msgid "Basic member role (required)"
+msgstr "Basic member role (required)"
+
+#: src/containers/Administration/Administration.tsx:423
 msgid "Block User"
 msgstr "Block User"
 
-#: src/containers/Administration/Administration.tsx:302
-#: src/containers/Administration/Administration.tsx:400
+#: src/containers/Administration/Administration.tsx:294
+#: src/containers/Administration/Administration.tsx:392
 msgid "Blocked"
 msgstr "Blocked"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
-#: src/containers/Administration/EditRolesDialog.tsx:128
+#: src/containers/Administration/EditRolesDialog.tsx:111
 #: src/containers/Profile/ProfileEditForm.tsx:460
 msgid "Cancel"
 msgstr "Cancel"
@@ -163,6 +171,22 @@ msgstr "Close"
 msgid "Coming soon..."
 msgstr "Coming soon..."
 
+#: src/helpers/roleLabels/roleLabels.ts:11
+msgid "Community Leader"
+msgstr "Community Leader"
+
+#: src/helpers/roleLabels/roleLabels.ts:23
+msgid "Community leadership role"
+msgstr "Community leadership role"
+
+#: src/helpers/roleLabels/roleLabels.ts:24
+msgid "Community recognition"
+msgstr "Community recognition"
+
+#: src/helpers/roleLabels/roleLabels.ts:12
+msgid "Community Star"
+msgstr "Community Star"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:969
 msgid "Complete Your Profile"
 msgstr "Complete Your Profile"
@@ -183,7 +207,7 @@ msgstr "Create Account"
 msgid "Create Profile"
 msgstr "Create Profile"
 
-#: src/containers/Administration/Administration.tsx:339
+#: src/containers/Administration/Administration.tsx:331
 msgid "Created"
 msgstr "Created"
 
@@ -244,19 +268,19 @@ msgstr "Edit banner"
 msgid "Edit Profile"
 msgstr "Edit Profile"
 
-#: src/containers/Administration/Administration.tsx:421
+#: src/containers/Administration/Administration.tsx:413
 msgid "Edit Roles"
 msgstr "Edit Roles"
 
 #. placeholder {0}: user.name
 #. placeholder {1}: user.surname
-#: src/containers/Administration/EditRolesDialog.tsx:97
+#: src/containers/Administration/EditRolesDialog.tsx:80
 msgid "Edit Roles for {0} {1}"
 msgstr "Edit Roles for {0} {1}"
 
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Administration/Administration.tsx:334
+#: src/containers/Administration/Administration.tsx:326
 #: src/containers/Profile/Profile.tsx:406
 msgid "Email"
 msgstr "Email"
@@ -265,7 +289,7 @@ msgstr "Email"
 msgid "Email is required"
 msgstr "Email is required"
 
-#: src/containers/Administration/Administration.tsx:392
+#: src/containers/Administration/Administration.tsx:384
 msgid "Email Not Verified"
 msgstr "Email Not Verified"
 
@@ -274,10 +298,10 @@ msgstr "Email Not Verified"
 msgid "Email Privacy"
 msgstr "Email Privacy"
 
-#: src/containers/Administration/Administration.tsx:306
-#: src/containers/Administration/Administration.tsx:309
-#: src/containers/Administration/Administration.tsx:337
-#: src/containers/Administration/Administration.tsx:388
+#: src/containers/Administration/Administration.tsx:298
+#: src/containers/Administration/Administration.tsx:301
+#: src/containers/Administration/Administration.tsx:329
+#: src/containers/Administration/Administration.tsx:380
 msgid "Email Verified"
 msgstr "Email Verified"
 
@@ -294,7 +318,7 @@ msgstr "Enter your last name"
 msgid "Failed to create profile. Please try again."
 msgstr "Failed to create profile. Please try again."
 
-#: src/containers/Administration/Administration.tsx:153
+#: src/containers/Administration/Administration.tsx:145
 msgid "Failed to load users. Please try again."
 msgstr "Failed to load users. Please try again."
 
@@ -314,11 +338,11 @@ msgstr "Failed to update profile picture. Please try again."
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
 
-#: src/containers/Administration/Administration.tsx:239
+#: src/containers/Administration/Administration.tsx:231
 msgid "Failed to update user roles"
 msgstr "Failed to update user roles"
 
-#: src/containers/Administration/Administration.tsx:211
+#: src/containers/Administration/Administration.tsx:203
 msgid "Failed to update user status"
 msgstr "Failed to update user status"
 
@@ -358,6 +382,10 @@ msgstr "Followers"
 msgid "Followers Only"
 msgstr "Followers Only"
 
+#: src/helpers/roleLabels/roleLabels.ts:21
+msgid "Full administrative access"
+msgstr "Full administrative access"
+
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:77
 msgid "Full size banner image"
 msgstr "Full size banner image"
@@ -365,6 +393,14 @@ msgstr "Full size banner image"
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:78
 msgid "Full size profile picture"
 msgstr "Full size profile picture"
+
+#: src/helpers/roleLabels/roleLabels.ts:13
+msgid "Gamer"
+msgstr "Gamer"
+
+#: src/helpers/roleLabels/roleLabels.ts:25
+msgid "Gaming features access"
+msgstr "Gaming features access"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
 #: src/helpers/sportTypes/sportTypeLabels.ts:37
@@ -494,11 +530,12 @@ msgstr "Logout"
 msgid "Logout page"
 msgstr "Logout page"
 
-#: src/containers/Administration/Administration.tsx:256
+#: src/containers/Administration/Administration.tsx:248
 msgid "Manage users, roles, and account status."
 msgstr "Manage users, roles, and account status."
 
 #: src/containers/Profile/Profile.tsx:351
+#: src/helpers/roleLabels/roleLabels.ts:8
 msgid "Member"
 msgstr "Member"
 
@@ -506,7 +543,7 @@ msgstr "Member"
 msgid "Multi-factor authentication is required"
 msgstr "Multi-factor authentication is required"
 
-#: src/containers/Administration/Administration.tsx:333
+#: src/containers/Administration/Administration.tsx:325
 msgid "Name"
 msgstr "Name"
 
@@ -518,7 +555,7 @@ msgstr "Network error. Check your internet connection"
 msgid "Next"
 msgstr "Next"
 
-#: src/containers/Administration/Administration.tsx:335
+#: src/containers/Administration/Administration.tsx:327
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:494
 msgid "Nickname"
 msgstr "Nickname"
@@ -539,11 +576,11 @@ msgstr "Nickname must be at least 3 characters"
 msgid "No sports selected yet."
 msgstr "No sports selected yet."
 
-#: src/containers/Administration/Administration.tsx:355
+#: src/containers/Administration/Administration.tsx:347
 msgid "No users found"
 msgstr "No users found"
 
-#: src/containers/Administration/Administration.tsx:314
+#: src/containers/Administration/Administration.tsx:306
 msgid "Not Verified"
 msgstr "Not Verified"
 
@@ -558,6 +595,14 @@ msgstr "Only letters, numbers, and underscores allowed"
 #: src/components/login/LoginForm/LoginForm.tsx:309
 msgid "or"
 msgstr "or"
+
+#: src/helpers/roleLabels/roleLabels.ts:10
+msgid "Organization Committee"
+msgstr "Organization Committee"
+
+#: src/helpers/roleLabels/roleLabels.ts:22
+msgid "Organization committee member"
+msgstr "Organization committee member"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:19
 #: src/helpers/sportTypes/sportTypeLabels.ts:39
@@ -682,16 +727,16 @@ msgstr "Remove profile picture"
 msgid "Response type not supported"
 msgstr "Response type not supported"
 
-#: src/containers/Administration/Administration.tsx:279
-#: src/containers/Administration/Administration.tsx:282
+#: src/containers/Administration/Administration.tsx:271
+#: src/containers/Administration/Administration.tsx:274
 msgid "Role"
 msgstr "Role"
 
-#: src/containers/Administration/Administration.tsx:336
+#: src/containers/Administration/Administration.tsx:328
 msgid "Roles"
 msgstr "Roles"
 
-#: src/containers/Administration/Administration.tsx:461
+#: src/containers/Administration/Administration.tsx:453
 msgid "Rows per page:"
 msgstr "Rows per page:"
 
@@ -700,7 +745,7 @@ msgstr "Rows per page:"
 msgid "Running"
 msgstr "Running"
 
-#: src/containers/Administration/EditRolesDialog.tsx:135
+#: src/containers/Administration/EditRolesDialog.tsx:118
 msgid "Save"
 msgstr "Save"
 
@@ -708,12 +753,12 @@ msgstr "Save"
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/containers/Administration/EditRolesDialog.tsx:135
+#: src/containers/Administration/EditRolesDialog.tsx:118
 #: src/containers/Profile/ProfileEditForm.tsx:463
 msgid "Saving..."
 msgstr "Saving..."
 
-#: src/containers/Administration/Administration.tsx:263
+#: src/containers/Administration/Administration.tsx:255
 msgid "Search by name, email, or nickname..."
 msgstr "Search by name, email, or nickname..."
 
@@ -727,7 +772,7 @@ msgstr "Select at least one sport type"
 msgid "Select Language"
 msgstr "Select Language"
 
-#: src/containers/Administration/EditRolesDialog.tsx:100
+#: src/containers/Administration/EditRolesDialog.tsx:83
 msgid "Select the roles to assign to this user."
 msgstr "Select the roles to assign to this user."
 
@@ -767,9 +812,9 @@ msgstr "Sports & Activities"
 msgid "Sports Privacy"
 msgstr "Sports Privacy"
 
-#: src/containers/Administration/Administration.tsx:294
-#: src/containers/Administration/Administration.tsx:297
-#: src/containers/Administration/Administration.tsx:338
+#: src/containers/Administration/Administration.tsx:286
+#: src/containers/Administration/Administration.tsx:289
+#: src/containers/Administration/Administration.tsx:330
 msgid "Status"
 msgstr "Status"
 
@@ -885,7 +930,7 @@ msgstr "Unauthorized client"
 msgid "Unauthorized. Please verify your credentials"
 msgstr "Unauthorized. Please verify your credentials"
 
-#: src/containers/Administration/Administration.tsx:431
+#: src/containers/Administration/Administration.tsx:423
 msgid "Unblock User"
 msgstr "Unblock User"
 
@@ -913,7 +958,7 @@ msgstr "Uploading banner"
 msgid "Uploading image"
 msgstr "Uploading image"
 
-#: src/containers/Administration/Administration.tsx:206
+#: src/containers/Administration/Administration.tsx:198
 msgid "User blocked successfully"
 msgstr "User blocked successfully"
 
@@ -925,15 +970,15 @@ msgstr "User installed the app"
 msgid "User rejected app installation"
 msgstr "User rejected app installation"
 
-#: src/containers/Administration/Administration.tsx:232
+#: src/containers/Administration/Administration.tsx:224
 msgid "User roles updated successfully"
 msgstr "User roles updated successfully"
 
-#: src/containers/Administration/Administration.tsx:205
+#: src/containers/Administration/Administration.tsx:197
 msgid "User unblocked successfully"
 msgstr "User unblocked successfully"
 
-#: src/containers/Administration/Administration.tsx:313
+#: src/containers/Administration/Administration.tsx:305
 msgid "Verified"
 msgstr "Verified"
 

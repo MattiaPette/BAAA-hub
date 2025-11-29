@@ -2,13 +2,13 @@ import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SnackbarProvider } from 'notistack';
+import { UserRole, PrivacyLevel, SportType } from '@baaa-hub/shared-types';
 import { Administration } from './Administration';
 import { renderWithProviders as render } from '../../test-utils';
 
 import { BreadcrumProvider } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 import * as adminService from '../../services/adminService';
-import { UserRole, PrivacyLevel, SportType } from '@baaa-hub/shared-types';
 
 // Mock the services
 vi.mock('../../services/adminService', () => ({
@@ -70,7 +70,22 @@ describe('Administration', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
         idToken: 'test-id-token',
-        idTokenPayload: { email: 'admin@example.com' },
+        idTokenPayload: {
+          email: 'admin@example.com',
+          nickname: 'admin',
+          name: 'Admin User',
+          picture: 'https://example.com/avatar.png',
+          updated_at: '2024-01-01T00:00:00.000Z',
+          iss: 'https://test.auth0.com/',
+          aud: 'test-client-id',
+          iat: 1234567890,
+          exp: 1234567890,
+          sub: 'auth0|admin',
+          at_hash: 'hash',
+          sid: 'session-id',
+          nonce: 'nonce',
+          db_roles: ['admin'],
+        },
       },
       isAuthenticated: true,
       localStorageAvailable: true,
@@ -171,16 +186,14 @@ describe('Administration', () => {
   it('should display loading indicator while fetching', async () => {
     vi.mocked(adminService.listUsers).mockImplementation(
       () =>
-        new Promise(resolve =>
-          setTimeout(
-            () =>
-              resolve({
-                data: [],
-                pagination: { page: 1, perPage: 10, total: 0, totalPages: 0 },
-              }),
-            1000,
-          ),
-        ),
+        new Promise(resolve => {
+          setTimeout(() => {
+            resolve({
+              data: [],
+              pagination: { page: 1, perPage: 10, total: 0, totalPages: 0 },
+            });
+          }, 1000);
+        }),
     );
 
     renderAdministration();

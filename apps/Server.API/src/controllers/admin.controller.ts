@@ -152,15 +152,6 @@ export const updateUserRoles = async (ctx: AdminContext): Promise<void> => {
     throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
   }
 
-  // Prevent removing all roles - user must have at least MEMBER role
-  if (!roles.includes(UserRole.MEMBER)) {
-    throw new ApiError(
-      400,
-      'User must have at least the MEMBER role',
-      ErrorCode.VALIDATION_ERROR,
-    );
-  }
-
   // Prevent admin from removing their own admin role
   if (user.id === ctx.state.adminUser.id && !roles.includes(UserRole.ADMIN)) {
     throw new ApiError(

@@ -43,19 +43,8 @@ import {
   updateUserRoles,
   ListUsersParams,
 } from '../../services/adminService';
+import { getRoleLabels } from '../../helpers/roleLabels';
 import { EditRolesDialog } from './EditRolesDialog';
-
-/**
- * Role label mapping for display
- */
-const roleLabels: Record<UserRole, string> = {
-  [UserRole.MEMBER]: 'Member',
-  [UserRole.ADMIN]: 'Admin',
-  [UserRole.ORGANIZATION_COMMITTEE]: 'Organization Committee',
-  [UserRole.COMMUNITY_LEADER]: 'Community Leader',
-  [UserRole.COMMUNITY_STAR]: 'Community Star',
-  [UserRole.GAMER]: 'Gamer',
-};
 
 /**
  * Role color mapping for chips
@@ -83,6 +72,9 @@ export const Administration: FC = () => {
   const { i18n } = useLingui();
   const { token } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
+
+  // Get translated role labels (useLingui hook makes this reactive to locale)
+  const roleLabels = getRoleLabels();
 
   // State
   const [users, setUsers] = useState<User[]>([]);

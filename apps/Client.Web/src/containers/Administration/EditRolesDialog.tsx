@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { t } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 import {
   Dialog,
   DialogTitle,
@@ -14,30 +15,7 @@ import {
 } from '@mui/material';
 
 import { User, UserRole } from '@baaa-hub/shared-types';
-
-/**
- * Role label mapping for display
- */
-const roleLabels: Record<UserRole, string> = {
-  [UserRole.MEMBER]: 'Member',
-  [UserRole.ADMIN]: 'Admin',
-  [UserRole.ORGANIZATION_COMMITTEE]: 'Organization Committee',
-  [UserRole.COMMUNITY_LEADER]: 'Community Leader',
-  [UserRole.COMMUNITY_STAR]: 'Community Star',
-  [UserRole.GAMER]: 'Gamer',
-};
-
-/**
- * Role descriptions
- */
-const roleDescriptions: Record<UserRole, string> = {
-  [UserRole.MEMBER]: 'Basic member role (required)',
-  [UserRole.ADMIN]: 'Full administrative access',
-  [UserRole.ORGANIZATION_COMMITTEE]: 'Organization committee member',
-  [UserRole.COMMUNITY_LEADER]: 'Community leadership role',
-  [UserRole.COMMUNITY_STAR]: 'Community recognition',
-  [UserRole.GAMER]: 'Gaming features access',
-};
+import { getRoleLabels, getRoleDescriptions } from '../../helpers/roleLabels';
 
 interface EditRolesDialogProps {
   open: boolean;
@@ -58,8 +36,13 @@ export const EditRolesDialog: FC<EditRolesDialogProps> = ({
   onClose,
   onSave,
 }) => {
+  useLingui(); // Hook for locale reactivity
   const [selectedRoles, setSelectedRoles] = useState<UserRole[]>([]);
   const [saving, setSaving] = useState(false);
+
+  // Get translated labels and descriptions (useLingui hook makes this reactive)
+  const roleLabels = getRoleLabels();
+  const roleDescriptions = getRoleDescriptions();
 
   // Initialize selected roles when user changes
   useEffect(() => {
