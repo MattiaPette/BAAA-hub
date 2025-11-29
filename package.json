@@ -29,7 +29,7 @@
     "be:start": "pnpm --filter backend start",
     "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
-    "dev": "pnpm run db:start && concurrently \"pnpm fe:dev\" \"pnpm be:dev\" --names \"FE,BE\" --prefix-colors \"blue,green\"",
+    "dev": "pnpm run db:start && pnpm --filter @baaa-hub/shared-types build && concurrently \"pnpm fe:dev\" \"pnpm be:dev\" --names \"FE,BE\" --prefix-colors \"blue,green\"",
     "prepare": "husky"
   },
   "module": "index.ts",
@@ -39,7 +39,8 @@
       "punycode": "2.3.1"
     },
     "onlyBuiltDependencies": [
-      "esbuild"
+      "esbuild",
+      "sharp"
     ]
   },
   "devDependencies": {
