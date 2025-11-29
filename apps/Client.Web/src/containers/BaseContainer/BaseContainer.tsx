@@ -13,7 +13,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
-import { SidebarProps } from '../../components/commons/navigation/Sidebar/Sidebar.model';
+import {
+  SidebarProps,
+  RoutePermission,
+} from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 import { getUserImageUrl } from '../../services/userService';
 import logo from '../../assets/shrimp.png';
@@ -27,6 +30,8 @@ type BaseContainerProps = {
   endAdornment?: React.ReactNode;
   /** Optional wrapper providers */
   providers?: React.ComponentType<{ children: React.ReactNode }>[];
+  /** User permission level for sidebar route filtering */
+  userPermission?: RoutePermission;
 };
 
 // Subtle gradient animation for the header accent
@@ -112,6 +117,7 @@ export const BaseContainer: FC<BaseContainerProps> = ({
   routes,
   endAdornment,
   providers = [],
+  userPermission = 'user',
 }) => {
   const { pathname } = useLocation();
   const { data: user } = useCurrentUser();
@@ -234,6 +240,7 @@ export const BaseContainer: FC<BaseContainerProps> = ({
         userName={user ? `${user.name} ${user.surname}` : undefined}
         userEmail={user?.email}
         userPicture={userPicture}
+        userPermission={userPermission}
       />
     </FlexContainer>
   );

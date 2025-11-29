@@ -11,6 +11,7 @@ import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
 import { Profile } from '../../Profile/Profile';
 import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
+import { Administration } from '../../Administration/Administration';
 
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
@@ -112,6 +113,10 @@ const AuthenticatedRoutes: FC = () => {
         {
           path: '/settings',
           element: <Settings />,
+        },
+        {
+          path: '/administration',
+          element: <Administration />,
         },
       ],
     },

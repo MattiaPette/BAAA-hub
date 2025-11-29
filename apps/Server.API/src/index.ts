@@ -8,6 +8,7 @@ import { connectDatabase } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { userRouter } from './routes/user.routes.js';
 import { imageRouter } from './routes/image.routes.js';
+import { adminRouter } from './routes/admin.routes.js';
 import { initializeStorage } from './services/storage.service.js';
 import path from 'path';
 
@@ -118,6 +119,7 @@ app.use(
 app.use(healthRouter.routes()).use(healthRouter.allowedMethods());
 app.use(userRouter.routes()).use(userRouter.allowedMethods());
 app.use(imageRouter.routes()).use(imageRouter.allowedMethods());
+app.use(adminRouter.routes()).use(adminRouter.allowedMethods());
 
 /**
  * Start server
