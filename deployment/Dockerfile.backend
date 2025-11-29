@@ -67,8 +67,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
 
 # Start backend with environment setup
-# Note: Environment file is created at runtime to allow Docker environment variables
-# to be properly injected into the application configuration
+# Environment file is created at runtime from Docker environment variables
 CMD ["sh", "-c", "\
     mkdir -p /app/environments && \
     echo \"BACKEND_PORT=${BACKEND_PORT:-3000}\" > /app/environments/.env.production && \
@@ -76,5 +75,15 @@ CMD ["sh", "-c", "\
     echo \"MONGODB_URI=${MONGODB_URI}\" >> /app/environments/.env.production && \
     echo \"CORS_ORIGIN=${CORS_ORIGIN}\" >> /app/environments/.env.production && \
     echo \"DEBUG=${DEBUG:-false}\" >> /app/environments/.env.production && \
+    echo \"AUTH0_DOMAIN=${AUTH0_DOMAIN}\" >> /app/environments/.env.production && \
+    echo \"AUTH0_AUDIENCE=${AUTH0_AUDIENCE}\" >> /app/environments/.env.production && \
+    echo \"AUTH0_WEBHOOK_SECRET=${AUTH0_WEBHOOK_SECRET}\" >> /app/environments/.env.production && \
+    echo \"MINIO_ENDPOINT=${MINIO_ENDPOINT:-minio}\" >> /app/environments/.env.production && \
+    echo \"MINIO_PORT=${MINIO_PORT:-9000}\" >> /app/environments/.env.production && \
+    echo \"MINIO_USE_SSL=${MINIO_USE_SSL:-false}\" >> /app/environments/.env.production && \
+    echo \"MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:-minioadmin}\" >> /app/environments/.env.production && \
+    echo \"MINIO_SECRET_KEY=${MINIO_SECRET_KEY:-minioadmin}\" >> /app/environments/.env.production && \
+    echo \"MINIO_BUCKET=${MINIO_BUCKET:-baaa-hub-images}\" >> /app/environments/.env.production && \
+    echo \"MINIO_REGION=${MINIO_REGION:-us-east-1}\" >> /app/environments/.env.production && \
     ENV=production node apps/Server.API/dist/index.js \
     "]

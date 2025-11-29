@@ -80,9 +80,6 @@ instructions and migration notes.
    # Update Auth0 credentials, ports, and other settings as needed
    ```
 
-   See [environments/README.md](environments/README.md) for detailed
-   configuration instructions.
-
 ## Quick Start
 
 ### Frontend Only
@@ -112,56 +109,44 @@ pnpm dev
 
 ## Docker Deployment
 
-For production and staging deployments, use Docker to containerize the entire
-application. All deployment files are organized in the `deployment/` folder for
-easy management.
+For production deployments, Docker images are automatically built and pushed to
+GitHub Container Registry (GHCR) on merges to master.
 
 ```bash
-# Quick start - First time deployment
+# Deploy from GHCR images
 cd deployment
 cp .env.example .env
 # Edit .env with your configuration
-./deploy.sh build
-./deploy.sh start
+docker compose pull
+docker compose up -d
 
-# The application will be available at:
+# Access:
 # - Application: http://localhost:8080
 # - Health Check: http://localhost:8080/health
 # - API Docs: http://localhost:8080/api/docs
 ```
 
-**Simple deployment management:**
+**Common operations:**
 
 ```bash
 cd deployment
 
-./deploy.sh start    # Start the application
-./deploy.sh stop     # Stop the application
-./deploy.sh logs     # View logs
-./deploy.sh status   # Check status
-./deploy.sh update   # Update to latest version
+docker compose pull && docker compose up -d  # Update to latest
+docker compose logs -f                        # View logs
+docker compose ps                             # Check status
+docker compose down                           # Stop
 ```
 
 The Docker deployment includes:
 
+- ✅ Pre-built images from GHCR (automatic CI/CD)
 - ✅ Frontend (React + Vite) served by nginx
 - ✅ Backend (Node.js + Koa) API server
-- ✅ MongoDB database
+- ✅ MongoDB database + MinIO object storage
 - ✅ nginx reverse proxy for unified endpoint
-- ✅ Optimized production builds with multi-stage Docker builds
 - ✅ Health checks and container orchestration
-- ✅ Single `.env` file configuration
-- ✅ Automated deployment script
 
-See [deployment/README.md](deployment/README.md) for quick start guide and
-[docs/DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md) for comprehensive
-deployment documentation including:
-
-- Configuration guide
-- Production deployment steps
-- Environment variables reference
-- Troubleshooting tips
-- Architecture overview
+See [docs/README.md](docs/README.md) for complete deployment documentation.
 
 ## Available Commands
 

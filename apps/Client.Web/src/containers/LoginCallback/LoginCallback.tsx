@@ -66,8 +66,6 @@ export const LoginCallback: FC = () => {
     <FlexContainer direction="column">
       <Layout
         sx={{
-          backgroundImage: theme =>
-            `url('/stripes.svg'), radial-gradient(ellipse at 50% 50%, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
           padding: '12px',
           '& .MuiBox-root': {
             backgroundColor: theme => theme.palette.background.paper,

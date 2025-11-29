@@ -3,7 +3,7 @@ import { ErrorCode, UserRole } from '@baaa-hub/shared-types';
 import {
   adminMiddleware,
   superAdminMiddleware,
-  AdminContext,
+  type AdminContext,
 } from '../admin.js';
 
 // Mock the user model
@@ -13,6 +13,14 @@ vi.mock('../../models/user.model.js', () => ({
     findByAuthId: (authId: string) => mockFindByAuthId(authId),
   },
 }));
+
+/**
+ * Creates a mock ObjectId with toHexString method
+ */
+const createMockObjectId = (id: string) => ({
+  toHexString: () => id,
+  toString: () => id,
+});
 
 /**
  * Creates a mock Koa context for testing admin middleware
@@ -61,7 +69,7 @@ describe('adminMiddleware', () => {
 
   it('should return 403 if user is blocked', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: true,
       roles: [UserRole.ADMIN],
     });
@@ -79,7 +87,7 @@ describe('adminMiddleware', () => {
 
   it('should return 403 if user does not have admin role', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.MEMBER],
     });
@@ -97,7 +105,7 @@ describe('adminMiddleware', () => {
 
   it('should call next if user has admin role', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.MEMBER, UserRole.ADMIN],
     });
@@ -115,7 +123,7 @@ describe('adminMiddleware', () => {
 
   it('should call next if user only has admin role', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.ADMIN],
     });
@@ -129,7 +137,7 @@ describe('adminMiddleware', () => {
 
   it('should use correct authId from context', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-456',
+      _id: createMockObjectId('user-456'),
       isBlocked: false,
       roles: [UserRole.ADMIN],
     });
@@ -142,7 +150,7 @@ describe('adminMiddleware', () => {
 
   it('should allow super-admin access and mark isSuperAdmin true', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.SUPER_ADMIN],
     });
@@ -160,7 +168,7 @@ describe('adminMiddleware', () => {
 
   it('should allow user with both admin and super-admin roles', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN],
     });
@@ -201,7 +209,7 @@ describe('superAdminMiddleware', () => {
 
   it('should return 403 if user is blocked', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: true,
       roles: [UserRole.SUPER_ADMIN],
     });
@@ -219,7 +227,7 @@ describe('superAdminMiddleware', () => {
 
   it('should return 403 if user is regular admin but not super-admin', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.ADMIN],
     });
@@ -237,7 +245,7 @@ describe('superAdminMiddleware', () => {
 
   it('should return 403 if user is a regular member', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.MEMBER],
     });
@@ -255,7 +263,7 @@ describe('superAdminMiddleware', () => {
 
   it('should call next if user has super-admin role', async () => {
     mockFindByAuthId.mockResolvedValue({
-      id: 'user-123',
+      _id: createMockObjectId('user-123'),
       isBlocked: false,
       roles: [UserRole.SUPER_ADMIN],
     });
