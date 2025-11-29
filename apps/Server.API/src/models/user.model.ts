@@ -4,6 +4,7 @@ import {
   UserRole,
   User as UserType,
   PrivacyLevel,
+  MfaType,
 } from '@baaa-hub/shared-types';
 
 /**
@@ -145,6 +146,15 @@ const userSchema = new Schema<UserDocument>(
     isEmailVerified: {
       type: Boolean,
       default: false,
+    },
+    mfaEnabled: {
+      type: Boolean,
+      default: false,
+    },
+    mfaType: {
+      type: String,
+      enum: Object.values(MfaType),
+      default: MfaType.NONE,
     },
     roles: {
       type: [String],

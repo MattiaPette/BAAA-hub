@@ -10,7 +10,8 @@ const config = [
   ...baseConfig,
   {
     // Ignore package directories as they have their own configs
-    ignores: ['apps/**'],
+    // Ignore auth0 directory as it contains Auth0 Actions that run in a different environment
+    ignores: ['apps/**', 'auth0/**'],
   },
 ];
 

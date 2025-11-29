@@ -179,6 +179,64 @@ curl -X PUT \
 | ------ | --------- | ------ | --------------------- |
 | GET    | `/health` | Public | Health check endpoint |
 
+### Webhook Endpoints
+
+Webhook endpoints are used for server-to-server communication with Auth0. These
+endpoints are not for client use.
+
+| Method | Endpoint                          | Auth           | Description                            |
+| ------ | --------------------------------- | -------------- | -------------------------------------- |
+| POST   | `/api/webhooks/auth0/user-update` | Webhook Secret | Auth0 Post-Login Action MFA/email sync |
+
+**Authentication:**
+
+Webhook endpoints require a shared secret in the `x-webhook-secret` header:
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-webhook-secret: <webhook-secret>" \
+  -d '{"user_id": "auth0|123", "email": "user@example.com", "email_verified": true, "mfa_enabled": true, "mfa_type": "totp"}' \
+  http://localhost:3000/api/webhooks/auth0/user-update
+```
+
+**Request Body:**
+
+```json
+{
+  "user_id": "auth0|123456",
+  "email": "user@example.com",
+  "email_verified": true,
+  "mfa_enabled": true,
+  "mfa_type": "totp"
+}
+```
+
+**MFA Types:**
+
+- `totp` - Time-based One-Time Password (authenticator apps)
+- `sms` - SMS verification
+- `email` - Email verification
+- `push` / `push-notification` - Push notifications
+- `webauthn` / `webauthn-roaming` / `webauthn-platform` - WebAuthn/FIDO2
+- `recovery-code` - Recovery codes
+
+**Success Response:**
+
+```json
+{
+  "success": true,
+  "message": "User updated successfully",
+  "user_id": "auth0|123456",
+  "email_verified": true,
+  "mfa_enabled": true,
+  "mfa_type": "TOTP"
+}
+```
+
+See [docs/SECURITY.md](docs/SECURITY.md) for more details on MFA/email sync
+architecture.
+
 ---
 
 ## Module Map

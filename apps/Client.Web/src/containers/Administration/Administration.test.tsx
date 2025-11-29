@@ -2,7 +2,12 @@ import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SnackbarProvider } from 'notistack';
-import { UserRole, PrivacyLevel, SportType } from '@baaa-hub/shared-types';
+import {
+  UserRole,
+  PrivacyLevel,
+  SportType,
+  MfaType,
+} from '@baaa-hub/shared-types';
 import { Administration } from './Administration';
 import { renderWithProviders as render } from '../../test-utils';
 
@@ -43,6 +48,8 @@ const mockUsers = [
     updatedAt: '2024-01-01T00:00:00.000Z',
     isBlocked: false,
     isEmailVerified: true,
+    mfaEnabled: true,
+    mfaType: MfaType.TOTP,
     roles: [UserRole.MEMBER, UserRole.ADMIN],
     privacySettings: {
       email: PrivacyLevel.PUBLIC,
@@ -64,6 +71,8 @@ const mockUsers = [
     updatedAt: '2024-02-01T00:00:00.000Z',
     isBlocked: true,
     isEmailVerified: false,
+    mfaEnabled: false,
+    mfaType: MfaType.NONE,
     roles: [UserRole.MEMBER],
     privacySettings: {
       email: PrivacyLevel.PRIVATE,
@@ -134,6 +143,8 @@ describe('Administration', () => {
         updatedAt: '2024-01-01T00:00:00.000Z',
         isBlocked: false,
         isEmailVerified: true,
+        mfaEnabled: true,
+        mfaType: MfaType.TOTP,
         roles: [UserRole.MEMBER, UserRole.ADMIN],
         privacySettings: {
           email: PrivacyLevel.PUBLIC,

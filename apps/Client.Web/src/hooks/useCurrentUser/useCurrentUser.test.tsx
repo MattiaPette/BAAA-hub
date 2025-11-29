@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { User, UserRole, PrivacyLevel } from '@baaa-hub/shared-types';
+import { User, UserRole, PrivacyLevel, MfaType } from '@baaa-hub/shared-types';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCurrentUser } from './useCurrentUser';
 import * as userService from '../../services/userService';
@@ -50,6 +50,8 @@ describe('useCurrentUser', () => {
     updatedAt: '2024-01-01T00:00:00.000Z',
     isBlocked: false,
     isEmailVerified: true,
+    mfaEnabled: false,
+    mfaType: MfaType.NONE,
     roles: [UserRole.MEMBER],
     privacySettings: {
       email: PrivacyLevel.PUBLIC,

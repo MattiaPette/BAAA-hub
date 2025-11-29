@@ -43,6 +43,8 @@ const toUserResponse = (doc: UserDocument): User => {
     updatedAt: obj.updatedAt,
     isBlocked: obj.isBlocked,
     isEmailVerified: obj.isEmailVerified,
+    mfaEnabled: obj.mfaEnabled,
+    mfaType: obj.mfaType,
     roles: obj.roles,
     privacySettings: obj.privacySettings,
   };
