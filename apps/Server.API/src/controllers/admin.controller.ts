@@ -233,7 +233,7 @@ export const updateUserRoles = async (ctx: AdminContext): Promise<void> => {
   // Prevent admin from removing their own admin privileges entirely
   // A super-admin can remove their ADMIN role if they still have SUPER_ADMIN
   // A regular admin cannot remove their only admin-level role
-  const isSelf = user.id === ctx.state.adminUser.id;
+  const isSelf = user._id.toHexString() === ctx.state.adminUser.id;
   if (isSelf) {
     const actorIsSuperAdmin = isSuperAdmin(ctx.state.adminUser.roles);
     const newRolesAreSuperAdmin = roles.includes(UserRole.SUPER_ADMIN);
@@ -304,7 +304,7 @@ export const updateUserBlocked = async (ctx: AdminContext): Promise<void> => {
   }
 
   // Prevent admin from blocking themselves
-  if (user.id === ctx.state.adminUser.id && isBlocked) {
+  if (user._id.toHexString() === ctx.state.adminUser.id && isBlocked) {
     throw new ApiError(
       400,
       'Cannot block your own account',
