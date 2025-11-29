@@ -1,15 +1,29 @@
+# =============================================================================
+# BAAA-Hub Production Docker Compose
+# =============================================================================
+# Uses pre-built images from GitHub Container Registry (GHCR)
+# Images are automatically built and pushed on merges to master branch
+#
+# Usage:
+#   1. Copy .env.example to .env and configure
+#   2. Run: docker compose pull && docker compose up -d
+#   3. Access: http://localhost:8080
+#
+# To update: docker compose pull && docker compose up -d
+# =============================================================================
+
 services:
   # MongoDB Database
   mongodb:
     image: mongo:8.0
-    container_name: mongodb-prod
+    container_name: baaa-hub-mongodb
     restart: unless-stopped
     environment:
       MONGO_INITDB_DATABASE: baaa-hub
     volumes:
       - mongodb_data:/data/db
     networks:
-      - app-network
+      - baaa-hub-network
     healthcheck:
       test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
       interval: 10s
@@ -19,7 +33,7 @@ services:
   # MinIO Object Storage
   minio:
     image: minio/minio:latest
-    container_name: minio-prod
+    container_name: baaa-hub-minio
     restart: unless-stopped
     environment:
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
@@ -28,19 +42,17 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
     networks:
-      - app-network
+      - baaa-hub-network
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/live']
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Backend API
+  # Backend API (from GHCR)
   backend:
-    build:
-      context: ..
-      dockerfile: deployment/Dockerfile.backend
-    container_name: backend-prod
+    image: ghcr.io/mattiapette/baaa-hub/backend:latest
+    container_name: baaa-hub-backend
     restart: unless-stopped
     environment:
       BACKEND_PORT: 3000
@@ -48,6 +60,9 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/baaa-hub
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
       DEBUG: ${DEBUG:-false}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      AUTH0_WEBHOOK_SECRET: ${AUTH0_WEBHOOK_SECRET}
       MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
       MINIO_USE_SSL: 'false'
@@ -60,7 +75,7 @@ services:
       minio:
         condition: service_healthy
     networks:
-      - app-network
+      - baaa-hub-network
     healthcheck:
       test:
         [
@@ -76,21 +91,14 @@ services:
       start_period: 40s
       retries: 3
 
-  # Frontend
+  # Frontend (from GHCR)
+  # Note: Frontend env vars are baked in at CI build time via GitHub secrets
   frontend:
-    build:
-      context: ..
-      dockerfile: deployment/Dockerfile.frontend
-      args:
-        VITE_AUTH0_DOMAIN: ${VITE_AUTH0_DOMAIN}
-        VITE_AUTH0_CLIENT_ID: ${VITE_AUTH0_CLIENT_ID}
-        VITE_AUTH0_REDIRECT_URI: ${VITE_AUTH0_REDIRECT_URI:-http://localhost:8080/callback}
-        VITE_AUTH0_AUDIENCE: ${VITE_AUTH0_AUDIENCE}
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
-    container_name: frontend-prod
+    image: ghcr.io/mattiapette/baaa-hub/frontend:latest
+    container_name: baaa-hub-frontend
     restart: unless-stopped
     networks:
-      - app-network
+      - baaa-hub-network
     healthcheck:
       test:
         [
@@ -109,10 +117,10 @@ services:
   # Nginx Reverse Proxy
   nginx:
     image: nginx:alpine
-    container_name: nginx-prod
+    container_name: baaa-hub-nginx
     restart: unless-stopped
     ports:
-      - '8080:8080'
+      - '${APP_PORT:-8080}:8080'
     volumes:
       - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -121,7 +129,7 @@ services:
       frontend:
         condition: service_healthy
     networks:
-      - app-network
+      - baaa-hub-network
     healthcheck:
       test:
         [
@@ -138,7 +146,7 @@ services:
       retries: 3
 
 networks:
-  app-network:
+  baaa-hub-network:
     driver: bridge
 
 volumes:
