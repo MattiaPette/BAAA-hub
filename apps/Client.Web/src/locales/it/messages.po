@@ -17,7 +17,7 @@ msgstr ""
 msgid "A server error has occurred. Please try again later"
 msgstr "Si è verificato un errore del server. Riprova più tardi"
 
-#: src/containers/Profile/Profile.tsx:336
+#: src/containers/Profile/Profile.tsx:349
 msgid "About"
 msgstr "Informazioni"
 
@@ -25,7 +25,7 @@ msgstr "Informazioni"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Accesso negato. Nome utente e/o password non corretti"
 
-#: src/containers/Profile/Profile.tsx:533
+#: src/containers/Profile/Profile.tsx:546
 msgid "Activity Statistics"
 msgstr "Statistiche Attività"
 
@@ -61,11 +61,11 @@ msgstr "Applicazione già installata"
 msgid "Apply"
 msgstr "Applica"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:32
+#: src/containers/ProfileSetup/ProfileSetup.tsx:34
 msgid "Authentication required. Please try logging in again."
 msgstr "Autenticazione richiesta. Per favore, effettua nuovamente l'accesso."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1071
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1075
 msgid "Back"
 msgstr "Indietro"
 
@@ -73,7 +73,7 @@ msgstr "Indietro"
 msgid "Banner Image"
 msgstr "Immagine Banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:425
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:426
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:922
 msgid "Banner Privacy"
 msgstr "Privacy Banner"
@@ -99,7 +99,7 @@ msgstr "Modifica"
 msgid "Change Banner"
 msgstr "Cambia Banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:390
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:391
 msgid "Change banner image"
 msgstr "Cambia immagine banner"
 
@@ -119,11 +119,11 @@ msgstr "Scegli la tua lingua preferita"
 msgid "Click to upload banner"
 msgstr "Clicca per caricare il banner"
 
-#: src/containers/Profile/Profile.tsx:536
+#: src/containers/Profile/Profile.tsx:549
 msgid "Coming soon..."
 msgstr "Prossimamente..."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:965
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:969
 msgid "Complete Your Profile"
 msgstr "Completa il Tuo Profilo"
 
@@ -139,11 +139,11 @@ msgstr "Contatti e Social"
 msgid "Create Account"
 msgstr "Crea Account"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1080
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1084
 msgid "Create Profile"
 msgstr "Crea Profilo"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1080
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1084
 msgid "Creating..."
 msgstr "Creazione in corso..."
 
@@ -168,7 +168,7 @@ msgstr "Modalità scura"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/containers/Profile/Profile.tsx:378
+#: src/containers/Profile/Profile.tsx:391
 #: src/containers/Profile/ProfileEditForm.tsx:235
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
 msgid "Date of Birth"
@@ -195,14 +195,14 @@ msgstr "Trascina per riposizionare, scorri o usa il cursore per zoomare"
 msgid "Edit banner"
 msgstr "Modifica banner"
 
-#: src/containers/Profile/Profile.tsx:320
-#: src/containers/Profile/Profile.tsx:556
+#: src/containers/Profile/Profile.tsx:333
+#: src/containers/Profile/Profile.tsx:569
 msgid "Edit Profile"
 msgstr "Modifica Profilo"
 
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Profile/Profile.tsx:355
+#: src/containers/Profile/Profile.tsx:368
 msgid "Email"
 msgstr "Email"
 
@@ -223,8 +223,8 @@ msgstr "Inserisci il tuo nome"
 msgid "Enter your last name"
 msgstr "Inserisci il tuo cognome"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:141
-#: src/containers/ProfileSetup/ProfileSetup.tsx:145
+#: src/containers/ProfileSetup/ProfileSetup.tsx:147
+#: src/containers/ProfileSetup/ProfileSetup.tsx:151
 msgid "Failed to create profile. Please try again."
 msgstr "Impossibile creare il profilo. Riprova."
 
@@ -240,7 +240,7 @@ msgstr "Impossibile aggiornare il banner. Riprova."
 msgid "Failed to update profile picture. Please try again."
 msgstr "Impossibile aggiornare la foto profilo. Riprova."
 
-#: src/containers/Profile/Profile.tsx:194
+#: src/containers/Profile/Profile.tsx:207
 msgid "Failed to update profile. Please try again."
 msgstr "Impossibile aggiornare il profilo. Riprova."
 
@@ -357,7 +357,7 @@ msgstr "URL profilo Strava non valido"
 msgid "Invalid token"
 msgstr "Token non valido"
 
-#: src/containers/Profile/Profile.tsx:401
+#: src/containers/Profile/Profile.tsx:414
 msgid "Joined"
 msgstr "Iscritto"
 
@@ -399,8 +399,8 @@ msgid "Login"
 msgstr "Accedi"
 
 #: src/containers/MainContainer/MainContainer.tsx:63
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:995
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1001
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:999
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1005
 msgid "Logout"
 msgstr "Esci"
 
@@ -408,7 +408,7 @@ msgstr "Esci"
 msgid "Logout page"
 msgstr "Pagina di disconnessione"
 
-#: src/containers/Profile/Profile.tsx:300
+#: src/containers/Profile/Profile.tsx:313
 msgid "Member"
 msgstr "Membro"
 
@@ -420,7 +420,7 @@ msgstr "È richiesta l'autenticazione a più fattori"
 msgid "Network error. Check your internet connection"
 msgstr "Errore di rete. Verifica la connessione internet"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1088
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1092
 msgid "Next"
 msgstr "Avanti"
 
@@ -440,7 +440,7 @@ msgstr "Il nickname deve essere di 30 caratteri o meno"
 msgid "Nickname must be at least 3 characters"
 msgstr "Il nickname deve essere di almeno 3 caratteri"
 
-#: src/containers/Profile/Profile.tsx:513
+#: src/containers/Profile/Profile.tsx:526
 msgid "No sports selected yet."
 msgstr "Nessuno sport selezionato."
 
@@ -481,7 +481,7 @@ msgstr "Dettagli Personali"
 msgid "Photo Privacy"
 msgstr "Privacy Foto"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:135
+#: src/containers/ProfileSetup/ProfileSetup.tsx:141
 msgid "Please check your input and try again."
 msgstr "Per favore, controlla i dati inseriti e riprova."
 
@@ -509,23 +509,23 @@ msgid "Processing..."
 msgstr "Elaborazione..."
 
 #: src/containers/MainContainer/MainContainer.tsx:38
-#: src/containers/Profile/Profile.tsx:97
+#: src/containers/Profile/Profile.tsx:104
 msgid "Profile"
 msgstr "Profilo"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:74
+#: src/containers/ProfileSetup/ProfileSetup.tsx:76
 msgid "Profile created but failed to upload banner. You can add it later."
 msgstr "Profilo creato ma caricamento banner fallito. Puoi aggiungerlo dopo."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:62
+#: src/containers/ProfileSetup/ProfileSetup.tsx:64
 msgid "Profile created but failed to upload profile picture. You can add it later."
 msgstr "Profilo creato ma caricamento foto profilo fallito. Puoi aggiungerla dopo."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:84
+#: src/containers/ProfileSetup/ProfileSetup.tsx:86
 msgid "Profile created successfully!"
 msgstr "Profilo creato con successo!"
 
-#: src/containers/Profile/Profile.tsx:227
+#: src/containers/Profile/Profile.tsx:240
 msgid "Profile not found"
 msgstr "Profilo non trovato"
 
@@ -546,7 +546,7 @@ msgstr "Foto profilo rimossa con successo!"
 msgid "Profile picture updated successfully!"
 msgstr "Foto profilo aggiornata con successo!"
 
-#: src/containers/Profile/Profile.tsx:189
+#: src/containers/Profile/Profile.tsx:202
 msgid "Profile updated successfully!"
 msgstr "Profilo aggiornato con successo!"
 
@@ -556,12 +556,12 @@ msgstr "Profilo aggiornato con successo!"
 msgid "Public"
 msgstr "Pubblico"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:399
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:400
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:653
 msgid "Remove banner"
 msgstr "Rimuovi banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:411
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:412
 msgid "Remove banner image"
 msgstr "Rimuovi immagine banner"
 
@@ -595,7 +595,7 @@ msgstr "Salvataggio..."
 msgid "Select at least one sport type"
 msgstr "Seleziona almeno un tipo di sport"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:977
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
 #: src/containers/Settings/Settings.tsx:103
 #: src/containers/Settings/Settings.tsx:108
 msgid "Select Language"
@@ -612,7 +612,7 @@ msgstr "Impostazioni"
 msgid "Sign Up"
 msgstr "Registrati"
 
-#: src/containers/Profile/Profile.tsx:420
+#: src/containers/Profile/Profile.tsx:433
 msgid "Social"
 msgstr "Social"
 
@@ -629,7 +629,7 @@ msgstr "Tipi di Sport"
 msgid "Sports"
 msgstr "Sport"
 
-#: src/containers/Profile/Profile.tsx:489
+#: src/containers/Profile/Profile.tsx:502
 msgid "Sports & Activities"
 msgstr "Sport e Attività"
 
@@ -690,7 +690,7 @@ msgstr "Tema"
 msgid "There is already a user with this email address"
 msgstr "Esiste già un utente con questo indirizzo email"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:115
+#: src/containers/ProfileSetup/ProfileSetup.tsx:121
 msgid "This email is already registered."
 msgstr "Questa email è già registrata."
 
@@ -699,7 +699,7 @@ msgstr "Questa email è già registrata."
 msgid "This nickname is already taken"
 msgstr "Questo nickname è già in uso"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:111
+#: src/containers/ProfileSetup/ProfileSetup.tsx:117
 msgid "This nickname is already taken. Please choose another."
 msgstr "Questo nickname è già in uso. Per favore, scegline un altro."
 
@@ -790,7 +790,7 @@ msgstr "Camminata"
 msgid "Who can see your information?"
 msgstr "Chi può vedere le tue informazioni?"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:119
+#: src/containers/ProfileSetup/ProfileSetup.tsx:125
 msgid "You already have a profile. Redirecting to dashboard..."
 msgstr "Hai già un profilo. Reindirizzamento alla dashboard..."
 
@@ -808,7 +808,7 @@ msgstr "Puoi saltare questo passaggio e aggiungere le foto in seguito."
 msgid "You must be at least 13 years old"
 msgstr "Devi avere almeno 13 anni"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:124
+#: src/containers/ProfileSetup/ProfileSetup.tsx:130
 msgid "You must be at least 13 years old to sign up."
 msgstr "Devi avere almeno 13 anni per registrarti."
 

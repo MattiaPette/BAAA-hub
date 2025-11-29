@@ -939,39 +939,43 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             mb: 2,
-            flexWrap: 'nowrap',
+            flexWrap: { xs: 'wrap', sm: 'nowrap' },
+            gap: 1,
           }}
         >
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: 2,
+              gap: { xs: 1, sm: 2 },
               flexShrink: 1,
               minWidth: 0,
             }}
           >
             <img
               src={logo}
-              width={isMobile ? 48 : 60}
+              width={isMobile ? 40 : 60}
               style={{ placeSelf: 'center', flexShrink: 0 }}
               alt="BAAA Hub Logo"
             />
             <Typography
               component="h1"
-              variant={isMobile ? 'h6' : 'h5'}
-              sx={{ whiteSpace: 'nowrap' }}
+              variant={isMobile ? 'subtitle1' : 'h5'}
+              sx={{
+                whiteSpace: { xs: 'normal', sm: 'nowrap' },
+                fontWeight: 600,
+              }}
             >
               <Trans>Complete Your Profile</Trans>
             </Typography>
           </Box>
           <Stack
             direction="row"
-            spacing={1}
+            spacing={0.5}
             alignItems="center"
-            sx={{ flexShrink: 0 }}
+            sx={{ flexShrink: 0, ml: 'auto' }}
           >
-            <FormControl size="small" sx={{ minWidth: isMobile ? 80 : 120 }}>
+            <FormControl size="small" sx={{ minWidth: isMobile ? 70 : 120 }}>
               <Select
                 id="language-selector"
                 aria-label={t`Select Language`}

@@ -92,6 +92,13 @@ export const Profile: FC = () => {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Cache buster timestamps to force browser to reload images after upload
+  const [avatarCacheBuster, setAvatarCacheBuster] = useState<
+    number | undefined
+  >(undefined);
+  const [bannerCacheBuster, setBannerCacheBuster] = useState<
+    number | undefined
+  >(undefined);
 
   useEffect(() => {
     setTitle(t`Profile`);
@@ -104,10 +111,10 @@ export const Profile: FC = () => {
   const avatarUrl = useMemo(() => {
     if (!user) return undefined;
     if (user.avatarKey) {
-      return getUserImageUrl(user.id, 'avatar');
+      return getUserImageUrl(user.id, 'avatar', false, avatarCacheBuster);
     }
     return user.profilePicture;
-  }, [user]);
+  }, [user, avatarCacheBuster]);
 
   /**
    * Get the user's banner image URL
@@ -115,10 +122,10 @@ export const Profile: FC = () => {
   const bannerUrl = useMemo(() => {
     if (!user) return undefined;
     if (user.bannerKey) {
-      return getUserImageUrl(user.id, 'banner');
+      return getUserImageUrl(user.id, 'banner', false, bannerCacheBuster);
     }
     return undefined;
-  }, [user]);
+  }, [user, bannerCacheBuster]);
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -132,6 +139,8 @@ export const Profile: FC = () => {
     async (file: File) => {
       if (!token?.idToken) return;
       await uploadUserImage(token.idToken, 'avatar', file);
+      // Update cache buster to force browser to reload the new image
+      setAvatarCacheBuster(Date.now());
       await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
     },
     [token, queryClient],
@@ -143,6 +152,7 @@ export const Profile: FC = () => {
   const handleAvatarDelete = useCallback(async () => {
     if (!token?.idToken) return;
     await deleteUserImage(token.idToken, 'avatar');
+    setAvatarCacheBuster(undefined);
     await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
   }, [token, queryClient]);
 
@@ -153,6 +163,8 @@ export const Profile: FC = () => {
     async (file: File) => {
       if (!token?.idToken) return;
       await uploadUserImage(token.idToken, 'banner', file);
+      // Update cache buster to force browser to reload the new image
+      setBannerCacheBuster(Date.now());
       await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
     },
     [token, queryClient],
@@ -164,6 +176,7 @@ export const Profile: FC = () => {
   const handleBannerDelete = useCallback(async () => {
     if (!token?.idToken) return;
     await deleteUserImage(token.idToken, 'banner');
+    setBannerCacheBuster(undefined);
     await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
   }, [token, queryClient]);
 

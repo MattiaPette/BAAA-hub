@@ -363,10 +363,10 @@ export const ImageUpload: FC<ImageUploadProps> = ({
               startIcon={<EditIcon />}
               onClick={triggerFileInput}
               sx={{
-                bgcolor: alpha(theme.palette.common.white, 0.9),
-                color: 'text.primary',
+                bgcolor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
                 '&:hover': {
-                  bgcolor: theme.palette.common.white,
+                  bgcolor: theme.palette.primary.dark,
                 },
               }}
             >
@@ -384,8 +384,9 @@ export const ImageUpload: FC<ImageUploadProps> = ({
                 position: 'absolute',
                 bottom: 8,
                 right: 8,
-                bgcolor: alpha(theme.palette.common.white, 0.9),
-                '&:hover': { bgcolor: theme.palette.common.white },
+                bgcolor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
+                '&:hover': { bgcolor: theme.palette.primary.dark },
               }}
               aria-label={t`Change banner image`}
             >

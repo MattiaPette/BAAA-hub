@@ -17,7 +17,7 @@ msgstr ""
 msgid "A server error has occurred. Please try again later"
 msgstr "A server error has occurred. Please try again later"
 
-#: src/containers/Profile/Profile.tsx:336
+#: src/containers/Profile/Profile.tsx:349
 msgid "About"
 msgstr "About"
 
@@ -25,7 +25,7 @@ msgstr "About"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
 
-#: src/containers/Profile/Profile.tsx:533
+#: src/containers/Profile/Profile.tsx:546
 msgid "Activity Statistics"
 msgstr "Activity Statistics"
 
@@ -61,11 +61,11 @@ msgstr "App is already installed"
 msgid "Apply"
 msgstr "Apply"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:32
+#: src/containers/ProfileSetup/ProfileSetup.tsx:34
 msgid "Authentication required. Please try logging in again."
 msgstr "Authentication required. Please try logging in again."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1071
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1075
 msgid "Back"
 msgstr "Back"
 
@@ -73,7 +73,7 @@ msgstr "Back"
 msgid "Banner Image"
 msgstr "Banner Image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:425
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:426
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:922
 msgid "Banner Privacy"
 msgstr "Banner Privacy"
@@ -99,7 +99,7 @@ msgstr "Change"
 msgid "Change Banner"
 msgstr "Change Banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:390
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:391
 msgid "Change banner image"
 msgstr "Change banner image"
 
@@ -119,11 +119,11 @@ msgstr "Choose your preferred language"
 msgid "Click to upload banner"
 msgstr "Click to upload banner"
 
-#: src/containers/Profile/Profile.tsx:536
+#: src/containers/Profile/Profile.tsx:549
 msgid "Coming soon..."
 msgstr "Coming soon..."
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:965
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:969
 msgid "Complete Your Profile"
 msgstr "Complete Your Profile"
 
@@ -139,11 +139,11 @@ msgstr "Contact & Social"
 msgid "Create Account"
 msgstr "Create Account"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1080
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1084
 msgid "Create Profile"
 msgstr "Create Profile"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1080
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1084
 msgid "Creating..."
 msgstr "Creating..."
 
@@ -168,7 +168,7 @@ msgstr "Dark Mode"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/containers/Profile/Profile.tsx:378
+#: src/containers/Profile/Profile.tsx:391
 #: src/containers/Profile/ProfileEditForm.tsx:235
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
 msgid "Date of Birth"
@@ -195,14 +195,14 @@ msgstr "Drag to reposition, scroll or use slider to zoom"
 msgid "Edit banner"
 msgstr "Edit banner"
 
-#: src/containers/Profile/Profile.tsx:320
-#: src/containers/Profile/Profile.tsx:556
+#: src/containers/Profile/Profile.tsx:333
+#: src/containers/Profile/Profile.tsx:569
 msgid "Edit Profile"
 msgstr "Edit Profile"
 
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Profile/Profile.tsx:355
+#: src/containers/Profile/Profile.tsx:368
 msgid "Email"
 msgstr "Email"
 
@@ -223,8 +223,8 @@ msgstr "Enter your first name"
 msgid "Enter your last name"
 msgstr "Enter your last name"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:141
-#: src/containers/ProfileSetup/ProfileSetup.tsx:145
+#: src/containers/ProfileSetup/ProfileSetup.tsx:147
+#: src/containers/ProfileSetup/ProfileSetup.tsx:151
 msgid "Failed to create profile. Please try again."
 msgstr "Failed to create profile. Please try again."
 
@@ -240,7 +240,7 @@ msgstr "Failed to update banner. Please try again."
 msgid "Failed to update profile picture. Please try again."
 msgstr "Failed to update profile picture. Please try again."
 
-#: src/containers/Profile/Profile.tsx:194
+#: src/containers/Profile/Profile.tsx:207
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
 
@@ -357,7 +357,7 @@ msgstr "Invalid Strava profile URL"
 msgid "Invalid token"
 msgstr "Invalid token"
 
-#: src/containers/Profile/Profile.tsx:401
+#: src/containers/Profile/Profile.tsx:414
 msgid "Joined"
 msgstr "Joined"
 
@@ -399,8 +399,8 @@ msgid "Login"
 msgstr "Login"
 
 #: src/containers/MainContainer/MainContainer.tsx:63
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:995
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1001
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:999
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1005
 msgid "Logout"
 msgstr "Logout"
 
@@ -408,7 +408,7 @@ msgstr "Logout"
 msgid "Logout page"
 msgstr "Logout page"
 
-#: src/containers/Profile/Profile.tsx:300
+#: src/containers/Profile/Profile.tsx:313
 msgid "Member"
 msgstr "Member"
 
@@ -420,7 +420,7 @@ msgstr "Multi-factor authentication is required"
 msgid "Network error. Check your internet connection"
 msgstr "Network error. Check your internet connection"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1088
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:1092
 msgid "Next"
 msgstr "Next"
 
@@ -440,7 +440,7 @@ msgstr "Nickname must be 30 characters or less"
 msgid "Nickname must be at least 3 characters"
 msgstr "Nickname must be at least 3 characters"
 
-#: src/containers/Profile/Profile.tsx:513
+#: src/containers/Profile/Profile.tsx:526
 msgid "No sports selected yet."
 msgstr "No sports selected yet."
 
@@ -481,7 +481,7 @@ msgstr "Personal Details"
 msgid "Photo Privacy"
 msgstr "Photo Privacy"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:135
+#: src/containers/ProfileSetup/ProfileSetup.tsx:141
 msgid "Please check your input and try again."
 msgstr "Please check your input and try again."
 
@@ -509,23 +509,23 @@ msgid "Processing..."
 msgstr "Processing..."
 
 #: src/containers/MainContainer/MainContainer.tsx:38
-#: src/containers/Profile/Profile.tsx:97
+#: src/containers/Profile/Profile.tsx:104
 msgid "Profile"
 msgstr "Profile"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:74
+#: src/containers/ProfileSetup/ProfileSetup.tsx:76
 msgid "Profile created but failed to upload banner. You can add it later."
 msgstr "Profile created but failed to upload banner. You can add it later."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:62
+#: src/containers/ProfileSetup/ProfileSetup.tsx:64
 msgid "Profile created but failed to upload profile picture. You can add it later."
 msgstr "Profile created but failed to upload profile picture. You can add it later."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:84
+#: src/containers/ProfileSetup/ProfileSetup.tsx:86
 msgid "Profile created successfully!"
 msgstr "Profile created successfully!"
 
-#: src/containers/Profile/Profile.tsx:227
+#: src/containers/Profile/Profile.tsx:240
 msgid "Profile not found"
 msgstr "Profile not found"
 
@@ -546,7 +546,7 @@ msgstr "Profile picture removed successfully!"
 msgid "Profile picture updated successfully!"
 msgstr "Profile picture updated successfully!"
 
-#: src/containers/Profile/Profile.tsx:189
+#: src/containers/Profile/Profile.tsx:202
 msgid "Profile updated successfully!"
 msgstr "Profile updated successfully!"
 
@@ -556,12 +556,12 @@ msgstr "Profile updated successfully!"
 msgid "Public"
 msgstr "Public"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:399
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:400
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:653
 msgid "Remove banner"
 msgstr "Remove banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:411
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:412
 msgid "Remove banner image"
 msgstr "Remove banner image"
 
@@ -595,7 +595,7 @@ msgstr "Saving..."
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
-#: src/containers/ProfileSetup/ProfileSetupForm.tsx:977
+#: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
 #: src/containers/Settings/Settings.tsx:103
 #: src/containers/Settings/Settings.tsx:108
 msgid "Select Language"
@@ -612,7 +612,7 @@ msgstr "Settings"
 msgid "Sign Up"
 msgstr "Sign Up"
 
-#: src/containers/Profile/Profile.tsx:420
+#: src/containers/Profile/Profile.tsx:433
 msgid "Social"
 msgstr "Social"
 
@@ -629,7 +629,7 @@ msgstr "Sport Types"
 msgid "Sports"
 msgstr "Sports"
 
-#: src/containers/Profile/Profile.tsx:489
+#: src/containers/Profile/Profile.tsx:502
 msgid "Sports & Activities"
 msgstr "Sports & Activities"
 
@@ -690,7 +690,7 @@ msgstr "Theme"
 msgid "There is already a user with this email address"
 msgstr "There is already a user with this email address"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:115
+#: src/containers/ProfileSetup/ProfileSetup.tsx:121
 msgid "This email is already registered."
 msgstr "This email is already registered."
 
@@ -699,7 +699,7 @@ msgstr "This email is already registered."
 msgid "This nickname is already taken"
 msgstr "This nickname is already taken"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:111
+#: src/containers/ProfileSetup/ProfileSetup.tsx:117
 msgid "This nickname is already taken. Please choose another."
 msgstr "This nickname is already taken. Please choose another."
 
@@ -790,7 +790,7 @@ msgstr "Walking"
 msgid "Who can see your information?"
 msgstr "Who can see your information?"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:119
+#: src/containers/ProfileSetup/ProfileSetup.tsx:125
 msgid "You already have a profile. Redirecting to dashboard..."
 msgstr "You already have a profile. Redirecting to dashboard..."
 
@@ -808,7 +808,7 @@ msgstr "You can skip this step and add photos later."
 msgid "You must be at least 13 years old"
 msgstr "You must be at least 13 years old"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:124
+#: src/containers/ProfileSetup/ProfileSetup.tsx:130
 msgid "You must be at least 13 years old to sign up."
 msgstr "You must be at least 13 years old to sign up."
 
