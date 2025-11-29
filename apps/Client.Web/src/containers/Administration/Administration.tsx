@@ -32,6 +32,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import SecurityIcon from '@mui/icons-material/Security';
+import NoEncryptionIcon from '@mui/icons-material/NoEncryption';
 import { useSnackbar } from 'notistack';
 
 import { User, UserRole } from '@baaa-hub/shared-types';
@@ -45,6 +47,7 @@ import {
   ListUsersParams,
 } from '../../services/adminService';
 import { getRoleLabels } from '../../helpers/roleLabels';
+import { getMfaTypeShortLabels } from '../../helpers/mfaLabels';
 import { EditRolesDialog } from './EditRolesDialog';
 
 /**
@@ -78,6 +81,8 @@ export const Administration: FC = () => {
 
   // Get translated role labels (useLingui hook makes this reactive to locale)
   const roleLabels = getRoleLabels();
+  // Get translated MFA type labels
+  const mfaTypeLabels = getMfaTypeShortLabels();
 
   // State
   const [users, setUsers] = useState<User[]>([]);
@@ -91,6 +96,7 @@ export const Administration: FC = () => {
   const [roleFilter, setRoleFilter] = useState<string>('');
   const [blockedFilter, setBlockedFilter] = useState<string>('');
   const [emailVerifiedFilter, setEmailVerifiedFilter] = useState<string>('');
+  const [mfaFilter, setMfaFilter] = useState<string>('');
 
   // Edit roles dialog state
   const [editRolesDialogOpen, setEditRolesDialogOpen] = useState(false);
@@ -121,6 +127,7 @@ export const Administration: FC = () => {
       ...(emailVerifiedFilter && {
         emailVerified: emailVerifiedFilter === 'true',
       }),
+      ...(mfaFilter && { mfaEnabled: mfaFilter === 'true' }),
     }),
     [
       page,
@@ -129,6 +136,7 @@ export const Administration: FC = () => {
       roleFilter,
       blockedFilter,
       emailVerifiedFilter,
+      mfaFilter,
     ],
   );
 
@@ -180,6 +188,11 @@ export const Administration: FC = () => {
     event: SelectChangeEvent<string>,
   ) => {
     setEmailVerifiedFilter(event.target.value);
+    setPage(0);
+  };
+
+  const handleMfaFilterChange = (event: SelectChangeEvent<string>) => {
+    setMfaFilter(event.target.value);
     setPage(0);
   };
 
@@ -309,6 +322,18 @@ export const Administration: FC = () => {
               <MenuItem value="false">{t`Not Verified`}</MenuItem>
             </Select>
           </FormControl>
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>{t`MFA`}</InputLabel>
+            <Select
+              value={mfaFilter}
+              label={t`MFA`}
+              onChange={handleMfaFilterChange}
+            >
+              <MenuItem value="">{t`All`}</MenuItem>
+              <MenuItem value="true">{t`Enabled`}</MenuItem>
+              <MenuItem value="false">{t`Disabled`}</MenuItem>
+            </Select>
+          </FormControl>
         </Stack>
       </Paper>
 
@@ -330,6 +355,7 @@ export const Administration: FC = () => {
                 <TableCell>{t`Nickname`}</TableCell>
                 <TableCell>{t`Roles`}</TableCell>
                 <TableCell align="center">{t`Email Verified`}</TableCell>
+                <TableCell align="center">{t`MFA`}</TableCell>
                 <TableCell align="center">{t`Status`}</TableCell>
                 <TableCell>{t`Created`}</TableCell>
                 <TableCell align="center">{t`Actions`}</TableCell>
@@ -338,14 +364,14 @@ export const Administration: FC = () => {
             <TableBody>
               {loading && (
                 <TableRow>
-                  <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                  <TableCell colSpan={9} align="center" sx={{ py: 4 }}>
                     <CircularProgress />
                   </TableCell>
                 </TableRow>
               )}
               {!loading && users.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                  <TableCell colSpan={9} align="center" sx={{ py: 4 }}>
                     <Typography color="text.secondary">
                       {t`No users found`}
                     </Typography>
@@ -386,6 +412,24 @@ export const Administration: FC = () => {
                       ) : (
                         <Tooltip title={t`Email Not Verified`}>
                           <ErrorOutlineIcon color="warning" />
+                        </Tooltip>
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      {user.mfaEnabled ? (
+                        <Tooltip
+                          title={t`MFA Enabled: ${mfaTypeLabels[user.mfaType]}`}
+                        >
+                          <Chip
+                            label={mfaTypeLabels[user.mfaType]}
+                            color="success"
+                            size="small"
+                            icon={<SecurityIcon />}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title={t`MFA Disabled`}>
+                          <NoEncryptionIcon color="disabled" />
                         </Tooltip>
                       )}
                     </TableCell>

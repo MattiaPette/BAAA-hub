@@ -33,6 +33,7 @@ export interface ListUsersParams {
   role?: UserRole;
   blocked?: boolean;
   emailVerified?: boolean;
+  mfaEnabled?: boolean;
 }
 
 export const listUsers = async (
@@ -50,6 +51,8 @@ export const listUsers = async (
     queryParams.append('blocked', params.blocked.toString());
   if (params.emailVerified !== undefined)
     queryParams.append('emailVerified', params.emailVerified.toString());
+  if (params.mfaEnabled !== undefined)
+    queryParams.append('mfaEnabled', params.mfaEnabled.toString());
 
   const response = await client.get<AdminUsersListResponse>(
     `/api/admin/users?${queryParams.toString()}`,
