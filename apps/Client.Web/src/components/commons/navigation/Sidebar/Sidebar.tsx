@@ -198,6 +198,12 @@ const getInitials = (name?: string): string => {
 
 /**
  * Helper to check if user has permission to access a route
+ *
+ * Permission hierarchy:
+ * - super-admin: Can access all routes
+ * - admin: Can access admin and lower routes, but not super-admin routes
+ * - user: Can access user and public routes
+ * - public: Can access only public routes
  */
 const hasPermission = (
   routePermission: RoutePermission | undefined,
@@ -206,7 +212,15 @@ const hasPermission = (
   if (!routePermission || routePermission === 'public') return true;
   if (!userPermission) return false;
 
-  if (userPermission === 'admin') return true;
+  // Super-admin can access everything
+  if (userPermission === 'super-admin') return true;
+
+  // Admin can access admin and user routes, but not super-admin routes
+  if (userPermission === 'admin') {
+    return routePermission !== 'super-admin';
+  }
+
+  // Regular user can only access user routes
   if (userPermission === 'user' && routePermission === 'user') return true;
 
   return false;

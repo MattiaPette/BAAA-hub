@@ -56,6 +56,7 @@ const roleColors: Record<
 > = {
   [UserRole.MEMBER]: 'default',
   [UserRole.ADMIN]: 'error',
+  [UserRole.SUPER_ADMIN]: 'success',
   [UserRole.ORGANIZATION_COMMITTEE]: 'primary',
   [UserRole.COMMUNITY_LEADER]: 'secondary',
   [UserRole.COMMUNITY_STAR]: 'warning',
@@ -460,10 +461,11 @@ export const Administration: FC = () => {
       </Paper>
 
       {/* Edit Roles Dialog */}
-      {selectedUser && (
+      {selectedUser && currentUser && (
         <EditRolesDialog
           open={editRolesDialogOpen}
           user={selectedUser}
+          currentUserRoles={currentUser.roles}
           onClose={() => {
             setEditRolesDialogOpen(false);
             setSelectedUser(null);

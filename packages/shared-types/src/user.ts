@@ -40,12 +40,19 @@ export interface UserPrivacySettings {
 /**
  * User roles for access control.
  * These roles define the permissions and access levels within the application.
+ *
+ * Role Hierarchy:
+ * - SUPER_ADMIN: Highest level, can manage all users including admins
+ * - ADMIN: Can manage regular users but not other admins or super-admins
+ * - MEMBER and others: Regular users with no admin capabilities
  */
 export enum UserRole {
   /** Basic member role - default for all registered users */
   MEMBER = 'MEMBER',
-  /** Administrator role with full system access */
+  /** Administrator role with elevated privileges for managing regular users */
   ADMIN = 'ADMIN',
+  /** Super administrator role - highest privilege level, can manage admins */
+  SUPER_ADMIN = 'SUPER_ADMIN',
   /** Organization committee member with elevated privileges */
   ORGANIZATION_COMMITTEE = 'ORGANIZATION_COMMITTEE',
   /** Community leader with community management capabilities */
@@ -73,6 +80,89 @@ export const hasRole = (userRoles: UserRole[], role: UserRole): boolean => {
  */
 export const isAdmin = (userRoles: UserRole[]): boolean => {
   return hasRole(userRoles, UserRole.ADMIN);
+};
+
+/**
+ * Checks if a user has super-admin privileges
+ * @param userRoles - Array of roles assigned to the user
+ * @returns true if user has the SUPER_ADMIN role
+ */
+export const isSuperAdmin = (userRoles: UserRole[]): boolean => {
+  return hasRole(userRoles, UserRole.SUPER_ADMIN);
+};
+
+/**
+ * Checks if a user has any administrative privileges (admin or super-admin)
+ * @param userRoles - Array of roles assigned to the user
+ * @returns true if user has ADMIN or SUPER_ADMIN role
+ */
+export const hasAdminPrivileges = (userRoles: UserRole[]): boolean => {
+  return isAdmin(userRoles) || isSuperAdmin(userRoles);
+};
+
+/**
+ * Checks if a user can manage another user's admin role.
+ * Only super-admins can assign/revoke admin roles.
+ * @param actorRoles - Roles of the user performing the action
+ * @param targetRoles - Current roles of the target user
+ * @param newRoles - New roles to be assigned to the target user
+ * @returns true if the action is allowed
+ */
+export const canManageAdminRole = (
+  actorRoles: UserRole[],
+  targetRoles: UserRole[],
+  newRoles: UserRole[],
+): boolean => {
+  // Only super-admins can manage admin roles
+  if (!isSuperAdmin(actorRoles)) {
+    // Check if trying to add or remove ADMIN or SUPER_ADMIN role
+    const hadAdmin = targetRoles.includes(UserRole.ADMIN);
+    const willHaveAdmin = newRoles.includes(UserRole.ADMIN);
+    const hadSuperAdmin = targetRoles.includes(UserRole.SUPER_ADMIN);
+    const willHaveSuperAdmin = newRoles.includes(UserRole.SUPER_ADMIN);
+
+    // Non-super-admins cannot change admin/super-admin status
+    if (
+      hadAdmin !== willHaveAdmin ||
+      hadSuperAdmin !== willHaveSuperAdmin
+    ) {
+      return false;
+    }
+  }
+
+  // Nobody can modify super-admin role (even super-admins can't demote themselves)
+  const targetIsSuperAdmin = isSuperAdmin(targetRoles);
+  const newRolesHasSuperAdmin = newRoles.includes(UserRole.SUPER_ADMIN);
+
+  if (targetIsSuperAdmin !== newRolesHasSuperAdmin) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ * Checks if a user can be managed by an admin.
+ * Admins can only manage non-privileged users (not admins or super-admins).
+ * @param actorRoles - Roles of the user performing the action
+ * @param targetRoles - Roles of the target user
+ * @returns true if the actor can manage the target user
+ */
+export const canManageUser = (
+  actorRoles: UserRole[],
+  targetRoles: UserRole[],
+): boolean => {
+  // Super-admins can manage anyone
+  if (isSuperAdmin(actorRoles)) {
+    return true;
+  }
+
+  // Regular admins cannot manage other admins or super-admins
+  if (hasAdminPrivileges(targetRoles)) {
+    return false;
+  }
+
+  return true;
 };
 
 /**

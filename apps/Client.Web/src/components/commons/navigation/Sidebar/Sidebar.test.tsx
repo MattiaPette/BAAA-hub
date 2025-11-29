@@ -540,4 +540,100 @@ describe('Sidebar', () => {
     // Route without permission should be visible (treated as public)
     expect(screen.getByText('No Permission')).toBeInTheDocument();
   });
+
+  it('should show all routes including super-admin routes for super-admin permission', () => {
+    const routesWithSuperAdmin = [
+      ...mockRoutes,
+      {
+        id: 'super-admin-only',
+        path: 'super-admin-only',
+        icon: DashboardIcon,
+        label: 'Super Admin Only',
+        linkTo: { to: '/super-admin' },
+        order: 4,
+        permission: 'super-admin' as const,
+      },
+    ];
+
+    render(
+      <MemoryRouter>
+        <Sidebar
+          routes={routesWithSuperAdmin}
+          currentPath="dashboard"
+          open
+          onClose={vi.fn()}
+          userPermission="super-admin"
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Settings')).toBeInTheDocument();
+    expect(screen.getByText('Admin Only')).toBeInTheDocument();
+    expect(screen.getByText('Super Admin Only')).toBeInTheDocument();
+  });
+
+  it('should not show super-admin routes for regular admin permission', () => {
+    const routesWithSuperAdmin = [
+      ...mockRoutes,
+      {
+        id: 'super-admin-only',
+        path: 'super-admin-only',
+        icon: DashboardIcon,
+        label: 'Super Admin Only',
+        linkTo: { to: '/super-admin' },
+        order: 4,
+        permission: 'super-admin' as const,
+      },
+    ];
+
+    render(
+      <MemoryRouter>
+        <Sidebar
+          routes={routesWithSuperAdmin}
+          currentPath="dashboard"
+          open
+          onClose={vi.fn()}
+          userPermission="admin"
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Settings')).toBeInTheDocument();
+    expect(screen.getByText('Admin Only')).toBeInTheDocument();
+    expect(screen.queryByText('Super Admin Only')).not.toBeInTheDocument();
+  });
+
+  it('should not show super-admin routes for user permission', () => {
+    const routesWithSuperAdmin = [
+      ...mockRoutes,
+      {
+        id: 'super-admin-only',
+        path: 'super-admin-only',
+        icon: DashboardIcon,
+        label: 'Super Admin Only',
+        linkTo: { to: '/super-admin' },
+        order: 4,
+        permission: 'super-admin' as const,
+      },
+    ];
+
+    render(
+      <MemoryRouter>
+        <Sidebar
+          routes={routesWithSuperAdmin}
+          currentPath="dashboard"
+          open
+          onClose={vi.fn()}
+          userPermission="user"
+        />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Settings')).toBeInTheDocument();
+    expect(screen.queryByText('Admin Only')).not.toBeInTheDocument();
+    expect(screen.queryByText('Super Admin Only')).not.toBeInTheDocument();
+  });
 });
