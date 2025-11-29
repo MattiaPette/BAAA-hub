@@ -6,7 +6,6 @@ import {
   AdminUsersListResponse,
   canManageUser,
   canManageAdminRole,
-  hasAdminPrivileges,
   isSuperAdmin,
 } from '@baaa-hub/shared-types';
 import {
@@ -220,17 +219,33 @@ export const updateUserRoles = async (ctx: AdminContext): Promise<void> => {
     );
   }
 
-  // Prevent admin from removing their own admin role
+  // Prevent admin from removing their own admin privileges entirely
+  // A super-admin can remove their ADMIN role if they still have SUPER_ADMIN
+  // A regular admin cannot remove their only admin-level role
   const isSelf = user.id === ctx.state.adminUser.id;
-  const selfHasAdmin = hasAdminPrivileges(ctx.state.adminUser.roles);
-  const newRolesHaveAdmin = hasAdminPrivileges(roles);
+  if (isSelf) {
+    const actorIsSuperAdmin = isSuperAdmin(ctx.state.adminUser.roles);
+    const newRolesAreSuperAdmin = roles.includes(UserRole.SUPER_ADMIN);
+    const newRolesAreAdmin = roles.includes(UserRole.ADMIN);
 
-  if (isSelf && selfHasAdmin && !newRolesHaveAdmin) {
-    throw new ApiError(
-      400,
-      'Cannot remove your own admin privileges',
-      ErrorCode.FORBIDDEN,
-    );
+    // Super-admin trying to remove their super-admin role is blocked by canManageAdminRole
+    // So we only need to check if a regular admin is trying to remove their admin role
+    if (!actorIsSuperAdmin && !newRolesAreAdmin) {
+      throw new ApiError(
+        400,
+        'Cannot remove your own admin privileges',
+        ErrorCode.FORBIDDEN,
+      );
+    }
+
+    // Super-admin must retain at least one admin-level role
+    if (actorIsSuperAdmin && !newRolesAreSuperAdmin && !newRolesAreAdmin) {
+      throw new ApiError(
+        400,
+        'Cannot remove your own admin privileges',
+        ErrorCode.FORBIDDEN,
+      );
+    }
   }
 
   user.roles = roles;
