@@ -183,11 +183,6 @@ const userSchema = new Schema<UserDocument>(
   },
 );
 
-// Indexes
-userSchema.index({ authId: 1 }, { unique: true });
-userSchema.index({ email: 1 }, { unique: true });
-userSchema.index({ nickname: 1 }, { unique: true });
-
 // Static methods
 userSchema.statics.findByAuthId = function (
   authId: string,
