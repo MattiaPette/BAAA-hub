@@ -17,7 +17,7 @@ msgstr ""
 msgid "A server error has occurred. Please try again later"
 msgstr "Si è verificato un errore del server. Riprova più tardi"
 
-#: src/containers/Profile/Profile.tsx:387
+#: src/containers/Profile/Profile.tsx:411
 msgid "About"
 msgstr "Informazioni"
 
@@ -25,16 +25,16 @@ msgstr "Informazioni"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Accesso negato. Nome utente e/o password non corretti"
 
-#: src/containers/Administration/Administration.tsx:332
+#: src/containers/Administration/Administration.tsx:334
 msgid "Actions"
 msgstr "Azioni"
 
-#: src/containers/Administration/Administration.tsx:293
-#: src/containers/Administration/Administration.tsx:399
+#: src/containers/Administration/Administration.tsx:295
+#: src/containers/Administration/Administration.tsx:401
 msgid "Active"
 msgstr "Attivo"
 
-#: src/containers/Profile/Profile.tsx:584
+#: src/containers/Profile/Profile.tsx:608
 msgid "Activity Statistics"
 msgstr "Statistiche Attività"
 
@@ -58,18 +58,18 @@ msgstr "Regola Foto Profilo"
 msgid "Admin"
 msgstr "Admin"
 
-#: src/containers/Administration/Administration.tsx:97
-#: src/containers/Administration/Administration.tsx:245
+#: src/containers/Administration/Administration.tsx:99
+#: src/containers/Administration/Administration.tsx:247
 #: src/containers/MainContainer/MainContainer.tsx:70
 msgid "Administration"
 msgstr "Amministrazione"
 
-#: src/containers/Administration/Administration.tsx:292
-#: src/containers/Administration/Administration.tsx:304
+#: src/containers/Administration/Administration.tsx:294
+#: src/containers/Administration/Administration.tsx:306
 msgid "All"
 msgstr "Tutti"
 
-#: src/containers/Administration/Administration.tsx:277
+#: src/containers/Administration/Administration.tsx:279
 msgid "All Roles"
 msgstr "Tutti i ruoli"
 
@@ -119,12 +119,12 @@ msgstr "Banner aggiornato con successo!"
 msgid "Basic member role (required)"
 msgstr "Ruolo membro base (obbligatorio)"
 
-#: src/containers/Administration/Administration.tsx:423
+#: src/containers/Administration/Administration.tsx:427
 msgid "Block User"
 msgstr "Blocca utente"
 
-#: src/containers/Administration/Administration.tsx:294
-#: src/containers/Administration/Administration.tsx:392
+#: src/containers/Administration/Administration.tsx:296
+#: src/containers/Administration/Administration.tsx:394
 msgid "Blocked"
 msgstr "Bloccato"
 
@@ -167,7 +167,7 @@ msgstr "Clicca per caricare il banner"
 msgid "Close"
 msgstr "Chiudi"
 
-#: src/containers/Profile/Profile.tsx:587
+#: src/containers/Profile/Profile.tsx:611
 msgid "Coming soon..."
 msgstr "Prossimamente..."
 
@@ -207,7 +207,7 @@ msgstr "Crea Account"
 msgid "Create Profile"
 msgstr "Crea Profilo"
 
-#: src/containers/Administration/Administration.tsx:331
+#: src/containers/Administration/Administration.tsx:333
 msgid "Created"
 msgstr "Creato"
 
@@ -236,7 +236,7 @@ msgstr "Modalità scura"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/containers/Profile/Profile.tsx:429
+#: src/containers/Profile/Profile.tsx:453
 #: src/containers/Profile/ProfileEditForm.tsx:237
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
 msgid "Date of Birth"
@@ -263,14 +263,14 @@ msgstr "Trascina per riposizionare, scorri o usa il cursore per zoomare"
 msgid "Edit banner"
 msgstr "Modifica banner"
 
-#: src/containers/Profile/Profile.tsx:371
-#: src/containers/Profile/Profile.tsx:607
+#: src/containers/Profile/Profile.tsx:395
+#: src/containers/Profile/Profile.tsx:631
 msgid "Edit Profile"
 msgstr "Modifica Profilo"
 
 #: src/containers/Administration/Administration.tsx:413
-msgid "Edit Roles"
-msgstr "Modifica ruoli"
+#~ msgid "Edit Roles"
+#~ msgstr "Modifica ruoli"
 
 #. placeholder {0}: user.name
 #. placeholder {1}: user.surname
@@ -280,8 +280,8 @@ msgstr "Modifica ruoli per {0} {1}"
 
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Administration/Administration.tsx:326
-#: src/containers/Profile/Profile.tsx:406
+#: src/containers/Administration/Administration.tsx:328
+#: src/containers/Profile/Profile.tsx:430
 msgid "Email"
 msgstr "Email"
 
@@ -289,7 +289,7 @@ msgstr "Email"
 msgid "Email is required"
 msgstr "L'email è obbligatoria"
 
-#: src/containers/Administration/Administration.tsx:384
+#: src/containers/Administration/Administration.tsx:386
 msgid "Email Not Verified"
 msgstr "Email non verificata"
 
@@ -298,10 +298,10 @@ msgstr "Email non verificata"
 msgid "Email Privacy"
 msgstr "Privacy Email"
 
-#: src/containers/Administration/Administration.tsx:298
-#: src/containers/Administration/Administration.tsx:301
-#: src/containers/Administration/Administration.tsx:329
-#: src/containers/Administration/Administration.tsx:380
+#: src/containers/Administration/Administration.tsx:300
+#: src/containers/Administration/Administration.tsx:303
+#: src/containers/Administration/Administration.tsx:331
+#: src/containers/Administration/Administration.tsx:382
 msgid "Email Verified"
 msgstr "Email verificata"
 
@@ -318,7 +318,7 @@ msgstr "Inserisci il tuo cognome"
 msgid "Failed to create profile. Please try again."
 msgstr "Impossibile creare il profilo. Riprova."
 
-#: src/containers/Administration/Administration.tsx:145
+#: src/containers/Administration/Administration.tsx:147
 msgid "Failed to load users. Please try again."
 msgstr "Impossibile caricare gli utenti. Riprova."
 
@@ -334,15 +334,15 @@ msgstr "Impossibile aggiornare il banner. Riprova."
 msgid "Failed to update profile picture. Please try again."
 msgstr "Impossibile aggiornare la foto profilo. Riprova."
 
-#: src/containers/Profile/Profile.tsx:239
+#: src/containers/Profile/Profile.tsx:258
 msgid "Failed to update profile. Please try again."
 msgstr "Impossibile aggiornare il profilo. Riprova."
 
-#: src/containers/Administration/Administration.tsx:231
+#: src/containers/Administration/Administration.tsx:233
 msgid "Failed to update user roles"
 msgstr "Impossibile aggiornare i ruoli utente"
 
-#: src/containers/Administration/Administration.tsx:203
+#: src/containers/Administration/Administration.tsx:205
 msgid "Failed to update user status"
 msgstr "Impossibile aggiornare lo stato utente"
 
@@ -479,7 +479,7 @@ msgstr "URL profilo Strava non valido"
 msgid "Invalid token"
 msgstr "Token non valido"
 
-#: src/containers/Profile/Profile.tsx:452
+#: src/containers/Profile/Profile.tsx:476
 msgid "Joined"
 msgstr "Iscritto"
 
@@ -530,11 +530,14 @@ msgstr "Esci"
 msgid "Logout page"
 msgstr "Pagina di disconnessione"
 
-#: src/containers/Administration/Administration.tsx:248
+#: src/containers/Administration/Administration.tsx:415
+msgid "Manage User Roles"
+msgstr "Gestisci Ruoli Utente"
+
+#: src/containers/Administration/Administration.tsx:250
 msgid "Manage users, roles, and account status."
 msgstr "Gestisci utenti, ruoli e stato account."
 
-#: src/containers/Profile/Profile.tsx:351
 #: src/helpers/roleLabels/roleLabels.ts:8
 msgid "Member"
 msgstr "Membro"
@@ -543,7 +546,7 @@ msgstr "Membro"
 msgid "Multi-factor authentication is required"
 msgstr "È richiesta l'autenticazione a più fattori"
 
-#: src/containers/Administration/Administration.tsx:325
+#: src/containers/Administration/Administration.tsx:327
 msgid "Name"
 msgstr "Nome"
 
@@ -555,7 +558,7 @@ msgstr "Errore di rete. Verifica la connessione internet"
 msgid "Next"
 msgstr "Avanti"
 
-#: src/containers/Administration/Administration.tsx:327
+#: src/containers/Administration/Administration.tsx:329
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:494
 msgid "Nickname"
 msgstr "Nickname"
@@ -572,15 +575,15 @@ msgstr "Il nickname deve essere di 30 caratteri o meno"
 msgid "Nickname must be at least 3 characters"
 msgstr "Il nickname deve essere di almeno 3 caratteri"
 
-#: src/containers/Profile/Profile.tsx:564
+#: src/containers/Profile/Profile.tsx:588
 msgid "No sports selected yet."
 msgstr "Nessuno sport selezionato."
 
-#: src/containers/Administration/Administration.tsx:347
+#: src/containers/Administration/Administration.tsx:349
 msgid "No users found"
 msgstr "Nessun utente trovato"
 
-#: src/containers/Administration/Administration.tsx:306
+#: src/containers/Administration/Administration.tsx:308
 msgid "Not Verified"
 msgstr "Non verificato"
 
@@ -657,7 +660,7 @@ msgid "Processing..."
 msgstr "Elaborazione..."
 
 #: src/containers/MainContainer/MainContainer.tsx:53
-#: src/containers/Profile/Profile.tsx:110
+#: src/containers/Profile/Profile.tsx:126
 msgid "Profile"
 msgstr "Profilo"
 
@@ -673,7 +676,7 @@ msgstr "Profilo creato ma caricamento foto profilo fallito. Puoi aggiungerla dop
 msgid "Profile created successfully!"
 msgstr "Profilo creato con successo!"
 
-#: src/containers/Profile/Profile.tsx:272
+#: src/containers/Profile/Profile.tsx:291
 msgid "Profile not found"
 msgstr "Profilo non trovato"
 
@@ -695,7 +698,7 @@ msgstr "Foto profilo rimossa con successo!"
 msgid "Profile picture updated successfully!"
 msgstr "Foto profilo aggiornata con successo!"
 
-#: src/containers/Profile/Profile.tsx:234
+#: src/containers/Profile/Profile.tsx:253
 msgid "Profile updated successfully!"
 msgstr "Profilo aggiornato con successo!"
 
@@ -727,16 +730,16 @@ msgstr "Rimuovi foto profilo"
 msgid "Response type not supported"
 msgstr "Tipo di risposta non supportato"
 
-#: src/containers/Administration/Administration.tsx:271
-#: src/containers/Administration/Administration.tsx:274
+#: src/containers/Administration/Administration.tsx:273
+#: src/containers/Administration/Administration.tsx:276
 msgid "Role"
 msgstr "Ruolo"
 
-#: src/containers/Administration/Administration.tsx:328
+#: src/containers/Administration/Administration.tsx:330
 msgid "Roles"
 msgstr "Ruoli"
 
-#: src/containers/Administration/Administration.tsx:453
+#: src/containers/Administration/Administration.tsx:458
 msgid "Rows per page:"
 msgstr "Righe per pagina:"
 
@@ -758,7 +761,7 @@ msgstr "Salva Modifiche"
 msgid "Saving..."
 msgstr "Salvataggio..."
 
-#: src/containers/Administration/Administration.tsx:255
+#: src/containers/Administration/Administration.tsx:257
 msgid "Search by name, email, or nickname..."
 msgstr "Cerca per nome, email o nickname..."
 
@@ -787,7 +790,7 @@ msgstr "Impostazioni"
 msgid "Sign Up"
 msgstr "Registrati"
 
-#: src/containers/Profile/Profile.tsx:471
+#: src/containers/Profile/Profile.tsx:495
 msgid "Social"
 msgstr "Social"
 
@@ -804,7 +807,7 @@ msgstr "Tipi di Sport"
 msgid "Sports"
 msgstr "Sport"
 
-#: src/containers/Profile/Profile.tsx:540
+#: src/containers/Profile/Profile.tsx:564
 msgid "Sports & Activities"
 msgstr "Sport e Attività"
 
@@ -812,9 +815,9 @@ msgstr "Sport e Attività"
 msgid "Sports Privacy"
 msgstr "Privacy Sport"
 
-#: src/containers/Administration/Administration.tsx:286
-#: src/containers/Administration/Administration.tsx:289
-#: src/containers/Administration/Administration.tsx:330
+#: src/containers/Administration/Administration.tsx:288
+#: src/containers/Administration/Administration.tsx:291
+#: src/containers/Administration/Administration.tsx:332
 msgid "Status"
 msgstr "Stato"
 
@@ -930,7 +933,7 @@ msgstr "Client non autorizzato"
 msgid "Unauthorized. Please verify your credentials"
 msgstr "Non autorizzato. Verifica le tue credenziali"
 
-#: src/containers/Administration/Administration.tsx:423
+#: src/containers/Administration/Administration.tsx:427
 msgid "Unblock User"
 msgstr "Sblocca utente"
 
@@ -958,7 +961,7 @@ msgstr "Caricamento banner"
 msgid "Uploading image"
 msgstr "Caricamento immagine"
 
-#: src/containers/Administration/Administration.tsx:198
+#: src/containers/Administration/Administration.tsx:200
 msgid "User blocked successfully"
 msgstr "Utente bloccato con successo"
 
@@ -970,15 +973,15 @@ msgstr "L'utente ha installato l'applicazione"
 msgid "User rejected app installation"
 msgstr "L'utente ha respinto l'installazione dell'app"
 
-#: src/containers/Administration/Administration.tsx:224
+#: src/containers/Administration/Administration.tsx:226
 msgid "User roles updated successfully"
 msgstr "Ruoli utente aggiornati con successo"
 
-#: src/containers/Administration/Administration.tsx:197
+#: src/containers/Administration/Administration.tsx:199
 msgid "User unblocked successfully"
 msgstr "Utente sbloccato con successo"
 
-#: src/containers/Administration/Administration.tsx:305
+#: src/containers/Administration/Administration.tsx:307
 msgid "Verified"
 msgstr "Verificato"
 

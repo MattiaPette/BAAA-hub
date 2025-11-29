@@ -31,7 +31,7 @@ import SportsIcon from '@mui/icons-material/Sports';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
-import { SportType } from '@baaa-hub/shared-types';
+import { SportType, UserRole } from '@baaa-hub/shared-types';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
@@ -42,12 +42,28 @@ import {
   deleteUserImage,
 } from '../../services/userService';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
+import { getRoleLabels } from '../../helpers/roleLabels';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
 import {
   ImageUpload,
   ImageViewDialog,
 } from '../../components/commons/inputs/ImageUpload';
+
+/**
+ * Role color mapping for chips
+ */
+const roleColors: Record<
+  UserRole,
+  'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
+> = {
+  [UserRole.MEMBER]: 'default',
+  [UserRole.ADMIN]: 'error',
+  [UserRole.ORGANIZATION_COMMITTEE]: 'primary',
+  [UserRole.COMMUNITY_LEADER]: 'secondary',
+  [UserRole.COMMUNITY_STAR]: 'warning',
+  [UserRole.GAMER]: 'info',
+};
 
 const StravaIcon = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 24 24">
@@ -156,6 +172,9 @@ export const Profile: FC = () => {
   }, [user, bannerCacheBuster]);
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Get translated role labels (useLingui hook makes this reactive to locale)
+  const roleLabels = getRoleLabels();
 
   const handleEditOpen = () => setIsEditOpen(true);
   const handleEditClose = () => setIsEditOpen(false);
@@ -339,6 +358,8 @@ export const Profile: FC = () => {
               spacing={1}
               alignItems="center"
               justifyContent={{ xs: 'center', md: 'flex-start' }}
+              flexWrap="wrap"
+              useFlexGap
             >
               <Typography
                 variant="subtitle1"
@@ -347,13 +368,16 @@ export const Profile: FC = () => {
               >
                 @{user.nickname}
               </Typography>
-              <Chip
-                label={t`Member`}
-                size="small"
-                color="primary"
-                variant="outlined"
-                sx={{ height: 24 }}
-              />
+              {user.roles.map(role => (
+                <Chip
+                  key={role}
+                  label={roleLabels[role]}
+                  size="small"
+                  color={roleColors[role]}
+                  variant="outlined"
+                  sx={{ height: 24 }}
+                />
+              ))}
             </Stack>
           </Box>
 

@@ -8,6 +8,7 @@ import { renderWithProviders as render } from '../../test-utils';
 
 import { BreadcrumProvider } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
+import * as UserProviderModule from '../../providers/UserProvider/UserProvider';
 import * as adminService from '../../services/adminService';
 
 // Mock the services
@@ -16,6 +17,17 @@ vi.mock('../../services/adminService', () => ({
   updateUserBlocked: vi.fn(),
   updateUserRoles: vi.fn(),
 }));
+
+// Mock the UserProvider module
+vi.mock('../../providers/UserProvider/UserProvider', async () => {
+  const actual = await vi.importActual(
+    '../../providers/UserProvider/UserProvider',
+  );
+  return {
+    ...actual,
+    useUser: vi.fn(),
+  };
+});
 
 const mockUsers = [
   {
@@ -105,6 +117,36 @@ describe('Administration', () => {
         redirectUri: 'http://localhost:3000',
       },
       userPermissions: ['admin'],
+    });
+
+    // Mock the useUser hook
+    vi.mocked(UserProviderModule.useUser).mockReturnValue({
+      user: {
+        id: 'admin-user-id',
+        authId: 'auth0|admin',
+        name: 'Admin',
+        surname: 'User',
+        nickname: 'admin',
+        email: 'admin@example.com',
+        dateOfBirth: '1990-01-01',
+        sportTypes: [SportType.RUNNING],
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z',
+        isBlocked: false,
+        isEmailVerified: true,
+        roles: [UserRole.MEMBER, UserRole.ADMIN],
+        privacySettings: {
+          email: PrivacyLevel.PUBLIC,
+          dateOfBirth: PrivacyLevel.PUBLIC,
+          sportTypes: PrivacyLevel.PUBLIC,
+          socialLinks: PrivacyLevel.PUBLIC,
+        },
+      },
+      hasProfile: true,
+      isLoading: false,
+      error: null,
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
     });
 
     // Mock the listUsers service

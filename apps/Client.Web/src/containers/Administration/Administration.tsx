@@ -29,7 +29,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import BlockIcon from '@mui/icons-material/Block';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import EditIcon from '@mui/icons-material/Edit';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { useSnackbar } from 'notistack';
@@ -37,6 +37,7 @@ import { useSnackbar } from 'notistack';
 import { User, UserRole } from '@baaa-hub/shared-types';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
+import { useUser } from '../../providers/UserProvider/UserProvider';
 import {
   listUsers,
   updateUserBlocked,
@@ -71,6 +72,7 @@ export const Administration: FC = () => {
   const { setTitle } = useBreadcrum();
   const { i18n } = useLingui();
   const { token } = useAuth();
+  const { user: currentUser } = useUser();
   const { enqueueSnackbar } = useSnackbar();
 
   // Get translated role labels (useLingui hook makes this reactive to locale)
@@ -410,31 +412,34 @@ export const Administration: FC = () => {
                         spacing={0.5}
                         justifyContent="center"
                       >
-                        <Tooltip title={t`Edit Roles`}>
+                        <Tooltip title={t`Manage User Roles`}>
                           <IconButton
                             size="small"
                             onClick={() => handleEditRoles(user)}
                           >
-                            <EditIcon fontSize="small" />
+                            <ManageAccountsIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip
-                          title={
-                            user.isBlocked ? t`Unblock User` : t`Block User`
-                          }
-                        >
-                          <IconButton
-                            size="small"
-                            onClick={() => handleToggleBlocked(user)}
-                            color={user.isBlocked ? 'success' : 'error'}
+                        {/* Hide block button for current admin user */}
+                        {currentUser?.id !== user.id && (
+                          <Tooltip
+                            title={
+                              user.isBlocked ? t`Unblock User` : t`Block User`
+                            }
                           >
-                            {user.isBlocked ? (
-                              <CheckCircleIcon fontSize="small" />
-                            ) : (
-                              <BlockIcon fontSize="small" />
-                            )}
-                          </IconButton>
-                        </Tooltip>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleToggleBlocked(user)}
+                              color={user.isBlocked ? 'success' : 'error'}
+                            >
+                              {user.isBlocked ? (
+                                <CheckCircleIcon fontSize="small" />
+                              ) : (
+                                <BlockIcon fontSize="small" />
+                              )}
+                            </IconButton>
+                          </Tooltip>
+                        )}
                       </Stack>
                     </TableCell>
                   </TableRow>
