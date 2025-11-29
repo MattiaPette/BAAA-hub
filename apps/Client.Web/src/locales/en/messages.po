@@ -74,6 +74,7 @@ msgid "Banner Image"
 msgstr "Banner Image"
 
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:426
+#: src/containers/Profile/ProfileEditForm.tsx:439
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:922
 msgid "Banner Privacy"
 msgstr "Banner Privacy"
@@ -87,7 +88,7 @@ msgid "Banner updated successfully!"
 msgstr "Banner updated successfully!"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
-#: src/containers/Profile/ProfileEditForm.tsx:416
+#: src/containers/Profile/ProfileEditForm.tsx:460
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -169,12 +170,12 @@ msgid "Dashboard"
 msgstr "Dashboard"
 
 #: src/containers/Profile/Profile.tsx:391
-#: src/containers/Profile/ProfileEditForm.tsx:235
+#: src/containers/Profile/ProfileEditForm.tsx:237
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
 msgid "Date of Birth"
 msgstr "Date of Birth"
 
-#: src/containers/Profile/ProfileEditForm.tsx:243
+#: src/containers/Profile/ProfileEditForm.tsx:245
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:564
 msgid "Date of birth is required"
 msgstr "Date of birth is required"
@@ -210,7 +211,7 @@ msgstr "Email"
 msgid "Email is required"
 msgstr "Email is required"
 
-#: src/containers/Profile/ProfileEditForm.tsx:398
+#: src/containers/Profile/ProfileEditForm.tsx:400
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:862
 msgid "Email Privacy"
 msgstr "Email Privacy"
@@ -257,17 +258,17 @@ msgstr "File is too large. Maximum size is 5MB."
 msgid "File type not supported. Please use JPG, PNG, WEBP, or HEIC."
 msgstr "File type not supported. Please use JPG, PNG, WEBP, or HEIC."
 
-#: src/containers/Profile/ProfileEditForm.tsx:196
+#: src/containers/Profile/ProfileEditForm.tsx:198
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:456
 msgid "First Name"
 msgstr "First Name"
 
-#: src/containers/Profile/ProfileEditForm.tsx:202
+#: src/containers/Profile/ProfileEditForm.tsx:204
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:464
 msgid "First name is required"
 msgstr "First name is required"
 
-#: src/containers/Profile/ProfileEditForm.tsx:205
+#: src/containers/Profile/ProfileEditForm.tsx:207
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:467
 msgid "First name must be 50 characters or less"
 msgstr "First name must be 50 characters or less"
@@ -298,7 +299,7 @@ msgstr "Hiking"
 msgid "Incorrect username or password"
 msgstr "Incorrect username or password"
 
-#: src/containers/Profile/ProfileEditForm.tsx:355
+#: src/containers/Profile/ProfileEditForm.tsx:357
 msgid "Instagram Profile"
 msgstr "Instagram Profile"
 
@@ -331,7 +332,7 @@ msgstr "Invalid email address"
 msgid "Invalid file"
 msgstr "Invalid file"
 
-#: src/containers/Profile/ProfileEditForm.tsx:374
+#: src/containers/Profile/ProfileEditForm.tsx:376
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:841
 msgid "Invalid Instagram profile URL"
 msgstr "Invalid Instagram profile URL"
@@ -348,7 +349,7 @@ msgstr "Invalid request"
 msgid "Invalid scope"
 msgstr "Invalid scope"
 
-#: src/containers/Profile/ProfileEditForm.tsx:346
+#: src/containers/Profile/ProfileEditForm.tsx:348
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:816
 msgid "Invalid Strava profile URL"
 msgstr "Invalid Strava profile URL"
@@ -373,17 +374,17 @@ msgstr "Language changed to English"
 msgid "Language changed to Italian"
 msgstr "Language changed to Italian"
 
-#: src/containers/Profile/ProfileEditForm.tsx:213
+#: src/containers/Profile/ProfileEditForm.tsx:215
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:475
 msgid "Last Name"
 msgstr "Last Name"
 
-#: src/containers/Profile/ProfileEditForm.tsx:219
+#: src/containers/Profile/ProfileEditForm.tsx:221
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:482
 msgid "Last name is required"
 msgstr "Last name is required"
 
-#: src/containers/Profile/ProfileEditForm.tsx:222
+#: src/containers/Profile/ProfileEditForm.tsx:224
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:485
 msgid "Last name must be 50 characters or less"
 msgstr "Last name must be 50 characters or less"
@@ -534,6 +535,7 @@ msgstr "Profile not found"
 msgid "Profile Picture"
 msgstr "Profile Picture"
 
+#: src/containers/Profile/ProfileEditForm.tsx:418
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:910
 msgid "Profile Picture Privacy"
 msgstr "Profile Picture Privacy"
@@ -583,15 +585,15 @@ msgstr "Response type not supported"
 msgid "Running"
 msgstr "Running"
 
-#: src/containers/Profile/ProfileEditForm.tsx:419
+#: src/containers/Profile/ProfileEditForm.tsx:463
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/containers/Profile/ProfileEditForm.tsx:419
+#: src/containers/Profile/ProfileEditForm.tsx:463
 msgid "Saving..."
 msgstr "Saving..."
 
-#: src/containers/Profile/ProfileEditForm.tsx:276
+#: src/containers/Profile/ProfileEditForm.tsx:278
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
@@ -620,8 +622,8 @@ msgstr "Social"
 msgid "Social Links Privacy"
 msgstr "Social Links Privacy"
 
-#: src/containers/Profile/ProfileEditForm.tsx:268
-#: src/containers/Profile/ProfileEditForm.tsx:284
+#: src/containers/Profile/ProfileEditForm.tsx:270
+#: src/containers/Profile/ProfileEditForm.tsx:286
 msgid "Sport Types"
 msgstr "Sport Types"
 
@@ -637,7 +639,7 @@ msgstr "Sports & Activities"
 msgid "Sports Privacy"
 msgstr "Sports Privacy"
 
-#: src/containers/Profile/ProfileEditForm.tsx:328
+#: src/containers/Profile/ProfileEditForm.tsx:330
 msgid "Strava Profile"
 msgstr "Strava Profile"
 
@@ -802,7 +804,7 @@ msgstr "You can select up to 5 sports"
 msgid "You can skip this step and add photos later."
 msgstr "You can skip this step and add photos later."
 
-#: src/containers/Profile/ProfileEditForm.tsx:248
+#: src/containers/Profile/ProfileEditForm.tsx:250
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:561
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:569
 msgid "You must be at least 13 years old"

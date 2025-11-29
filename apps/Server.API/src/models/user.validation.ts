@@ -39,6 +39,8 @@ const privacySettingsSchema = z.object({
   dateOfBirth: z.nativeEnum(PrivacyLevel),
   sportTypes: z.nativeEnum(PrivacyLevel),
   socialLinks: z.nativeEnum(PrivacyLevel),
+  avatar: z.nativeEnum(PrivacyLevel).optional(),
+  banner: z.nativeEnum(PrivacyLevel).optional(),
 });
 
 /**
