@@ -61,8 +61,8 @@ describe('Settings', () => {
       isLoading: false,
       error: null,
       hasProfile: true,
-      refetchUser: vi.fn(),
-      clearError: vi.fn(),
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
     });
   });
 
@@ -222,8 +222,8 @@ describe('Settings', () => {
       isLoading: false,
       error: null,
       hasProfile: true,
-      refetchUser: vi.fn(),
-      clearError: vi.fn(),
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
     });
 
     renderSettings();
@@ -245,8 +245,8 @@ describe('Settings', () => {
       isLoading: false,
       error: null,
       hasProfile: true,
-      refetchUser: vi.fn(),
-      clearError: vi.fn(),
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
     });
 
     renderSettings();

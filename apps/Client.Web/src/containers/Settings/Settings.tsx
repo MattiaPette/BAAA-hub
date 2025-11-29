@@ -11,7 +11,6 @@ import {
   FormControl,
   FormControlLabel,
   InputLabel,
-  Link,
   MenuItem,
   Select,
   Stack,
@@ -144,15 +143,9 @@ export const Settings: FC = () => {
                 <Typography variant="body2">
                   <Trans>
                     Two-factor authentication adds an extra layer of security to
-                    your account. To enable or manage 2FA, please visit your{' '}
-                    <Link
-                      href="https://auth0.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Auth0 account settings
-                    </Link>
-                    .
+                    your account. To enable or manage 2FA, you will be prompted
+                    during your next login, or you can contact an administrator
+                    for assistance.
                   </Trans>
                 </Typography>
               </Alert>

@@ -98,7 +98,7 @@ msgstr "Authentication required. Please try logging in again."
 msgid "Authenticator App"
 msgstr "Authenticator App"
 
-#: src/containers/Settings/Settings.tsx:163
+#: src/containers/Settings/Settings.tsx:156
 msgid "Available MFA Methods:"
 msgstr "Available MFA Methods:"
 
@@ -167,7 +167,7 @@ msgstr "Change profile picture"
 msgid "Choose a unique nickname"
 msgstr "Choose a unique nickname"
 
-#: src/containers/Settings/Settings.tsx:259
+#: src/containers/Settings/Settings.tsx:252
 msgid "Choose your preferred language"
 msgstr "Choose your preferred language"
 
@@ -238,7 +238,7 @@ msgstr "CrossFit"
 msgid "Cycling"
 msgstr "Cycling"
 
-#: src/containers/Settings/Settings.tsx:231
+#: src/containers/Settings/Settings.tsx:224
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
@@ -317,7 +317,7 @@ msgstr "Email Not Verified"
 msgid "Email Privacy"
 msgstr "Email Privacy"
 
-#: src/containers/Settings/Settings.tsx:199
+#: src/containers/Settings/Settings.tsx:192
 msgid "Email Verification"
 msgstr "Email Verification"
 
@@ -514,15 +514,15 @@ msgstr "Invalid token"
 msgid "Joined"
 msgstr "Joined"
 
-#: src/containers/Settings/Settings.tsx:243
+#: src/containers/Settings/Settings.tsx:236
 msgid "Language"
 msgstr "Language"
 
-#: src/containers/Settings/Settings.tsx:78
+#: src/containers/Settings/Settings.tsx:77
 msgid "Language changed to English"
 msgstr "Language changed to English"
 
-#: src/containers/Settings/Settings.tsx:79
+#: src/containers/Settings/Settings.tsx:78
 msgid "Language changed to Italian"
 msgstr "Language changed to Italian"
 
@@ -541,7 +541,7 @@ msgstr "Last name is required"
 msgid "Last name must be 50 characters or less"
 msgstr "Last name must be 50 characters or less"
 
-#: src/containers/Settings/Settings.tsx:231
+#: src/containers/Settings/Settings.tsx:224
 msgid "Light Mode"
 msgstr "Light Mode"
 
@@ -638,12 +638,12 @@ msgstr "No users found"
 msgid "None"
 msgstr "None"
 
-#: src/containers/Settings/Settings.tsx:132
+#: src/containers/Settings/Settings.tsx:131
 msgid "Not Enabled"
 msgstr "Not Enabled"
 
 #: src/containers/Administration/Administration.tsx:322
-#: src/containers/Settings/Settings.tsx:205
+#: src/containers/Settings/Settings.tsx:198
 msgid "Not Verified"
 msgstr "Not Verified"
 
@@ -712,7 +712,7 @@ msgstr "Please check your input and try again."
 msgid "Please select at least one sport"
 msgstr "Please select at least one sport"
 
-#: src/containers/Settings/Settings.tsx:210
+#: src/containers/Settings/Settings.tsx:203
 msgid "Please verify your email address for enhanced security."
 msgstr "Please verify your email address for enhanced security."
 
@@ -796,7 +796,7 @@ msgstr "Push Notification"
 msgid "Push notifications via Guardian app"
 msgstr "Push notifications via Guardian app"
 
-#: src/containers/Settings/Settings.tsx:175
+#: src/containers/Settings/Settings.tsx:168
 msgid "Recommended"
 msgstr "Recommended"
 
@@ -865,7 +865,7 @@ msgstr "Saving..."
 msgid "Search by name, email, or nickname..."
 msgstr "Search by name, email, or nickname..."
 
-#: src/containers/Settings/Settings.tsx:101
+#: src/containers/Settings/Settings.tsx:100
 msgid "Security"
 msgstr "Security"
 
@@ -878,8 +878,8 @@ msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
-#: src/containers/Settings/Settings.tsx:246
-#: src/containers/Settings/Settings.tsx:251
+#: src/containers/Settings/Settings.tsx:239
+#: src/containers/Settings/Settings.tsx:244
 msgid "Select Language"
 msgstr "Select Language"
 
@@ -888,8 +888,8 @@ msgid "Select the roles to assign to this user."
 msgstr "Select the roles to assign to this user."
 
 #: src/containers/MainContainer/MainContainer.tsx:86
-#: src/containers/Settings/Settings.tsx:59
-#: src/containers/Settings/Settings.tsx:87
+#: src/containers/Settings/Settings.tsx:58
+#: src/containers/Settings/Settings.tsx:86
 msgid "Settings"
 msgstr "Settings"
 
@@ -959,15 +959,15 @@ msgstr "Supports JPG, PNG, WEBP, HEIC. Max 5MB."
 msgid "Swimming"
 msgstr "Swimming"
 
-#: src/containers/Settings/Settings.tsx:234
+#: src/containers/Settings/Settings.tsx:227
 msgid "Switch between light and dark theme"
 msgstr "Switch between light and dark theme"
 
-#: src/containers/Settings/Settings.tsx:68
+#: src/containers/Settings/Settings.tsx:67
 msgid "Switched to dark theme"
 msgstr "Switched to dark theme"
 
-#: src/containers/Settings/Settings.tsx:67
+#: src/containers/Settings/Settings.tsx:66
 msgid "Switched to light theme"
 msgstr "Switched to light theme"
 
@@ -987,7 +987,7 @@ msgstr "The request has expired. Please try again"
 msgid "The service is temporarily unavailable. Please try again later"
 msgstr "The service is temporarily unavailable. Please try again later"
 
-#: src/containers/Settings/Settings.tsx:221
+#: src/containers/Settings/Settings.tsx:214
 msgid "Theme"
 msgstr "Theme"
 
@@ -1054,13 +1054,17 @@ msgstr "Triathlon"
 msgid "Try alternative login"
 msgstr "Try alternative login"
 
-#: src/containers/Settings/Settings.tsx:107
+#: src/containers/Settings/Settings.tsx:106
 msgid "Two-Factor Authentication (2FA)"
 msgstr "Two-Factor Authentication (2FA)"
 
 #: src/containers/Settings/Settings.tsx:145
-msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
-msgstr "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
+#~ msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
+#~ msgstr "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
+
+#: src/containers/Settings/Settings.tsx:144
+msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, you will be prompted during your next login, or you can contact an administrator for assistance."
+msgstr "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, you will be prompted during your next login, or you can contact an administrator for assistance."
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:106
 msgid "Unauthorized client"
@@ -1119,7 +1123,7 @@ msgid "User unblocked successfully"
 msgstr "User unblocked successfully"
 
 #: src/containers/Administration/Administration.tsx:321
-#: src/containers/Settings/Settings.tsx:203
+#: src/containers/Settings/Settings.tsx:196
 msgid "Verified"
 msgstr "Verified"
 
@@ -1179,7 +1183,7 @@ msgstr "You must log in"
 msgid "You must register for multi-factor authentication"
 msgstr "You must register for multi-factor authentication"
 
-#: src/containers/Settings/Settings.tsx:137
+#: src/containers/Settings/Settings.tsx:136
 msgid "Your account does not have two-factor authentication enabled."
 msgstr "Your account does not have two-factor authentication enabled."
 
@@ -1191,7 +1195,7 @@ msgstr "Your account has been blocked for security reasons"
 msgid "Your account has been locked after too many consecutive login attempts. We have sent you an email with instructions on how to unlock it"
 msgstr "Your account has been locked after too many consecutive login attempts. We have sent you an email with instructions on how to unlock it"
 
-#: src/containers/Settings/Settings.tsx:209
+#: src/containers/Settings/Settings.tsx:202
 msgid "Your email address has been verified."
 msgstr "Your email address has been verified."
 
