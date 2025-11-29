@@ -40,7 +40,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   isLoading = false,
   disabled = false,
   fallbackText = '?',
-  size = 120,
+  size = 150,
   showPrivacyControls = false,
 }) => {
   const theme = useTheme();
@@ -312,7 +312,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         sx={{
-          height: { xs: 160, md: 240 },
+          height: { xs: 200, md: 300 },
           borderRadius: { xs: 0, sm: 3 },
           background: displayUrl
             ? `url(${displayUrl}) center/cover no-repeat`

@@ -278,7 +278,7 @@ export const Profile: FC = () => {
             onUpload={handleAvatarUpload}
             onDelete={user.avatarKey ? handleAvatarDelete : undefined}
             fallbackText={getInitials(user.name, user.surname)}
-            size={isMobile ? 120 : 150}
+            size={isMobile ? 150 : 180}
           />
         </Box>
       </Box>
