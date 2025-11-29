@@ -17,7 +17,7 @@ msgstr ""
 msgid "A server error has occurred. Please try again later"
 msgstr "A server error has occurred. Please try again later"
 
-#: src/containers/Profile/Profile.tsx:349
+#: src/containers/Profile/Profile.tsx:385
 msgid "About"
 msgstr "About"
 
@@ -25,7 +25,7 @@ msgstr "About"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
 
-#: src/containers/Profile/Profile.tsx:546
+#: src/containers/Profile/Profile.tsx:582
 msgid "Activity Statistics"
 msgstr "Activity Statistics"
 
@@ -73,17 +73,17 @@ msgstr "Back"
 msgid "Banner Image"
 msgstr "Banner Image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:426
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:470
 #: src/containers/Profile/ProfileEditForm.tsx:439
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:922
 msgid "Banner Privacy"
 msgstr "Banner Privacy"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:134
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:136
 msgid "Banner removed successfully!"
 msgstr "Banner removed successfully!"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:98
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:100
 msgid "Banner updated successfully!"
 msgstr "Banner updated successfully!"
 
@@ -92,19 +92,19 @@ msgstr "Banner updated successfully!"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:252
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:254
 msgid "Change"
 msgstr "Change"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:373
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:396
 msgid "Change Banner"
 msgstr "Change Banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:391
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:414
 msgid "Change banner image"
 msgstr "Change banner image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:244
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:246
 msgid "Change profile picture"
 msgstr "Change profile picture"
 
@@ -120,7 +120,12 @@ msgstr "Choose your preferred language"
 msgid "Click to upload banner"
 msgstr "Click to upload banner"
 
-#: src/containers/Profile/Profile.tsx:549
+#: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:49
+#: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:92
+msgid "Close"
+msgstr "Close"
+
+#: src/containers/Profile/Profile.tsx:585
 msgid "Coming soon..."
 msgstr "Coming soon..."
 
@@ -169,7 +174,7 @@ msgstr "Dark Mode"
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/containers/Profile/Profile.tsx:391
+#: src/containers/Profile/Profile.tsx:427
 #: src/containers/Profile/ProfileEditForm.tsx:237
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
 msgid "Date of Birth"
@@ -192,18 +197,18 @@ msgstr "Don't have an account?"
 msgid "Drag to reposition, scroll or use slider to zoom"
 msgstr "Drag to reposition, scroll or use slider to zoom"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:380
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:403
 msgid "Edit banner"
 msgstr "Edit banner"
 
-#: src/containers/Profile/Profile.tsx:333
-#: src/containers/Profile/Profile.tsx:569
+#: src/containers/Profile/Profile.tsx:369
+#: src/containers/Profile/Profile.tsx:605
 msgid "Edit Profile"
 msgstr "Edit Profile"
 
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Profile/Profile.tsx:368
+#: src/containers/Profile/Profile.tsx:404
 msgid "Email"
 msgstr "Email"
 
@@ -229,19 +234,19 @@ msgstr "Enter your last name"
 msgid "Failed to create profile. Please try again."
 msgstr "Failed to create profile. Please try again."
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:140
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:142
 msgid "Failed to remove image. Please try again."
 msgstr "Failed to remove image. Please try again."
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:108
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:110
 msgid "Failed to update banner. Please try again."
 msgstr "Failed to update banner. Please try again."
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:109
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:111
 msgid "Failed to update profile picture. Please try again."
 msgstr "Failed to update profile picture. Please try again."
 
-#: src/containers/Profile/Profile.tsx:207
+#: src/containers/Profile/Profile.tsx:235
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
 
@@ -280,6 +285,14 @@ msgstr "Followers"
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:60
 msgid "Followers Only"
 msgstr "Followers Only"
+
+#: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:77
+msgid "Full size banner image"
+msgstr "Full size banner image"
+
+#: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:78
+msgid "Full size profile picture"
+msgstr "Full size profile picture"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
 #: src/helpers/sportTypes/sportTypeLabels.ts:37
@@ -327,7 +340,7 @@ msgstr "Invalid credentials or session expired"
 msgid "Invalid email address"
 msgstr "Invalid email address"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:67
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:69
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:284
 msgid "Invalid file"
 msgstr "Invalid file"
@@ -358,7 +371,7 @@ msgstr "Invalid Strava profile URL"
 msgid "Invalid token"
 msgstr "Invalid token"
 
-#: src/containers/Profile/Profile.tsx:414
+#: src/containers/Profile/Profile.tsx:450
 msgid "Joined"
 msgstr "Joined"
 
@@ -409,7 +422,7 @@ msgstr "Logout"
 msgid "Logout page"
 msgstr "Logout page"
 
-#: src/containers/Profile/Profile.tsx:313
+#: src/containers/Profile/Profile.tsx:349
 msgid "Member"
 msgstr "Member"
 
@@ -441,7 +454,7 @@ msgstr "Nickname must be 30 characters or less"
 msgid "Nickname must be at least 3 characters"
 msgstr "Nickname must be at least 3 characters"
 
-#: src/containers/Profile/Profile.tsx:526
+#: src/containers/Profile/Profile.tsx:562
 msgid "No sports selected yet."
 msgstr "No sports selected yet."
 
@@ -478,7 +491,7 @@ msgstr "Password must be at least 8 characters"
 msgid "Personal Details"
 msgstr "Personal Details"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:286
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:309
 msgid "Photo Privacy"
 msgstr "Photo Privacy"
 
@@ -510,7 +523,7 @@ msgid "Processing..."
 msgstr "Processing..."
 
 #: src/containers/MainContainer/MainContainer.tsx:38
-#: src/containers/Profile/Profile.tsx:104
+#: src/containers/Profile/Profile.tsx:110
 msgid "Profile"
 msgstr "Profile"
 
@@ -526,7 +539,7 @@ msgstr "Profile created but failed to upload profile picture. You can add it lat
 msgid "Profile created successfully!"
 msgstr "Profile created successfully!"
 
-#: src/containers/Profile/Profile.tsx:240
+#: src/containers/Profile/Profile.tsx:268
 msgid "Profile not found"
 msgstr "Profile not found"
 
@@ -540,15 +553,15 @@ msgstr "Profile Picture"
 msgid "Profile Picture Privacy"
 msgstr "Profile Picture Privacy"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:135
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:137
 msgid "Profile picture removed successfully!"
 msgstr "Profile picture removed successfully!"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:99
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:101
 msgid "Profile picture updated successfully!"
 msgstr "Profile picture updated successfully!"
 
-#: src/containers/Profile/Profile.tsx:202
+#: src/containers/Profile/Profile.tsx:230
 msgid "Profile updated successfully!"
 msgstr "Profile updated successfully!"
 
@@ -558,21 +571,21 @@ msgstr "Profile updated successfully!"
 msgid "Public"
 msgstr "Public"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:400
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:423
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:653
 msgid "Remove banner"
 msgstr "Remove banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:412
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:435
 msgid "Remove banner image"
 msgstr "Remove banner image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:260
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:262
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:718
 msgid "Remove photo"
 msgstr "Remove photo"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:272
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:274
 msgid "Remove profile picture"
 msgstr "Remove profile picture"
 
@@ -614,7 +627,7 @@ msgstr "Settings"
 msgid "Sign Up"
 msgstr "Sign Up"
 
-#: src/containers/Profile/Profile.tsx:433
+#: src/containers/Profile/Profile.tsx:469
 msgid "Social"
 msgstr "Social"
 
@@ -631,7 +644,7 @@ msgstr "Sport Types"
 msgid "Sports"
 msgstr "Sports"
 
-#: src/containers/Profile/Profile.tsx:502
+#: src/containers/Profile/Profile.tsx:538
 msgid "Sports & Activities"
 msgstr "Sports & Activities"
 
@@ -755,23 +768,23 @@ msgstr "Unauthorized. Please verify your credentials"
 msgid "Unknown Sport"
 msgstr "Unknown Sport"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:165
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:167
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:627
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:643
 msgid "Upload banner image"
 msgstr "Upload banner image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:166
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:168
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:677
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:707
 msgid "Upload profile picture"
 msgstr "Upload profile picture"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:339
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:362
 msgid "Uploading banner"
 msgstr "Uploading banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:213
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:215
 msgid "Uploading image"
 msgstr "Uploading image"
 
@@ -782,6 +795,19 @@ msgstr "User installed the app"
 #: src/components/commons/navigation/Sidebar/Sidebar.tsx:290
 msgid "User rejected app installation"
 msgstr "User rejected app installation"
+
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:283
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:444
+msgid "View full size"
+msgstr "View full size"
+
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:456
+msgid "View full size banner"
+msgstr "View full size banner"
+
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:295
+msgid "View full size profile picture"
+msgstr "View full size profile picture"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:16
 #: src/helpers/sportTypes/sportTypeLabels.ts:36
