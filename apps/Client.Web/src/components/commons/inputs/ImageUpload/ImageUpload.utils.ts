@@ -46,13 +46,56 @@ export const createImage = (url: string): Promise<HTMLImageElement> =>
     image.src = url;
   });
 
+// Minimum dimensions for output images to ensure good quality
+const MIN_AVATAR_SIZE = 400;
+const MIN_BANNER_WIDTH = 1200;
+const MIN_BANNER_HEIGHT = 400;
+
 /**
- * Get cropped image from canvas
+ * Calculate the output dimensions for a cropped image
+ * Ensures minimum dimensions for good display quality
+ */
+const calculateOutputDimensions = (
+  cropWidth: number,
+  cropHeight: number,
+  isAvatar: boolean,
+): { width: number; height: number } => {
+  if (isAvatar) {
+    // For avatars, ensure minimum size
+    if (cropWidth < MIN_AVATAR_SIZE) {
+      const scale = MIN_AVATAR_SIZE / cropWidth;
+      return {
+        width: MIN_AVATAR_SIZE,
+        height: Math.round(cropHeight * scale),
+      };
+    }
+    return { width: cropWidth, height: cropHeight };
+  }
+
+  // For banners, ensure minimum dimensions
+  const widthScale = MIN_BANNER_WIDTH / cropWidth;
+  const heightScale = MIN_BANNER_HEIGHT / cropHeight;
+  const scale = Math.max(widthScale, heightScale, 1);
+
+  if (scale > 1) {
+    return {
+      width: Math.round(cropWidth * scale),
+      height: Math.round(cropHeight * scale),
+    };
+  }
+
+  return { width: cropWidth, height: cropHeight };
+};
+
+/**
+ * Get cropped image from canvas with high quality output
+ * Ensures minimum dimensions for good display quality
  */
 export const getCroppedImage = async (
   imageSrc: string,
   pixelCrop: Readonly<CropArea>,
   originalFileName: string,
+  isAvatar: boolean = false,
 ): Promise<File> => {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
@@ -62,13 +105,23 @@ export const getCroppedImage = async (
     throw new Error('No 2d context');
   }
 
-  // Set canvas size to the cropped area
-  // eslint-disable-next-line functional/immutable-data
-  canvas.width = pixelCrop.width;
-  // eslint-disable-next-line functional/immutable-data
-  canvas.height = pixelCrop.height;
+  // Calculate output dimensions - scale up if needed for quality
+  const { width: outputWidth, height: outputHeight } =
+    calculateOutputDimensions(pixelCrop.width, pixelCrop.height, isAvatar);
 
-  // Draw the cropped image
+  // Set canvas size to the output dimensions
+  // eslint-disable-next-line functional/immutable-data
+  canvas.width = outputWidth;
+  // eslint-disable-next-line functional/immutable-data
+  canvas.height = outputHeight;
+
+  // Enable high-quality image rendering
+  // eslint-disable-next-line functional/immutable-data
+  ctx.imageSmoothingEnabled = true;
+  // eslint-disable-next-line functional/immutable-data
+  ctx.imageSmoothingQuality = 'high';
+
+  // Draw the cropped image scaled to output dimensions
   ctx.drawImage(
     image,
     pixelCrop.x,
@@ -77,11 +130,11 @@ export const getCroppedImage = async (
     pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height,
+    outputWidth,
+    outputHeight,
   );
 
-  // Convert canvas to blob
+  // Convert canvas to blob with high quality
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       blob => {
@@ -94,7 +147,7 @@ export const getCroppedImage = async (
         resolve(file);
       },
       'image/jpeg',
-      0.95,
+      0.92,
     );
   });
 };

@@ -11,13 +11,12 @@ describe('ImageUpload', () => {
   const mockOnDelete = vi.fn();
   const mockOnPrivacyChange = vi.fn();
 
-  const renderComponent = (props = {}) => {
-    return render(
+  const renderComponent = (props = {}) =>
+    render(
       <SnackbarProvider>
         <ImageUpload variant="avatar" onUpload={mockOnUpload} {...props} />
       </SnackbarProvider>,
     );
-  };
 
   beforeEach(() => {
     vi.clearAllMocks();

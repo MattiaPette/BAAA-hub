@@ -79,6 +79,7 @@ export const ImageCropDialog: FC<ImageCropDialogProps> = ({
         imageSrc,
         croppedAreaPixels,
         imageFile.name,
+        variant === 'avatar',
       );
       onConfirm(croppedFile);
     } catch (error) {
@@ -86,7 +87,7 @@ export const ImageCropDialog: FC<ImageCropDialogProps> = ({
     } finally {
       setIsProcessing(false);
     }
-  }, [imageSrc, croppedAreaPixels, imageFile, onConfirm]);
+  }, [imageSrc, croppedAreaPixels, imageFile, onConfirm, variant]);
 
   const handleZoomChange = (_event: Event, value: number | number[]) => {
     setZoom(value as number);
@@ -94,9 +95,9 @@ export const ImageCropDialog: FC<ImageCropDialogProps> = ({
 
   const getCropHeight = () => {
     if (variant === 'banner') {
-      return isMobile ? 200 : 300;
+      return isMobile ? 220 : 400;
     }
-    return 300;
+    return isMobile ? 300 : 400;
   };
   const cropHeight = getCropHeight();
 
@@ -104,7 +105,7 @@ export const ImageCropDialog: FC<ImageCropDialogProps> = ({
     <Dialog
       open={open}
       onClose={isProcessing ? undefined : onClose}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       fullScreen={isMobile}
       PaperProps={{

@@ -38,6 +38,8 @@ import {
   Checkbox,
   CircularProgress,
   SelectChangeEvent,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -48,6 +50,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
+import { useSnackbar } from 'notistack';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import {
   ProfileSetupFormInput,
@@ -80,8 +83,11 @@ const StyledCard = styled(Card)(({ theme }) => ({
   gap: theme.spacing(2),
   margin: 'auto',
   [theme.breakpoints.up('sm')]: {
-    maxWidth: '600px',
+    maxWidth: '700px',
     padding: theme.spacing(4),
+  },
+  [theme.breakpoints.up('md')]: {
+    maxWidth: '800px',
   },
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
@@ -125,6 +131,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { enqueueSnackbar } = useSnackbar();
   const [activeStep, setActiveStep] = useState(0);
   const [language, setLanguage] = useLanguageContext();
 
@@ -274,6 +281,9 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
 
       const validation = validateImageFile(file);
       if (!validation.valid) {
+        enqueueSnackbar(validation.error || t`Invalid file`, {
+          variant: 'error',
+        });
         // Reset the input
         if (variant === 'avatar' && avatarInputRef.current) {
           // eslint-disable-next-line functional/immutable-data
@@ -298,7 +308,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
         bannerInputRef.current.value = '';
       }
     },
-    [],
+    [enqueueSnackbar],
   );
 
   const handleCropConfirm = useCallback(
@@ -929,23 +939,39 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             mb: 2,
+            flexWrap: 'nowrap',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              flexShrink: 1,
+              minWidth: 0,
+            }}
+          >
             <img
               src={logo}
-              width={60}
-              style={{ placeSelf: 'center' }}
+              width={isMobile ? 48 : 60}
+              style={{ placeSelf: 'center', flexShrink: 0 }}
               alt="BAAA Hub Logo"
             />
-            <Box>
-              <Typography component="h1" variant="h5">
-                <Trans>Complete Your Profile</Trans>
-              </Typography>
-            </Box>
+            <Typography
+              component="h1"
+              variant={isMobile ? 'h6' : 'h5'}
+              sx={{ whiteSpace: 'nowrap' }}
+            >
+              <Trans>Complete Your Profile</Trans>
+            </Typography>
           </Box>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <FormControl size="small" sx={{ minWidth: 120 }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            sx={{ flexShrink: 0 }}
+          >
+            <FormControl size="small" sx={{ minWidth: isMobile ? 80 : 120 }}>
               <Select
                 id="language-selector"
                 aria-label={t`Select Language`}
@@ -958,21 +984,33 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                 }
                 sx={{ '& .MuiSelect-select': { py: 1 } }}
               >
-                <MenuItem value={Language.EN}>English</MenuItem>
-                <MenuItem value={Language.IT}>Italiano</MenuItem>
+                <MenuItem value={Language.EN}>
+                  {isMobile ? 'EN' : 'English'}
+                </MenuItem>
+                <MenuItem value={Language.IT}>
+                  {isMobile ? 'IT' : 'Italiano'}
+                </MenuItem>
               </Select>
             </FormControl>
-            <Button
-              variant="outlined"
-              color="error"
-              size="small"
-              startIcon={<LogoutIcon />}
-              onClick={onLogout}
-              disabled={isSubmitting}
-              sx={{ textTransform: 'none' }}
-            >
-              <Trans>Logout</Trans>
-            </Button>
+            <Tooltip title={t`Logout`}>
+              <IconButton
+                color="error"
+                size="small"
+                onClick={onLogout}
+                disabled={isSubmitting}
+                aria-label={t`Logout`}
+                sx={{
+                  border: 1,
+                  borderColor: 'error.main',
+                  '&:hover': {
+                    bgcolor: 'error.main',
+                    color: 'white',
+                  },
+                }}
+              >
+                <LogoutIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Box>
 
@@ -1004,7 +1042,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
             mt: 2,
             flexGrow: 1,
             overflowY: 'auto',
-            maxHeight: '60vh',
+            maxHeight: { xs: '55vh', sm: '60vh', md: '65vh' },
             px: 1,
           }}
         >
