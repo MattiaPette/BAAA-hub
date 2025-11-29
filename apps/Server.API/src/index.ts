@@ -4,6 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import cors from '@koa/cors';
 import { koaSwagger } from 'koa2-swagger-ui';
 import config from './config/index.js';
+import { openApiSpec } from './config/openapi.js';
 import { connectDatabase } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { userRouter } from './routes/user.routes.js';
@@ -81,35 +82,13 @@ healthRouter.get('/health', ctx => {
 });
 
 /**
- * Swagger specification
- */
-const swaggerSpec = {
-  openapi: '3.0.0',
-  info: {
-    title: 'Activity Tracker API',
-    version: '1.0.0',
-    description: 'RESTful API for the Activity Tracker application',
-  },
-  servers: [
-    {
-      url: `http://localhost:${config.port}`,
-      description: 'Development server',
-    },
-  ],
-  paths: {},
-  components: {
-    schemas: {},
-  },
-};
-
-/**
  * Swagger UI route
  */
 app.use(
   koaSwagger({
     routePrefix: '/api/docs',
     swaggerOptions: {
-      spec: swaggerSpec,
+      spec: openApiSpec,
     },
   }),
 );
