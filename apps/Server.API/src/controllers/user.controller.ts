@@ -34,6 +34,7 @@ const toUserResponse = (doc: UserDocument): User => {
     sportTypes: obj.sportTypes,
     profilePicture: obj.profilePicture,
     avatarKey: obj.avatarKey,
+    avatarThumbKey: obj.avatarThumbKey,
     bannerKey: obj.bannerKey,
     stravaLink: obj.stravaLink,
     instagramLink: obj.instagramLink,
