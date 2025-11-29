@@ -65,7 +65,7 @@ export const adminMiddleware = async (
 
   // Attach admin user info to context
   ctx.state.adminUser = {
-    id: user.id,
+    id: user._id.toHexString(),
     roles: user.roles,
     isSuperAdmin: isSuperAdmin(user.roles),
   };
@@ -118,7 +118,7 @@ export const superAdminMiddleware = async (
 
   // Attach admin user info to context
   ctx.state.adminUser = {
-    id: user.id,
+    id: user._id.toHexString(),
     roles: user.roles,
     isSuperAdmin: true,
   };
