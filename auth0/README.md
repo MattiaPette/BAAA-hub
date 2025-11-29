@@ -38,11 +38,29 @@ auth0/
      - `update:triggers`
 
 3. Configure environment variables:
-   ```bash
-   export AUTH0_DOMAIN="your-tenant.auth0.com"
-   export AUTH0_CLIENT_ID="m2m-client-id"
-   export AUTH0_CLIENT_SECRET="m2m-client-secret"
-   ```
+   - macOS/Linux (bash):
+
+     ```bash
+     export AUTH0_DOMAIN="your-tenant.auth0.com"
+     export AUTH0_CLIENT_ID="m2m-client-id"
+     export AUTH0_CLIENT_SECRET="m2m-client-secret"
+     ```
+
+   - Windows (PowerShell) using `.env` in `environments/.env.auth0`:
+
+     ```powershell
+     pnpm auth0:import
+     # or
+     pnpm auth0:export
+     # or
+     pnpm auth0:dry-run
+     ```
+
+     Alternatively, run the helper script:
+
+     ```powershell
+     powershell -ExecutionPolicy Bypass -File scripts/auth0-deploy.ps1 -Action import
+     ```
 
 ## Usage
 

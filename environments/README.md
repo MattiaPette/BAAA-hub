@@ -5,11 +5,7 @@ Hub application.
 
 ## Structure
 
-- **`.env.example`**: Template file with all available environment variables and
-  their descriptions. This file is committed to git and serves as documentation.
-- **`.env.dev`**: Development environment configuration (not committed to git)
-- **`.env.prod`**: Production environment configuration (not committed to git)
-- **`.env.test`**: Test environment configuration (not committed to git)
+their descriptions. This file is committed to git and serves as documentation.
 
 ## Quick Start
 
@@ -41,10 +37,6 @@ Hub application.
 
 The application uses the `ENV` environment variable to determine which
 configuration file to load:
-
-- `ENV=dev` → loads `.env.dev` (default)
-- `ENV=prod` → loads `.env.prod`
-- `ENV=test` → loads `.env.test`
 
 You can set this when running commands:
 
@@ -120,12 +112,7 @@ dotenv.config({
 
 ⚠️ **IMPORTANT**:
 
-- Never commit actual `.env.*` files (except `.env.example`) to version control
-- The `.gitignore` file is configured to exclude all `.env.*` files except
-  `.env.example`
-- Keep your Auth0 credentials and other sensitive information secure
-- Use different credentials for development, testing, and production
-  environments
+`.env.example` environments
 
 ## Troubleshooting
 
@@ -145,17 +132,9 @@ dotenv.config({
 
 Frontend variables must:
 
-- Be prefixed with `VITE_`
-- Be defined before the build/dev process starts
-- Use `import.meta.env.VARIABLE_NAME` to access them (not `process.env`)
-
 ### Variables not available in backend
 
 Backend variables:
-
-- Do NOT need a prefix
-- Can be accessed via `process.env.VARIABLE_NAME`
-- Are loaded by dotenv in `apps/Server.API/src/config/index.ts`
 
 ## Production Deployment
 
@@ -165,3 +144,42 @@ For production deployments:
 2. Set `ENV=prod` in your deployment environment
 3. Ensure sensitive values are stored securely (e.g., using secrets management)
 4. Consider using environment-specific configuration management tools
+
+## Auth0 Deploy CLI (Windows)
+
+### Files
+
+- `/.env.auth0` – secrets for Auth0 Deploy CLI
+- `/.env.auth0.example` – example template without secrets
+
+### Usage with pnpm (dotenv-cli)
+
+```powershell
+pnpm auth0:import
+pnpm auth0:export
+pnpm auth0:dry-run
+```
+
+### Usage with helper script
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/auth0-deploy.ps1 -Action import
+```
+
+### Auth0 .env format
+
+Create `environments/.env.auth0` from the example and fill with your tenant
+values:
+
+```dotenv
+AUTH0_DOMAIN=your-tenant.auth0.com
+AUTH0_CLIENT_ID=m2m-client-id
+AUTH0_CLIENT_SECRET=m2m-client-secret
+```
+
+Notes:
+
+- Do not commit real secrets – keep `.env.auth0` out of VCS if needed via
+  `.gitignore`.
+- You can maintain multiple files like `.env.auth0.dev`, `.env.auth0.prod` and
+  point scripts to them.
