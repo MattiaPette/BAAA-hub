@@ -57,6 +57,8 @@ export interface ImageUploadProps {
   size?: number;
   /** Whether to show privacy controls */
   showPrivacyControls?: boolean;
+  /** Handler called when image is clicked (for viewing full size) */
+  onImageClick?: () => void;
 }
 
 /**
@@ -83,4 +85,18 @@ export interface ImageCropDialogProps {
 export interface ImageValidationResult {
   valid: boolean;
   error?: string;
+}
+
+/**
+ * Props for ImageViewDialog component
+ */
+export interface ImageViewDialogProps {
+  /** Whether the dialog is open */
+  open: boolean;
+  /** Handler called when dialog is closed */
+  onClose: () => void;
+  /** URL of the full-size image to display */
+  imageUrl?: string;
+  /** Image variant (avatar or banner) */
+  variant: ImageVariant;
 }
