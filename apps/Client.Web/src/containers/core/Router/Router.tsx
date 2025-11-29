@@ -1,7 +1,8 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { Navigate, useRoutes } from 'react-router';
 
+import { isAdmin } from '@baaa-hub/shared-types';
 import { useAuth } from '../../../providers/AuthProvider/AuthProvider';
 import { useUser } from '../../../providers/UserProvider/UserProvider';
 
@@ -11,11 +12,27 @@ import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
 import { Profile } from '../../Profile/Profile';
 import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
+import { Administration } from '../../Administration/Administration';
 
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
 import { MainContainer } from '../../MainContainer/MainContainer';
 import { LoginCallback } from '../../LoginCallback/LoginCallback';
+
+/**
+ * AdminRoute - A guard component that only allows users with admin role to access the route.
+ * Non-admin users are redirected to the dashboard.
+ */
+const AdminRoute: FC<{ children: ReactNode }> = ({ children }) => {
+  const { user } = useUser();
+
+  if (!user || !isAdmin(user.roles)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment -- children must be wrapped in JSX for FC return type
+  return <>{children}</>;
+};
 
 /**
  * Function that uses the useRoutes hook to define routes for unauthenticated users.
@@ -112,6 +129,14 @@ const AuthenticatedRoutes: FC = () => {
         {
           path: '/settings',
           element: <Settings />,
+        },
+        {
+          path: '/administration',
+          element: (
+            <AdminRoute>
+              <Administration />
+            </AdminRoute>
+          ),
         },
       ],
     },

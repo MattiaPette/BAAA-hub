@@ -17,7 +17,7 @@ msgstr ""
 msgid "A server error has occurred. Please try again later"
 msgstr "A server error has occurred. Please try again later"
 
-#: src/containers/Profile/Profile.tsx:385
+#: src/containers/Profile/Profile.tsx:411
 msgid "About"
 msgstr "About"
 
@@ -25,7 +25,16 @@ msgstr "About"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
 
-#: src/containers/Profile/Profile.tsx:582
+#: src/containers/Administration/Administration.tsx:334
+msgid "Actions"
+msgstr "Actions"
+
+#: src/containers/Administration/Administration.tsx:295
+#: src/containers/Administration/Administration.tsx:401
+msgid "Active"
+msgstr "Active"
+
+#: src/containers/Profile/Profile.tsx:608
 msgid "Activity Statistics"
 msgstr "Activity Statistics"
 
@@ -44,6 +53,25 @@ msgstr "Adjust Banner Image"
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:120
 msgid "Adjust Profile Picture"
 msgstr "Adjust Profile Picture"
+
+#: src/helpers/roleLabels/roleLabels.ts:9
+msgid "Admin"
+msgstr "Admin"
+
+#: src/containers/Administration/Administration.tsx:99
+#: src/containers/Administration/Administration.tsx:247
+#: src/containers/MainContainer/MainContainer.tsx:70
+msgid "Administration"
+msgstr "Administration"
+
+#: src/containers/Administration/Administration.tsx:294
+#: src/containers/Administration/Administration.tsx:306
+msgid "All"
+msgstr "All"
+
+#: src/containers/Administration/Administration.tsx:279
+msgid "All Roles"
+msgstr "All Roles"
 
 #: src/components/login/LoginForm/LoginForm.tsx:258
 msgid "Already have an account?"
@@ -73,38 +101,52 @@ msgstr "Back"
 msgid "Banner Image"
 msgstr "Banner Image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:470
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:476
 #: src/containers/Profile/ProfileEditForm.tsx:439
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:922
 msgid "Banner Privacy"
 msgstr "Banner Privacy"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:136
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:142
 msgid "Banner removed successfully!"
 msgstr "Banner removed successfully!"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:100
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:105
 msgid "Banner updated successfully!"
 msgstr "Banner updated successfully!"
 
+#: src/helpers/roleLabels/roleLabels.ts:20
+msgid "Basic member role (required)"
+msgstr "Basic member role (required)"
+
+#: src/containers/Administration/Administration.tsx:427
+msgid "Block User"
+msgstr "Block User"
+
+#: src/containers/Administration/Administration.tsx:296
+#: src/containers/Administration/Administration.tsx:394
+msgid "Blocked"
+msgstr "Blocked"
+
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
+#: src/containers/Administration/EditRolesDialog.tsx:111
 #: src/containers/Profile/ProfileEditForm.tsx:460
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:254
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:260
 msgid "Change"
 msgstr "Change"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:396
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:402
 msgid "Change Banner"
 msgstr "Change Banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:414
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:420
 msgid "Change banner image"
 msgstr "Change banner image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:246
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:252
 msgid "Change profile picture"
 msgstr "Change profile picture"
 
@@ -125,9 +167,25 @@ msgstr "Click to upload banner"
 msgid "Close"
 msgstr "Close"
 
-#: src/containers/Profile/Profile.tsx:585
+#: src/containers/Profile/Profile.tsx:611
 msgid "Coming soon..."
 msgstr "Coming soon..."
+
+#: src/helpers/roleLabels/roleLabels.ts:11
+msgid "Community Leader"
+msgstr "Community Leader"
+
+#: src/helpers/roleLabels/roleLabels.ts:23
+msgid "Community leadership role"
+msgstr "Community leadership role"
+
+#: src/helpers/roleLabels/roleLabels.ts:24
+msgid "Community recognition"
+msgstr "Community recognition"
+
+#: src/helpers/roleLabels/roleLabels.ts:12
+msgid "Community Star"
+msgstr "Community Star"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:969
 msgid "Complete Your Profile"
@@ -149,6 +207,10 @@ msgstr "Create Account"
 msgid "Create Profile"
 msgstr "Create Profile"
 
+#: src/containers/Administration/Administration.tsx:333
+msgid "Created"
+msgstr "Created"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1084
 msgid "Creating..."
 msgstr "Creating..."
@@ -169,12 +231,12 @@ msgstr "Dark Mode"
 
 #: src/containers/Dashboard/Dashboard.tsx:21
 #: src/containers/Dashboard/Dashboard.tsx:27
-#: src/containers/MainContainer/MainContainer.tsx:29
+#: src/containers/MainContainer/MainContainer.tsx:44
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/containers/Profile/Profile.tsx:427
+#: src/containers/Profile/Profile.tsx:453
 #: src/containers/Profile/ProfileEditForm.tsx:237
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
 msgid "Date of Birth"
@@ -197,18 +259,29 @@ msgstr "Don't have an account?"
 msgid "Drag to reposition, scroll or use slider to zoom"
 msgstr "Drag to reposition, scroll or use slider to zoom"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:403
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:409
 msgid "Edit banner"
 msgstr "Edit banner"
 
-#: src/containers/Profile/Profile.tsx:369
-#: src/containers/Profile/Profile.tsx:605
+#: src/containers/Profile/Profile.tsx:395
+#: src/containers/Profile/Profile.tsx:631
 msgid "Edit Profile"
 msgstr "Edit Profile"
 
+#: src/containers/Administration/Administration.tsx:413
+#~ msgid "Edit Roles"
+#~ msgstr "Edit Roles"
+
+#. placeholder {0}: user.name
+#. placeholder {1}: user.surname
+#: src/containers/Administration/EditRolesDialog.tsx:80
+msgid "Edit Roles for {0} {1}"
+msgstr "Edit Roles for {0} {1}"
+
 #: src/components/login/LoginForm/LoginForm.tsx:177
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/containers/Profile/Profile.tsx:404
+#: src/containers/Administration/Administration.tsx:328
+#: src/containers/Profile/Profile.tsx:430
 msgid "Email"
 msgstr "Email"
 
@@ -216,10 +289,21 @@ msgstr "Email"
 msgid "Email is required"
 msgstr "Email is required"
 
+#: src/containers/Administration/Administration.tsx:386
+msgid "Email Not Verified"
+msgstr "Email Not Verified"
+
 #: src/containers/Profile/ProfileEditForm.tsx:400
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:862
 msgid "Email Privacy"
 msgstr "Email Privacy"
+
+#: src/containers/Administration/Administration.tsx:300
+#: src/containers/Administration/Administration.tsx:303
+#: src/containers/Administration/Administration.tsx:331
+#: src/containers/Administration/Administration.tsx:382
+msgid "Email Verified"
+msgstr "Email Verified"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:457
 msgid "Enter your first name"
@@ -234,21 +318,33 @@ msgstr "Enter your last name"
 msgid "Failed to create profile. Please try again."
 msgstr "Failed to create profile. Please try again."
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:142
+#: src/containers/Administration/Administration.tsx:147
+msgid "Failed to load users. Please try again."
+msgstr "Failed to load users. Please try again."
+
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:148
 msgid "Failed to remove image. Please try again."
 msgstr "Failed to remove image. Please try again."
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:110
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:116
 msgid "Failed to update banner. Please try again."
 msgstr "Failed to update banner. Please try again."
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:111
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:117
 msgid "Failed to update profile picture. Please try again."
 msgstr "Failed to update profile picture. Please try again."
 
-#: src/containers/Profile/Profile.tsx:235
+#: src/containers/Profile/Profile.tsx:258
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
+
+#: src/containers/Administration/Administration.tsx:233
+msgid "Failed to update user roles"
+msgstr "Failed to update user roles"
+
+#: src/containers/Administration/Administration.tsx:205
+msgid "Failed to update user status"
+msgstr "Failed to update user status"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:746
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:763
@@ -286,6 +382,10 @@ msgstr "Followers"
 msgid "Followers Only"
 msgstr "Followers Only"
 
+#: src/helpers/roleLabels/roleLabels.ts:21
+msgid "Full administrative access"
+msgstr "Full administrative access"
+
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:77
 msgid "Full size banner image"
 msgstr "Full size banner image"
@@ -293,6 +393,14 @@ msgstr "Full size banner image"
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:78
 msgid "Full size profile picture"
 msgstr "Full size profile picture"
+
+#: src/helpers/roleLabels/roleLabels.ts:13
+msgid "Gamer"
+msgstr "Gamer"
+
+#: src/helpers/roleLabels/roleLabels.ts:25
+msgid "Gaming features access"
+msgstr "Gaming features access"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
 #: src/helpers/sportTypes/sportTypeLabels.ts:37
@@ -371,7 +479,7 @@ msgstr "Invalid Strava profile URL"
 msgid "Invalid token"
 msgstr "Invalid token"
 
-#: src/containers/Profile/Profile.tsx:450
+#: src/containers/Profile/Profile.tsx:476
 msgid "Joined"
 msgstr "Joined"
 
@@ -412,7 +520,7 @@ msgstr "Light Mode"
 msgid "Login"
 msgstr "Login"
 
-#: src/containers/MainContainer/MainContainer.tsx:63
+#: src/containers/MainContainer/MainContainer.tsx:95
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:999
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1005
 msgid "Logout"
@@ -422,13 +530,25 @@ msgstr "Logout"
 msgid "Logout page"
 msgstr "Logout page"
 
-#: src/containers/Profile/Profile.tsx:349
+#: src/containers/Administration/Administration.tsx:415
+msgid "Manage User Roles"
+msgstr "Manage User Roles"
+
+#: src/containers/Administration/Administration.tsx:250
+msgid "Manage users, roles, and account status."
+msgstr "Manage users, roles, and account status."
+
+#: src/helpers/roleLabels/roleLabels.ts:8
 msgid "Member"
 msgstr "Member"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:42
 msgid "Multi-factor authentication is required"
 msgstr "Multi-factor authentication is required"
+
+#: src/containers/Administration/Administration.tsx:327
+msgid "Name"
+msgstr "Name"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:90
 msgid "Network error. Check your internet connection"
@@ -438,6 +558,7 @@ msgstr "Network error. Check your internet connection"
 msgid "Next"
 msgstr "Next"
 
+#: src/containers/Administration/Administration.tsx:329
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:494
 msgid "Nickname"
 msgstr "Nickname"
@@ -454,9 +575,17 @@ msgstr "Nickname must be 30 characters or less"
 msgid "Nickname must be at least 3 characters"
 msgstr "Nickname must be at least 3 characters"
 
-#: src/containers/Profile/Profile.tsx:562
+#: src/containers/Profile/Profile.tsx:588
 msgid "No sports selected yet."
 msgstr "No sports selected yet."
+
+#: src/containers/Administration/Administration.tsx:349
+msgid "No users found"
+msgstr "No users found"
+
+#: src/containers/Administration/Administration.tsx:308
+msgid "Not Verified"
+msgstr "Not Verified"
 
 #: src/components/commons/errors/RootErrorFallback/RootErrorFallback.tsx:97
 msgid "Oh no! Something went wrong..."
@@ -469,6 +598,14 @@ msgstr "Only letters, numbers, and underscores allowed"
 #: src/components/login/LoginForm/LoginForm.tsx:309
 msgid "or"
 msgstr "or"
+
+#: src/helpers/roleLabels/roleLabels.ts:10
+msgid "Organization Committee"
+msgstr "Organization Committee"
+
+#: src/helpers/roleLabels/roleLabels.ts:22
+msgid "Organization committee member"
+msgstr "Organization committee member"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:19
 #: src/helpers/sportTypes/sportTypeLabels.ts:39
@@ -491,7 +628,7 @@ msgstr "Password must be at least 8 characters"
 msgid "Personal Details"
 msgstr "Personal Details"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:309
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:315
 msgid "Photo Privacy"
 msgstr "Photo Privacy"
 
@@ -522,8 +659,8 @@ msgstr "Private"
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/containers/MainContainer/MainContainer.tsx:38
-#: src/containers/Profile/Profile.tsx:110
+#: src/containers/MainContainer/MainContainer.tsx:53
+#: src/containers/Profile/Profile.tsx:126
 msgid "Profile"
 msgstr "Profile"
 
@@ -539,7 +676,7 @@ msgstr "Profile created but failed to upload profile picture. You can add it lat
 msgid "Profile created successfully!"
 msgstr "Profile created successfully!"
 
-#: src/containers/Profile/Profile.tsx:268
+#: src/containers/Profile/Profile.tsx:291
 msgid "Profile not found"
 msgstr "Profile not found"
 
@@ -553,15 +690,15 @@ msgstr "Profile Picture"
 msgid "Profile Picture Privacy"
 msgstr "Profile Picture Privacy"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:137
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:143
 msgid "Profile picture removed successfully!"
 msgstr "Profile picture removed successfully!"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:101
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:106
 msgid "Profile picture updated successfully!"
 msgstr "Profile picture updated successfully!"
 
-#: src/containers/Profile/Profile.tsx:230
+#: src/containers/Profile/Profile.tsx:253
 msgid "Profile updated successfully!"
 msgstr "Profile updated successfully!"
 
@@ -571,21 +708,21 @@ msgstr "Profile updated successfully!"
 msgid "Public"
 msgstr "Public"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:423
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:429
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:653
 msgid "Remove banner"
 msgstr "Remove banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:435
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:441
 msgid "Remove banner image"
 msgstr "Remove banner image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:262
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:268
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:718
 msgid "Remove photo"
 msgstr "Remove photo"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:274
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:280
 msgid "Remove profile picture"
 msgstr "Remove profile picture"
 
@@ -593,18 +730,40 @@ msgstr "Remove profile picture"
 msgid "Response type not supported"
 msgstr "Response type not supported"
 
+#: src/containers/Administration/Administration.tsx:273
+#: src/containers/Administration/Administration.tsx:276
+msgid "Role"
+msgstr "Role"
+
+#: src/containers/Administration/Administration.tsx:330
+msgid "Roles"
+msgstr "Roles"
+
+#: src/containers/Administration/Administration.tsx:458
+msgid "Rows per page:"
+msgstr "Rows per page:"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:10
 #: src/helpers/sportTypes/sportTypeLabels.ts:30
 msgid "Running"
 msgstr "Running"
 
+#: src/containers/Administration/EditRolesDialog.tsx:118
+msgid "Save"
+msgstr "Save"
+
 #: src/containers/Profile/ProfileEditForm.tsx:463
 msgid "Save Changes"
 msgstr "Save Changes"
 
+#: src/containers/Administration/EditRolesDialog.tsx:118
 #: src/containers/Profile/ProfileEditForm.tsx:463
 msgid "Saving..."
 msgstr "Saving..."
+
+#: src/containers/Administration/Administration.tsx:257
+msgid "Search by name, email, or nickname..."
+msgstr "Search by name, email, or nickname..."
 
 #: src/containers/Profile/ProfileEditForm.tsx:278
 msgid "Select at least one sport type"
@@ -616,7 +775,11 @@ msgstr "Select at least one sport type"
 msgid "Select Language"
 msgstr "Select Language"
 
-#: src/containers/MainContainer/MainContainer.tsx:54
+#: src/containers/Administration/EditRolesDialog.tsx:83
+msgid "Select the roles to assign to this user."
+msgstr "Select the roles to assign to this user."
+
+#: src/containers/MainContainer/MainContainer.tsx:86
 #: src/containers/Settings/Settings.tsx:42
 #: src/containers/Settings/Settings.tsx:70
 msgid "Settings"
@@ -627,7 +790,7 @@ msgstr "Settings"
 msgid "Sign Up"
 msgstr "Sign Up"
 
-#: src/containers/Profile/Profile.tsx:469
+#: src/containers/Profile/Profile.tsx:495
 msgid "Social"
 msgstr "Social"
 
@@ -644,13 +807,19 @@ msgstr "Sport Types"
 msgid "Sports"
 msgstr "Sports"
 
-#: src/containers/Profile/Profile.tsx:538
+#: src/containers/Profile/Profile.tsx:564
 msgid "Sports & Activities"
 msgstr "Sports & Activities"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:886
 msgid "Sports Privacy"
 msgstr "Sports Privacy"
+
+#: src/containers/Administration/Administration.tsx:288
+#: src/containers/Administration/Administration.tsx:291
+#: src/containers/Administration/Administration.tsx:332
+msgid "Status"
+msgstr "Status"
 
 #: src/containers/Profile/ProfileEditForm.tsx:330
 msgid "Strava Profile"
@@ -764,29 +933,37 @@ msgstr "Unauthorized client"
 msgid "Unauthorized. Please verify your credentials"
 msgstr "Unauthorized. Please verify your credentials"
 
+#: src/containers/Administration/Administration.tsx:427
+msgid "Unblock User"
+msgstr "Unblock User"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:22
 msgid "Unknown Sport"
 msgstr "Unknown Sport"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:167
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:173
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:627
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:643
 msgid "Upload banner image"
 msgstr "Upload banner image"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:168
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:174
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:677
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:707
 msgid "Upload profile picture"
 msgstr "Upload profile picture"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:362
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:368
 msgid "Uploading banner"
 msgstr "Uploading banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:215
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:221
 msgid "Uploading image"
 msgstr "Uploading image"
+
+#: src/containers/Administration/Administration.tsx:200
+msgid "User blocked successfully"
+msgstr "User blocked successfully"
 
 #: src/components/commons/navigation/Sidebar/Sidebar.tsx:288
 msgid "User installed the app"
@@ -796,16 +973,28 @@ msgstr "User installed the app"
 msgid "User rejected app installation"
 msgstr "User rejected app installation"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:283
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:444
+#: src/containers/Administration/Administration.tsx:226
+msgid "User roles updated successfully"
+msgstr "User roles updated successfully"
+
+#: src/containers/Administration/Administration.tsx:199
+msgid "User unblocked successfully"
+msgstr "User unblocked successfully"
+
+#: src/containers/Administration/Administration.tsx:307
+msgid "Verified"
+msgstr "Verified"
+
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:289
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:450
 msgid "View full size"
 msgstr "View full size"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:456
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:462
 msgid "View full size banner"
 msgstr "View full size banner"
 
-#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:295
+#: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:301
 msgid "View full size profile picture"
 msgstr "View full size profile picture"
 

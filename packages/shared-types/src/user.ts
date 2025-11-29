@@ -157,3 +157,35 @@ export interface UserProfileStatusResponse {
   hasProfile: boolean;
   user?: User;
 }
+
+/**
+ * Admin API: Request body for updating user roles
+ */
+export interface AdminUpdateUserRolesRequest {
+  roles: UserRole[];
+}
+
+/**
+ * Admin API: Request body for updating user blocked status
+ */
+export interface AdminUpdateUserBlockedRequest {
+  isBlocked: boolean;
+}
+
+/**
+ * Admin API: Paginated list response
+ */
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    perPage: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+/**
+ * Admin API: List users response
+ */
+export type AdminUsersListResponse = PaginatedResponse<User>;
