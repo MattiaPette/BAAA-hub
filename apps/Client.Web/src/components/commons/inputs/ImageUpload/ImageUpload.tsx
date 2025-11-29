@@ -96,8 +96,8 @@ export const ImageUpload: FC<ImageUploadProps> = ({
         // Clear preview URL after successful upload so the component uses
         // the updated imageUrl prop (with cache buster) from the parent.
         // This ensures the browser fetches the new image from the server.
-        URL.revokeObjectURL(objectUrl);
         setPreviewUrl(null);
+        URL.revokeObjectURL(objectUrl);
         enqueueSnackbar(
           variant === 'banner'
             ? t`Banner updated successfully!`
@@ -107,8 +107,8 @@ export const ImageUpload: FC<ImageUploadProps> = ({
       } catch (error) {
         console.error('Upload failed:', error);
         // Revert preview on error and clean up the object URL
-        URL.revokeObjectURL(objectUrl);
         setPreviewUrl(null);
+        URL.revokeObjectURL(objectUrl);
         enqueueSnackbar(
           variant === 'banner'
             ? t`Failed to update banner. Please try again.`
