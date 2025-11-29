@@ -25,7 +25,7 @@ const auth: AuthConfigurationProps = {
   responseType: 'token id_token',
   userDatabaseConnection: 'Username-Password-Authentication',
   scope: 'openid profile email',
-  redirectUri: 'https://your-app.com/callback',
+  redirectUri: 'https://your-app.com/login/callback',
 };
 
 // Render the application
@@ -60,10 +60,10 @@ the centralized `environments/` folder:
 VITE_AUTH_DOMAIN=your-tenant.auth0.com
 VITE_AUTH_CLIENT_ID=your-client-id
 VITE_AUTH_DATABASE_CONNECTION=Username-Password-Authentication
-VITE_AUTH_REDIRECT_URI=http://localhost:4000/callback
+VITE_AUTH_REDIRECT_URI=http://localhost:4000/login/callback
 ```
 
-See [environments/README.md](../environments/README.md) for complete setup
+See [environments/.env.example](../environments/.env.example) for complete setup
 instructions.
 
 ## Complete Example with Environment Variables

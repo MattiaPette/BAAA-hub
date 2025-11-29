@@ -786,7 +786,7 @@ const auth: AuthConfigurationProps = {
   responseType: 'token id_token',
   userDatabaseConnection: 'Username-Password-Authentication',
   scope: 'openid profile email',
-  redirectUri: 'http://localhost:5173/callback',
+  redirectUri: 'http://localhost:5173/login/callback',
 };
 
 // 2. Register service worker (PWA support)

@@ -10,6 +10,11 @@
 #   3. Access: http://localhost:8080
 #
 # To update: docker compose pull && docker compose up -d
+#
+# Image Versioning:
+#   Images are tagged with both 'latest' and commit SHA (e.g., 'abc1234')
+#   For stable production, pin to a specific SHA instead of 'latest':
+#     image: ghcr.io/mattiapette/baaa-hub/backend:abc1234
 # =============================================================================
 
 services:
