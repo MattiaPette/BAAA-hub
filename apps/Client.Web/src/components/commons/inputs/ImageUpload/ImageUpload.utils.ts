@@ -46,10 +46,20 @@ export const createImage = (url: string): Promise<HTMLImageElement> =>
     image.src = url;
   });
 
-// Minimum dimensions for output images to ensure good quality
+/**
+ * Minimum dimensions for cropped images to ensure good display quality.
+ * - Avatar: 400px ensures crisp display on high-DPI screens at common sizes (100-200px displayed)
+ * - Banner: 1200x400 matches common viewport widths and 3:1 aspect ratio for banner display
+ */
 const MIN_AVATAR_SIZE = 400;
 const MIN_BANNER_WIDTH = 1200;
 const MIN_BANNER_HEIGHT = 400;
+
+/**
+ * JPEG quality setting (0.92) balances file size and visual quality.
+ * Higher than 0.90 preserves details in photos, lower than 0.95 keeps reasonable file sizes.
+ */
+const JPEG_QUALITY = 0.92;
 
 /**
  * Calculate the output dimensions for a cropped image
@@ -147,7 +157,7 @@ export const getCroppedImage = async (
         resolve(file);
       },
       'image/jpeg',
-      0.92,
+      JPEG_QUALITY,
     );
   });
 };
