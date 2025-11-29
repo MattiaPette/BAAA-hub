@@ -90,10 +90,6 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       trim: true,
     },
-    bannerThumbKey: {
-      type: String,
-      trim: true,
-    },
     stravaLink: {
       type: String,
       trim: true,
