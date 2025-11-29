@@ -1,6 +1,7 @@
 # BAAA Hub
 
 ![Test and Coverage](https://github.com/MattiaPette/BAAA-hub/workflows/Test%20and%20Coverage/badge.svg)
+[![codecov](https://codecov.io/gh/MattiaPette/BAAA-hub/graph/badge.svg)](https://codecov.io/gh/MattiaPette/BAAA-hub)
 
 A modern monorepo for PWA AI-powered applications built with React and Koa,
 featuring TypeScript, Vite, and pnpm workspaces.

@@ -51,7 +51,7 @@ function useAuthenticatedRequest() {
       ...config,
       headers: {
         ...config.headers,
-        Authorization: `Bearer ${token?.accessToken}`,
+        Authorization: `Bearer ${token?.idToken}`,
       },
     });
   };

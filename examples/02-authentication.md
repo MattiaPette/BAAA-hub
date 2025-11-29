@@ -220,6 +220,107 @@ function AdminPanel() {
 }
 ```
 
+## Role Hierarchy
+
+The application implements a role-based permission hierarchy with three levels:
+
+### Permission Levels
+
+1. **Super Admin** (`super-admin`)
+   - Highest privilege level
+   - Can access all routes and features
+   - Can manage all users, including other admins
+   - Can assign or revoke admin roles
+   - Cannot be blocked or demoted
+
+2. **Admin** (`admin`)
+   - Elevated privileges for user management
+   - Can access admin and user routes
+   - Can manage regular users (block, modify roles)
+   - **Cannot** manage other admins or super-admins
+   - **Cannot** assign or revoke admin roles
+
+3. **User** (`user`)
+   - Standard authenticated user
+   - Can access user-level routes
+   - Cannot access admin-only features
+
+4. **Public** (`public`)
+   - Unauthenticated users
+   - Can only access public routes
+
+### Checking for Admin Privileges
+
+```tsx
+import { useAuth } from '../providers/AuthProvider/AuthProvider';
+
+function SuperAdminPanel() {
+  const { userPermissions } = useAuth();
+
+  const isSuperAdmin = userPermissions.includes('super-admin');
+  const isAdmin = userPermissions.includes('admin');
+
+  // Super-admin can manage admins
+  if (isSuperAdmin) {
+    return (
+      <div>
+        <h1>Super Admin Panel</h1>
+        <button>Manage Admins</button>
+        <button>Manage Users</button>
+      </div>
+    );
+  }
+
+  // Regular admin can only manage regular users
+  if (isAdmin) {
+    return (
+      <div>
+        <h1>Admin Panel</h1>
+        <button>Manage Users</button>
+      </div>
+    );
+  }
+
+  return <div>Access denied</div>;
+}
+```
+
+### Route Permission Example
+
+```tsx
+import { SidebarRoute } from '../components/commons/navigation/Sidebar/Sidebar.model';
+
+const routes: SidebarRoute[] = [
+  {
+    id: 'dashboard',
+    path: '/dashboard',
+    label: 'Dashboard',
+    permission: 'user', // Visible to all authenticated users
+  },
+  {
+    id: 'admin-users',
+    path: '/admin/users',
+    label: 'User Management',
+    permission: 'admin', // Visible to admins and super-admins
+  },
+  {
+    id: 'admin-management',
+    path: '/admin/admins',
+    label: 'Admin Management',
+    permission: 'super-admin', // Visible only to super-admins
+  },
+];
+```
+
+### Server-Side Permission Enforcement
+
+The backend API also enforces the same permission hierarchy:
+
+- **Regular admins** cannot see, modify, or block other admins or super-admins
+  in the user list
+- **Only super-admins** can assign or revoke the admin role
+- **Nobody** can modify super-admin roles (protected system role)
+
 ## Accessing Token Information
 
 Get details from the authentication token:

@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -26,7 +26,7 @@ jobs:
           version: '10.20.0'
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -39,6 +39,9 @@ jobs:
 
       - name: Build application
         run: pnpm fe:build
+
+      - name: Build backend
+        run: pnpm --filter backend build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v5

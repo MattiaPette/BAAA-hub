@@ -8,12 +8,14 @@ import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 
 describe('Login', () => {
   const mockLogin = vi.fn();
+  const mockSignup = vi.fn();
   const mockLoginWithRedirect = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       login: mockLogin,
+      signup: mockSignup,
       loginWithRedirect: mockLoginWithRedirect,
       isAuthenticated: false,
       localStorageAvailable: true,
@@ -32,7 +34,7 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
   });
 
@@ -43,11 +45,11 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /^login$/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(submitButton);
 
@@ -73,11 +75,11 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /^login$/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
     fireEvent.click(submitButton);
 
@@ -108,11 +110,11 @@ describe('Login', () => {
       </MemoryRouter>,
     );
 
-    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const submitButton = screen.getByRole('button', { name: /^login$/i });
 
-    fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(submitButton);
 
@@ -147,6 +149,263 @@ describe('Login', () => {
 
     await waitFor(() => {
       expect(mockLoginWithRedirect).toHaveBeenCalled();
+    });
+  });
+
+  it('should show signup link', () => {
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(/don't have an account\?/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /sign up/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('should toggle to signup mode when Sign Up button is clicked', async () => {
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {
+      // In signup mode, the submit button should say "Sign Up" or similar
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should call signup with correct credentials in signup mode', async () => {
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    // Switch to signup mode
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
+    });
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const createAccountButton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'newpassword123' } });
+    fireEvent.click(createAccountButton);
+
+    await waitFor(() => {
+      expect(mockSignup).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: 'new@example.com',
+          password: 'newpassword123',
+          onSuccessCallback: expect.any(Function),
+          onErrorCallback: expect.any(Function),
+        }),
+      );
+    });
+  });
+
+  it('should show success message after successful signup', async () => {
+    mockSignup.mockImplementation(({ onSuccessCallback }) => {
+      onSuccessCallback();
+    });
+
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    // Switch to signup mode
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
+    });
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const createAccountButton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'newpassword123' } });
+    fireEvent.click(createAccountButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/account created successfully/i),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should show error message when signup fails', async () => {
+    mockSignup.mockImplementation(({ onErrorCallback }) => {
+      onErrorCallback('user_exists');
+    });
+
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    // Switch to signup mode
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
+    });
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const createAccountButton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    fireEvent.change(emailInput, { target: { value: 'existing@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(createAccountButton);
+
+    await waitFor(() => {
+      expect(mockSignup).toHaveBeenCalled();
+    });
+  });
+
+  it('should handle signup error callback with undefined error code', async () => {
+    mockSignup.mockImplementation(({ onErrorCallback }) => {
+      onErrorCallback(undefined);
+    });
+
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    // Switch to signup mode
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
+    });
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const createAccountButton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(createAccountButton);
+
+    await waitFor(() => {
+      expect(mockSignup).toHaveBeenCalled();
+    });
+  });
+
+  it('should clear error messages when toggling between modes', async () => {
+    mockLogin.mockImplementation(({ onErrorCallback }) => {
+      onErrorCallback('invalid_user_password');
+    });
+
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    // Trigger a login error
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /^login$/i });
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockLogin).toHaveBeenCalled();
+    });
+
+    // Toggle to signup mode - should clear error
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should toggle back to login mode after successful signup', async () => {
+    mockSignup.mockImplementation(({ onSuccessCallback }) => {
+      onSuccessCallback();
+    });
+
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    );
+
+    // Switch to signup mode
+    const signUpButton = screen.getByRole('button', { name: /sign up/i });
+    fireEvent.click(signUpButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
+    });
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const createAccountButton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'newpassword123' } });
+    fireEvent.click(createAccountButton);
+
+    // After successful signup, should be back in login mode with success message
+    await waitFor(() => {
+      expect(
+        screen.getByText(/account created successfully/i),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /^login$/i }),
+      ).toBeInTheDocument();
     });
   });
 });

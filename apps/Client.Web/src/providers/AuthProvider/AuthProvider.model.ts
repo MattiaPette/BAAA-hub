@@ -192,6 +192,30 @@ export type AuthLoginFunction = (
 ) => void;
 
 /**
+ * Parameters for the signup function.
+ *
+ * @property {string} email - User's email address
+ * @property {string} password - User's password
+ * @property {function} [onSuccessCallback] - Optional callback invoked when signup succeeds
+ * @property {function} [onErrorCallback] - Optional callback invoked when signup fails
+ */
+export type AuthSignupFunctionParameters = Readonly<{
+  email: string;
+  password: string;
+  onSuccessCallback?: () => void;
+  onErrorCallback?: (error: AuthErrorCode | undefined) => void;
+}>;
+
+/**
+ * Function type for initiating user signup.
+ *
+ * @param {AuthSignupFunctionParameters} parameters - Signup credentials and optional callbacks
+ */
+export type AuthSignupFunction = (
+  parameters: AuthSignupFunctionParameters,
+) => void;
+
+/**
  * Function type for initiating login via redirect flow.
  * This method redirects the user to the Auth0 hosted login page,
  * which is more reliable in browsers with strict cookie policies (e.g., Safari).
@@ -226,6 +250,7 @@ export type AuthenticateFunction = (
  * @property {string[]} userPermissions - Array of permission strings for the authenticated user
  * @property {AuthenticateFunction} authenticate - Function to authenticate from existing session/token
  * @property {AuthLoginFunction} login - Function to log in with credentials (cross-origin method)
+ * @property {AuthSignupFunction} signup - Function to sign up with credentials
  * @property {LoginWithRedirectFunction} loginWithRedirect - Function to log in via redirect flow (more reliable in Safari)
  * @property {DispatchWithoutAction} logout - Function to log out the current user
  * @property {boolean} isAuthenticated - Whether the user is currently authenticated
@@ -239,6 +264,7 @@ export type AuthContextValue = Readonly<{
   userPermissions: string[];
   authenticate: AuthenticateFunction;
   login: AuthLoginFunction;
+  signup: AuthSignupFunction;
   loginWithRedirect: LoginWithRedirectFunction;
   logout: DispatchWithoutAction;
   isAuthenticated: boolean;

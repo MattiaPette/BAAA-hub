@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import {
   IconButton,
@@ -13,8 +13,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
-import { SidebarProps } from '../../components/commons/navigation/Sidebar/Sidebar.model';
-import { useAuth } from '../../providers/AuthProvider/AuthProvider';
+import {
+  SidebarProps,
+  RoutePermission,
+} from '../../components/commons/navigation/Sidebar/Sidebar.model';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
+import { getUserImageUrl } from '../../services/userService';
 import logo from '../../assets/shrimp.png';
 
 type BaseContainerProps = {
@@ -26,16 +30,15 @@ type BaseContainerProps = {
   endAdornment?: React.ReactNode;
   /** Optional wrapper providers */
   providers?: React.ComponentType<{ children: React.ReactNode }>[];
+  /** User permission level for sidebar route filtering */
+  userPermission?: RoutePermission;
 };
 
 // Subtle gradient animation for the header accent
 const accentGlow = keyframes`
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 `;
 
 /**
@@ -47,11 +50,19 @@ const ContentHeader = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   padding: theme.spacing(2, 3),
   position: 'relative',
-  background: alpha(theme.palette.background.paper, 0.8),
+  background:
+    theme.palette.mode === 'dark'
+      ? alpha(theme.palette.background.paper, 0.8)
+      : alpha(theme.palette.background.paper, 0.9),
   backdropFilter: 'blur(12px)',
-  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
+  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+  boxShadow:
+    theme.palette.mode === 'light'
+      ? `0 4px 20px ${alpha(theme.palette.common.black, 0.05)}`
+      : 'none',
+  zIndex: 10,
 
-  // Subtle accent border at the bottom
+  // Animated gradient border
   '&::after': {
     content: '""',
     position: 'absolute',
@@ -59,8 +70,13 @@ const ContentHeader = styled(Box)(({ theme }) => ({
     right: 0,
     bottom: 0,
     height: '2px',
-    background: `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0)} 0%, ${alpha(theme.palette.primary.main, 0.5)} 50%, ${alpha(theme.palette.primary.main, 0)} 100%)`,
-    animation: `${accentGlow} 3s ease-in-out infinite`,
+    background: `linear-gradient(90deg, 
+      ${theme.palette.primary.main}, 
+      ${theme.palette.secondary.main}, 
+      ${theme.palette.primary.main})`,
+    backgroundSize: '200% 100%',
+    animation: `${accentGlow} 4s linear infinite`,
+    opacity: 0.8,
   },
 }));
 
@@ -101,12 +117,25 @@ export const BaseContainer: FC<BaseContainerProps> = ({
   routes,
   endAdornment,
   providers = [],
+  userPermission = 'user',
 }) => {
   const { pathname } = useLocation();
-  const { token } = useAuth();
+  const { data: user } = useCurrentUser();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const currentPath = pathname.split('/').filter(Boolean).join('/');
+
+  /**
+   * Get the user's avatar image URL
+   * Prefer avatarKey (MinIO storage) over deprecated profilePicture URL
+   */
+  const userPicture = useMemo(() => {
+    if (!user) return undefined;
+    if (user.avatarKey) {
+      return getUserImageUrl(user.id, 'avatar');
+    }
+    return user.profilePicture;
+  }, [user]);
 
   // Wrap children with any providers passed
   const wrapWithProviders = (children: Readonly<React.ReactNode>) =>
@@ -143,10 +172,15 @@ export const BaseContainer: FC<BaseContainerProps> = ({
             sx={{
               width: 45,
               height: 45,
+              transition: 'transform 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.1) rotate(5deg)',
+              },
               '& img': {
                 objectFit: 'contain',
                 width: '100%',
                 height: '100%',
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
               },
               display: { xs: 'none', sm: 'flex' },
             }}
@@ -159,11 +193,18 @@ export const BaseContainer: FC<BaseContainerProps> = ({
             variant="h6"
             component="h1"
             sx={{
-              fontWeight: 500,
-              color: theme => theme.palette.text.primary,
+              fontWeight: 700,
+              background: theme =>
+                theme.palette.mode === 'dark'
+                  ? `linear-gradient(135deg, ${theme.palette.common.white} 0%, ${theme.palette.primary.light} 100%)`
+                  : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
+              letterSpacing: '0.5px',
             }}
           >
             {title}
@@ -196,8 +237,10 @@ export const BaseContainer: FC<BaseContainerProps> = ({
         currentPath={currentPath}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        userName={token?.idTokenPayload?.name}
-        userEmail={token?.idTokenPayload?.email}
+        userName={user ? `${user.name} ${user.surname}` : undefined}
+        userEmail={user?.email}
+        userPicture={userPicture}
+        userPermission={userPermission}
       />
     </FlexContainer>
   );

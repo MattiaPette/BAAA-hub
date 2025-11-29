@@ -1,12 +1,36 @@
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { renderWithProviders as render } from '../../test-utils';
 import { MainContainer } from './MainContainer';
 import * as BreadcrumProviderModule from '../../providers/BreadcrumProvider/BreadcrumProvider';
+import * as UserProviderModule from '../../providers/UserProvider/UserProvider';
+
+// Mock the UserProvider module
+vi.mock('../../providers/UserProvider/UserProvider', async () => {
+  const actual = await vi.importActual(
+    '../../providers/UserProvider/UserProvider',
+  );
+  return {
+    ...actual,
+    useUser: vi.fn(),
+  };
+});
 
 describe('MainContainer', () => {
+  beforeEach(() => {
+    // Default mock for useUser
+    vi.mocked(UserProviderModule.useUser).mockReturnValue({
+      user: null,
+      hasProfile: true,
+      isLoading: false,
+      error: null,
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
+    });
+  });
+
   it('should render MainContainer with title from BreadcrumProvider', () => {
     vi.spyOn(BreadcrumProviderModule, 'useBreadcrum').mockReturnValue({
       title: 'Test Title',

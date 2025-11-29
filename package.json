@@ -8,6 +8,7 @@
     "lint": "eslint . --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "build": "pnpm --filter @baaa-hub/shared-types build && pnpm --filter frontend build && pnpm --filter backend build",
     "fe:lint": "pnpm --filter frontend lint",
     "fe:format": "pnpm --filter frontend format",
     "fe:format:check": "pnpm --filter frontend format --check",
@@ -28,7 +29,10 @@
     "be:start": "pnpm --filter backend start",
     "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
-    "dev": "pnpm run db:start && concurrently \"pnpm fe:dev\" \"pnpm be:dev\" --names \"FE,BE\" --prefix-colors \"blue,green\"",
+    "dev": "pnpm run db:start && pnpm --filter @baaa-hub/shared-types build && concurrently \"pnpm fe:dev\" \"pnpm be:dev\" --names \"FE,BE\" --prefix-colors \"blue,green\"",
+    "auth0:import": "dotenv -e environments/.env.auth0 -- a0deploy import --input_file ./auth0/tenant.yaml",
+    "auth0:export": "dotenv -e environments/.env.auth0 -- a0deploy export --format yaml --output_folder ./auth0",
+    "auth0:dry-run": "dotenv -e environments/.env.auth0 -- a0deploy import --input_file ./auth0/tenant.yaml --dry-run",
     "prepare": "husky"
   },
   "module": "index.ts",
@@ -38,7 +42,8 @@
       "punycode": "2.3.1"
     },
     "onlyBuiltDependencies": [
-      "esbuild"
+      "esbuild",
+      "sharp"
     ]
   },
   "devDependencies": {
@@ -49,7 +54,8 @@
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "dotenv-cli": "^7.4.1"
   },
   "engines": {
     "node": ">=20.0.0",

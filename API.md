@@ -10,6 +10,9 @@ developers, contributors, and AI tools to understand the codebase structure.
 
 - [Project Overview](#project-overview)
 - [High-Level Architecture](#high-level-architecture)
+- [Backend API Endpoints](#backend-api-endpoints)
+  - [User Endpoints](#user-endpoints)
+  - [Image Endpoints](#image-endpoints)
 - [Module Map](#module-map)
 - [Core Modules](#core-modules)
   - [Helpers](#helpers)
@@ -35,6 +38,7 @@ developers, contributors, and AI tools to understand the codebase structure.
 - **TanStack Query** - Server state management
 - **Lingui** - Internationalization (i18n)
 - **Auth0** - Authentication
+- **MinIO** - Object storage for user images
 - **Vitest** - Unit testing framework
 
 The application follows a monorepo structure with workspace-based organization.
@@ -46,8 +50,8 @@ The application follows a monorepo structure with workspace-based organization.
 ```txt
 baaa-hub/
 ├── apps/
-│   └── Client.Web/          # Frontend React application
-│       ├── src/
+│   ├── Client.Web/          # Frontend React application
+│   │   ├── src/
 │       │   ├── components/  # Reusable UI components
 │       │   ├── containers/  # Page-level components
 │       │   ├── helpers/     # Utility functions
@@ -58,9 +62,180 @@ baaa-hub/
 │       │   └── index.tsx    # Application entry point
 │       ├── public/          # Static assets
 │       └── package.json     # Frontend dependencies
+│   └── Server.API/          # Backend Koa.js API
+│       ├── src/
+│       │   ├── config/      # Application configuration
+│       │   ├── controllers/ # Route controllers
+│       │   ├── middleware/  # Koa middleware
+│       │   ├── models/      # Mongoose models
+│       │   ├── routes/      # API route definitions
+│       │   ├── services/    # Business logic services
+│       │   └── index.ts     # Server entry point
+│       └── package.json     # Backend dependencies
+├── packages/
+│   └── shared-types/        # Shared TypeScript types
 ├── package.json             # Root workspace configuration
 └── README.md               # Project documentation
 ```
+
+---
+
+## Backend API Endpoints
+
+The backend provides a RESTful API for user management and image storage.
+
+### Base URL
+
+- Development: `http://localhost:3000`
+- Production: Configured via `VITE_API_URL` environment variable
+
+### Authentication
+
+All protected endpoints require a valid JWT token in the `Authorization` header:
+
+```
+Authorization: Bearer <jwt-token>
+```
+
+### User Endpoints
+
+| Method | Endpoint                                  | Auth     | Description                   |
+| ------ | ----------------------------------------- | -------- | ----------------------------- |
+| GET    | `/api/users/nickname/:nickname/available` | Public   | Check nickname availability   |
+| GET    | `/api/users/profile/status`               | Required | Check if user has a profile   |
+| POST   | `/api/users`                              | Required | Create a new user profile     |
+| GET    | `/api/users/me`                           | Required | Get current user's profile    |
+| PATCH  | `/api/users/me`                           | Required | Update current user's profile |
+
+### Image Endpoints
+
+Images are stored in MinIO (S3-compatible object storage) and served via
+authenticated backend proxy. Thumbnails (128px) are automatically generated
+during upload to optimize bandwidth usage.
+
+| Method | Endpoint                         | Auth     | Description                         |
+| ------ | -------------------------------- | -------- | ----------------------------------- |
+| GET    | `/api/images/user/:userId/:type` | Public   | Get user's image (avatar or banner) |
+| GET    | `/api/images/me/:type`           | Required | Get current user's image            |
+| PUT    | `/api/images/me/:type`           | Required | Upload image (avatar or banner)     |
+| DELETE | `/api/images/me/:type`           | Required | Delete current user's image         |
+
+**Image Types:**
+
+- `avatar` - User profile picture (max 5MB)
+- `banner` - User profile banner image (max 5MB)
+
+**Supported Image Formats:**
+
+- `image/jpeg`
+- `image/png`
+- `image/gif`
+- `image/webp`
+
+**Thumbnail Support:**
+
+By default, GET endpoints return optimized thumbnails (128px) for faster
+loading. Use the `original=true` query parameter to retrieve the full-size
+image.
+
+| Query Parameter | Description                             |
+| --------------- | --------------------------------------- |
+| `original=true` | Returns the full-size original image    |
+| (default)       | Returns the optimized thumbnail (128px) |
+
+**Examples:**
+
+```bash
+# Get thumbnail (default - recommended for normal display)
+curl http://localhost:3000/api/images/user/123/avatar
+
+# Get original full-size image (for enlarged view)
+curl http://localhost:3000/api/images/user/123/avatar?original=true
+```
+
+**Upload Example:**
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer <jwt-token>" \
+  -H "Content-Type: image/png" \
+  --data-binary @avatar.png \
+  http://localhost:3000/api/images/me/avatar
+```
+
+**Upload Response:**
+
+```json
+{
+  "key": "avatars/user123/1234567890.png",
+  "thumbKey": "avatars/user123/1234567890_thumb.png",
+  "message": "Image uploaded successfully"
+}
+```
+
+### Health Check
+
+| Method | Endpoint  | Auth   | Description           |
+| ------ | --------- | ------ | --------------------- |
+| GET    | `/health` | Public | Health check endpoint |
+
+### Webhook Endpoints
+
+Webhook endpoints are used for server-to-server communication with Auth0. These
+endpoints are not for client use.
+
+| Method | Endpoint                          | Auth           | Description                            |
+| ------ | --------------------------------- | -------------- | -------------------------------------- |
+| POST   | `/api/webhooks/auth0/user-update` | Webhook Secret | Auth0 Post-Login Action MFA/email sync |
+
+**Authentication:**
+
+Webhook endpoints require a shared secret in the `x-webhook-secret` header:
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-webhook-secret: <webhook-secret>" \
+  -d '{"user_id": "auth0|123", "email": "user@example.com", "email_verified": true, "mfa_enabled": true, "mfa_type": "totp"}' \
+  http://localhost:3000/api/webhooks/auth0/user-update
+```
+
+**Request Body:**
+
+```json
+{
+  "user_id": "auth0|123456",
+  "email": "user@example.com",
+  "email_verified": true,
+  "mfa_enabled": true,
+  "mfa_type": "totp"
+}
+```
+
+**MFA Types:**
+
+- `totp` - Time-based One-Time Password (authenticator apps)
+- `sms` - SMS verification
+- `email` - Email verification
+- `push` / `push-notification` - Push notifications
+- `webauthn` / `webauthn-roaming` / `webauthn-platform` - WebAuthn/FIDO2
+- `recovery-code` - Recovery codes
+
+**Success Response:**
+
+```json
+{
+  "success": true,
+  "message": "User updated successfully",
+  "user_id": "auth0|123456",
+  "email_verified": true,
+  "mfa_enabled": true,
+  "mfa_type": "TOTP"
+}
+```
+
+See [docs/SECURITY.md](docs/SECURITY.md) for more details on MFA/email sync
+architecture.
 
 ---
 
@@ -578,7 +753,7 @@ enum AuthErrorCode {
 }
 
 interface AuthToken {
-  accessToken: string;
+  idToken: string;
   expiresAt: number;
   // ... other token fields
 }

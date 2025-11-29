@@ -21,6 +21,8 @@ const config = [
       '**/*.eslintrc.js',
       '**/jest.config.ts',
       '**/public/**/*.js',
+      // Auth0 Actions run in a different environment with different globals
+      'auth0/**',
     ],
   },
   js.configs.recommended,

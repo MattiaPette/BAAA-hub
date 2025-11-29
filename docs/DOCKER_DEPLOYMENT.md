@@ -297,7 +297,47 @@ for your environment.
 
 ## Production Deployment
 
-### 1. Prepare Environment Variables
+### Using Pre-built Images from GitHub Container Registry (Recommended)
+
+Docker images are automatically built and pushed to GitHub Container Registry on
+every push to the master branch. This is the recommended approach for production
+deployments.
+
+**Available Images:**
+
+- Frontend: `ghcr.io/mattiapette/baaa-hub/frontend:latest`
+- Backend: `ghcr.io/mattiapette/baaa-hub/backend:latest`
+
+**To deploy using pre-built images:**
+
+1. **Prepare Environment Variables:**
+
+   ```bash
+   cd deployment
+   cp .env.example .env
+   # Edit .env with your production configuration
+   ```
+
+2. **Pull and Start:**
+
+   ```bash
+   docker compose pull
+   docker compose up -d
+   ```
+
+3. **To update to a new version:**
+
+   ```bash
+   docker compose pull
+   docker compose down
+   docker compose up -d
+   ```
+
+### Manual Build (Alternative)
+
+If you prefer to build images locally:
+
+#### 1. Prepare Environment Variables
 
 Update `deployment/.env` with your production domain:
 
@@ -309,7 +349,7 @@ VITE_API_BASE_URL=https://your-domain.com
 CORS_ORIGIN=https://your-domain.com
 ```
 
-### 2. Build Production Image
+#### 2. Build Production Image
 
 Using the deployment script:
 
@@ -325,21 +365,21 @@ cd deployment
 docker compose build --no-cache
 ```
 
-### 3. Tag Image for Registry
+#### 3. Tag Image for Registry
 
 ```bash
 docker tag baaa-hub:latest your-registry.com/baaa-hub:v1.0.0
 docker tag baaa-hub:latest your-registry.com/baaa-hub:latest
 ```
 
-### 4. Push to Registry
+#### 4. Push to Registry
 
 ```bash
 docker push your-registry.com/baaa-hub:v1.0.0
 docker push your-registry.com/baaa-hub:latest
 ```
 
-### 5. Deploy to Server
+#### 5. Deploy to Server
 
 On your production server, copy the `deployment/` folder and:
 
@@ -421,13 +461,19 @@ Changes require rebuilding the Docker image.
 These variables are used when the container starts. Changes take effect after
 container restart.
 
-| Variable       | Description               | Default                            | Example               |
-| -------------- | ------------------------- | ---------------------------------- | --------------------- |
-| `BACKEND_PORT` | Port for backend server   | `3000`                             | `3000`                |
-| `NODE_ENV`     | Node environment          | `production`                       | `production`          |
-| `MONGODB_URI`  | MongoDB connection string | `mongodb://mongodb:27017/baaa-hub` | See below             |
-| `CORS_ORIGIN`  | Allowed CORS origin       | `http://localhost:8080`            | `https://yourapp.com` |
-| `DEBUG`        | Enable debug logging      | `false`                            | `true` or `false`     |
+| Variable           | Description               | Default                            | Example               |
+| ------------------ | ------------------------- | ---------------------------------- | --------------------- |
+| `BACKEND_PORT`     | Port for backend server   | `3000`                             | `3000`                |
+| `NODE_ENV`         | Node environment          | `production`                       | `production`          |
+| `MONGODB_URI`      | MongoDB connection string | `mongodb://mongodb:27017/baaa-hub` | See below             |
+| `CORS_ORIGIN`      | Allowed CORS origin       | `http://localhost:8080`            | `https://yourapp.com` |
+| `DEBUG`            | Enable debug logging      | `false`                            | `true` or `false`     |
+| `MINIO_ENDPOINT`   | MinIO server hostname     | `minio`                            | `minio`               |
+| `MINIO_PORT`       | MinIO server port         | `9000`                             | `9000`                |
+| `MINIO_USE_SSL`    | Use HTTPS for MinIO       | `false`                            | `true` or `false`     |
+| `MINIO_ACCESS_KEY` | MinIO access key          | `minioadmin`                       | `your-access-key`     |
+| `MINIO_SECRET_KEY` | MinIO secret key          | `minioadmin`                       | `your-secret-key`     |
+| `MINIO_BUCKET`     | MinIO bucket name         | `baaa-hub-images`                  | `baaa-hub-images`     |
 
 ### MongoDB URI Examples
 

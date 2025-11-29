@@ -1,15 +1,58 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { User, UserRole, PrivacyLevel, MfaType } from '@baaa-hub/shared-types';
 import { BrowserRouter } from 'react-router';
 import { renderWithProviders as render } from '../../test-utils';
 import { BaseContainer } from './BaseContainer';
+import * as useCurrentUserModule from '../../hooks/useCurrentUser';
+
+// Mock the useCurrentUser hook
+vi.mock('../../hooks/useCurrentUser', () => ({
+  useCurrentUser: vi.fn(),
+}));
 
 describe('BaseContainer', () => {
+  const mockUser: User = {
+    id: '1',
+    name: 'John',
+    surname: 'Doe',
+    nickname: 'johndoe',
+    email: 'john.doe@example.com',
+    dateOfBirth: '1990-01-01',
+    sportTypes: [],
+    authId: 'auth0|123',
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z',
+    isBlocked: false,
+    isEmailVerified: true,
+    mfaEnabled: false,
+    mfaType: MfaType.NONE,
+    roles: [UserRole.MEMBER],
+    privacySettings: {
+      email: PrivacyLevel.PUBLIC,
+      dateOfBirth: PrivacyLevel.PUBLIC,
+      sportTypes: PrivacyLevel.PUBLIC,
+      socialLinks: PrivacyLevel.PUBLIC,
+    },
+  };
+
   const mockRoutes = [
     { id: 'dashboard', path: 'dashboard', label: 'Dashboard', order: 1 },
     { id: 'settings', path: 'settings', label: 'Settings', order: 2 },
   ];
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // Default mock implementation
+    vi.spyOn(useCurrentUserModule, 'useCurrentUser').mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      isError: false,
+      error: null,
+      isSuccess: true,
+    } as never);
+  });
 
   it('should render with title', () => {
     render(

@@ -1,13 +1,21 @@
 import { FC, useMemo } from 'react';
+import { useLingui } from '@lingui/react';
 import { t } from '@lingui/core/macro';
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
+import { isAdmin } from '@baaa-hub/shared-types';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
+import { useUser } from '../../providers/UserProvider/UserProvider';
 
-import { SidebarProps } from '../../components/commons/navigation/Sidebar/Sidebar.model';
+import {
+  SidebarProps,
+  RoutePermission,
+} from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { BaseContainer } from '../BaseContainer/BaseContainer';
 
 /**
@@ -16,6 +24,16 @@ import { BaseContainer } from '../BaseContainer/BaseContainer';
  */
 export const MainContainer: FC = () => {
   const { title } = useBreadcrum();
+  const { i18n } = useLingui();
+  const { user } = useUser();
+
+  // Determine user permission level based on roles
+  const userPermission = useMemo<RoutePermission>(() => {
+    if (user && isAdmin(user.roles)) {
+      return 'admin';
+    }
+    return 'user';
+  }, [user]);
 
   const routes = useMemo<SidebarProps['routes']>(
     () => [
@@ -27,6 +45,32 @@ export const MainContainer: FC = () => {
         linkTo: { to: '/dashboard' },
         order: 1,
         permission: 'user',
+      },
+      {
+        id: 'profile',
+        path: 'profile',
+        icon: PersonIcon,
+        label: t`Profile`,
+        linkTo: { to: '/profile' },
+        order: 2,
+        permission: 'user',
+      },
+      {
+        id: 'divider-admin',
+        path: 'divider-admin',
+        label: '',
+        isDivider: true,
+        order: 8,
+        permission: 'admin',
+      },
+      {
+        id: 'administration',
+        path: 'administration',
+        icon: AdminPanelSettingsIcon,
+        label: t`Administration`,
+        linkTo: { to: '/administration' },
+        order: 9,
+        permission: 'admin',
       },
       {
         id: 'divider-settings',
@@ -54,7 +98,8 @@ export const MainContainer: FC = () => {
         permission: 'user',
       },
     ],
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- i18n.locale triggers re-translation when language changes
+    [i18n.locale],
   );
 
   return (
@@ -63,6 +108,7 @@ export const MainContainer: FC = () => {
       routes={routes}
       endAdornment={null}
       providers={[]}
+      userPermission={userPermission}
     />
   );
 };
