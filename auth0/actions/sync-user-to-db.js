@@ -16,10 +16,11 @@
  * - API_SECRET: Webhook authentication secret (must match AUTH0_WEBHOOK_SECRET in backend)
  *
  * @param {Event} event - Auth0 event object containing user and context info
- * @param {API} api - Auth0 API object for modifying the login flow
+ * @param {API} _api - Auth0 API object for modifying the login flow (unused)
  */
-exports.onExecutePostLogin = async (event, api) => {
+exports.onExecutePostLogin = async (event, _api) => {
   const fetch = require('node-fetch');
+  const AbortController = require('abort-controller');
 
   // Skip if secrets are not configured
   if (!event.secrets.API_URL || !event.secrets.API_SECRET) {
@@ -58,6 +59,10 @@ exports.onExecutePostLogin = async (event, api) => {
     mfa_type: mfaType,
   };
 
+  // Set up timeout using AbortController (node-fetch v2 compatible)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
   try {
     const response = await fetch(event.secrets.API_URL, {
       method: 'POST',
@@ -66,8 +71,10 @@ exports.onExecutePostLogin = async (event, api) => {
         'x-webhook-secret': event.secrets.API_SECRET,
       },
       body: JSON.stringify(payload),
-      timeout: 5000, // 5 second timeout
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.log(
@@ -75,6 +82,7 @@ exports.onExecutePostLogin = async (event, api) => {
       );
     }
   } catch (error) {
+    clearTimeout(timeoutId);
     // Log error but don't block the login flow
     console.log(`Failed to sync user to database: ${error.message}`);
   }

@@ -19,6 +19,8 @@ actions:
     dependencies:
       - name: node-fetch
         version: '2.6.12'
+      - name: abort-controller
+        version: '3.0.0'
     deployed: true
     # Secrets are configured in Auth0 Dashboard, not in this file
     # Required secrets:
