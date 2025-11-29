@@ -5,6 +5,7 @@ import { t } from '@lingui/core/macro';
 import { CreateUserRequest, SportType } from '@baaa-hub/shared-types';
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
+import { useUser } from '../../providers/UserProvider/UserProvider';
 import { createUserProfile, uploadUserImage } from '../../services/userService';
 import { ProfileSetupForm } from './ProfileSetupForm';
 import { ProfileSetupFormData } from './ProfileSetup.model';
@@ -14,6 +15,7 @@ import { ProfileSetupFormData } from './ProfileSetup.model';
  */
 export const ProfileSetup: FC = () => {
   const { token, setLoading, logout } = useAuth();
+  const { refreshUser } = useUser();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -85,6 +87,10 @@ export const ProfileSetup: FC = () => {
           variant: 'success',
         });
 
+        // Refresh user profile state before navigating
+        // This updates hasProfile to true so the router allows access to dashboard
+        await refreshUser();
+
         // Redirect to dashboard
         navigate('/dashboard', { replace: true });
       } catch (error) {
@@ -149,7 +155,7 @@ export const ProfileSetup: FC = () => {
         setLoading(false);
       }
     },
-    [token, setLoading, navigate, enqueueSnackbar],
+    [token, setLoading, navigate, enqueueSnackbar, refreshUser],
   );
 
   // Get default values from Auth0 token
