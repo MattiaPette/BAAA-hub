@@ -13,8 +13,8 @@ export const auth0UserUpdateWebhookSchema = z.object({
   email_verified: z.boolean(),
   /** Whether MFA is enabled for the user */
   mfa_enabled: z.boolean(),
-  /** Primary MFA type if MFA is enabled (optional) */
-  mfa_type: z.string().optional(),
+  /** Primary MFA type if MFA is enabled (optional, can be null) */
+  mfa_type: z.string().nullable().optional(),
 });
 
 export type Auth0UserUpdateWebhookInput = z.infer<
