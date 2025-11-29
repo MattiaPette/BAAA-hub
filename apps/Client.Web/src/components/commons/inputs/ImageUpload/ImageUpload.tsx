@@ -19,6 +19,7 @@ import {
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import { PrivacyLevel } from '@baaa-hub/shared-types';
 import { ImageUploadProps } from './ImageUpload.model';
 import { validateImageFile } from './ImageUpload.utils';
@@ -42,6 +43,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   fallbackText = '?',
   size = 150,
   showPrivacyControls = false,
+  onImageClick,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -281,6 +283,27 @@ export const ImageUpload: FC<ImageUploadProps> = ({
               </IconButton>
             </Tooltip>
           )}
+
+          {/* View button (when image exists and onImageClick is provided) */}
+          {displayUrl && onImageClick && isInteractable && (
+            <Tooltip title={t`View full size`}>
+              <IconButton
+                size="small"
+                onClick={onImageClick}
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  bgcolor: 'background.paper',
+                  color: 'text.primary',
+                  '&:hover': { bgcolor: 'action.hover' },
+                }}
+                aria-label={t`View full size profile picture`}
+              >
+                <ZoomInIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
 
         {/* Privacy selector */}
@@ -418,6 +441,27 @@ export const ImageUpload: FC<ImageUploadProps> = ({
               aria-label={t`Remove banner image`}
             >
               <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {/* View button (when image exists and onImageClick is provided) */}
+        {displayUrl && onImageClick && isInteractable && (
+          <Tooltip title={t`View full size`}>
+            <IconButton
+              size="small"
+              onClick={onImageClick}
+              sx={{
+                position: 'absolute',
+                top: 8,
+                right: displayUrl && onDelete ? 48 : 8,
+                bgcolor: 'background.paper',
+                color: 'text.primary',
+                '&:hover': { bgcolor: 'action.hover' },
+              }}
+              aria-label={t`View full size banner`}
+            >
+              <ZoomInIcon fontSize="small" />
             </IconButton>
           </Tooltip>
         )}

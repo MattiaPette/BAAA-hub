@@ -44,7 +44,10 @@ import {
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
-import { ImageUpload } from '../../components/commons/inputs/ImageUpload';
+import {
+  ImageUpload,
+  ImageViewDialog,
+} from '../../components/commons/inputs/ImageUpload';
 
 const StravaIcon = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 24 24">
@@ -92,6 +95,9 @@ export const Profile: FC = () => {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // State for viewing full-size images
+  const [avatarViewOpen, setAvatarViewOpen] = useState(false);
+  const [bannerViewOpen, setBannerViewOpen] = useState(false);
   // Cache buster timestamps to force browser to reload images after upload
   const [avatarCacheBuster, setAvatarCacheBuster] = useState<
     number | undefined
@@ -127,10 +133,36 @@ export const Profile: FC = () => {
     return undefined;
   }, [user, bannerCacheBuster]);
 
+  /**
+   * Get the user's full-size avatar image URL
+   */
+  const avatarFullUrl = useMemo(() => {
+    if (!user) return undefined;
+    if (user.avatarKey) {
+      return getUserImageUrl(user.id, 'avatar', true, avatarCacheBuster);
+    }
+    return user.profilePicture;
+  }, [user, avatarCacheBuster]);
+
+  /**
+   * Get the user's full-size banner image URL
+   */
+  const bannerFullUrl = useMemo(() => {
+    if (!user) return undefined;
+    if (user.bannerKey) {
+      return getUserImageUrl(user.id, 'banner', true, bannerCacheBuster);
+    }
+    return undefined;
+  }, [user, bannerCacheBuster]);
+
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleEditOpen = () => setIsEditOpen(true);
   const handleEditClose = () => setIsEditOpen(false);
+  const handleAvatarViewOpen = useCallback(() => setAvatarViewOpen(true), []);
+  const handleAvatarViewClose = useCallback(() => setAvatarViewOpen(false), []);
+  const handleBannerViewOpen = useCallback(() => setBannerViewOpen(true), []);
+  const handleBannerViewClose = useCallback(() => setBannerViewOpen(false), []);
 
   /**
    * Handle avatar upload
@@ -260,6 +292,7 @@ export const Profile: FC = () => {
           imageUrl={bannerUrl}
           onUpload={handleBannerUpload}
           onDelete={user.bannerKey ? handleBannerDelete : undefined}
+          onImageClick={user.bannerKey ? handleBannerViewOpen : undefined}
         />
 
         {/* Avatar overlapping the banner */}
@@ -279,6 +312,11 @@ export const Profile: FC = () => {
             onDelete={user.avatarKey ? handleAvatarDelete : undefined}
             fallbackText={getInitials(user.name, user.surname)}
             size={isMobile ? 150 : 180}
+            onImageClick={
+              user.avatarKey || user.profilePicture
+                ? handleAvatarViewOpen
+                : undefined
+            }
           />
         </Box>
       </Box>
@@ -580,6 +618,20 @@ export const Profile: FC = () => {
           </Box>
         </DialogContent>
       </Dialog>
+
+      {/* Image View Dialogs */}
+      <ImageViewDialog
+        open={avatarViewOpen}
+        onClose={handleAvatarViewClose}
+        imageUrl={avatarFullUrl}
+        variant="avatar"
+      />
+      <ImageViewDialog
+        open={bannerViewOpen}
+        onClose={handleBannerViewClose}
+        imageUrl={bannerFullUrl}
+        variant="banner"
+      />
     </Box>
   );
 };
