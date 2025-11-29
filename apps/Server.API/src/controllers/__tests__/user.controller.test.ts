@@ -57,7 +57,7 @@ const createMockUserDocument = (overrides = {}) => {
     updatedAt: new Date().toISOString(),
     isBlocked: false,
     isEmailVerified: true,
-    roles: [UserRole.USER],
+    roles: [UserRole.MEMBER],
     ...overrides,
   };
 
