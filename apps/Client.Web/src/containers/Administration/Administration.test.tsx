@@ -114,7 +114,6 @@ describe('Administration', () => {
       signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
-      loginWithRedirect: vi.fn(),
       isLoading: false,
       setLoading: vi.fn(),
       authClientData: {
