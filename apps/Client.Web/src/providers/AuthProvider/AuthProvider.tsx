@@ -343,21 +343,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   );
 
   /**
-   * Login with redirect — initiates authentication via the Keycloak login page.
-   */
-  const loginWithRedirect = useCallback<
-    AuthContextValue['loginWithRedirect']
-  >(() => {
-    if (!keycloak) {
-      return;
-    }
-
-    keycloak.login({
-      redirectUri: `${window.location.origin}/login/callback`,
-    });
-  }, [keycloak]);
-
-  /**
    * Logs the user out by removing the access token and redirecting to Keycloak logout.
    */
   const logout = useCallback<AuthContextValue['logout']>(() => {
@@ -459,7 +444,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       userPermissions,
       login,
       signup,
-      loginWithRedirect,
       logout,
       isAuthenticated,
       isLoading: loading,
@@ -475,7 +459,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       localStorageAvailable,
       login,
       signup,
-      loginWithRedirect,
       logout,
       token,
       userPermissions,
