@@ -1,10 +1,10 @@
 import { MfaType } from '@baaa-hub/shared-types';
 import { User as UserMongooseModel } from '../models/user.model.js';
-import { auth0UserUpdateWebhookSchema } from '../models/webhook.validation.js';
+import { keycloakUserUpdateWebhookSchema } from '../models/webhook.validation.js';
 import { WebhookContext } from '../middleware/webhook.js';
 
 /**
- * Map Auth0 MFA factor types to our MfaType enum
+ * Map Keycloak MFA factor types to our MfaType enum
  */
 const mapMfaType = (mfaType?: string): MfaType => {
   if (!mfaType) return MfaType.NONE;
@@ -20,20 +20,24 @@ const mapMfaType = (mfaType?: string): MfaType => {
     'webauthn-roaming': MfaType.WEBAUTHN,
     'webauthn-platform': MfaType.WEBAUTHN,
     'recovery-code': MfaType.RECOVERY_CODE,
+    // Keycloak-specific credential types
+    'otp-credentials': MfaType.TOTP,
+    'webauthn-credentials': MfaType.WEBAUTHN,
+    'webauthn-passwordless': MfaType.WEBAUTHN,
   };
 
   return typeMapping[mfaType.toLowerCase()] || MfaType.NONE;
 };
 
 /**
- * Handle Auth0 Post-Login Action webhook
+ * Handle Keycloak Event Listener webhook
  * Updates user's MFA status and email verification in the database
  */
-export const handleAuth0UserUpdate = async (
+export const handleKeycloakUserUpdate = async (
   ctx: WebhookContext,
 ): Promise<void> => {
   // Validate request body
-  const validationResult = auth0UserUpdateWebhookSchema.safeParse(
+  const validationResult = keycloakUserUpdateWebhookSchema.safeParse(
     ctx.request.body,
   );
   if (!validationResult.success) {
@@ -43,7 +47,7 @@ export const handleAuth0UserUpdate = async (
   const { user_id, email_verified, mfa_enabled, mfa_type } =
     validationResult.data;
 
-  // Find user by Auth0 ID
+  // Find user by Keycloak ID
   const user = await UserMongooseModel.findByAuthId(user_id);
 
   if (!user) {

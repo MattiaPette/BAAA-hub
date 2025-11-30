@@ -28,10 +28,18 @@ describe('LoginCallback', () => {
       login: vi.fn(),
       loginWithRedirect: vi.fn(),
       logout: vi.fn(),
+      signup: vi.fn(),
+      setLoading: vi.fn(),
+      isLoading: false,
       token: null,
       userPermissions: [],
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+      keycloak: null,
+      authClientData: {
+        url: 'http://localhost:8180',
+        realm: 'test-realm',
+        clientId: 'test-client',
+      },
+    });
   });
 
   it('should render loading overlay', () => {
@@ -49,12 +57,10 @@ describe('LoginCallback', () => {
     expect(loadingElement).toBeTruthy();
   });
 
-  it('should call authenticate when access_token is in hash', async () => {
+  it('should call authenticate when code is in query params (Keycloak PKCE flow)', async () => {
     render(
       <MemoryRouter
-        initialEntries={[
-          '/login/callback#access_token=test_token&id_token=test_id',
-        ]}
+        initialEntries={['/login/callback?code=test_code&state=test_state']}
       >
         <LoginCallback />
       </MemoryRouter>,
@@ -69,9 +75,13 @@ describe('LoginCallback', () => {
     });
   });
 
-  it('should call authenticate when id_token is in hash', async () => {
+  it('should call authenticate when error is in query params', async () => {
     render(
-      <MemoryRouter initialEntries={['/login/callback#id_token=test_id']}>
+      <MemoryRouter
+        initialEntries={[
+          '/login/callback?error=access_denied&error_description=User+cancelled',
+        ]}
+      >
         <LoginCallback />
       </MemoryRouter>,
     );
@@ -92,7 +102,7 @@ describe('LoginCallback', () => {
 
     render(
       <MemoryRouter
-        initialEntries={['/login/callback#access_token=invalid_token']}
+        initialEntries={['/login/callback?code=test_code&state=test_state']}
       >
         <LoginCallback />
       </MemoryRouter>,
@@ -103,7 +113,7 @@ describe('LoginCallback', () => {
     });
   });
 
-  it('should navigate to login when error is in hash', async () => {
+  it('should navigate to login when error is in hash (legacy fallback)', async () => {
     render(
       <MemoryRouter
         initialEntries={[
@@ -119,7 +129,7 @@ describe('LoginCallback', () => {
     });
   });
 
-  it('should not call authenticate when no hash is present', () => {
+  it('should not call authenticate when no code or hash is present', () => {
     render(
       <MemoryRouter initialEntries={['/login/callback']}>
         <LoginCallback />
@@ -136,7 +146,7 @@ describe('LoginCallback', () => {
 
     render(
       <MemoryRouter
-        initialEntries={['/login/callback#access_token=test_token']}
+        initialEntries={['/login/callback?code=test_code&state=test_state']}
       >
         <LoginCallback />
       </MemoryRouter>,
@@ -148,5 +158,40 @@ describe('LoginCallback', () => {
 
     // Should not navigate when errorCode is undefined
     expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('should navigate to home when already authenticated', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      authenticate: mockAuthenticate,
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      login: vi.fn(),
+      loginWithRedirect: vi.fn(),
+      logout: vi.fn(),
+      signup: vi.fn(),
+      setLoading: vi.fn(),
+      isLoading: false,
+      token: {
+        idToken: 'test-id-token',
+        accessToken: 'test-access-token',
+      },
+      userPermissions: [],
+      keycloak: null,
+      authClientData: {
+        url: 'http://localhost:8180',
+        realm: 'test-realm',
+        clientId: 'test-client',
+      },
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/login/callback']}>
+        <LoginCallback />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/');
+    });
   });
 });

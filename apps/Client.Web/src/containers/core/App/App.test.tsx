@@ -3,12 +3,9 @@ import { render } from '@testing-library/react';
 import { App } from './App';
 
 const mockAuthConfig = {
-  domain: 'test-domain.auth0.com',
-  clientID: 'test-client-id',
-  responseType: 'token',
-  userDatabaseConnection: 'Username-Password-Authentication',
-  scope: 'openid profile email',
-  redirectUri: 'http://localhost:3000',
+  url: 'http://localhost:8180',
+  realm: 'test-realm',
+  clientId: 'test-client-id',
 };
 
 describe('App', () => {

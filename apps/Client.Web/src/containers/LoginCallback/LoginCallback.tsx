@@ -8,17 +8,16 @@ import { Layout } from '../../components/commons/layouts/Layout/Layout';
 
 /**
  * LoginCallback component — handles the identity provider redirect and
- * processes the authentication response found in the URL hash.
+ * processes the authentication response found in the URL.
  *
- * Inspects the URL fragment produced by the identity provider after a
- * successful or failed sign-in and delegates parsing/validation to the
- * `AuthProvider`'s `authenticate()` helper. On error it redirects the user
- * back to the login page with an error code so the UI can show a friendly
- * message.
+ * For Keycloak, authentication is handled via authorization code flow with PKCE.
+ * The URL will contain a `code` query parameter after successful authentication.
+ * On error it redirects the user back to the login page with an error code
+ * so the UI can show a friendly message.
  *
  * @param {void} props - This component does not accept props; it reads
  *   routing and auth state via hooks (`useLocation`, `useNavigate`, `useAuth`).
- * @returns {JSX.Element} A React element showing a loader while the auth hash
+ * @returns {JSX.Element} A React element showing a loader while the auth callback
  *   is processed.
  * @throws {Error} If `useAuth()` is called outside of an `AuthProvider` the
  *   hook will throw; consumers should ensure the component is rendered
@@ -28,39 +27,50 @@ import { Layout } from '../../components/commons/layouts/Layout/Layout';
  * - The component itself is synchronous (not `async`) but it triggers
  *   asynchronous validation inside `authenticate()` provided by the
  *   `AuthProvider`.
+ * - Keycloak uses authorization code flow with PKCE, so the URL contains
+ *   a `code` parameter instead of tokens in the hash.
  *
  * @example
  * // Typical route configuration
- * // <Route path="/callback" element={<LoginCallback />} />
+ * // <Route path="/login/callback" element={<LoginCallback />} />
  */
 
 export const LoginCallback: FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { authenticate } = useAuth();
+  const { authenticate, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (location.hash) {
-      if (
-        location.hash.includes('access_token') ||
-        location.hash.includes('id_token')
-      ) {
-        authenticate({
-          onErrorCallback: (errorCode: AuthErrorCode | undefined) => {
-            if (errorCode) {
-              navigate(`/login?error=${errorCode}`);
-            }
-          },
-        });
-      } else if (location.hash.includes('error')) {
-        // Handle error case
+    const searchParams = new URLSearchParams(location.search);
+    const hasCode = searchParams.has('code');
+    const hasError = searchParams.has('error');
+
+    // Keycloak uses authorization code flow with PKCE
+    if (hasCode || hasError) {
+      authenticate({
+        onErrorCallback: (errorCode: AuthErrorCode | undefined) => {
+          if (errorCode) {
+            navigate(`/login?error=${errorCode}`);
+          }
+        },
+      });
+    } else if (location.hash) {
+      // Fallback for legacy hash-based tokens (shouldn't happen with Keycloak)
+      if (location.hash.includes('error')) {
         const hashParams = new URLSearchParams(location.hash.substring(1));
         const error = hashParams.get('error');
         navigate(`/login?error=${error}`);
       }
     }
   }, [location, authenticate, navigate]);
+
+  // Redirect to home if authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <FlexContainer direction="column">

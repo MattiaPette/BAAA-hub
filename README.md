@@ -77,7 +77,7 @@ instructions and migration notes.
    cp environments/.env.example environments/.env.dev
 
    # Edit the .env.dev file with your configuration
-   # Update Auth0 credentials, ports, and other settings as needed
+   # Update Keycloak settings, ports, and other settings as needed
    ```
 
 ## Quick Start
@@ -420,7 +420,7 @@ for comprehensive guides:
 
 - **[Basic Initialization](./examples/01-basic-initialization.md)** - Set up the
   application with all providers
-- **[Authentication](./examples/02-authentication.md)** - Auth0 integration,
+- **[Authentication](./examples/02-authentication.md)** - Keycloak integration,
   login/logout flows
 - **[Theme and Styling](./examples/03-theme-and-styling.md)** - Material-UI
   theming and customization

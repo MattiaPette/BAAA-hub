@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MfaType } from '@baaa-hub/shared-types';
-import { handleAuth0UserUpdate } from '../webhook.controller.js';
+import { handleKeycloakUserUpdate } from '../webhook.controller.js';
 import { type WebhookContext } from '../../middleware/webhook.js';
 
 // Mock the user model
@@ -33,7 +33,7 @@ const createMockContext = (body: unknown): WebhookContext => {
  * Creates a mock user document
  */
 const createMockUser = (overrides = {}) => ({
-  authId: 'auth0|123',
+  authId: 'keycloak-123',
   email: 'test@example.com',
   isEmailVerified: false,
   mfaEnabled: false,
@@ -42,7 +42,7 @@ const createMockUser = (overrides = {}) => ({
   ...overrides,
 });
 
-describe('handleAuth0UserUpdate', () => {
+describe('handleKeycloakUserUpdate', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockSave.mockResolvedValue(undefined);
@@ -60,54 +60,54 @@ describe('handleAuth0UserUpdate', () => {
         mfa_enabled: false,
       });
 
-      await expect(handleAuth0UserUpdate(ctx)).rejects.toThrow();
+      await expect(handleKeycloakUserUpdate(ctx)).rejects.toThrow();
     });
 
     it('should throw validation error if email is invalid', async () => {
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'invalid-email',
         email_verified: true,
         mfa_enabled: false,
       });
 
-      await expect(handleAuth0UserUpdate(ctx)).rejects.toThrow();
+      await expect(handleKeycloakUserUpdate(ctx)).rejects.toThrow();
     });
 
     it('should throw validation error if email_verified is not boolean', async () => {
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: 'true',
         mfa_enabled: false,
       });
 
-      await expect(handleAuth0UserUpdate(ctx)).rejects.toThrow();
+      await expect(handleKeycloakUserUpdate(ctx)).rejects.toThrow();
     });
 
     it('should throw validation error if mfa_enabled is not boolean', async () => {
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: true,
         mfa_enabled: 'false',
       });
 
-      await expect(handleAuth0UserUpdate(ctx)).rejects.toThrow();
+      await expect(handleKeycloakUserUpdate(ctx)).rejects.toThrow();
     });
 
     it('should accept null mfa_type when mfa is disabled', async () => {
       mockFindByAuthId.mockResolvedValue(createMockUser());
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: true,
         mfa_enabled: false,
         mfa_type: null,
       });
 
-      await expect(handleAuth0UserUpdate(ctx)).resolves.not.toThrow();
+      await expect(handleKeycloakUserUpdate(ctx)).resolves.not.toThrow();
       expect(ctx.status).toBe(200);
     });
   });
@@ -117,19 +117,19 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(null);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: true,
         mfa_enabled: false,
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(ctx.status).toBe(200);
       expect(ctx.body).toEqual({
         success: true,
         message: 'User not found in database, skipping update',
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
       });
       expect(mockSave).not.toHaveBeenCalled();
     });
@@ -141,13 +141,13 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: true,
         mfa_enabled: false,
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.isEmailVerified).toBe(true);
       expect(mockSave).toHaveBeenCalled();
@@ -155,7 +155,7 @@ describe('handleAuth0UserUpdate', () => {
       expect(ctx.body).toMatchObject({
         success: true,
         message: 'User updated successfully',
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email_verified: true,
       });
     });
@@ -165,14 +165,14 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
         mfa_type: 'totp',
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaEnabled).toBe(true);
       expect(mockUser.mfaType).toBe(MfaType.TOTP);
@@ -187,13 +187,13 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: false,
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaEnabled).toBe(false);
       expect(mockUser.mfaType).toBe(MfaType.NONE);
@@ -205,14 +205,14 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
         mfa_type: 'otp',
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaType).toBe(MfaType.TOTP);
     });
@@ -222,14 +222,14 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
         mfa_type: 'sms',
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaType).toBe(MfaType.SMS);
     });
@@ -239,14 +239,14 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
         mfa_type: 'push-notification',
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaType).toBe(MfaType.PUSH);
     });
@@ -256,14 +256,14 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
         mfa_type: 'webauthn-roaming',
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaType).toBe(MfaType.WEBAUTHN);
     });
@@ -273,14 +273,14 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
         mfa_type: 'recovery-code',
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaType).toBe(MfaType.RECOVERY_CODE);
     });
@@ -290,14 +290,14 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
         mfa_type: 'unknown-type',
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaType).toBe(MfaType.NONE);
     });
@@ -307,13 +307,13 @@ describe('handleAuth0UserUpdate', () => {
       mockFindByAuthId.mockResolvedValue(mockUser);
 
       const ctx = createMockContext({
-        user_id: 'auth0|123',
+        user_id: 'keycloak-123',
         email: 'test@example.com',
         email_verified: false,
         mfa_enabled: true,
       });
 
-      await handleAuth0UserUpdate(ctx);
+      await handleKeycloakUserUpdate(ctx);
 
       expect(mockUser.mfaEnabled).toBe(true);
       expect(mockUser.mfaType).toBe(MfaType.NONE);

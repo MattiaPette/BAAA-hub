@@ -8,14 +8,11 @@ import { TranslationProvider } from './providers/TranslationProvider/Translation
 import { AuthProvider } from './providers/AuthProvider/AuthProvider';
 import { initTheme } from './theme/theme';
 
-// Mock Auth0 props for testing
+// Mock Keycloak props for testing
 const mockAuthProps = {
-  domain: 'test-domain.auth0.com',
-  clientID: 'test-client-id',
-  responseType: 'token',
-  userDatabaseConnection: 'Username-Password-Authentication',
-  scope: 'openid profile email',
-  redirectUri: 'http://localhost:3000',
+  url: 'http://localhost:8180',
+  realm: 'test-realm',
+  clientId: 'test-client-id',
 };
 
 /**

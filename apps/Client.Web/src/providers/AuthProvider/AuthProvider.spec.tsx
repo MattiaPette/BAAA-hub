@@ -4,43 +4,38 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { AuthProvider, useAuth } from './AuthProvider';
 
-// Mocks for auth0-js
-const parseHashMock = vi.fn();
-const validateTokenMock = vi.fn();
-const loginMock = vi.fn();
-const checkSessionMock = vi.fn();
-const authorizeMock = vi.fn();
+// Mock for keycloak-js
+const mockKeycloakInit = vi.fn();
+const mockKeycloakLogin = vi.fn();
+const mockKeycloakLogout = vi.fn();
+const mockKeycloakRegister = vi.fn();
+const mockKeycloakUpdateToken = vi.fn();
 
-vi.mock('auth0-js', () => ({
-  WebAuth: function WebAuth() {
+vi.mock('keycloak-js', () => ({
+  default: function Keycloak() {
     return {
-      parseHash(cb: unknown) {
-        return parseHashMock(cb);
-      },
-      validateToken(idToken: string, nonce: string, cb: unknown) {
-        return validateTokenMock(idToken, nonce, cb);
-      },
-      login(opts: unknown, cb: unknown) {
-        return loginMock(opts, cb);
-      },
-      checkSession(opts: unknown, cb: unknown) {
-        return checkSessionMock(opts, cb);
-      },
-      authorize(opts: unknown) {
-        return authorizeMock(opts);
-      },
+      init: mockKeycloakInit,
+      login: mockKeycloakLogin,
+      logout: mockKeycloakLogout,
+      register: mockKeycloakRegister,
+      updateToken: mockKeycloakUpdateToken,
+      authenticated: false,
+      token: undefined,
+      idToken: undefined,
+      refreshToken: undefined,
+      onTokenExpired: null,
+      onAuthSuccess: null,
+      onAuthError: null,
+      onAuthLogout: null,
     };
   },
 }));
 
 // Mock props for AuthProvider
 const mockProps = {
-  domain: 'domain',
-  clientID: 'test-client-id',
-  responseType: 'token',
-  userDatabaseConnection: 'db',
-  scope: 'scope',
-  redirectUri: 'http://localhost',
+  url: 'http://localhost:8180',
+  realm: 'test-realm',
+  clientId: 'test-client-id',
 };
 
 describe('AuthProvider', () => {
@@ -52,6 +47,9 @@ describe('AuthProvider', () => {
 
     // Reset all mocks
     vi.clearAllMocks();
+
+    // Default mock implementation for init
+    mockKeycloakInit.mockResolvedValue(false);
   });
 
   afterEach(() => {
@@ -62,20 +60,23 @@ describe('AuthProvider', () => {
       configurable: true,
     });
   });
-  it('renders children correctly', () => {
+
+  it('renders children correctly', async () => {
     render(
       <AuthProvider {...mockProps}>
         <div>Test Child</div>
       </AuthProvider>,
     );
 
-    expect(screen.getByText('Test Child')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Test Child')).toBeInTheDocument();
+    });
   });
 
-  it('provides context value to children', () => {
+  it('provides context value to children', async () => {
     const TestComponent = () => {
       const auth = useAuth();
-      return <div>{auth.authClientData.clientID}</div>;
+      return <div>{auth.authClientData.clientId}</div>;
     };
 
     render(
@@ -84,10 +85,12 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
 
-    expect(screen.getByText('test-client-id')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('test-client-id')).toBeInTheDocument();
+    });
   });
 
-  it('handles localStorage availability', () => {
+  it('handles localStorage availability', async () => {
     const mockLocalStorage = {
       getItem: vi.fn(),
       setItem: vi.fn(),
@@ -107,7 +110,9 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
 
-    expect(screen.getByText('Test Child')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Test Child')).toBeInTheDocument();
+    });
   });
 
   it('throws error when useAuth is used outside AuthProvider', () => {
@@ -125,7 +130,7 @@ describe('AuthProvider', () => {
     render(<TestComponent />);
   });
 
-  it('stores and retrieves token from localStorage', () => {
+  it('stores and retrieves token from localStorage', async () => {
     const mockLocalStorage = {
       getItem: vi.fn().mockReturnValue(JSON.stringify('mock-token')),
       setItem: vi.fn(),
@@ -145,119 +150,12 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
 
-    expect(mockLocalStorage.getItem).toHaveBeenCalledWith('auth_token');
+    await waitFor(() => {
+      expect(mockLocalStorage.getItem).toHaveBeenCalledWith('auth_token');
+    });
   });
 
-  it('authenticate success saves token and marks authenticated', async () => {
-    const mockLocalStorage = {
-      getItem: vi.fn().mockReturnValue(null),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    };
-
-    Object.defineProperty(window, 'localStorage', {
-      value: mockLocalStorage,
-      writable: true,
-      configurable: true,
-    });
-
-    // prepare mocks to simulate successful parse and validation
-    const authResult = {
-      accessToken: 'token',
-      idToken: 'id-token',
-      idTokenPayload: { exp: Math.floor(Date.now() / 1000) + 3600, nonce: 'n' },
-    } as unknown;
-
-    parseHashMock.mockImplementation((cb: unknown) => {
-      const fn = cb as (...a: unknown[]) => void;
-      fn(null, authResult);
-    });
-
-    validateTokenMock.mockImplementation(
-      (_id: string, _nonce: string, cb: unknown) => {
-        const fn = cb as (...a: unknown[]) => void;
-        fn(null);
-      },
-    );
-
-    const TestComponent = () => {
-      const auth = useAuth();
-
-      // trigger authenticate when mounted
-      ((): void => {
-        auth.authenticate({});
-      })();
-
-      return <div>{auth.isAuthenticated ? 'AUTH' : 'NO_AUTH'}</div>;
-    };
-
-    render(
-      <AuthProvider {...mockProps}>
-        <TestComponent />
-      </AuthProvider>,
-    );
-
-    await waitFor(() => expect(mockLocalStorage.setItem).toHaveBeenCalled());
-  });
-
-  it('authenticate error calls onErrorCallback', async () => {
-    parseHashMock.mockImplementation((cb: unknown) => {
-      const fn = cb as (...a: unknown[]) => void;
-      fn(new Error('bad'));
-    });
-    const TestComponent = () => {
-      const auth = useAuth();
-
-      ((): void => {
-        auth.authenticate({ onErrorCallback: vi.fn() });
-      })();
-
-      return null;
-    };
-
-    render(
-      <AuthProvider {...mockProps}>
-        <TestComponent />
-      </AuthProvider>,
-    );
-
-    await waitFor(() => expect(parseHashMock).toHaveBeenCalled());
-  });
-
-  it('login error calls onErrorCallback with error code', async () => {
-    const loginError = {
-      code: 'login_failed',
-      description: 'wrong',
-    } as unknown;
-
-    loginMock.mockImplementation((_opts: unknown, cb: unknown) => {
-      const fn = cb as (...a: unknown[]) => void;
-      fn(loginError);
-    });
-
-    const callback = vi.fn();
-
-    const TestComponent = () => {
-      const auth = useAuth();
-
-      ((): void => {
-        auth.login({ email: 'a', password: 'b', onErrorCallback: callback });
-      })();
-
-      return null;
-    };
-
-    render(
-      <AuthProvider {...mockProps}>
-        <TestComponent />
-      </AuthProvider>,
-    );
-
-    await waitFor(() => expect(callback).toHaveBeenCalledWith('login_failed'));
-  });
-
-  it('logout clears storage and sets isAuthenticated false', async () => {
+  it('logout clears storage', async () => {
     const mockLocalStorage = {
       getItem: vi.fn().mockReturnValue(
         JSON.stringify({
@@ -297,29 +195,7 @@ describe('AuthProvider', () => {
     );
   });
 
-  it('loginWithRedirect calls authorize with database connection', () => {
-    const TestComponent = () => {
-      const auth = useAuth();
-
-      ((): void => {
-        auth.loginWithRedirect();
-      })();
-
-      return <div>Test</div>;
-    };
-
-    render(
-      <AuthProvider {...mockProps}>
-        <TestComponent />
-      </AuthProvider>,
-    );
-
-    expect(authorizeMock).toHaveBeenCalledWith({
-      connection: 'db',
-    });
-  });
-
-  it('handles expired token from localStorage as not authenticated', () => {
+  it('handles expired token from localStorage as not authenticated', async () => {
     const expired = {
       idTokenPayload: { exp: Math.floor(Date.now() / 1000) - 3600 },
     };
@@ -348,7 +224,9 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
 
-    expect(screen.getByText('false')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('false')).toBeInTheDocument();
+    });
   });
 
   it('handles missing props gracefully', () => {
@@ -358,14 +236,7 @@ describe('AuthProvider', () => {
 
     expect(() =>
       render(
-        <AuthProvider
-          domain=""
-          clientID=""
-          responseType=""
-          userDatabaseConnection=""
-          scope=""
-          redirectUri=""
-        >
+        <AuthProvider url="" realm="" clientId="">
           <div>Test Child</div>
         </AuthProvider>,
       ),
@@ -374,22 +245,30 @@ describe('AuthProvider', () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it('authenticate calls onErrorCallback when parseHash returns error', async () => {
-    const errorCallback = vi.fn();
+  it('provides userPermissions from token db_roles', async () => {
+    const tokenWithRoles = {
+      idTokenPayload: {
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        db_roles: ['admin', 'user'],
+      },
+    };
 
-    parseHashMock.mockImplementation((cb: unknown) => {
-      const fn = cb as (...a: unknown[]) => void;
-      fn(new Error('parse error'));
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(JSON.stringify(tokenWithRoles)),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
     });
 
     const TestComponent = () => {
       const auth = useAuth();
-
-      if (!auth.isLoading) {
-        auth.authenticate({ onErrorCallback: errorCallback });
-      }
-
-      return <div>Test</div>;
+      return <div>{auth.userPermissions.join(',')}</div>;
     };
 
     render(
@@ -398,40 +277,139 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
 
+    await waitFor(() => {
+      expect(screen.getByText('admin,user')).toBeInTheDocument();
+    });
+  });
+
+  it('provides empty userPermissions when token has no db_roles', async () => {
+    const tokenWithoutRoles = {
+      idTokenPayload: {
+        exp: Math.floor(Date.now() / 1000) + 3600,
+      },
+    };
+
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(JSON.stringify(tokenWithoutRoles)),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
+    });
+
+    const TestComponent = () => {
+      const auth = useAuth();
+      return <div>{auth.userPermissions.length}</div>;
+    };
+
+    render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('0')).toBeInTheDocument();
+    });
+  });
+
+  it('allows setting loading state via setLoading', async () => {
+    const TestComponent = () => {
+      const auth = useAuth();
+
+      return (
+        <div>
+          <div data-testid="loading">{String(auth.isLoading)}</div>
+          <button type="button" onClick={() => auth.setLoading(true)}>
+            Set Loading
+          </button>
+        </div>
+      );
+    };
+
+    const { getByTestId, getByText } = render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      expect(getByTestId('loading')).toHaveTextContent('false');
+    });
+
+    getByText('Set Loading').click();
+
     await waitFor(() =>
-      expect(errorCallback).toHaveBeenCalledWith('invalid_token'),
+      expect(getByTestId('loading')).toHaveTextContent('true'),
     );
   });
 
-  it('authenticate calls onErrorCallback when validateToken fails', async () => {
-    const errorCallback = vi.fn();
+  it('token expiration interval logs out when token expires', async () => {
+    vi.useFakeTimers();
 
-    const authResult = {
-      accessToken: 'token',
-      idToken: 'id-token',
-      idTokenPayload: { exp: Math.floor(Date.now() / 1000) + 3600, nonce: 'n' },
-    } as unknown;
+    const expiredTime = Math.floor(Date.now() / 1000) - 100;
 
-    parseHashMock.mockImplementation((cb: unknown) => {
-      const fn = cb as (...a: unknown[]) => void;
-      fn(null, authResult);
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(
+        JSON.stringify({
+          accessToken: 'token',
+          idTokenPayload: { exp: expiredTime },
+        }),
+      ),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
     });
 
-    validateTokenMock.mockImplementation(
-      (_id: string, _nonce: string, cb: unknown) => {
-        const fn = cb as (...a: unknown[]) => void;
-        fn({ error: 'invalid_token', description: 'Token validation failed' });
-      },
+    render(
+      <AuthProvider {...mockProps}>
+        <div>Test</div>
+      </AuthProvider>,
     );
 
+    // Advance time to trigger the expiration check interval
+    await vi.advanceTimersByTimeAsync(30 * 1000 + 100);
+
+    await waitFor(() =>
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('auth_token'),
+    );
+
+    vi.useRealTimers();
+  });
+
+  it('initializes Keycloak with correct config', async () => {
+    render(
+      <AuthProvider {...mockProps}>
+        <div>Test</div>
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      expect(mockKeycloakInit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          onLoad: 'check-sso',
+          checkLoginIframe: false,
+          pkceMethod: 'S256',
+        }),
+      );
+    });
+  });
+
+  it('provides keycloak instance in context', async () => {
     const TestComponent = () => {
       const auth = useAuth();
-
-      if (!auth.isLoading) {
-        auth.authenticate({ onErrorCallback: errorCallback });
-      }
-
-      return <div>Test</div>;
+      return <div>{auth.keycloak ? 'HAS_KEYCLOAK' : 'NO_KEYCLOAK'}</div>;
     };
 
     render(
@@ -440,9 +418,9 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
 
-    await waitFor(() =>
-      expect(errorCallback).toHaveBeenCalledWith('invalid_token'),
-    );
+    await waitFor(() => {
+      expect(screen.getByText('HAS_KEYCLOAK')).toBeInTheDocument();
+    });
   });
 
   it('handles localStorage access error in useEffect', async () => {
@@ -499,231 +477,5 @@ describe('AuthProvider', () => {
     });
 
     consoleInfoSpy.mockRestore();
-  });
-
-  it('provides userPermissions from token db_roles', () => {
-    const tokenWithRoles = {
-      idTokenPayload: {
-        exp: Math.floor(Date.now() / 1000) + 3600,
-        db_roles: ['admin', 'user'],
-      },
-    };
-
-    const mockLocalStorage = {
-      getItem: vi.fn().mockReturnValue(JSON.stringify(tokenWithRoles)),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    };
-
-    Object.defineProperty(window, 'localStorage', {
-      value: mockLocalStorage,
-      writable: true,
-      configurable: true,
-    });
-
-    const TestComponent = () => {
-      const auth = useAuth();
-      return <div>{auth.userPermissions.join(',')}</div>;
-    };
-
-    render(
-      <AuthProvider {...mockProps}>
-        <TestComponent />
-      </AuthProvider>,
-    );
-
-    expect(screen.getByText('admin,user')).toBeInTheDocument();
-  });
-
-  it('provides empty userPermissions when token has no db_roles', () => {
-    const tokenWithoutRoles = {
-      idTokenPayload: {
-        exp: Math.floor(Date.now() / 1000) + 3600,
-      },
-    };
-
-    const mockLocalStorage = {
-      getItem: vi.fn().mockReturnValue(JSON.stringify(tokenWithoutRoles)),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    };
-
-    Object.defineProperty(window, 'localStorage', {
-      value: mockLocalStorage,
-      writable: true,
-      configurable: true,
-    });
-
-    const TestComponent = () => {
-      const auth = useAuth();
-      return <div>{auth.userPermissions.length}</div>;
-    };
-
-    render(
-      <AuthProvider {...mockProps}>
-        <TestComponent />
-      </AuthProvider>,
-    );
-
-    expect(screen.getByText('0')).toBeInTheDocument();
-  });
-
-  it('allows setting loading state via setLoading', async () => {
-    const TestComponent = () => {
-      const auth = useAuth();
-
-      return (
-        <div>
-          <div data-testid="loading">{String(auth.isLoading)}</div>
-          <button type="button" onClick={() => auth.setLoading(true)}>
-            Set Loading
-          </button>
-        </div>
-      );
-    };
-
-    const { getByTestId, getByText } = render(
-      <AuthProvider {...mockProps}>
-        <TestComponent />
-      </AuthProvider>,
-    );
-
-    expect(getByTestId('loading')).toHaveTextContent('false');
-
-    getByText('Set Loading').click();
-
-    await waitFor(() =>
-      expect(getByTestId('loading')).toHaveTextContent('true'),
-    );
-  });
-
-  it('checkSession interval refreshes token on success', async () => {
-    vi.useFakeTimers();
-
-    const newAuthResult = {
-      accessToken: 'new-token',
-      idTokenPayload: { exp: Math.floor(Date.now() / 1000) + 7200 },
-    };
-
-    checkSessionMock.mockImplementation((_opts: unknown, cb: unknown) => {
-      const fn = cb as (...a: unknown[]) => void;
-      fn(null, newAuthResult);
-    });
-
-    const mockLocalStorage = {
-      getItem: vi.fn().mockReturnValue(
-        JSON.stringify({
-          accessToken: 'old-token',
-          idTokenPayload: { exp: Math.floor(Date.now() / 1000) + 3600 },
-        }),
-      ),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    };
-
-    Object.defineProperty(window, 'localStorage', {
-      value: mockLocalStorage,
-      writable: true,
-      configurable: true,
-    });
-
-    render(
-      <AuthProvider {...mockProps}>
-        <div>Test</div>
-      </AuthProvider>,
-    );
-
-    // Advance time to trigger the refresh interval
-    await vi.advanceTimersByTimeAsync(60 * 60 * 1000 + 100);
-
-    await waitFor(() => expect(checkSessionMock).toHaveBeenCalled());
-    await waitFor(() => expect(mockLocalStorage.setItem).toHaveBeenCalled());
-
-    vi.useRealTimers();
-  });
-
-  it('checkSession interval calls logout when no response', async () => {
-    vi.useFakeTimers();
-
-    checkSessionMock.mockImplementation((_opts: unknown, cb: unknown) => {
-      const fn = cb as (...a: unknown[]) => void;
-      fn(null, null);
-    });
-
-    const mockLocalStorage = {
-      getItem: vi.fn().mockReturnValue(
-        JSON.stringify({
-          accessToken: 'token',
-          idTokenPayload: { exp: Math.floor(Date.now() / 1000) + 3600 },
-        }),
-      ),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    };
-
-    Object.defineProperty(window, 'localStorage', {
-      value: mockLocalStorage,
-      writable: true,
-      configurable: true,
-    });
-
-    render(
-      <AuthProvider {...mockProps}>
-        <div>Test</div>
-      </AuthProvider>,
-    );
-
-    // Advance time to trigger the refresh interval
-    await vi.advanceTimersByTimeAsync(60 * 60 * 1000 + 100);
-
-    await waitFor(() => expect(checkSessionMock).toHaveBeenCalled());
-    await waitFor(() =>
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('auth_token'),
-    );
-
-    vi.useRealTimers();
-  });
-
-  it('token expiration interval logs out when token expires', async () => {
-    vi.useFakeTimers();
-
-    const expiredTime = Math.floor(Date.now() / 1000) - 100;
-
-    const mockLocalStorage = {
-      getItem: vi.fn().mockReturnValue(
-        JSON.stringify({
-          accessToken: 'token',
-          idTokenPayload: { exp: expiredTime },
-        }),
-      ),
-      setItem: vi.fn(),
-      removeItem: vi.fn(),
-      clear: vi.fn(),
-    };
-
-    Object.defineProperty(window, 'localStorage', {
-      value: mockLocalStorage,
-      writable: true,
-      configurable: true,
-    });
-
-    render(
-      <AuthProvider {...mockProps}>
-        <div>Test</div>
-      </AuthProvider>,
-    );
-
-    // Advance time to trigger the expiration check interval
-    await vi.advanceTimersByTimeAsync(30 * 1000 + 100);
-
-    await waitFor(() =>
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('auth_token'),
-    );
-
-    vi.useRealTimers();
   });
 });

@@ -30,9 +30,6 @@
     "db:start": "docker compose up -d",
     "db:stop": "docker compose down",
     "dev": "pnpm run db:start && pnpm --filter @baaa-hub/shared-types build && concurrently \"pnpm fe:dev\" \"pnpm be:dev\" --names \"FE,BE\" --prefix-colors \"blue,green\"",
-    "auth0:import": "dotenv -e environments/.env.auth0 -- a0deploy import --input_file ./auth0/tenant.yaml",
-    "auth0:export": "dotenv -e environments/.env.auth0 -- a0deploy export --format yaml --output_folder ./auth0",
-    "auth0:dry-run": "dotenv -e environments/.env.auth0 -- a0deploy import --input_file ./auth0/tenant.yaml --dry-run",
     "prepare": "husky"
   },
   "module": "index.ts",
