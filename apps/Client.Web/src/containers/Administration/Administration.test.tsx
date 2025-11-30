@@ -91,20 +91,20 @@ describe('Administration', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
         idToken: 'test-id-token',
+        accessToken: 'test-access-token',
+        refreshToken: 'test-refresh-token',
         idTokenPayload: {
           email: 'admin@example.com',
-          nickname: 'admin',
+          preferred_username: 'admin',
           name: 'Admin User',
-          picture: 'https://example.com/avatar.png',
-          updated_at: '2024-01-01T00:00:00.000Z',
-          iss: 'https://test.auth0.com/',
+          given_name: 'Admin',
+          family_name: 'User',
+          iss: 'http://localhost:8180/realms/test-realm',
           aud: 'test-client-id',
           iat: 1234567890,
           exp: 1234567890,
-          sub: 'auth0|admin',
-          at_hash: 'hash',
+          sub: 'keycloak-admin',
           sid: 'session-id',
-          nonce: 'nonce',
           db_roles: ['admin'],
         },
       },
@@ -118,21 +118,19 @@ describe('Administration', () => {
       isLoading: false,
       setLoading: vi.fn(),
       authClientData: {
-        domain: 'test.auth0.com',
-        clientID: 'test-client-id',
-        responseType: 'token',
-        userDatabaseConnection: 'Username-Password-Authentication',
-        scope: 'openid profile email',
-        redirectUri: 'http://localhost:3000',
+        url: 'http://localhost:8180',
+        realm: 'test-realm',
+        clientId: 'test-client-id',
       },
       userPermissions: ['admin'],
+      keycloak: null,
     });
 
     // Mock the useUser hook
     vi.mocked(UserProviderModule.useUser).mockReturnValue({
       user: {
         id: 'admin-user-id',
-        authId: 'auth0|admin',
+        authId: 'keycloak-admin',
         name: 'Admin',
         surname: 'User',
         nickname: 'admin',

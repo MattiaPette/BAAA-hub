@@ -6,7 +6,7 @@ import { webhookSecretMiddleware, WebhookContext } from '../webhook.js';
 vi.mock('../../config/index.js', () => ({
   default: {
     webhook: {
-      auth0Secret: 'test-webhook-secret',
+      secret: 'test-webhook-secret',
     },
   },
 }));
@@ -130,7 +130,7 @@ describe('webhookSecretMiddleware with unconfigured secret', () => {
     vi.doMock('../../config/index.js', () => ({
       default: {
         webhook: {
-          auth0Secret: '',
+          secret: '',
         },
       },
     }));
@@ -142,13 +142,13 @@ describe('webhookSecretMiddleware with unconfigured secret', () => {
 
   // Note: This test verifies the error handling path when config is not set
   // In production, the secret should always be configured
-  it('should return 500 if auth0Secret is not configured', async () => {
+  it('should return 500 if secret is not configured', async () => {
     // We need to re-import the module with the new mock
     vi.resetModules();
     vi.doMock('../../config/index.js', () => ({
       default: {
         webhook: {
-          auth0Secret: '',
+          secret: '',
         },
       },
     }));

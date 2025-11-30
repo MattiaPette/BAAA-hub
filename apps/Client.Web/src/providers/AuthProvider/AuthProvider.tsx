@@ -6,19 +6,21 @@ import {
   useMemo,
   useState,
   useCallback,
+  useRef,
 } from 'react';
 
-import { Auth0DecodedHash, WebAuth } from 'auth0-js';
+import Keycloak from 'keycloak-js';
 import {
   AuthClient,
   AuthContextValue,
   AuthErrorCode,
   AuthProviderProps,
   AuthToken,
+  TokenPayload,
 } from './AuthProvider.model';
 
 const AUTH_TOKEN_FIELD = 'auth_token';
-const REFRESH_TOKEN_INTERVAL = 60 * 60 * 1000;
+const REFRESH_TOKEN_INTERVAL = 60 * 1000; // Refresh every 60 seconds (Keycloak handles timing)
 const CHECK_TOKEN_EXPIRATION_INTERVAL = 30 * 1000;
 
 // Init
@@ -27,9 +29,28 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
 );
 
 /**
+ * Parse JWT token to extract payload
+ */
+const parseJwt = (token: string): TokenPayload | null => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+        .join(''),
+    );
+    return JSON.parse(jsonPayload) as TokenPayload;
+  } catch {
+    return null;
+  }
+};
+
+/**
  * AuthProvider — creates and provides an authentication context to descendants.
  *
- * Builds an Auth0 WebAuth client from the provided props, exposes helpers
+ * Builds a Keycloak client from the provided props, exposes helpers
  * (authenticate, login, logout), persists tokens to localStorage when
  * available and keeps track of loading state, the current token, user
  * permissions and token expiration. The component itself is synchronous
@@ -38,12 +59,9 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
  *
  * @param {object} props - Component props.
  * @param {React.ReactNode} props.children - Child components wrapped by the provider.
- * @param {string} props.domain - Auth0 domain (for example `your-tenant.auth0.com`).
- * @param {string} props.clientID - Auth0 client identifier.
- * @param {string} props.responseType - Response type to request (for example `token id_token`).
- * @param {string} props.userDatabaseConnection - Auth0 database connection (realm) used for username/password logins.
- * @param {string} props.scope - Requested scopes (for example `openid profile email`).
- * @param {string} props.redirectUri - Redirect URI used after authentication (must match configured application settings).
+ * @param {string} props.url - Keycloak server URL (e.g., https://keycloak.example.com)
+ * @param {string} props.realm - Keycloak realm name
+ * @param {string} props.clientId - Keycloak client identifier
  *
  * @throws {Error} If any required prop is missing the component will throw during render.
  *
@@ -58,12 +76,9 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
  * @example
  * // Wrap your application with the provider:
  * // <AuthProvider
- * //   domain="example.auth0.com"
- * //   clientID="your-client-id"
- * //   responseType="token id_token"
- * //   userDatabaseConnection="Username-Password-Authentication"
- * //   scope="openid profile email"
- * //   redirectUri="https://app.example.com/callback"
+ * //   url="https://keycloak.example.com"
+ * //   realm="baaa-hub"
+ * //   clientId="baaa-hub-client"
  * // >
  * //   <App />
  * // </AuthProvider>
@@ -71,47 +86,35 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
 
 export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   children,
-  domain,
-  clientID,
-  responseType,
-  userDatabaseConnection,
-  scope,
-  redirectUri,
+  url,
+  realm,
+  clientId,
 }) => {
-  if (
-    !domain ||
-    !clientID ||
-    !responseType ||
-    !userDatabaseConnection ||
-    !scope ||
-    !redirectUri
-  ) {
+  if (!url || !realm || !clientId) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('AuthProvider requires all props to be provided.');
   }
 
-  const auth = useMemo(
-    () =>
-      new WebAuth({
-        domain,
-        clientID,
-        responseType,
-        scope,
-        redirectUri,
-      }),
-    [domain, clientID, responseType, scope, redirectUri],
-  );
+  const keycloakRef = useRef<Keycloak | null>(null);
+  const [keycloak, setKeycloak] = useState<Keycloak | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   const [localStorageAvailable, setLocalStorageAvailable] =
     useState<boolean>(true);
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const [token, setToken] = useState<AuthToken | null>(
-    localStorageAvailable
-      ? JSON.parse(window.localStorage.getItem(AUTH_TOKEN_FIELD) || 'null')
-      : null,
-  );
+  const [token, setToken] = useState<AuthToken | null>(() => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const stored = window.localStorage.getItem(AUTH_TOKEN_FIELD);
+        return stored ? (JSON.parse(stored) as AuthToken) : null;
+      }
+    } catch {
+      // Ignore errors
+    }
+    return null;
+  });
 
   const userPermissions = useMemo<string[]>(() => {
     if (token) {
@@ -121,232 +124,259 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   }, [token]);
 
   /**
-   * Save the parsed auth token and update local authentication state.
-   *
-   * Persists the provided Auth0 decoded hash to `window.localStorage` when
-   * available, updates React state (`token`, `userPermissions`) and clears
-   * the loading flag. This function itself is synchronous.
-   *
-   * @function
-   * @name saveAuthToken
-   * @type {Function}
-   *
-   * @param {Readonly<Auth0DecodedHash>} authToken - The decoded Auth0 hash
-   *   object (typically returned by `auth.parseHash()` / `checkSession()`).
-   * @returns {void}
-   *
-   * @example
-   * // Called after a successful parse/validation
-   * saveAuthToken(authResult);
+   * Save the auth token and update local authentication state.
    */
   const saveAuthToken = useCallback(
-    (accessToken: Readonly<Auth0DecodedHash>) => {
+    (authToken: AuthToken | null) => {
       if (localStorageAvailable) {
-        window.localStorage.setItem(
-          AUTH_TOKEN_FIELD,
-          JSON.stringify(accessToken),
-        );
-
-        setToken(accessToken);
+        if (authToken) {
+          window.localStorage.setItem(
+            AUTH_TOKEN_FIELD,
+            JSON.stringify(authToken),
+          );
+        } else {
+          window.localStorage.removeItem(AUTH_TOKEN_FIELD);
+        }
+        setToken(authToken);
       }
-
       setLoading(false);
     },
     [localStorageAvailable],
   );
 
   /**
-   * Parse and validate authentication tokens found in the URL hash.
-   *
-   * Parses the URL fragment produced by Auth0 after redirect, validates the
-   * id token and, on success, saves the token via `saveAuthToken`. On
-   * failure it calls the optional `onErrorCallback` with an `AuthErrorCode`.
-   * This function triggers asynchronous work via the auth0 callbacks.
-   *
-   * @param {{ onErrorCallback?: (errorCode?: AuthErrorCode) => void }} params -
-   *   Object with an optional error callback invoked when parsing/validation fails.
-   * @param {(errorCode?: AuthErrorCode) => void} [params.onErrorCallback] -
-   *   Callback that will be called with a mapped `AuthErrorCode` on failure.
-   * @returns {void}
-   * @example
-   * // Example usage
-   * authenticate({ onErrorCallback: code => { console.log(code); } });
+   * Update token state from Keycloak instance
+   */
+  const updateTokenFromKeycloak = useCallback(
+    (kc: Keycloak) => {
+      if (kc.authenticated && kc.token && kc.idToken) {
+        const idTokenPayload = parseJwt(kc.idToken);
+        const authToken: AuthToken = {
+          accessToken: kc.token,
+          idToken: kc.idToken,
+          refreshToken: kc.refreshToken,
+          idTokenPayload: idTokenPayload || undefined,
+        };
+        saveAuthToken(authToken);
+      } else {
+        saveAuthToken(null);
+      }
+    },
+    [saveAuthToken],
+  );
+
+  /**
+   * Initialize Keycloak
+   */
+  useEffect(() => {
+    if (keycloakRef.current || initialized) {
+      return;
+    }
+
+    const kc = new Keycloak({
+      url,
+      realm,
+      clientId,
+    });
+
+    // eslint-disable-next-line functional/immutable-data
+    keycloakRef.current = kc;
+
+    // Handle token refresh events
+    // eslint-disable-next-line functional/immutable-data
+    kc.onTokenExpired = () => {
+      kc.updateToken(30)
+        .then(refreshed => {
+          if (refreshed) {
+            updateTokenFromKeycloak(kc);
+          }
+        })
+        .catch(() => {
+          // Token refresh failed, clear auth
+          saveAuthToken(null);
+        });
+    };
+
+    // eslint-disable-next-line functional/immutable-data
+    kc.onAuthSuccess = () => {
+      updateTokenFromKeycloak(kc);
+    };
+
+    // eslint-disable-next-line functional/immutable-data
+    kc.onAuthError = () => {
+      saveAuthToken(null);
+    };
+
+    // eslint-disable-next-line functional/immutable-data
+    kc.onAuthLogout = () => {
+      saveAuthToken(null);
+    };
+
+    // Initialize Keycloak - check if user is already logged in
+    kc.init({
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+      checkLoginIframe: false,
+      pkceMethod: 'S256',
+    })
+      .then(authenticated => {
+        setKeycloak(kc);
+        setInitialized(true);
+        if (authenticated) {
+          updateTokenFromKeycloak(kc);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('Keycloak initialization error:', error);
+        setKeycloak(kc);
+        setInitialized(true);
+        setLoading(false);
+      });
+  }, [
+    url,
+    realm,
+    clientId,
+    initialized,
+    updateTokenFromKeycloak,
+    saveAuthToken,
+  ]);
+
+  /**
+   * Authenticate - process callback URL or check existing session
    */
   const authenticate = useCallback<AuthContextValue['authenticate']>(
     ({ onErrorCallback }) => {
+      if (!keycloak) {
+        onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
+        return;
+      }
+
       setLoading(true);
-      auth.parseHash((err, authResult) => {
-        if (err) {
-          console.error("Errore durante il parsing dell'hash:", err);
+
+      // Check if we're on a callback URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const hasCode = urlParams.has('code');
+      const hasError = urlParams.has('error');
+
+      if (hasError) {
+        const error = urlParams.get('error');
+        console.error('Authentication error:', error);
+        setLoading(false);
+        onErrorCallback?.(error as AuthErrorCode);
+        // Clean up URL
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname,
+        );
+        return;
+      }
+
+      if (hasCode) {
+        // Let Keycloak process the callback - it's already done in init
+        // Just update the state
+        if (keycloak.authenticated) {
+          updateTokenFromKeycloak(keycloak);
+          // Clean up URL
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname,
+          );
+        } else {
           setLoading(false);
           onErrorCallback?.(AuthErrorCode.INVALID_TOKEN);
-        } else if (authResult && authResult.accessToken) {
-          auth.validateToken(
-            authResult.idToken || '',
-            authResult.idTokenPayload.nonce || '',
-            validationErr => {
-              if (validationErr) {
-                console.error('Token non valido:', validationErr);
-                setLoading(false);
-                onErrorCallback?.(validationErr.error as AuthErrorCode);
-              } else {
-                saveAuthToken(authResult);
-              }
-            },
-          );
         }
-      });
+      } else if (keycloak.authenticated) {
+        // No code in URL, just check current state
+        updateTokenFromKeycloak(keycloak);
+      } else {
+        setLoading(false);
+      }
     },
-    [auth, saveAuthToken],
+    [keycloak, updateTokenFromKeycloak],
   );
 
   /**
-   * Login — perform username/password authentication using Auth0 realm.
+   * Login — perform authentication via Keycloak redirect.
    *
-   * Delegates credential authentication to the Auth0 `auth.login()` method.
-   * The function triggers asynchronous work via Auth0 callbacks and will
-   * call the optional `onErrorCallback` with a mapped `AuthErrorCode` when
-   * an authentication error occurs.
-   *
-   * @param {{ email: string; password: string; onErrorCallback?: (errorCode?: AuthErrorCode) => void }} params -
-   *   Object containing login credentials and an optional error callback.
-   * @param {string} params.email - The user's email or username.
-   * @param {string} params.password - The user's password.
-   * @param {(errorCode?: AuthErrorCode) => void} [params.onErrorCallback] -
-   *   Callback invoked with an `AuthErrorCode` in case of failure.
-   * @returns {void}
-   * @example
-   * // Example usage
-   * login({ email: 'alice@example.com', password: 'secret', onErrorCallback: code => { console.log(code); } });
+   * Note: With Keycloak, we use the redirect flow. Email/password
+   * are handled by Keycloak's login page, not directly.
    */
   const login = useCallback<AuthContextValue['login']>(
-    ({ email, password, onErrorCallback }) => {
-      auth.login(
-        {
-          email,
-          password,
-          realm: userDatabaseConnection,
-          responseType,
-        },
-        err => {
-          if (err) {
-            console.error("Errore nell'autenticazione:", err.description);
-            onErrorCallback?.(err.code as AuthErrorCode);
-          }
-        },
-      );
+    ({ email, onErrorCallback }) => {
+      if (!keycloak) {
+        onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
+        return;
+      }
+
+      // Redirect to Keycloak login page with email hint
+      keycloak.login({
+        loginHint: email,
+        redirectUri: `${window.location.origin}/login/callback`,
+      });
     },
-    [auth, responseType, userDatabaseConnection],
+    [keycloak],
   );
 
   /**
-   * Signup — register a new user using Auth0 database connection.
+   * Signup — redirect to Keycloak registration page.
    *
-   * Creates a new user account using Auth0's signup endpoint. After successful
-   * registration, the user will need to log in with their credentials.
-   * The function triggers asynchronous work via Auth0 callbacks and will
-   * call the optional callbacks based on success or failure.
-   *
-   * @param {{ email: string; password: string; onSuccessCallback?: () => void; onErrorCallback?: (errorCode?: AuthErrorCode) => void }} params -
-   *   Object containing signup credentials and optional callbacks.
-   * @param {string} params.email - The user's email address.
-   * @param {string} params.password - The user's password.
-   * @param {() => void} [params.onSuccessCallback] -
-   *   Callback invoked after successful signup.
-   * @param {(errorCode?: AuthErrorCode) => void} [params.onErrorCallback] -
-   *   Callback invoked with an `AuthErrorCode` in case of failure.
-   * @returns {void}
-   * @example
-   * // Example usage
-   * signup({ email: 'alice@example.com', password: 'secret', onSuccessCallback: () => { ... }, onErrorCallback: code => { console.log(code); } });
+   * With Keycloak, registration is handled via the Keycloak registration page.
    */
   const signup = useCallback<AuthContextValue['signup']>(
-    ({ email, password, onSuccessCallback, onErrorCallback }) => {
-      auth.signup(
-        {
-          email,
-          password,
-          connection: userDatabaseConnection,
-        },
-        err => {
-          if (err) {
-            console.error('Errore nella registrazione:', err.description);
-            onErrorCallback?.(err.code as AuthErrorCode);
-          } else {
-            onSuccessCallback?.();
-          }
-        },
-      );
+    ({ email, onErrorCallback }) => {
+      if (!keycloak) {
+        onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
+        return;
+      }
+
+      // Redirect to Keycloak registration page
+      keycloak.register({
+        loginHint: email,
+        redirectUri: `${window.location.origin}/login/callback`,
+      });
     },
-    [auth, userDatabaseConnection],
+    [keycloak],
   );
 
   /**
-   * Login with redirect — initiates authentication via the Auth0 hosted login page.
-   *
-   * Redirects the user to the Auth0 Universal Login page for authentication.
-   * This method is more reliable than cross-origin authentication (used by
-   * `login()`) because it doesn't depend on third-party cookies, making it
-   * work in browsers with strict privacy settings like Safari.
-   *
-   * After successful authentication, Auth0 redirects back to the configured
-   * `redirectUri` with tokens in the URL hash, which are then processed by
-   * the `authenticate()` function.
-   *
-   * @function
-   * @name loginWithRedirect
-   * @type {AuthContextValue['loginWithRedirect']}
-   *
-   * @returns {void}
-   *
-   * @example
-   * loginWithRedirect();
+   * Login with redirect — initiates authentication via the Keycloak login page.
    */
   const loginWithRedirect = useCallback<
     AuthContextValue['loginWithRedirect']
   >(() => {
-    auth.authorize({
-      connection: userDatabaseConnection,
+    if (!keycloak) {
+      return;
+    }
+
+    keycloak.login({
+      redirectUri: `${window.location.origin}/login/callback`,
     });
-  }, [auth, userDatabaseConnection]);
+  }, [keycloak]);
 
   /**
-   * Logs the user out by removing the access token from localStorage (if available)
-   * and resetting the authentication state. Also sets the loading state to false.
-   *
-   * @function
-   * @name logout
-   * @type {AuthContextValue['logout']}
-   *
-   * @returns {void}
-   *
-   * @example
-   * logout();
+   * Logs the user out by removing the access token and redirecting to Keycloak logout.
    */
   const logout = useCallback<AuthContextValue['logout']>(() => {
-    // auth.logout({ returnTo: window.location.origin });
-
     if (localStorageAvailable) {
       window.localStorage.removeItem(AUTH_TOKEN_FIELD);
       setToken(null);
     }
 
+    if (keycloak && keycloak.authenticated) {
+      keycloak.logout({
+        redirectUri: window.location.origin,
+      });
+    }
+
     setLoading(false);
-  }, [localStorageAvailable]);
+  }, [localStorageAvailable, keycloak]);
 
   /**
    * Effect hook that checks for the availability of localStorage in the browser.
-   * If available, it sets the `localStorageAvailable` state to true.
-   * If not available (e.g., cookies or storage are disabled), it logs an informational message
-   * and sets the state to false.
-   *
-   * @function
-   * @returns {void}
-   *
-   * @example
-   * useEffect(() => {
-   * // Checks localStorage availability on component mount
-   * }, []);
    */
   useEffect(() => {
     try {
@@ -361,47 +391,32 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   }, []);
 
   /**
-   * Effect hook that periodically refresh the authentication session.
-   *
-   * Starts an interval (every REFRESH_TOKEN_INTERVAL) that calls Auth0's
-   * `checkSession()` to refresh tokens when a token is present. If a new
-   * token is returned it is saved via `saveAuthToken`, otherwise the user
-   * is logged out. The effect cleans up the interval on unmount.
-   *
-   * @returns {void}
-   * @example
-   * useEffect(() => {
-   *   // Periodically refresh auth session while the provider is mounted
-   * }, [auth, logout, saveAuthToken, token]);
+   * Effect hook that periodically refreshes the authentication session.
    */
   useEffect(() => {
+    if (!keycloak || !keycloak.authenticated) {
+      return undefined;
+    }
+
     const interval = setInterval(() => {
-      if (token) {
-        auth.checkSession({}, (_, res) => {
-          if (res) {
-            saveAuthToken(res);
-          } else {
-            logout();
+      keycloak
+        .updateToken(30)
+        .then(refreshed => {
+          if (refreshed) {
+            updateTokenFromKeycloak(keycloak);
           }
+        })
+        .catch(() => {
+          // Token refresh failed, log out
+          logout();
         });
-      }
     }, REFRESH_TOKEN_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [auth, logout, saveAuthToken, token]);
+  }, [keycloak, logout, updateTokenFromKeycloak]);
 
   /**
-   * Effect hook that periodically check token expiration and logout when expired.
-   *
-   * Starts an interval that checks the stored token's `exp` claim and
-   * triggers `logout()` if the token is expired. The interval is cleared on
-   * unmount. This helps to ensure stale tokens are removed promptly.
-   *
-   * @returns {void}
-   * @example
-   * useEffect(() => {
-   *   // Periodically check token expiration while the provider is mounted
-   * }, [auth, logout, saveAuthToken, token]);
+   * Effect hook that periodically checks token expiration.
    */
   useEffect(() => {
     const interval = setInterval(() => {
@@ -416,7 +431,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     }, CHECK_TOKEN_EXPIRATION_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [auth, logout, saveAuthToken, token]);
+  }, [logout, token]);
 
   const isAuthenticated = useMemo(
     () =>
@@ -428,26 +443,17 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
 
   const authClientData: AuthClient = useMemo(
     () => ({
-      domain,
-      clientID,
-      responseType,
-      userDatabaseConnection,
-      scope,
-      redirectUri,
+      url,
+      realm,
+      clientId,
     }),
-    [
-      domain,
-      clientID,
-      responseType,
-      userDatabaseConnection,
-      scope,
-      redirectUri,
-    ],
+    [url, realm, clientId],
   );
 
   const value = useMemo(
     () => ({
       authClientData,
+      keycloak,
       authenticate,
       token,
       userPermissions,
@@ -462,6 +468,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     }),
     [
       authClientData,
+      keycloak,
       authenticate,
       isAuthenticated,
       loading,

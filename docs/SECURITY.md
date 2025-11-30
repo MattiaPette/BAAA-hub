@@ -43,13 +43,15 @@ We appreciate your help in keeping BAAA Hub secure!
 
 ## Authentication and Authorization
 
-BAAA Hub uses Auth0 for authentication:
+BAAA Hub uses Keycloak for authentication:
 
 - **OAuth 2.0 / OpenID Connect** - Industry-standard authentication protocols
+- **PKCE (Proof Key for Code Exchange)** - Secure authorization code flow
 - **JWT Tokens** - Secure token-based authentication
 - **HTTPS Only** - All authentication traffic is encrypted
 - **Token Expiration** - Access tokens have limited lifetimes
 - **Refresh Tokens** - Secure token refresh mechanism
+- **MFA Support** - Multi-factor authentication via Keycloak
 
 ### Best Practices
 
@@ -62,55 +64,56 @@ BAAA Hub uses Auth0 for authentication:
 
 ### Overview
 
-User MFA status and email verification are synced from Auth0 to the local
+User MFA status and email verification are synced from Keycloak to the local
 database via a webhook-based approach. This ensures:
 
-- **Scalability**: No polling of Auth0 Management API (avoids rate limits)
+- **Scalability**: No polling of Keycloak Admin API (avoids rate limits)
 - **Reliability**: Data stored locally for admin visibility
 - **Event-driven**: Updates occur on user login
 
 ### Architecture
 
 ```
-┌──────────┐     Login      ┌──────────┐   Post-Login   ┌─────────────┐
-│   User   │ ───────────────► │  Auth0   │ ──────────────► │   Action    │
-└──────────┘                └──────────┘                └──────┬──────┘
-                                                               │
-                                                               │ Webhook
-                                                               ▼
+┌──────────┐     Login      ┌──────────┐   Event        ┌─────────────┐
+│   User   │ ───────────────► │ Keycloak │ ──────────────► │   Event     │
+└──────────┘                └──────────┘                │  Listener   │
+                                                       └──────┬──────┘
+                                                              │
+                                                              │ Webhook
+                                                              ▼
 ┌──────────┐     Query      ┌──────────┐   Update DB    ┌─────────────┐
 │  Admin   │ ◄───────────── │ Backend  │ ◄───────────── │  /api/      │
 │   UI     │                │   API    │                │  webhooks/  │
 └──────────┘                └──────────┘                └─────────────┘
 ```
 
-### Auth0 Post-Login Action
+### Keycloak Event Listener
 
-An Auth0 Action runs after each successful login and sends MFA/email status to
-the backend webhook. The action is managed via Auth0 Deploy CLI (Infrastructure
-as Code).
+A Keycloak Event Listener or custom SPI can be configured to send MFA/email
+status to the backend webhook when users log in.
 
-**Configuration files:**
+**Configuration:**
 
-- `auth0/tenant.yaml` - Main configuration
-- `auth0/actions/sync-user-to-db.js` - Action code
+- Event type: LOGIN
+- Webhook endpoint: `POST /api/webhooks/keycloak/user-update`
+- Authentication: `x-webhook-secret` header
 
 ### Webhook Security
 
-The webhook endpoint (`/api/webhooks/auth0/user-update`) is secured with:
+The webhook endpoint (`/api/webhooks/keycloak/user-update`) is secured with:
 
 1. **Shared Secret**: The `x-webhook-secret` header must match
-   `AUTH0_WEBHOOK_SECRET`
+   `KEYCLOAK_WEBHOOK_SECRET`
 2. **Constant-time Comparison**: Prevents timing attacks
 3. **Input Validation**: Zod schema validates all incoming data
 
-### Setting Up Auth0 Actions
+### Setting Up Keycloak Events
 
-1. Configure the Auth0 Deploy CLI (see `auth0/README.md`)
-2. Set the required secrets in Auth0 Dashboard:
-   - `API_URL`: Backend webhook URL
-   - `API_SECRET`: Matches `AUTH0_WEBHOOK_SECRET`
-3. Deploy: `a0deploy import --input_file ./auth0/tenant.yaml`
+1. Configure a Keycloak Event Listener SPI
+2. Set the required configuration:
+   - `WEBHOOK_URL`: Backend webhook URL
+   - `WEBHOOK_SECRET`: Matches `KEYCLOAK_WEBHOOK_SECRET`
+3. Deploy the Event Listener to Keycloak
 
 ### Admin API
 
@@ -167,7 +170,7 @@ All sensitive configuration should be stored in environment variables:
 - Database connection strings
 - Authentication credentials
 - Third-party service tokens
-- **AUTH0_WEBHOOK_SECRET** - Webhook authentication secret
+- **KEYCLOAK_WEBHOOK_SECRET** - Webhook authentication secret
 
 ### Best Practices
 
@@ -210,9 +213,8 @@ When deploying with Docker:
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [Node.js Security Best Practices](https://nodejs.org/en/docs/guides/security/)
-- [Auth0 Security Documentation](https://auth0.com/docs/security)
-- [Auth0 Deploy CLI](https://github.com/auth0/auth0-deploy-cli)
-- [Auth0 Post-Login Actions](https://auth0.com/docs/customize/actions/flows-and-triggers/login-flow)
+- [Keycloak Security Documentation](https://www.keycloak.org/docs/latest/server_admin/index.html#security)
+- [Keycloak Securing Applications](https://www.keycloak.org/docs/latest/securing_apps/)
 
 ## License
 

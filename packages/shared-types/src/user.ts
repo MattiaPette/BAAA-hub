@@ -209,7 +209,7 @@ export interface UserProfileData {
 }
 
 /**
- * Types of MFA methods supported by Auth0
+ * Types of MFA methods supported by Keycloak
  */
 export enum MfaType {
   /** No MFA enabled */
@@ -220,7 +220,7 @@ export enum MfaType {
   SMS = 'SMS',
   /** Email-based verification */
   EMAIL = 'EMAIL',
-  /** Push notification (e.g., Guardian app) */
+  /** Push notification */
   PUSH = 'PUSH',
   /** WebAuthn/FIDO2 security keys */
   WEBAUTHN = 'WEBAUTHN',
@@ -238,9 +238,9 @@ export interface User extends UserProfileData {
   updatedAt: string;
   isBlocked: boolean;
   isEmailVerified: boolean;
-  /** Whether the user has MFA enabled (synced from Auth0 via webhook) */
+  /** Whether the user has MFA enabled (synced from Keycloak via webhook) */
   mfaEnabled: boolean;
-  /** Primary MFA type used by the user (synced from Auth0 via webhook) */
+  /** Primary MFA type used by the user (synced from Keycloak via webhook) */
   mfaType: MfaType;
   roles: UserRole[];
 }
@@ -305,15 +305,15 @@ export interface PaginatedResponse<T> {
 export type AdminUsersListResponse = PaginatedResponse<User>;
 
 /**
- * Auth0 Post-Login Action webhook payload
- * Sent by Auth0 to sync MFA and email verification status
+ * Keycloak Event Listener webhook payload
+ * Sent by Keycloak to sync MFA and email verification status
  */
-export interface Auth0UserUpdateWebhookPayload {
-  /** Auth0 user ID (e.g., "auth0|xxxxx") */
+export interface KeycloakUserUpdateWebhookPayload {
+  /** Keycloak user ID (UUID format) */
   user_id: string;
   /** User's email address */
   email: string;
-  /** Whether the user's email is verified in Auth0 */
+  /** Whether the user's email is verified in Keycloak */
   email_verified: boolean;
   /** Whether MFA is enabled for the user */
   mfa_enabled: boolean;

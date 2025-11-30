@@ -14,9 +14,13 @@ interface Config {
   cors: {
     origin: string;
   };
-  auth0: {
-    domain: string;
-    audience: string;
+  keycloak: {
+    /** Keycloak server URL (e.g., https://keycloak.example.com) */
+    url: string;
+    /** Keycloak realm name */
+    realm: string;
+    /** Expected audience (client ID) for token validation */
+    clientId: string;
   };
   minio: {
     endpoint: string;
@@ -28,8 +32,8 @@ interface Config {
     region: string;
   };
   webhook: {
-    /** Secret for Auth0 post-login action webhook authentication */
-    auth0Secret: string;
+    /** Secret for Keycloak event listener webhook authentication */
+    secret: string;
   };
 }
 
@@ -43,9 +47,10 @@ const config: Config = {
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:4000',
   },
-  auth0: {
-    domain: process.env.AUTH0_DOMAIN || '',
-    audience: process.env.AUTH0_AUDIENCE || '',
+  keycloak: {
+    url: process.env.KEYCLOAK_URL || '',
+    realm: process.env.KEYCLOAK_REALM || '',
+    clientId: process.env.KEYCLOAK_CLIENT_ID || '',
   },
   minio: {
     endpoint: process.env.MINIO_ENDPOINT || 'localhost',
@@ -57,7 +62,7 @@ const config: Config = {
     region: process.env.MINIO_REGION || 'us-east-1',
   },
   webhook: {
-    auth0Secret: process.env.AUTH0_WEBHOOK_SECRET || '',
+    secret: process.env.KEYCLOAK_WEBHOOK_SECRET || '',
   },
 };
 

@@ -4,12 +4,9 @@ import { App } from './containers/core/App/App.tsx';
 import { AuthConfigurationProps } from './containers/core/App/App.model.ts';
 
 const auth: AuthConfigurationProps = {
-  domain: import.meta.env.VITE_AUTH_DOMAIN,
-  clientID: import.meta.env.VITE_AUTH_CLIENT_ID,
-  responseType: 'token id_token',
-  userDatabaseConnection: import.meta.env.VITE_AUTH_DATABASE_CONNECTION,
-  scope: 'openid profile email',
-  redirectUri: import.meta.env.VITE_AUTH_REDIRECT_URI,
+  url: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 };
 
 if ('serviceWorker' in navigator) {

@@ -1,4 +1,4 @@
-import { Auth0DecodedHash, AuthOptions } from 'auth0-js';
+import Keycloak from 'keycloak-js';
 import {
   Dispatch,
   DispatchWithoutAction,
@@ -94,13 +94,17 @@ export enum AuthErrorCode {
 }
 
 /**
- * Configuration for the Auth0 authentication client.
- * Extends Auth0's AuthOptions with an additional database connection property.
+ * Configuration for the Keycloak authentication client.
  *
- * @property {string} userDatabaseConnection - The Auth0 database connection (realm) for username/password authentication
+ * @property {string} url - Keycloak server URL (e.g., https://keycloak.example.com)
+ * @property {string} realm - Keycloak realm name
+ * @property {string} clientId - Keycloak client identifier
  */
-export type AuthClient = AuthOptions &
-  Readonly<{ userDatabaseConnection: string }>;
+export interface AuthClient {
+  url: string;
+  realm: string;
+  clientId: string;
+}
 
 /**
  * Props for the AuthProvider component.
@@ -114,49 +118,62 @@ export type AuthProviderProps = Readonly<AuthClient> &
   }>;
 
 /**
- * Payload structure of a decoded JWT ID token from Auth0.
+ * Payload structure of a decoded JWT ID token from Keycloak.
  * Contains user information and token metadata.
  *
- * @property {string} nickname - User's nickname
+ * @property {string} preferred_username - User's preferred username
  * @property {string} name - User's full name
  * @property {string} email - User's email address
- * @property {string} picture - URL to user's profile picture
- * @property {string} updated_at - Timestamp of last profile update
- * @property {string} iss - Token issuer (Auth0 domain)
+ * @property {boolean} email_verified - Whether the user's email has been verified
+ * @property {string} given_name - User's first name
+ * @property {string} family_name - User's last name
+ * @property {string} iss - Token issuer (Keycloak realm URL)
  * @property {string} aud - Token audience (client ID)
  * @property {number} iat - Token issued at timestamp
  * @property {number} exp - Token expiration timestamp
  * @property {string} sub - Subject (user ID)
- * @property {string} at_hash - Access token hash
  * @property {string} sid - Session ID
- * @property {string} nonce - Random value for replay prevention
- * @property {string[]} db_roles - Database roles assigned to the user
+ * @property {string} azp - Authorized party
+ * @property {string[]} db_roles - Database roles assigned to the user (custom claim)
+ * @property {object} realm_access - Realm-level roles
+ * @property {object} resource_access - Client-specific roles
  */
 export type TokenPayload = Readonly<{
-  nickname: string;
-  name: string;
-  email: string;
-  picture: string;
-  updated_at: string;
+  preferred_username?: string;
+  name?: string;
+  email?: string;
+  email_verified?: boolean;
+  given_name?: string;
+  family_name?: string;
   iss: string;
-  aud: string;
+  aud: string | string[];
   iat: number;
   exp: number;
   sub: string;
-  at_hash: string;
-  sid: string;
-  nonce: string;
-  db_roles: string[];
+  sid?: string;
+  azp?: string;
+  db_roles?: string[];
+  realm_access?: {
+    roles: string[];
+  };
+  resource_access?: Record<
+    string,
+    {
+      roles: string[];
+    }
+  >;
 }>;
 
 /**
- * Authentication token with custom payload type.
- * Extends Auth0's decoded hash with a typed ID token payload.
+ * Authentication token structure for Keycloak.
+ * Contains the Keycloak instance and parsed token payload.
  */
-export type AuthToken = Omit<Auth0DecodedHash, 'idTokenPayload'> &
-  Readonly<{
-    idTokenPayload?: TokenPayload;
-  }>;
+export type AuthToken = Readonly<{
+  accessToken?: string;
+  idToken?: string;
+  refreshToken?: string;
+  idTokenPayload?: TokenPayload;
+}>;
 
 /**
  * User credentials for authentication.
@@ -171,9 +188,11 @@ export type AuthLoginData = Readonly<{
 
 /**
  * Parameters for the login function.
+ * Note: With Keycloak, login is handled via redirect, so email/password
+ * are not passed directly but handled by Keycloak's login page.
  *
- * @property {string} email - User's email address
- * @property {string} password - User's password
+ * @property {string} email - User's email address (used for hint)
+ * @property {string} password - User's password (not used with Keycloak redirect)
  * @property {function} [onErrorCallback] - Optional callback invoked when login fails
  */
 export type AuthLoginFunctionParameters = Readonly<{
@@ -217,8 +236,7 @@ export type AuthSignupFunction = (
 
 /**
  * Function type for initiating login via redirect flow.
- * This method redirects the user to the Auth0 hosted login page,
- * which is more reliable in browsers with strict cookie policies (e.g., Safari).
+ * This method redirects the user to the Keycloak login page.
  */
 export type LoginWithRedirectFunction = () => void;
 
@@ -245,13 +263,14 @@ export type AuthenticateFunction = (
  * Value provided by the authentication context.
  * Contains authentication state, user information, and authentication methods.
  *
- * @property {AuthClient} authClientData - Auth0 client configuration
+ * @property {AuthClient} authClientData - Keycloak client configuration
+ * @property {Keycloak | null} keycloak - Keycloak instance for advanced usage
  * @property {AuthToken | null} token - Current authentication token, or null if not authenticated
  * @property {string[]} userPermissions - Array of permission strings for the authenticated user
  * @property {AuthenticateFunction} authenticate - Function to authenticate from existing session/token
- * @property {AuthLoginFunction} login - Function to log in with credentials (cross-origin method)
- * @property {AuthSignupFunction} signup - Function to sign up with credentials
- * @property {LoginWithRedirectFunction} loginWithRedirect - Function to log in via redirect flow (more reliable in Safari)
+ * @property {AuthLoginFunction} login - Function to log in with credentials (redirects to Keycloak)
+ * @property {AuthSignupFunction} signup - Function to sign up (redirects to Keycloak registration)
+ * @property {LoginWithRedirectFunction} loginWithRedirect - Function to log in via redirect flow
  * @property {DispatchWithoutAction} logout - Function to log out the current user
  * @property {boolean} isAuthenticated - Whether the user is currently authenticated
  * @property {boolean} isLoading - Whether an authentication operation is in progress
@@ -260,6 +279,7 @@ export type AuthenticateFunction = (
  */
 export type AuthContextValue = Readonly<{
   authClientData: AuthClient;
+  keycloak: Keycloak | null;
   token: AuthToken | null;
   userPermissions: string[];
   authenticate: AuthenticateFunction;

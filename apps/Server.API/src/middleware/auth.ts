@@ -3,19 +3,30 @@ import { ErrorCode } from '@baaa-hub/shared-types';
 import config from '../config/index.js';
 
 /**
- * Decoded JWT payload structure from Auth0
+ * Decoded JWT payload structure from Keycloak
  */
 export interface DecodedToken {
-  sub: string; // Auth0 user ID (e.g., "auth0|xxxxx")
+  sub: string; // Keycloak user ID
   email?: string;
   email_verified?: boolean;
   name?: string;
-  nickname?: string;
-  picture?: string;
+  preferred_username?: string;
+  given_name?: string;
+  family_name?: string;
   iat: number;
   exp: number;
   iss: string;
   aud: string | string[];
+  azp?: string; // Authorized party (client ID)
+  realm_access?: {
+    roles: string[];
+  };
+  resource_access?: Record<
+    string,
+    {
+      roles: string[];
+    }
+  >;
 }
 
 /**
@@ -40,12 +51,12 @@ export interface AuthContext extends Context {
  * SECURITY NOTE: This implementation performs basic JWT decoding without
  * cryptographic signature verification. In a production environment, you MUST:
  * 1. Use a library like 'jose' or 'jsonwebtoken' with JWKS support
- * 2. Verify the token signature against Auth0's public keys (JWKS endpoint)
- * 3. The JWKS endpoint is: https://{AUTH0_DOMAIN}/.well-known/jwks.json
+ * 2. Verify the token signature against Keycloak's public keys (JWKS endpoint)
+ * 3. The JWKS endpoint is: {KEYCLOAK_URL}/realms/{REALM}/protocol/openid-connect/certs
  *
  * This basic implementation relies on:
  * - HTTPS for transport security
- * - Auth0's token expiration
+ * - Keycloak's token expiration
  * - Issuer validation
  *
  * For enhanced security, implement proper signature verification.
@@ -79,9 +90,9 @@ const validateToken = (decoded: DecodedToken): boolean => {
     return false;
   }
 
-  // Check issuer matches Auth0 domain if configured
-  if (config.auth0.domain) {
-    const expectedIssuer = `https://${config.auth0.domain}/`;
+  // Check issuer matches Keycloak realm if configured
+  if (config.keycloak.url && config.keycloak.realm) {
+    const expectedIssuer = `${config.keycloak.url}/realms/${config.keycloak.realm}`;
     if (decoded.iss !== expectedIssuer) {
       return false;
     }
@@ -91,7 +102,7 @@ const validateToken = (decoded: DecodedToken): boolean => {
 };
 
 /**
- * Authentication middleware that validates JWT tokens from Auth0
+ * Authentication middleware that validates JWT tokens from Keycloak
  * Extracts user information and attaches it to the context state
  */
 export const authMiddleware = async (
@@ -132,13 +143,14 @@ export const authMiddleware = async (
   }
 
   // Attach auth info to context
+  // Keycloak uses 'sub' for user ID and 'preferred_username' for nickname
   ctx.state.auth = {
     userId: decoded.sub,
     email: decoded.email,
     emailVerified: decoded.email_verified,
     name: decoded.name,
-    nickname: decoded.nickname,
-    picture: decoded.picture,
+    nickname: decoded.preferred_username,
+    picture: undefined, // Keycloak doesn't include picture in standard claims
   };
 
   await next();
@@ -164,8 +176,8 @@ export const optionalAuthMiddleware = async (
         email: decoded.email,
         emailVerified: decoded.email_verified,
         name: decoded.name,
-        nickname: decoded.nickname,
-        picture: decoded.picture,
+        nickname: decoded.preferred_username,
+        picture: undefined,
       };
     }
   }

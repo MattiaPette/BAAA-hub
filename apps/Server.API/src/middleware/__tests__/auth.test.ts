@@ -6,9 +6,10 @@ import { authMiddleware, optionalAuthMiddleware, AuthContext } from '../auth';
 // Mock config module
 vi.mock('../../config/index.js', () => ({
   default: {
-    auth0: {
-      domain: 'test.auth0.com',
-      audience: 'test-audience',
+    keycloak: {
+      url: 'http://localhost:8180',
+      realm: 'test-realm',
+      clientId: 'test-client',
     },
   },
 }));
@@ -37,7 +38,7 @@ const createTestToken = (
   const fullPayload = {
     iat: now,
     exp: now + expOffset,
-    iss: 'https://test.auth0.com/',
+    iss: 'http://localhost:8180/realms/test-realm',
     ...payload,
   };
 
@@ -129,7 +130,7 @@ describe('authMiddleware', () => {
 
   describe('token validation', () => {
     it('should return 401 when token is expired', async () => {
-      const token = createTestToken({ sub: 'auth0|123' }, -3600); // Expired 1 hour ago
+      const token = createTestToken({ sub: 'keycloak-123' }, -3600); // Expired 1 hour ago
       const ctx = createMockContext(`Bearer ${token}`);
       const next: Next = vi.fn();
 
@@ -145,8 +146,8 @@ describe('authMiddleware', () => {
 
     it('should return 401 when issuer does not match', async () => {
       const token = createTestToken({
-        sub: 'auth0|123',
-        iss: 'https://wrong.auth0.com/',
+        sub: 'keycloak-123',
+        iss: 'http://wrong-keycloak:8180/realms/test-realm',
       });
       const ctx = createMockContext(`Bearer ${token}`);
       const next: Next = vi.fn();
@@ -165,12 +166,11 @@ describe('authMiddleware', () => {
   describe('successful authentication', () => {
     it('should extract user info and call next for valid token', async () => {
       const token = createTestToken({
-        sub: 'auth0|user123',
+        sub: 'keycloak-user123',
         email: 'test@example.com',
         email_verified: true,
         name: 'Test User',
-        nickname: 'testuser',
-        picture: 'https://example.com/avatar.jpg',
+        preferred_username: 'testuser',
       });
       const ctx = createMockContext(`Bearer ${token}`);
       const next: Next = vi.fn();
@@ -179,17 +179,17 @@ describe('authMiddleware', () => {
 
       expect(next).toHaveBeenCalled();
       expect(ctx.state.auth).toEqual({
-        userId: 'auth0|user123',
+        userId: 'keycloak-user123',
         email: 'test@example.com',
         emailVerified: true,
         name: 'Test User',
         nickname: 'testuser',
-        picture: 'https://example.com/avatar.jpg',
+        picture: undefined,
       });
     });
 
     it('should work with minimal user info', async () => {
-      const token = createTestToken({ sub: 'auth0|user456' });
+      const token = createTestToken({ sub: 'keycloak-user456' });
       const ctx = createMockContext(`Bearer ${token}`);
       const next: Next = vi.fn();
 
@@ -197,7 +197,7 @@ describe('authMiddleware', () => {
 
       expect(next).toHaveBeenCalled();
       expect(ctx.state.auth).toEqual({
-        userId: 'auth0|user456',
+        userId: 'keycloak-user456',
         email: undefined,
         emailVerified: undefined,
         name: undefined,
@@ -243,7 +243,7 @@ describe('optionalAuthMiddleware', () => {
     });
 
     it('should call next without setting auth state for expired token', async () => {
-      const token = createTestToken({ sub: 'auth0|123' }, -3600);
+      const token = createTestToken({ sub: 'keycloak-123' }, -3600);
       const ctx = createMockContext(`Bearer ${token}`);
       const next: Next = vi.fn();
 
@@ -257,12 +257,11 @@ describe('optionalAuthMiddleware', () => {
   describe('with valid Authorization header', () => {
     it('should extract user info and call next for valid token', async () => {
       const token = createTestToken({
-        sub: 'auth0|user789',
+        sub: 'keycloak-user789',
         email: 'optional@example.com',
         email_verified: false,
         name: 'Optional User',
-        nickname: 'optionaluser',
-        picture: 'https://example.com/optional.jpg',
+        preferred_username: 'optionaluser',
       });
       const ctx = createMockContext(`Bearer ${token}`);
       const next: Next = vi.fn();
@@ -271,12 +270,12 @@ describe('optionalAuthMiddleware', () => {
 
       expect(next).toHaveBeenCalled();
       expect(ctx.state.auth).toEqual({
-        userId: 'auth0|user789',
+        userId: 'keycloak-user789',
         email: 'optional@example.com',
         emailVerified: false,
         name: 'Optional User',
         nickname: 'optionaluser',
-        picture: 'https://example.com/optional.jpg',
+        picture: undefined,
       });
     });
   });

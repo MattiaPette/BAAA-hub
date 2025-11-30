@@ -45,7 +45,7 @@ describe('useCurrentUser', () => {
     email: 'john.doe@example.com',
     dateOfBirth: '1990-01-01',
     sportTypes: [],
-    authId: 'auth0|123',
+    authId: 'keycloak-user-123',
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
     isBlocked: false,
@@ -67,7 +67,7 @@ describe('useCurrentUser', () => {
       token: {
         idToken: 'mock-id-token',
         accessToken: 'mock-access-token',
-        expiresIn: 3600,
+        refreshToken: 'mock-refresh-token',
       },
       isLoading: false,
       localStorageAvailable: true,
@@ -79,6 +79,7 @@ describe('useCurrentUser', () => {
       setLoading: vi.fn(),
       userPermissions: [],
       authClientData: {} as never,
+      keycloak: null,
     });
 
     vi.spyOn(userService, 'getCurrentUser').mockResolvedValue(mockUser);
@@ -107,6 +108,7 @@ describe('useCurrentUser', () => {
       setLoading: vi.fn(),
       userPermissions: [],
       authClientData: {} as never,
+      keycloak: null,
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });
@@ -130,6 +132,7 @@ describe('useCurrentUser', () => {
       setLoading: vi.fn(),
       userPermissions: [],
       authClientData: {} as never,
+      keycloak: null,
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });
@@ -144,7 +147,7 @@ describe('useCurrentUser', () => {
       token: {
         idToken: 'mock-id-token',
         accessToken: 'mock-access-token',
-        expiresIn: 3600,
+        refreshToken: 'mock-refresh-token',
       },
       isLoading: false,
       localStorageAvailable: true,
@@ -156,6 +159,7 @@ describe('useCurrentUser', () => {
       setLoading: vi.fn(),
       userPermissions: [],
       authClientData: {} as never,
+      keycloak: null,
     });
 
     const mockError = new Error('Failed to fetch user');
@@ -176,7 +180,7 @@ describe('useCurrentUser', () => {
       token: {
         idToken: undefined as never,
         accessToken: 'mock-access-token',
-        expiresIn: 3600,
+        refreshToken: 'mock-refresh-token',
       },
       isLoading: false,
       localStorageAvailable: true,
@@ -188,6 +192,7 @@ describe('useCurrentUser', () => {
       setLoading: vi.fn(),
       userPermissions: [],
       authClientData: {} as never,
+      keycloak: null,
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });

@@ -31,10 +31,10 @@ export const webhookSecretMiddleware = async (
     return;
   }
 
-  const configuredSecret = config.webhook.auth0Secret;
+  const configuredSecret = config.webhook.secret;
 
   if (!configuredSecret) {
-    console.error('AUTH0_WEBHOOK_SECRET is not configured');
+    console.error('KEYCLOAK_WEBHOOK_SECRET is not configured');
     ctx.status = 500;
     ctx.body = {
       error: 'Webhook secret not configured',
