@@ -73,6 +73,8 @@ services:
       KEYCLOAK_ADMIN_PASSWORD:
         ${KEYCLOAK_ADMIN_PASSWORD:?KEYCLOAK_ADMIN_PASSWORD is required}
     command: start
+    volumes:
+      - ../keycloak-theme/baaa-hub:/opt/keycloak/themes/baaa-hub:ro
     depends_on:
       keycloak-db:
         condition: service_healthy

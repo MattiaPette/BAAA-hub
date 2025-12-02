@@ -1,0 +1,196 @@
+/*
+ * BAAA Hub - Custom Keycloak Account Theme
+ * 
+ * This CSS file customizes the Keycloak account management pages 
+ * to match the BAAA Hub application branding.
+ */
+
+/* ==========================================================================
+   CSS Custom Properties (Theme Colors)
+   ========================================================================== */
+
+:root {
+  /* Primary colors - matches MUI theme primary palette */
+  --kc-primary-color: #1976d2;
+  --kc-primary-light: #42a5f5;
+  --kc-primary-dark: #1565c0;
+  --kc-primary-contrast: #ffffff;
+
+  /* Secondary colors - matches MUI theme secondary palette */
+  --kc-secondary-color: #9c27b0;
+
+  /* Background colors */
+  --kc-background-default: #f5f5f5;
+  --kc-background-paper: #ffffff;
+
+  /* Text colors */
+  --kc-text-primary: rgba(0, 0, 0, 0.87);
+  --kc-text-secondary: rgba(0, 0, 0, 0.6);
+
+  /* Layout */
+  --kc-border-radius: 8px;
+  --kc-card-shadow: 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+
+  /* Font */
+  --kc-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+body {
+  font-family: var(--kc-font-family);
+  background-color: var(--kc-background-default);
+  color: var(--kc-text-primary);
+}
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+
+.navbar,
+.pf-c-page__header {
+  background-color: var(--kc-primary-color) !important;
+}
+
+.navbar-brand,
+.pf-c-page__header-brand-link {
+  color: var(--kc-primary-contrast) !important;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+
+.pf-c-page__sidebar,
+.sidebar {
+  background-color: var(--kc-background-paper);
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.pf-c-nav__link,
+.nav-link {
+  color: var(--kc-text-primary) !important;
+  border-radius: var(--kc-border-radius);
+  margin: 4px 8px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pf-c-nav__link:hover,
+.nav-link:hover {
+  background-color: rgba(25, 118, 210, 0.08) !important;
+  color: var(--kc-primary-color) !important;
+}
+
+.pf-c-nav__link.pf-m-current,
+.nav-link.active {
+  background-color: rgba(25, 118, 210, 0.16) !important;
+  color: var(--kc-primary-color) !important;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Cards & Content
+   ========================================================================== */
+
+.card,
+.pf-c-card {
+  background-color: var(--kc-background-paper);
+  border-radius: var(--kc-border-radius);
+  box-shadow: var(--kc-card-shadow);
+  border: none;
+}
+
+.card-header,
+.pf-c-card__header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+.form-control,
+.pf-c-form-control {
+  border-radius: var(--kc-border-radius);
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  padding: 10px 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-control:focus,
+.pf-c-form-control:focus {
+  border-color: var(--kc-primary-color);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+  outline: none;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn-primary,
+.pf-c-button.pf-m-primary {
+  background-color: var(--kc-primary-color) !important;
+  border-color: var(--kc-primary-color) !important;
+  color: var(--kc-primary-contrast) !important;
+  border-radius: var(--kc-border-radius);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-primary:hover,
+.pf-c-button.pf-m-primary:hover {
+  background-color: var(--kc-primary-dark) !important;
+  border-color: var(--kc-primary-dark) !important;
+}
+
+.btn-secondary,
+.pf-c-button.pf-m-secondary {
+  border-color: var(--kc-primary-color) !important;
+  color: var(--kc-primary-color) !important;
+  border-radius: var(--kc-border-radius);
+}
+
+/* ==========================================================================
+   Alerts
+   ========================================================================== */
+
+.alert-success,
+.pf-c-alert.pf-m-success {
+  background-color: #edf7ed;
+  border-color: #c3e6c3;
+  color: #2e7d32;
+  border-radius: var(--kc-border-radius);
+}
+
+.alert-danger,
+.pf-c-alert.pf-m-danger {
+  background-color: #fdeded;
+  border-color: #f5c6cb;
+  color: #d32f2f;
+  border-radius: var(--kc-border-radius);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .card,
+  .pf-c-card {
+    margin: 10px;
+    border-radius: 4px;
+  }
+}
