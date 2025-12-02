@@ -450,6 +450,83 @@ function AuthenticatedApp() {
 }
 ```
 
+## Public-First Architecture
+
+The application implements a **public-first** approach similar to Strava:
+
+- Most content is publicly accessible by default
+- Users don't need to log in to browse content
+- Login/signup buttons are displayed in the header for unauthenticated users
+- Advanced features (profile, settings, admin) require authentication
+- All login/signup flows are handled by Keycloak (no native login forms)
+
+### Public vs Protected Routes
+
+```tsx
+// Public routes - accessible to everyone
+const publicRoutes = [
+  '/dashboard', // Main dashboard
+  '/activities', // View activities
+];
+
+// Protected routes - require authentication
+const protectedRoutes = [
+  '/profile', // User profile
+  '/settings', // User settings
+  '/administration', // Admin only
+];
+```
+
+### PublicContainer
+
+The `PublicContainer` component renders the layout for unauthenticated users:
+
+```tsx
+import { PublicContainer } from '../containers/PublicContainer/PublicContainer';
+
+// This container shows:
+// - Login button in the header
+// - Sign Up button in the header
+// - Limited sidebar navigation
+// - Public content
+```
+
+### Route Guards
+
+The `Router` component handles authentication routing:
+
+```tsx
+// Unauthenticated users
+// - See PublicContainer with login/signup buttons
+// - Can access public routes (dashboard)
+// - Redirected to dashboard for unknown routes
+
+// Authenticated users
+// - See MainContainer with full navigation
+// - Can access all routes based on permissions
+// - Profile setup required before accessing other routes
+```
+
+## Keycloak Theme Customization
+
+The application includes a custom Keycloak theme (`keycloak-theme/baaa-hub/`)
+that matches the app's branding:
+
+1. **Location**: `/keycloak-theme/baaa-hub/`
+2. **Theme files**:
+   - `login/resources/css/login.css` - Custom styles
+   - `login/resources/img/logo.png` - App logo
+   - `login/messages/messages_en.properties` - English translations
+   - `login/messages/messages_it.properties` - Italian translations
+
+3. **To customize**:
+   - Edit CSS variables in `login.css` for colors
+   - Replace `logo.png` with your logo
+   - Edit message files for custom text
+
+See [Keycloak Theme README](../keycloak-theme/README.md) for detailed
+customization instructions.
+
 ## Keycloak Configuration
 
 To configure Keycloak for this application:
@@ -462,7 +539,11 @@ To configure Keycloak for this application:
    - Direct Access Grants: OFF (for security)
    - Valid Redirect URIs: `http://localhost:4000/*` (development)
    - Web Origins: `http://localhost:4000` (development)
-3. Configure environment variables:
+3. Configure the theme:
+   - Go to Realm Settings > Themes
+   - Set Login Theme to `baaa-hub`
+   - Set Account Theme to `baaa-hub`
+4. Configure environment variables:
    - `VITE_KEYCLOAK_URL`: Keycloak server URL
    - `VITE_KEYCLOAK_REALM`: Realm name
    - `VITE_KEYCLOAK_CLIENT_ID`: Client ID
@@ -476,5 +557,7 @@ To configure Keycloak for this application:
 
 - [AuthProvider implementation](../apps/Client.Web/src/providers/AuthProvider/AuthProvider.tsx)
 - [AuthProvider model types](../apps/Client.Web/src/providers/AuthProvider/AuthProvider.model.ts)
-- [Login component](../apps/Client.Web/src/containers/Login/)
+- [PublicContainer](../apps/Client.Web/src/containers/PublicContainer/PublicContainer.tsx)
+- [Router](../apps/Client.Web/src/containers/core/Router/Router.tsx)
+- [Keycloak Theme](../keycloak-theme/README.md)
 - [Keycloak Documentation](https://www.keycloak.org/documentation)

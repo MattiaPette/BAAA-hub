@@ -33,7 +33,9 @@ describe('Router', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: false,
       localStorageAvailable: false,
+      isLoading: false,
       login: vi.fn(),
+      signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
       token: null,
@@ -53,11 +55,13 @@ describe('Router', () => {
     ).toBeInTheDocument();
   });
 
-  it('should render unauthenticated routes when not authenticated', async () => {
+  it('should render public routes when not authenticated (public-first)', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: false,
       localStorageAvailable: true,
+      isLoading: false,
       login: vi.fn(),
+      signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
       token: null,
@@ -65,23 +69,27 @@ describe('Router', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <Router />
-      </MemoryRouter>,
+    const { container } = render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/dashboard']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
     );
 
-    // Should redirect to login
+    // Should show dashboard (public-first approach)
     await waitFor(() => {
-      expect(screen.queryByText(/dashboard/i)).not.toBeInTheDocument();
+      expect(container.textContent).toMatch(/dashboard/i);
     });
   });
 
-  it('should redirect to login for unknown routes when not authenticated', async () => {
+  it('should redirect to dashboard for unknown routes when not authenticated', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: false,
       localStorageAvailable: true,
+      isLoading: false,
       login: vi.fn(),
+      signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
       token: null,
@@ -89,15 +97,17 @@ describe('Router', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
-    render(
-      <MemoryRouter initialEntries={['/unknown-route']}>
-        <Router />
-      </MemoryRouter>,
+    const { container } = render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/unknown-route']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
     );
 
-    // Should redirect to login page
+    // Should redirect to dashboard (public-first)
     await waitFor(() => {
-      expect(screen.queryByText(/dashboard/i)).not.toBeInTheDocument();
+      expect(container.textContent).toMatch(/dashboard/i);
     });
   });
 
@@ -105,7 +115,9 @@ describe('Router', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
+      isLoading: false,
       login: vi.fn(),
+      signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
       token: {
@@ -145,7 +157,9 @@ describe('Router', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
+      isLoading: false,
       login: vi.fn(),
+      signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
       token: {
@@ -185,7 +199,9 @@ describe('Router', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
+      isLoading: false,
       login: vi.fn(),
+      signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
       token: {
@@ -224,7 +240,9 @@ describe('Router', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
+      isLoading: false,
       login: vi.fn(),
+      signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
       token: {
@@ -255,6 +273,36 @@ describe('Router', () => {
     // Should show profile setup
     await waitFor(() => {
       expect(container.textContent).toMatch(/complete your profile/i);
+    });
+  });
+
+  it('should show login and signup buttons when not authenticated', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: false,
+      localStorageAvailable: true,
+      isLoading: false,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: null,
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/dashboard']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
+    );
+
+    // Should show login and signup buttons in public container
+    await waitFor(() => {
+      // Check for button text content instead of role
+      expect(screen.getByText('Login')).toBeInTheDocument();
+      expect(screen.getByText('Sign Up')).toBeInTheDocument();
     });
   });
 });

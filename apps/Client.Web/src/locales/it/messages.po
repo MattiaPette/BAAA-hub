@@ -245,6 +245,7 @@ msgstr "Modalità scura"
 #: src/containers/Dashboard/Dashboard.tsx:21
 #: src/containers/Dashboard/Dashboard.tsx:27
 #: src/containers/MainContainer/MainContainer.tsx:44
+#: src/containers/PublicContainer/PublicContainer.tsx:139
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -548,6 +549,8 @@ msgstr "Modalità chiara"
 #: src/components/login/LoginForm/LoginForm.tsx:151
 #: src/components/login/LoginForm/LoginForm.tsx:244
 #: src/components/login/LoginForm/LoginForm.tsx:273
+#: src/containers/PublicContainer/PublicContainer.tsx:254
+#: src/containers/PublicContainer/PublicContainer.tsx:278
 msgid "Login"
 msgstr "Accedi"
 
@@ -662,6 +665,10 @@ msgstr "Codici monouso inviati via SMS al tuo numero di telefono"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:544
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Sono consentite solo lettere, numeri e underscore"
+
+#: src/containers/PublicContainer/PublicContainer.tsx:188
+msgid "Open menu"
+msgstr "Apri menu"
 
 #: src/components/login/LoginForm/LoginForm.tsx:309
 #~ msgid "or"
@@ -895,6 +902,8 @@ msgstr "Impostazioni"
 
 #: src/components/login/LoginForm/LoginForm.tsx:151
 #: src/components/login/LoginForm/LoginForm.tsx:296
+#: src/containers/PublicContainer/PublicContainer.tsx:269
+#: src/containers/PublicContainer/PublicContainer.tsx:293
 msgid "Sign Up"
 msgstr "Registrati"
 
