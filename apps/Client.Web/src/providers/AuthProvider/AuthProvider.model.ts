@@ -188,11 +188,10 @@ export type AuthLoginData = Readonly<{
 
 /**
  * Parameters for the login function.
- * Note: With Keycloak, login is handled via redirect, so email/password
- * are not passed directly but handled by Keycloak's login page.
+ * With embedded Keycloak login, credentials are sent directly to the token endpoint.
  *
- * @property {string} email - User's email address (used for hint)
- * @property {string} password - User's password (not used with Keycloak redirect)
+ * @property {string} email - User's email address
+ * @property {string} password - User's password
  * @property {function} [onErrorCallback] - Optional callback invoked when login fails
  */
 export type AuthLoginFunctionParameters = Readonly<{
@@ -202,13 +201,15 @@ export type AuthLoginFunctionParameters = Readonly<{
 }>;
 
 /**
- * Function type for initiating user login.
+ * Function type for initiating user login via embedded authentication.
+ * Uses Keycloak's Resource Owner Password Credentials (ROPC) flow.
  *
  * @param {AuthLoginFunctionParameters} parameters - Login credentials and optional error callback
+ * @returns {Promise<void>} A promise that resolves when login completes (successfully or with error)
  */
 export type AuthLoginFunction = (
   parameters: AuthLoginFunctionParameters,
-) => void;
+) => Promise<void>;
 
 /**
  * Parameters for the signup function.
