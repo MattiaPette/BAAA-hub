@@ -144,12 +144,14 @@ export const PublicContainer: FC = () => {
   ];
 
   /**
-   * Handle login button click - redirects to Keycloak login
+   * Handle login button click - redirects to Keycloak login.
+   * Note: Empty email/password are passed to satisfy the interface, but with Keycloak
+   * authentication is handled entirely via OAuth redirect, not direct credential submission.
    */
   const handleLogin = () => {
     login({
-      email: '',
-      password: '',
+      email: '', // Keycloak handles authentication via redirect
+      password: '', // Password is not used with Keycloak OAuth flow
       onErrorCallback: error => {
         console.error('Login error:', error);
       },
@@ -157,12 +159,14 @@ export const PublicContainer: FC = () => {
   };
 
   /**
-   * Handle signup button click - redirects to Keycloak registration
+   * Handle signup button click - redirects to Keycloak registration.
+   * Note: Empty email/password are passed to satisfy the interface, but with Keycloak
+   * registration is handled entirely via OAuth redirect, not direct form submission.
    */
   const handleSignup = () => {
     signup({
-      email: '',
-      password: '',
+      email: '', // Keycloak handles registration via redirect
+      password: '', // Password is not used with Keycloak OAuth flow
       onErrorCallback: error => {
         console.error('Signup error:', error);
       },
