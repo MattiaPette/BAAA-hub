@@ -21,6 +21,10 @@ interface Config {
     realm: string;
     /** Expected audience (client ID) for token validation */
     clientId: string;
+    /** Admin client ID for user management (service account) */
+    adminClientId: string;
+    /** Admin client secret for user management */
+    adminClientSecret: string;
   };
   minio: {
     endpoint: string;
@@ -51,6 +55,8 @@ const config: Config = {
     url: process.env.KEYCLOAK_URL || '',
     realm: process.env.KEYCLOAK_REALM || '',
     clientId: process.env.KEYCLOAK_CLIENT_ID || '',
+    adminClientId: process.env.KEYCLOAK_ADMIN_CLIENT_ID || '',
+    adminClientSecret: process.env.KEYCLOAK_ADMIN_CLIENT_SECRET || '',
   },
   minio: {
     endpoint: process.env.MINIO_ENDPOINT || 'localhost',
