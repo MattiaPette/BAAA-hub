@@ -419,13 +419,14 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   );
 
   /**
-   * Signup — create a new user via Keycloak Admin REST API.
+   * Signup — create a new user via backend API.
    *
-   * This uses the Keycloak registration endpoint to create a new user account
-   * without redirecting to Keycloak's registration page.
+   * This calls the backend registration endpoint to create a new user account.
+   * The backend is responsible for communicating with Keycloak Admin API
+   * to create the user.
    *
-   * Note: This requires the Keycloak client to have the "self-registration" feature enabled,
-   * or the realm to have user registration enabled.
+   * Note: This requires a backend endpoint at /api/auth/register that handles
+   * user registration with Keycloak.
    */
   const signup = useCallback<AuthContextValue['signup']>(
     async ({ email, password, onSuccessCallback, onErrorCallback }) => {
@@ -437,66 +438,62 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       setLoading(true);
 
       try {
-        // First, we need to get a client access token to call the admin API
-        // For public registration, we'll use the registration endpoint directly
-        const registrationEndpoint = `${url}/realms/${realm}/protocol/openid-connect/registrations`;
-
-        const formData = new URLSearchParams();
-        formData.append('client_id', clientId);
-        formData.append('username', email);
-        formData.append('email', email);
-        formData.append('password', password);
-
-        const response = await fetch(registrationEndpoint, {
+        const apiBaseUrl =
+          import.meta.env.VITE_API_URL || 'http://localhost:3000';
+        const response = await fetch(`${apiBaseUrl}/api/auth/register`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
           },
-          body: formData,
+          body: JSON.stringify({
+            email,
+            password,
+            username: email, // Use email as username
+          }),
         });
-
-        // If registration endpoint doesn't exist or isn't enabled,
-        // fall back to trying the token endpoint with registration
-        if (response.status === 404 || response.status === 405) {
-          // Try alternative: Create user via the users endpoint (requires admin token)
-          // This is a fallback that may not work depending on realm configuration
-          setLoading(false);
-          onErrorCallback?.(AuthErrorCode.INVALID_SIGNUP);
-          return;
-        }
 
         if (!response.ok) {
           const errorData = (await response.json().catch(() => ({}))) as {
             error?: string;
-            error_description?: string;
-            errorMessage?: string;
+            message?: string;
+            code?: string;
           };
 
-          // Map registration errors
+          setLoading(false);
+
+          // Map error responses
           if (
-            errorData.error_description?.includes('already exists') ||
-            errorData.errorMessage?.includes('already exists')
+            errorData.code === 'USER_EXISTS' ||
+            errorData.message?.toLowerCase().includes('already exists') ||
+            errorData.message?.toLowerCase().includes('user exists')
           ) {
-            setLoading(false);
             onErrorCallback?.(AuthErrorCode.USER_EXISTS);
             return;
           }
 
           if (
-            errorData.error_description?.includes('username') ||
-            errorData.errorMessage?.includes('username')
+            errorData.code === 'USERNAME_EXISTS' ||
+            errorData.message?.toLowerCase().includes('username')
           ) {
-            setLoading(false);
             onErrorCallback?.(AuthErrorCode.USERNAME_EXISTS);
             return;
           }
 
-          const errorCode = mapKeycloakError(
-            errorData.error || 'invalid_signup',
-            errorData.error_description,
-          );
-          setLoading(false);
-          onErrorCallback?.(errorCode);
+          if (
+            errorData.code === 'PASSWORD_POLICY' ||
+            errorData.message?.toLowerCase().includes('password')
+          ) {
+            onErrorCallback?.(AuthErrorCode.PASSWORD_STRENGTH_ERROR);
+            return;
+          }
+
+          // Handle 404 - endpoint not implemented
+          if (response.status === 404) {
+            onErrorCallback?.(AuthErrorCode.INVALID_SIGNUP);
+            return;
+          }
+
+          onErrorCallback?.(AuthErrorCode.UNKNOWN_ERROR);
           return;
         }
 
@@ -504,14 +501,10 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
         onSuccessCallback?.();
       } catch (error) {
         setLoading(false);
-        // Distinguish between network errors and other errors
-        if (error instanceof TypeError && error.message.includes('fetch')) {
+        if (error instanceof TypeError) {
           onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
-        } else if (error instanceof SyntaxError) {
-          // JSON parsing error - might be a success with no body
-          onSuccessCallback?.();
         } else {
-          onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+          onErrorCallback?.(AuthErrorCode.UNKNOWN_ERROR);
         }
       }
     },

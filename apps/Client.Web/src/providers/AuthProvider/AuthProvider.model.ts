@@ -230,10 +230,11 @@ export type AuthSignupFunctionParameters = Readonly<{
  * Function type for initiating user signup.
  *
  * @param {AuthSignupFunctionParameters} parameters - Signup credentials and optional callbacks
+ * @returns {Promise<void>} A promise that resolves when signup completes (successfully or with error)
  */
 export type AuthSignupFunction = (
   parameters: AuthSignupFunctionParameters,
-) => void;
+) => Promise<void>;
 
 /**
  * Parameters for the authenticate function.
