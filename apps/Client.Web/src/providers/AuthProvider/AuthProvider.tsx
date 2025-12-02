@@ -402,9 +402,17 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
         };
 
         saveAuthToken(authToken);
-      } catch {
+      } catch (error) {
         setLoading(false);
-        onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+        // Distinguish between network errors and other errors
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+        } else if (error instanceof SyntaxError) {
+          // JSON parsing error from unexpected response format
+          onErrorCallback?.(AuthErrorCode.SERVER_ERROR);
+        } else {
+          onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+        }
       }
     },
     [url, realm, clientId, saveAuthToken],
