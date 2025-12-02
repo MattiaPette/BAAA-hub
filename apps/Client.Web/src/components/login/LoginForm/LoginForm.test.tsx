@@ -137,4 +137,53 @@ describe('LoginForm', () => {
       screen.getByText(/account created successfully!/i),
     ).toBeInTheDocument();
   });
+
+  it('should display alternative login section when onLoginWithRedirect is provided', () => {
+    const mockLoginWithRedirect = vi.fn();
+    render(<LoginForm onLoginWithRedirect={mockLoginWithRedirect} />);
+
+    expect(
+      screen.getByText(/having trouble signing in\?/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /try alternative login/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('should call onLoginWithRedirect when alternative login button is clicked', () => {
+    const mockLoginWithRedirect = vi.fn();
+    render(<LoginForm onLoginWithRedirect={mockLoginWithRedirect} />);
+
+    const alternativeLoginButton = screen.getByRole('button', {
+      name: /try alternative login/i,
+    });
+    fireEvent.click(alternativeLoginButton);
+
+    expect(mockLoginWithRedirect).toHaveBeenCalled();
+  });
+
+  it('should not display alternative login section when onLoginWithRedirect is not provided', () => {
+    render(<LoginForm />);
+
+    expect(
+      screen.queryByText(/having trouble signing in\?/i),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /try alternative login/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('should not display alternative login section in signup mode', () => {
+    const mockLoginWithRedirect = vi.fn();
+    render(
+      <LoginForm isSignupMode onLoginWithRedirect={mockLoginWithRedirect} />,
+    );
+
+    expect(
+      screen.queryByText(/having trouble signing in\?/i),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /try alternative login/i }),
+    ).not.toBeInTheDocument();
+  });
 });

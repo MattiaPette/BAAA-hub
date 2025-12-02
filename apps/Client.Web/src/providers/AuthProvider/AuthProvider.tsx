@@ -48,6 +48,44 @@ const parseJwt = (token: string): TokenPayload | null => {
 };
 
 /**
+ * Map Keycloak error responses to AuthErrorCode
+ */
+const mapKeycloakError = (
+  error: string,
+  errorDescription?: string,
+): AuthErrorCode => {
+  // Handle OAuth2 standard errors
+  switch (error) {
+    case 'invalid_grant':
+      // Check error description for more specific error
+      if (
+        errorDescription?.toLowerCase().includes('invalid user credentials')
+      ) {
+        return AuthErrorCode.INVALID_USER_PASSWORD;
+      }
+      if (errorDescription?.toLowerCase().includes('account disabled')) {
+        return AuthErrorCode.BLOCKED_USER;
+      }
+      if (errorDescription?.toLowerCase().includes('account locked')) {
+        return AuthErrorCode.TOO_MANY_ATTEMPTS;
+      }
+      return AuthErrorCode.INVALID_GRANT;
+    case 'invalid_client':
+      return AuthErrorCode.UNAUTHORIZED_CLIENT;
+    case 'invalid_request':
+      return AuthErrorCode.INVALID_REQUEST;
+    case 'unauthorized_client':
+      return AuthErrorCode.UNAUTHORIZED_CLIENT;
+    case 'invalid_scope':
+      return AuthErrorCode.INVALID_SCOPE;
+    case 'access_denied':
+      return AuthErrorCode.ACCESS_DENIED;
+    default:
+      return AuthErrorCode.UNKNOWN_ERROR;
+  }
+};
+
+/**
  * AuthProvider — creates and provides an authentication context to descendants.
  *
  * Builds a Keycloak client from the provided props, exposes helpers
@@ -300,25 +338,76 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   );
 
   /**
-   * Login — perform authentication via Keycloak redirect.
+   * Login — perform authentication via Keycloak Resource Owner Password Credentials flow.
    *
-   * Note: With Keycloak, we use the redirect flow. Email/password
-   * are handled by Keycloak's login page, not directly.
+   * This uses the Keycloak token endpoint directly to authenticate with email/password,
+   * providing an embedded login experience without redirecting to Keycloak's login page.
    */
   const login = useCallback<AuthContextValue['login']>(
-    ({ email, onErrorCallback }) => {
-      if (!keycloak) {
+    async ({ email, password, onErrorCallback }) => {
+      if (!url || !realm || !clientId) {
         onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
         return;
       }
 
-      // Redirect to Keycloak login page with email hint
-      keycloak.login({
-        loginHint: email,
-        redirectUri: `${window.location.origin}/login/callback`,
-      });
+      setLoading(true);
+
+      try {
+        const tokenEndpoint = `${url}/realms/${realm}/protocol/openid-connect/token`;
+
+        const formData = new URLSearchParams();
+        formData.append('grant_type', 'password');
+        formData.append('client_id', clientId);
+        formData.append('username', email);
+        formData.append('password', password);
+        formData.append('scope', 'openid profile email');
+
+        const response = await fetch(tokenEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = (await response.json()) as {
+            error?: string;
+            error_description?: string;
+          };
+          const errorCode = mapKeycloakError(
+            errorData.error || 'unknown_error',
+            errorData.error_description,
+          );
+          setLoading(false);
+          onErrorCallback?.(errorCode);
+          return;
+        }
+
+        const tokenResponse = (await response.json()) as {
+          access_token: string;
+          id_token: string;
+          refresh_token: string;
+          expires_in: number;
+          token_type: string;
+        };
+
+        const idTokenPayload = parseJwt(tokenResponse.id_token);
+
+        const authToken: AuthToken = {
+          accessToken: tokenResponse.access_token,
+          idToken: tokenResponse.id_token,
+          refreshToken: tokenResponse.refresh_token,
+          idTokenPayload: idTokenPayload || undefined,
+        };
+
+        saveAuthToken(authToken);
+      } catch {
+        setLoading(false);
+        onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+      }
     },
-    [keycloak],
+    [url, realm, clientId, saveAuthToken],
   );
 
   /**
@@ -359,6 +448,23 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
 
     setLoading(false);
   }, [localStorageAvailable, keycloak]);
+
+  /**
+   * Login with redirect — initiates authentication via the Keycloak login page.
+   * This is an alternative login method for browsers with strict cookie policies
+   * or when the embedded login fails.
+   */
+  const loginWithRedirect = useCallback<
+    AuthContextValue['loginWithRedirect']
+  >(() => {
+    if (!keycloak) {
+      return;
+    }
+
+    keycloak.login({
+      redirectUri: `${window.location.origin}/login/callback`,
+    });
+  }, [keycloak]);
 
   /**
    * Effect hook that checks for the availability of localStorage in the browser.
@@ -444,6 +550,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       userPermissions,
       login,
       signup,
+      loginWithRedirect,
       logout,
       isAuthenticated,
       isLoading: loading,
@@ -459,6 +566,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       localStorageAvailable,
       login,
       signup,
+      loginWithRedirect,
       logout,
       token,
       userPermissions,

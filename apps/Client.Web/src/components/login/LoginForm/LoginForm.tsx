@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect } from 'react';
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   Stack,
   styled,
@@ -66,6 +67,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
  * @param {boolean} props.error - A flag indicating if there is an error in the login form.
  * @param {Function} props.onSubmit - The function to call when the form is submitted for login.
  * @param {Function} props.onSignup - The function to call when the form is submitted for signup.
+ * @param {Function} props.onLoginWithRedirect - The function to call for redirect-based login.
  * @param {boolean} props.isSignupMode - Whether the form is in signup mode.
  * @param {Function} props.onToggleMode - Function to toggle between login and signup modes.
  * @param {string} props.successMessage - Success message to display.
@@ -73,7 +75,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
  * @returns {JSX.Element} The rendered login/signup form.
  *
  * @example
- * <LoginForm error={false} onSubmit={handleLogin} onSignup={handleSignup} />
+ * <LoginForm error={false} onSubmit={handleLogin} onSignup={handleSignup} onLoginWithRedirect={handleRedirectLogin} />
  */
 export const LoginForm: FC<LoginFormProps> = ({
   errorMessages,
@@ -81,6 +83,7 @@ export const LoginForm: FC<LoginFormProps> = ({
   isSignupMode = false,
   onSubmit,
   onSignup,
+  onLoginWithRedirect,
   onToggleMode,
 }) => {
   const {
@@ -298,6 +301,44 @@ export const LoginForm: FC<LoginFormProps> = ({
               </>
             )}
           </Typography>
+
+          {onLoginWithRedirect && !isSignupMode && (
+            <>
+              <Divider>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Trans>or</Trans>
+                </Typography>
+              </Divider>
+              <Typography
+                variant="body2"
+                sx={{
+                  textAlign: 'center',
+                  color: 'text.secondary',
+                }}
+              >
+                <Trans>Having trouble signing in?</Trans>{' '}
+                <Button
+                  type="button"
+                  onClick={onLoginWithRedirect}
+                  variant="text"
+                  sx={{
+                    padding: 0,
+                    minWidth: 'auto',
+                    textTransform: 'none',
+                    fontWeight: 'inherit',
+                    fontSize: 'inherit',
+                    verticalAlign: 'baseline',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      textDecoration: 'underline',
+                    },
+                  }}
+                >
+                  <Trans>Try alternative login</Trans>
+                </Button>
+              </Typography>
+            </>
+          )}
         </Box>
       </Card>
     </SignInContainer>

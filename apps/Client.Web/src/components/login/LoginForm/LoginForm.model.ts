@@ -14,5 +14,6 @@ export type LoginFormProps = Readonly<{
 
   onSubmit?: Dispatch<LoginFormValue>;
   onSignup?: Dispatch<LoginFormValue>;
+  onLoginWithRedirect?: DispatchWithoutAction;
   onToggleMode?: DispatchWithoutAction;
 }>;
