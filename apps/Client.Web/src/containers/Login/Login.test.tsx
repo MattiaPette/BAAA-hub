@@ -9,15 +9,14 @@ import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 describe('Login', () => {
   const mockLogin = vi.fn();
   const mockSignup = vi.fn();
-  const mockLoginWithRedirect = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       login: mockLogin,
       signup: mockSignup,
-      loginWithRedirect: mockLoginWithRedirect,
       isAuthenticated: false,
+      isLoading: false,
       localStorageAvailable: true,
       logout: vi.fn(),
       authenticate: vi.fn(),
@@ -378,36 +377,6 @@ describe('Login', () => {
         screen.getByRole('button', { name: /^login$/i }),
       ).toBeInTheDocument();
     });
-  });
-
-  it('should display alternative login option', () => {
-    render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>,
-    );
-
-    expect(
-      screen.getByText(/having trouble signing in\?/i),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /try alternative login/i }),
-    ).toBeInTheDocument();
-  });
-
-  it('should call loginWithRedirect when alternative login is clicked', () => {
-    render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>,
-    );
-
-    const alternativeLoginButton = screen.getByRole('button', {
-      name: /try alternative login/i,
-    });
-    fireEvent.click(alternativeLoginButton);
-
-    expect(mockLoginWithRedirect).toHaveBeenCalled();
   });
 
   it('should start in signup mode when initialSignupMode is true', () => {

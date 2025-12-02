@@ -255,12 +255,6 @@ export type AuthenticateFunction = (
 ) => void;
 
 /**
- * Function type for initiating login via redirect flow.
- * This method redirects the user to the Keycloak login page.
- */
-export type LoginWithRedirectFunction = () => void;
-
-/**
  * Value provided by the authentication context.
  * Contains authentication state, user information, and authentication methods.
  *
@@ -270,8 +264,7 @@ export type LoginWithRedirectFunction = () => void;
  * @property {string[]} userPermissions - Array of permission strings for the authenticated user
  * @property {AuthenticateFunction} authenticate - Function to authenticate from existing session/token
  * @property {AuthLoginFunction} login - Function to log in with credentials (embedded login via Keycloak token endpoint)
- * @property {AuthSignupFunction} signup - Function to sign up (redirects to Keycloak registration)
- * @property {LoginWithRedirectFunction} loginWithRedirect - Function to log in via redirect flow
+ * @property {AuthSignupFunction} signup - Function to sign up a new user
  * @property {DispatchWithoutAction} logout - Function to log out the current user
  * @property {boolean} isAuthenticated - Whether the user is currently authenticated
  * @property {boolean} isLoading - Whether an authentication operation is in progress
@@ -286,7 +279,6 @@ export type AuthContextValue = Readonly<{
   authenticate: AuthenticateFunction;
   login: AuthLoginFunction;
   signup: AuthSignupFunction;
-  loginWithRedirect: LoginWithRedirectFunction;
   logout: DispatchWithoutAction;
   isAuthenticated: boolean;
   isLoading: boolean;

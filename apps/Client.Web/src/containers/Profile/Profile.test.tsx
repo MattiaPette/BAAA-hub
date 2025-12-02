@@ -85,7 +85,7 @@ describe('Profile', () => {
       signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
-      loginWithRedirect: vi.fn(),
+
       userPermissions: [],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);

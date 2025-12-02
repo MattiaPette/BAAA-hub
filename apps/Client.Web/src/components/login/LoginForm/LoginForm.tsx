@@ -3,7 +3,6 @@ import { FC, useCallback, useEffect } from 'react';
 import {
   Box,
   Button,
-  Divider,
   FormControl,
   Stack,
   styled,
@@ -11,6 +10,7 @@ import {
   Typography,
   useTheme,
   Alert,
+  CircularProgress,
 } from '@mui/material';
 
 import MuiCard from '@mui/material/Card';
@@ -67,23 +67,23 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
  * @param {boolean} props.error - A flag indicating if there is an error in the login form.
  * @param {Function} props.onSubmit - The function to call when the form is submitted for login.
  * @param {Function} props.onSignup - The function to call when the form is submitted for signup.
- * @param {Function} props.onLoginWithRedirect - The function to call for redirect-based login.
  * @param {boolean} props.isSignupMode - Whether the form is in signup mode.
  * @param {Function} props.onToggleMode - Function to toggle between login and signup modes.
  * @param {string} props.successMessage - Success message to display.
+ * @param {boolean} props.isLoading - Whether a request is in progress.
  *
  * @returns {JSX.Element} The rendered login/signup form.
  *
  * @example
- * <LoginForm error={false} onSubmit={handleLogin} onSignup={handleSignup} onLoginWithRedirect={handleRedirectLogin} />
+ * <LoginForm error={false} onSubmit={handleLogin} onSignup={handleSignup} />
  */
 export const LoginForm: FC<LoginFormProps> = ({
   errorMessages,
   successMessage,
   isSignupMode = false,
+  isLoading = false,
   onSubmit,
   onSignup,
-  onLoginWithRedirect,
   onToggleMode,
 }) => {
   const {
@@ -180,6 +180,7 @@ export const LoginForm: FC<LoginFormProps> = ({
               autoFocus
               fullWidth
               variant="outlined"
+              disabled={isLoading}
               error={!!errors?.user}
               helperText={errors?.user?.message ?? errors?.user?.types?.error}
               {...register('user', {
@@ -207,6 +208,7 @@ export const LoginForm: FC<LoginFormProps> = ({
               autoComplete={isSignupMode ? 'new-password' : 'current-password'}
               fullWidth
               variant="outlined"
+              disabled={isLoading}
               error={!!errors?.password}
               helperText={
                 errors?.password?.message ?? errors?.password?.types?.error
@@ -227,20 +229,22 @@ export const LoginForm: FC<LoginFormProps> = ({
               })}
             />
           </FormControl>
-          <Typography
-            component="div"
-            sx={{
-              font: { fontSize: '12px' },
-              marginTop: '4px',
-              marginBottom: '4px',
-              color: theme.palette.error.main,
-            }}
+          {errorMessages && errorMessages.length > 0 && (
+            <Alert severity="error" sx={{ mt: 1 }}>
+              {errorMessages.map((msg, index) => (
+                <div key={index}>{msg}</div>
+              ))}
+            </Alert>
+          )}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={isLoading}
+            startIcon={
+              isLoading ? <CircularProgress size={20} color="inherit" /> : null
+            }
           >
-            {errorMessages?.map((msg, index) => (
-              <p key={index}>{msg}</p>
-            ))}
-          </Typography>
-          <Button type="submit" fullWidth variant="contained">
             {isSignupMode ? (
               <Trans>Create Account</Trans>
             ) : (
@@ -259,6 +263,7 @@ export const LoginForm: FC<LoginFormProps> = ({
                 <Button
                   variant="text"
                   onClick={onToggleMode}
+                  disabled={isLoading}
                   sx={{
                     padding: 0,
                     minWidth: 'auto',
@@ -282,6 +287,7 @@ export const LoginForm: FC<LoginFormProps> = ({
                 <Button
                   variant="text"
                   onClick={onToggleMode}
+                  disabled={isLoading}
                   sx={{
                     padding: 0,
                     minWidth: 'auto',
@@ -301,44 +307,6 @@ export const LoginForm: FC<LoginFormProps> = ({
               </>
             )}
           </Typography>
-
-          {onLoginWithRedirect && !isSignupMode && (
-            <>
-              <Divider>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  <Trans>or</Trans>
-                </Typography>
-              </Divider>
-              <Typography
-                variant="body2"
-                sx={{
-                  textAlign: 'center',
-                  color: 'text.secondary',
-                }}
-              >
-                <Trans>Having trouble signing in?</Trans>{' '}
-                <Button
-                  type="button"
-                  onClick={onLoginWithRedirect}
-                  variant="text"
-                  sx={{
-                    padding: 0,
-                    minWidth: 'auto',
-                    textTransform: 'none',
-                    fontWeight: 'inherit',
-                    fontSize: 'inherit',
-                    verticalAlign: 'baseline',
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                      textDecoration: 'underline',
-                    },
-                  }}
-                >
-                  <Trans>Try alternative login</Trans>
-                </Button>
-              </Typography>
-            </>
-          )}
         </Box>
       </Card>
     </SignInContainer>

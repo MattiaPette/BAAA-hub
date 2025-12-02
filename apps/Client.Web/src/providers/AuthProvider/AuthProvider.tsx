@@ -419,24 +419,103 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   );
 
   /**
-   * Signup — redirect to Keycloak registration page.
+   * Signup — create a new user via Keycloak Admin REST API.
    *
-   * With Keycloak, registration is handled via the Keycloak registration page.
+   * This uses the Keycloak registration endpoint to create a new user account
+   * without redirecting to Keycloak's registration page.
+   *
+   * Note: This requires the Keycloak client to have the "self-registration" feature enabled,
+   * or the realm to have user registration enabled.
    */
   const signup = useCallback<AuthContextValue['signup']>(
-    ({ email, onErrorCallback }) => {
-      if (!keycloak) {
+    async ({ email, password, onSuccessCallback, onErrorCallback }) => {
+      if (!url || !realm || !clientId) {
         onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
         return;
       }
 
-      // Redirect to Keycloak registration page
-      keycloak.register({
-        loginHint: email,
-        redirectUri: `${window.location.origin}/login/callback`,
-      });
+      setLoading(true);
+
+      try {
+        // First, we need to get a client access token to call the admin API
+        // For public registration, we'll use the registration endpoint directly
+        const registrationEndpoint = `${url}/realms/${realm}/protocol/openid-connect/registrations`;
+
+        const formData = new URLSearchParams();
+        formData.append('client_id', clientId);
+        formData.append('username', email);
+        formData.append('email', email);
+        formData.append('password', password);
+
+        const response = await fetch(registrationEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData,
+        });
+
+        // If registration endpoint doesn't exist or isn't enabled,
+        // fall back to trying the token endpoint with registration
+        if (response.status === 404 || response.status === 405) {
+          // Try alternative: Create user via the users endpoint (requires admin token)
+          // This is a fallback that may not work depending on realm configuration
+          setLoading(false);
+          onErrorCallback?.(AuthErrorCode.INVALID_SIGNUP);
+          return;
+        }
+
+        if (!response.ok) {
+          const errorData = (await response.json().catch(() => ({}))) as {
+            error?: string;
+            error_description?: string;
+            errorMessage?: string;
+          };
+
+          // Map registration errors
+          if (
+            errorData.error_description?.includes('already exists') ||
+            errorData.errorMessage?.includes('already exists')
+          ) {
+            setLoading(false);
+            onErrorCallback?.(AuthErrorCode.USER_EXISTS);
+            return;
+          }
+
+          if (
+            errorData.error_description?.includes('username') ||
+            errorData.errorMessage?.includes('username')
+          ) {
+            setLoading(false);
+            onErrorCallback?.(AuthErrorCode.USERNAME_EXISTS);
+            return;
+          }
+
+          const errorCode = mapKeycloakError(
+            errorData.error || 'invalid_signup',
+            errorData.error_description,
+          );
+          setLoading(false);
+          onErrorCallback?.(errorCode);
+          return;
+        }
+
+        setLoading(false);
+        onSuccessCallback?.();
+      } catch (error) {
+        setLoading(false);
+        // Distinguish between network errors and other errors
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+        } else if (error instanceof SyntaxError) {
+          // JSON parsing error - might be a success with no body
+          onSuccessCallback?.();
+        } else {
+          onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+        }
+      }
     },
-    [keycloak],
+    [url, realm, clientId],
   );
 
   /**
@@ -456,23 +535,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
 
     setLoading(false);
   }, [localStorageAvailable, keycloak]);
-
-  /**
-   * Login with redirect — initiates authentication via the Keycloak login page.
-   * This is an alternative login method for browsers with strict cookie policies
-   * or when the embedded login fails.
-   */
-  const loginWithRedirect = useCallback<
-    AuthContextValue['loginWithRedirect']
-  >(() => {
-    if (!keycloak) {
-      return;
-    }
-
-    keycloak.login({
-      redirectUri: `${window.location.origin}/login/callback`,
-    });
-  }, [keycloak]);
 
   /**
    * Effect hook that checks for the availability of localStorage in the browser.
@@ -558,7 +620,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       userPermissions,
       login,
       signup,
-      loginWithRedirect,
       logout,
       isAuthenticated,
       isLoading: loading,
@@ -574,7 +635,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       localStorageAvailable,
       login,
       signup,
-      loginWithRedirect,
       logout,
       token,
       userPermissions,

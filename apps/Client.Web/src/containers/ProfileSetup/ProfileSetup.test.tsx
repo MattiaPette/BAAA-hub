@@ -88,7 +88,7 @@ describe('ProfileSetup', () => {
       signup: vi.fn(),
       logout: vi.fn(),
       authenticate: vi.fn(),
-      loginWithRedirect: vi.fn(),
+
       userPermissions: [],
       setLoading: mockSetLoading,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

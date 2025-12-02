@@ -72,7 +72,7 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-      loginWithRedirect: vi.fn(),
+
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -101,7 +101,7 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-      loginWithRedirect: vi.fn(),
+
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -125,7 +125,7 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-      loginWithRedirect: vi.fn(),
+
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -152,7 +152,7 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-      loginWithRedirect: vi.fn(),
+
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -185,7 +185,7 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-      loginWithRedirect: vi.fn(),
+
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),

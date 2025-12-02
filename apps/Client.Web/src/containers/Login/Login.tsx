@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
 
 import { LoginForm } from '../../components/login/LoginForm/LoginForm';
@@ -27,10 +27,7 @@ interface LoginProps {
  * component translates the error code to a human-friendly message and
  * displays it in the form.
  *
- * Also provides signup functionality via the `signup()` method from AuthProvider,
- * and an alternative `loginWithRedirect` handler for browsers with strict
- * cookie policies (e.g., Safari) where the cross-origin authentication may
- * fail with server errors.
+ * Also provides signup functionality via the `signup()` method from AuthProvider.
  *
  * @param {LoginProps} props - Component props
  * @param {boolean} props.initialSignupMode - If true, start in signup mode
@@ -56,15 +53,24 @@ interface LoginProps {
 
 export const Login: FC<LoginProps> = ({ initialSignupMode = false }) => {
   const location = useLocation();
-  const { login, signup, loginWithRedirect } = useAuth();
+  const navigate = useNavigate();
+  const { login, signup, isAuthenticated, isLoading } = useAuth();
 
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [isSignupMode, setIsSignupMode] = useState(initialSignupMode);
 
+  // Redirect to dashboard if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
   const onSubmit = useCallback(
     (loginFormValue: LoginFormValue) => {
       setSuccessMessage('');
+      setErrorMessages([]);
       login({
         email: loginFormValue.user,
         password: loginFormValue.password,
@@ -124,9 +130,9 @@ export const Login: FC<LoginProps> = ({ initialSignupMode = false }) => {
         errorMessages={errorMessages}
         successMessage={successMessage}
         isSignupMode={isSignupMode}
+        isLoading={isLoading}
         onSubmit={onSubmit}
         onSignup={onSignup}
-        onLoginWithRedirect={loginWithRedirect}
         onToggleMode={onToggleMode}
       />
     </FlexContainer>

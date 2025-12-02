@@ -59,7 +59,7 @@ describe('UserProvider', () => {
         signup: vi.fn(),
         logout: vi.fn(),
         authenticate: vi.fn(),
-        loginWithRedirect: vi.fn(),
+
         userPermissions: [],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
@@ -234,7 +234,7 @@ describe('UserProvider', () => {
         signup: vi.fn(),
         logout: vi.fn(),
         authenticate: vi.fn(),
-        loginWithRedirect: vi.fn(),
+
         userPermissions: [],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
@@ -268,7 +268,7 @@ describe('UserProvider', () => {
         signup: vi.fn(),
         logout: vi.fn(),
         authenticate: vi.fn(),
-        loginWithRedirect: vi.fn(),
+
         userPermissions: [],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
@@ -295,7 +295,7 @@ describe('UserProvider', () => {
         signup: vi.fn(),
         logout: vi.fn(),
         authenticate: vi.fn(),
-        loginWithRedirect: vi.fn(),
+
         userPermissions: [],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
@@ -337,7 +337,7 @@ describe('UserProvider', () => {
         signup: vi.fn(),
         logout: vi.fn(),
         authenticate: vi.fn(),
-        loginWithRedirect: vi.fn(),
+
         userPermissions: [],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);

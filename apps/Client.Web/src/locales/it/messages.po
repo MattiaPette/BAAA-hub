@@ -74,7 +74,7 @@ msgstr "Tutti"
 msgid "All Roles"
 msgstr "Tutti i ruoli"
 
-#: src/components/login/LoginForm/LoginForm.tsx:258
+#: src/components/login/LoginForm/LoginForm.tsx:262
 msgid "Already have an account?"
 msgstr "Hai già un account?"
 
@@ -212,7 +212,7 @@ msgstr "È richiesto il consenso"
 msgid "Contact & Social"
 msgstr "Contatti e Social"
 
-#: src/components/login/LoginForm/LoginForm.tsx:245
+#: src/components/login/LoginForm/LoginForm.tsx:249
 msgid "Create Account"
 msgstr "Crea Account"
 
@@ -245,7 +245,7 @@ msgstr "Modalità scura"
 #: src/containers/Dashboard/Dashboard.tsx:21
 #: src/containers/Dashboard/Dashboard.tsx:27
 #: src/containers/MainContainer/MainContainer.tsx:44
-#: src/containers/PublicContainer/PublicContainer.tsx:139
+#: src/containers/PublicContainer/PublicContainer.tsx:138
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -269,7 +269,7 @@ msgstr "Privacy Data di Nascita"
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: src/components/login/LoginForm/LoginForm.tsx:281
+#: src/components/login/LoginForm/LoginForm.tsx:286
 msgid "Don't have an account?"
 msgstr "Non hai un account?"
 
@@ -305,7 +305,7 @@ msgstr "Modifica ruoli per {0} {1}"
 msgid "Email"
 msgstr "Email"
 
-#: src/components/login/LoginForm/LoginForm.tsx:192
+#: src/components/login/LoginForm/LoginForm.tsx:193
 msgid "Email is required"
 msgstr "L'email è obbligatoria"
 
@@ -436,8 +436,8 @@ msgid "Gym"
 msgstr "Palestra"
 
 #: src/components/login/LoginForm/LoginForm.tsx:319
-msgid "Having trouble signing in?"
-msgstr "Hai problemi ad accedere?"
+#~ msgid "Having trouble signing in?"
+#~ msgstr "Hai problemi ad accedere?"
 
 #: src/helpers/roleLabels/roleLabels.ts:23
 msgid "Highest privilege level - can manage admins"
@@ -476,7 +476,7 @@ msgstr "Configurazione non valida"
 msgid "Invalid credentials or session expired"
 msgstr "Credenziali non valide o sessione scaduta"
 
-#: src/components/login/LoginForm/LoginForm.tsx:196
+#: src/components/login/LoginForm/LoginForm.tsx:197
 msgid "Invalid email address"
 msgstr "Indirizzo email non valido"
 
@@ -547,10 +547,10 @@ msgid "Light Mode"
 msgstr "Modalità chiara"
 
 #: src/components/login/LoginForm/LoginForm.tsx:154
-#: src/components/login/LoginForm/LoginForm.tsx:247
-#: src/components/login/LoginForm/LoginForm.tsx:276
-#: src/containers/PublicContainer/PublicContainer.tsx:258
-#: src/containers/PublicContainer/PublicContainer.tsx:282
+#: src/components/login/LoginForm/LoginForm.tsx:251
+#: src/components/login/LoginForm/LoginForm.tsx:281
+#: src/containers/PublicContainer/PublicContainer.tsx:241
+#: src/containers/PublicContainer/PublicContainer.tsx:265
 msgid "Login"
 msgstr "Accedi"
 
@@ -666,13 +666,13 @@ msgstr "Codici monouso inviati via SMS al tuo numero di telefono"
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Sono consentite solo lettere, numeri e underscore"
 
-#: src/containers/PublicContainer/PublicContainer.tsx:192
+#: src/containers/PublicContainer/PublicContainer.tsx:175
 msgid "Open menu"
 msgstr "Apri menu"
 
 #: src/components/login/LoginForm/LoginForm.tsx:309
-msgid "or"
-msgstr "oppure"
+#~ msgid "or"
+#~ msgstr "oppure"
 
 #: src/helpers/roleLabels/roleLabels.ts:11
 msgid "Organization Committee"
@@ -687,15 +687,15 @@ msgstr "Membro del comitato organizzativo"
 msgid "Other"
 msgstr "Altro"
 
-#: src/components/login/LoginForm/LoginForm.tsx:205
+#: src/components/login/LoginForm/LoginForm.tsx:206
 msgid "Password"
 msgstr "Password"
 
-#: src/components/login/LoginForm/LoginForm.tsx:217
+#: src/components/login/LoginForm/LoginForm.tsx:219
 msgid "Password is required"
 msgstr "Password necessaria"
 
-#: src/components/login/LoginForm/LoginForm.tsx:222
+#: src/components/login/LoginForm/LoginForm.tsx:224
 msgid "Password must be at least 8 characters"
 msgstr "La password deve essere di almeno 8 caratteri"
 
@@ -901,9 +901,9 @@ msgid "Settings"
 msgstr "Impostazioni"
 
 #: src/components/login/LoginForm/LoginForm.tsx:154
-#: src/components/login/LoginForm/LoginForm.tsx:299
-#: src/containers/PublicContainer/PublicContainer.tsx:273
-#: src/containers/PublicContainer/PublicContainer.tsx:297
+#: src/components/login/LoginForm/LoginForm.tsx:305
+#: src/containers/PublicContainer/PublicContainer.tsx:256
+#: src/containers/PublicContainer/PublicContainer.tsx:280
 msgid "Sign Up"
 msgstr "Registrati"
 
@@ -1041,7 +1041,7 @@ msgstr "Password monouso basata sul tempo tramite app di autenticazione (Google 
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Troppi tentativi. Riprova tra qualche minuto"
 
-#: src/components/login/LoginForm/LoginForm.tsx:188
+#: src/components/login/LoginForm/LoginForm.tsx:189
 msgid "Too many characters"
 msgstr "Troppi caratteri"
 
@@ -1060,8 +1060,8 @@ msgid "Triathlon"
 msgstr "Triathlon"
 
 #: src/components/login/LoginForm/LoginForm.tsx:337
-msgid "Try alternative login"
-msgstr "Prova un accesso alternativo"
+#~ msgid "Try alternative login"
+#~ msgstr "Prova un accesso alternativo"
 
 #: src/containers/Settings/Settings.tsx:106
 msgid "Two-Factor Authentication (2FA)"

@@ -23,7 +23,6 @@ describe('PublicContainer', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       login: vi.fn(),
       signup: vi.fn(),
-      loginWithRedirect: vi.fn(),
       isAuthenticated: false,
       localStorageAvailable: true,
       logout: vi.fn(),

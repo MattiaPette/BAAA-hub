@@ -138,52 +138,17 @@ describe('LoginForm', () => {
     ).toBeInTheDocument();
   });
 
-  it('should display alternative login section when onLoginWithRedirect is provided', () => {
-    const mockLoginWithRedirect = vi.fn();
-    render(<LoginForm onLoginWithRedirect={mockLoginWithRedirect} />);
+  it('should disable form when isLoading is true', () => {
+    render(<LoginForm isLoading />);
 
-    expect(
-      screen.getByText(/having trouble signing in\?/i),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /try alternative login/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeDisabled();
+    expect(screen.getByLabelText(/password/i)).toBeDisabled();
+    expect(screen.getByRole('button', { name: /login/i })).toBeDisabled();
   });
 
-  it('should call onLoginWithRedirect when alternative login button is clicked', () => {
-    const mockLoginWithRedirect = vi.fn();
-    render(<LoginForm onLoginWithRedirect={mockLoginWithRedirect} />);
+  it('should show loading spinner when isLoading is true', () => {
+    render(<LoginForm isLoading />);
 
-    const alternativeLoginButton = screen.getByRole('button', {
-      name: /try alternative login/i,
-    });
-    fireEvent.click(alternativeLoginButton);
-
-    expect(mockLoginWithRedirect).toHaveBeenCalled();
-  });
-
-  it('should not display alternative login section when onLoginWithRedirect is not provided', () => {
-    render(<LoginForm />);
-
-    expect(
-      screen.queryByText(/having trouble signing in\?/i),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /try alternative login/i }),
-    ).not.toBeInTheDocument();
-  });
-
-  it('should not display alternative login section in signup mode', () => {
-    const mockLoginWithRedirect = vi.fn();
-    render(
-      <LoginForm isSignupMode onLoginWithRedirect={mockLoginWithRedirect} />,
-    );
-
-    expect(
-      screen.queryByText(/having trouble signing in\?/i),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /try alternative login/i }),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 });
