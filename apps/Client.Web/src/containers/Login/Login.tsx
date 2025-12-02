@@ -9,6 +9,16 @@ import { AuthErrorCode } from '../../providers/AuthProvider/AuthProvider.model';
 import { getErrorDescription } from '../../helpers/getErrorDescription/getErrorDescription';
 
 /**
+ * Props for the Login component
+ */
+interface LoginProps {
+  /**
+   * If true, the form will start in signup mode
+   */
+  initialSignupMode?: boolean;
+}
+
+/**
  * Login component — renders the login/signup form and handles user authentication.
  *
  * Reads the current location for returned error codes and provides an
@@ -22,8 +32,8 @@ import { getErrorDescription } from '../../helpers/getErrorDescription/getErrorD
  * cookie policies (e.g., Safari) where the cross-origin authentication may
  * fail with server errors.
  *
- * @param {void} props - This component does not accept props; it uses
- *   `useLocation` and `useAuth` internally.
+ * @param {LoginProps} props - Component props
+ * @param {boolean} props.initialSignupMode - If true, start in signup mode
  * @returns {JSX.Element} A React element containing the login/signup form.
  * @throws {Error} If `useAuth()` is called outside an `AuthProvider` the
  *   hook may throw; ensure the component is rendered inside an
@@ -38,18 +48,19 @@ import { getErrorDescription } from '../../helpers/getErrorDescription/getErrorD
  * @example
  * // Route usage
  * // <Route path="/login" element={<Login />} />
+ * // <Route path="/signup" element={<Login initialSignupMode />} />
  *
  * // Example `onSubmit` signature (internal):
  * // onSubmit({ user: 'alice', password: 'secret' });
  */
 
-export const Login: FC = () => {
+export const Login: FC<LoginProps> = ({ initialSignupMode = false }) => {
   const location = useLocation();
   const { login, signup, loginWithRedirect } = useAuth();
 
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string>('');
-  const [isSignupMode, setIsSignupMode] = useState(false);
+  const [isSignupMode, setIsSignupMode] = useState(initialSignupMode);
 
   const onSubmit = useCallback(
     (loginFormValue: LoginFormValue) => {

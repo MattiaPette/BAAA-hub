@@ -6,6 +6,7 @@ import { isAdmin } from '@baaa-hub/shared-types';
 import { useAuth } from '../../../providers/AuthProvider/AuthProvider';
 import { useUser } from '../../../providers/UserProvider/UserProvider';
 
+import { Login } from '../../Login/Login';
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
@@ -20,10 +21,10 @@ import { PublicContainer } from '../../PublicContainer/PublicContainer';
 import { LoginCallback } from '../../LoginCallback/LoginCallback';
 
 /**
- * ProtectedRoute - A guard component that requires authentication to access.
- * Unauthenticated users see the public version of the page.
+ * AuthenticatedRoute - A guard component that requires authentication to access.
+ * Unauthenticated users are redirected to the login page.
  */
-const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
+const AuthenticatedRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const { hasProfile, isLoading: isUserLoading } = useUser();
 
@@ -37,9 +38,9 @@ const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
     return <Navigate to="/profile/setup" replace />;
   }
 
-  // If not authenticated, redirect to dashboard (which is public)
+  // If not authenticated, redirect to login
   if (!isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   // eslint-disable-next-line react/jsx-no-useless-fragment -- children must be wrapped in JSX for FC return type
@@ -54,6 +55,21 @@ const AdminRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useUser();
 
   if (!user || !isAdmin(user.roles)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment -- children must be wrapped in JSX for FC return type
+  return <>{children}</>;
+};
+
+/**
+ * GuestRoute - A guard component that only allows unauthenticated users.
+ * Authenticated users are redirected to the dashboard.
+ */
+const GuestRoute: FC<{ children: ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -83,7 +99,7 @@ const ProfileSetupRoutes: FC = () =>
 /**
  * Public-first routes - Most pages are publicly accessible.
  * Authentication is required only for specific features (profile, settings, admin).
- * Login/signup is handled via Keycloak redirect (no native login form).
+ * Login/signup is available at /login and /signup routes with embedded forms.
  */
 const PublicFirstRoutes: FC = () => {
   const { isAuthenticated } = useAuth();
@@ -93,6 +109,24 @@ const PublicFirstRoutes: FC = () => {
     {
       path: '/login/callback',
       element: <LoginCallback />,
+    },
+    // Login route with embedded form (guest only)
+    {
+      path: '/login',
+      element: (
+        <GuestRoute>
+          <Login />
+        </GuestRoute>
+      ),
+    },
+    // Signup route - same form in signup mode (guest only)
+    {
+      path: '/signup',
+      element: (
+        <GuestRoute>
+          <Login initialSignupMode />
+        </GuestRoute>
+      ),
     },
     // Logout route
     {
@@ -112,27 +146,27 @@ const PublicFirstRoutes: FC = () => {
               {
                 path: '/profile',
                 element: (
-                  <ProtectedRoute>
+                  <AuthenticatedRoute>
                     <Profile />
-                  </ProtectedRoute>
+                  </AuthenticatedRoute>
                 ),
               },
               {
                 path: '/settings',
                 element: (
-                  <ProtectedRoute>
+                  <AuthenticatedRoute>
                     <Settings />
-                  </ProtectedRoute>
+                  </AuthenticatedRoute>
                 ),
               },
               {
                 path: '/administration',
                 element: (
-                  <ProtectedRoute>
+                  <AuthenticatedRoute>
                     <AdminRoute>
                       <Administration />
                     </AdminRoute>
-                  </ProtectedRoute>
+                  </AuthenticatedRoute>
                 ),
               },
             ],
@@ -165,7 +199,7 @@ const PublicFirstRoutes: FC = () => {
  *
  * Implements a public-first approach where most content is publicly accessible.
  * - Public users see the dashboard and can browse content
- * - Login/signup is handled via Keycloak (no native login forms)
+ * - Login/signup is available at /login and /signup routes with embedded forms
  * - Authenticated users have access to additional features (profile, settings)
  * - Admin features require admin role
  *

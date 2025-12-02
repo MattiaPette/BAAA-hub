@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Outlet, useLocation } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
@@ -25,7 +25,6 @@ import {
   RoutePermission,
 } from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
-import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import logo from '../../assets/shrimp.png';
 
 // Subtle gradient animation for the header accent
@@ -119,12 +118,12 @@ const AuthButtonsSection = styled(Stack)(({ theme }) => ({
  *
  * This container is used when users are not authenticated. It displays
  * the main layout with a header containing login and signup buttons
- * that redirect to Keycloak for authentication.
+ * that navigate to the /login and /signup routes.
  */
 export const PublicContainer: FC = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { title } = useBreadcrum();
-  const { login, signup } = useAuth();
   const { i18n } = useLingui();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -144,33 +143,17 @@ export const PublicContainer: FC = () => {
   ];
 
   /**
-   * Handle login button click - redirects to Keycloak login.
-   * Note: Empty email/password are passed to satisfy the interface, but with Keycloak
-   * authentication is handled entirely via OAuth redirect, not direct credential submission.
+   * Handle login button click - navigates to /login route.
    */
   const handleLogin = () => {
-    login({
-      email: '', // Keycloak handles authentication via redirect
-      password: '', // Password is not used with Keycloak OAuth flow
-      onErrorCallback: error => {
-        console.error('Login error:', error);
-      },
-    });
+    navigate('/login');
   };
 
   /**
-   * Handle signup button click - redirects to Keycloak registration.
-   * Note: Empty email/password are passed to satisfy the interface, but with Keycloak
-   * registration is handled entirely via OAuth redirect, not direct form submission.
+   * Handle signup button click - navigates to /signup route.
    */
   const handleSignup = () => {
-    signup({
-      email: '', // Keycloak handles registration via redirect
-      password: '', // Password is not used with Keycloak OAuth flow
-      onErrorCallback: error => {
-        console.error('Signup error:', error);
-      },
-    });
+    navigate('/signup');
   };
 
   return (

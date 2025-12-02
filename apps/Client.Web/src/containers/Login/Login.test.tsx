@@ -409,4 +409,21 @@ describe('Login', () => {
 
     expect(mockLoginWithRedirect).toHaveBeenCalled();
   });
+
+  it('should start in signup mode when initialSignupMode is true', () => {
+    render(
+      <MemoryRouter>
+        <Login initialSignupMode />
+      </MemoryRouter>,
+    );
+
+    // Should show Create Account button and signup form
+    expect(
+      screen.getByRole('button', { name: /create account/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /sign up/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/already have an account\?/i)).toBeInTheDocument();
+  });
 });
