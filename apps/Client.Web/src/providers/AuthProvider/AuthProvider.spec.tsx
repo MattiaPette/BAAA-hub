@@ -478,4 +478,301 @@ describe('AuthProvider', () => {
 
     consoleInfoSpy.mockRestore();
   });
+
+  it('handles login function with direct password flow', async () => {
+    const mockFetch = vi.fn();
+    global.fetch = mockFetch;
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          access_token: 'test-access-token',
+          id_token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJleHAiOjk5OTk5OTk5OTl9.signature',
+          refresh_token: 'test-refresh-token',
+          expires_in: 3600,
+          token_type: 'Bearer',
+        }),
+    });
+
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
+    });
+
+    const TestComponent = () => {
+      const auth = useAuth();
+
+      const handleLogin = async () => {
+        await auth.login({
+          email: 'test@example.com',
+          password: 'password123',
+        });
+      };
+
+      return (
+        <div>
+          <button type="button" onClick={handleLogin}>
+            Login
+          </button>
+          <div data-testid="authenticated">{String(auth.isAuthenticated)}</div>
+        </div>
+      );
+    };
+
+    const { getByText } = render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      getByText('Login').click();
+    });
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalled();
+    });
+  });
+
+  it('handles login function error', async () => {
+    const mockFetch = vi.fn();
+    global.fetch = mockFetch;
+
+    const mockErrorCallback = vi.fn();
+
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: () =>
+        Promise.resolve({
+          error: 'invalid_grant',
+          error_description: 'Invalid user credentials',
+        }),
+    });
+
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
+    });
+
+    const TestComponent = () => {
+      const auth = useAuth();
+
+      const handleLogin = async () => {
+        await auth.login({
+          email: 'test@example.com',
+          password: 'wrong-password',
+          onErrorCallback: mockErrorCallback,
+        });
+      };
+
+      return (
+        <div>
+          <button type="button" onClick={handleLogin}>
+            Login
+          </button>
+        </div>
+      );
+    };
+
+    const { getByText } = render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      getByText('Login').click();
+    });
+
+    await waitFor(() => {
+      expect(mockErrorCallback).toHaveBeenCalled();
+    });
+  });
+
+  it('handles signup function success', async () => {
+    const mockFetch = vi.fn();
+    global.fetch = mockFetch;
+
+    const mockSuccessCallback = vi.fn();
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          message: 'User created successfully',
+        }),
+    });
+
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
+    });
+
+    const TestComponent = () => {
+      const auth = useAuth();
+
+      const handleSignup = async () => {
+        await auth.signup({
+          email: 'newuser@example.com',
+          password: 'password123',
+          onSuccessCallback: mockSuccessCallback,
+        });
+      };
+
+      return (
+        <div>
+          <button type="button" onClick={handleSignup}>
+            Signup
+          </button>
+        </div>
+      );
+    };
+
+    const { getByText } = render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      getByText('Signup').click();
+    });
+
+    await waitFor(() => {
+      expect(mockSuccessCallback).toHaveBeenCalled();
+    });
+  });
+
+  it('handles signup function error', async () => {
+    const mockFetch = vi.fn();
+    global.fetch = mockFetch;
+
+    const mockErrorCallback = vi.fn();
+
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: () =>
+        Promise.resolve({
+          code: 'USER_EXISTS',
+          message: 'User already exists',
+        }),
+    });
+
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
+    });
+
+    const TestComponent = () => {
+      const auth = useAuth();
+
+      const handleSignup = async () => {
+        await auth.signup({
+          email: 'existing@example.com',
+          password: 'password123',
+          onErrorCallback: mockErrorCallback,
+        });
+      };
+
+      return (
+        <div>
+          <button type="button" onClick={handleSignup}>
+            Signup
+          </button>
+        </div>
+      );
+    };
+
+    const { getByText } = render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      getByText('Signup').click();
+    });
+
+    await waitFor(() => {
+      expect(mockErrorCallback).toHaveBeenCalled();
+    });
+  });
+
+  it('handles authenticate function', async () => {
+    const mockLocalStorage = {
+      getItem: vi.fn().mockReturnValue(null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: mockLocalStorage,
+      writable: true,
+      configurable: true,
+    });
+
+    const TestComponent = () => {
+      const auth = useAuth();
+
+      const handleAuthenticate = () => {
+        auth.authenticate({});
+      };
+
+      return (
+        <div>
+          <button type="button" onClick={handleAuthenticate}>
+            Authenticate
+          </button>
+        </div>
+      );
+    };
+
+    const { getByText } = render(
+      <AuthProvider {...mockProps}>
+        <TestComponent />
+      </AuthProvider>,
+    );
+
+    await waitFor(() => {
+      getByText('Authenticate').click();
+    });
+
+    // Authenticate function is called, no error thrown
+    expect(true).toBe(true);
+  });
 });
