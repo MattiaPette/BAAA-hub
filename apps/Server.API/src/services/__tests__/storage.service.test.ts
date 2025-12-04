@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock sharp before importing the module
 vi.mock('sharp', () => {
@@ -17,11 +17,21 @@ vi.mock('@aws-sdk/client-s3', () => {
     S3Client: class MockS3Client {
       send = vi.fn();
     },
-    PutObjectCommand: class MockPutObjectCommand {},
-    GetObjectCommand: class MockGetObjectCommand {},
-    DeleteObjectCommand: class MockDeleteObjectCommand {},
-    HeadBucketCommand: class MockHeadBucketCommand {},
-    CreateBucketCommand: class MockCreateBucketCommand {},
+    PutObjectCommand: class MockPutObjectCommand {
+      constructor(public input: unknown) {}
+    },
+    GetObjectCommand: class MockGetObjectCommand {
+      constructor(public input: unknown) {}
+    },
+    DeleteObjectCommand: class MockDeleteObjectCommand {
+      constructor(public input: unknown) {}
+    },
+    HeadBucketCommand: class MockHeadBucketCommand {
+      constructor(public input: unknown) {}
+    },
+    CreateBucketCommand: class MockCreateBucketCommand {
+      constructor(public input: unknown) {}
+    },
   };
 });
 
@@ -32,6 +42,7 @@ import {
   generateImageKey,
   generateThumbnailKey,
   generateThumbnail,
+  isStorageAvailable,
   ALLOWED_IMAGE_TYPES,
   MAX_IMAGE_SIZE,
   THUMBNAIL_SIZE,
@@ -39,6 +50,9 @@ import {
 } from '../storage.service';
 
 describe('Storage Service', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
   describe('validateImage', () => {
     it('should accept valid JPEG image', () => {
       expect(() => validateImage('image/jpeg', 1024)).not.toThrow();
@@ -204,6 +218,13 @@ describe('Storage Service', () => {
       const customSize = 256;
       const result = await generateThumbnail(imageData, customSize);
       expect(result).toBeInstanceOf(Buffer);
+    });
+  });
+
+  describe('isStorageAvailable', () => {
+    it('should return a boolean', () => {
+      const result = isStorageAvailable();
+      expect(typeof result).toBe('boolean');
     });
   });
 });
