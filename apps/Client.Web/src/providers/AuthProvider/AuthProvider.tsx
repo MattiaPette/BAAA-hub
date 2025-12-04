@@ -49,6 +49,15 @@ const parseJwt = (token: string): TokenPayload | null => {
 
 /**
  * Map Keycloak error responses to AuthErrorCode
+ *
+ * Keycloak returns different error descriptions for various scenarios:
+ * - "Invalid user credentials" - Wrong username/password
+ * - "Account disabled" - User account is disabled
+ * - "Account locked" - Too many failed login attempts
+ * - "Account is not fully set up" - Missing required profile fields (Keycloak 23+)
+ * - "Verify email" / "email not verified" - Email verification required
+ * - "Required action" - User must complete required actions (e.g., update profile, accept terms)
+ * - "Account expired" / "User expired" - Account has expired
  */
 const mapKeycloakError = (
   error: string,
@@ -59,7 +68,8 @@ const mapKeycloakError = (
   // Handle OAuth2 standard errors
   switch (error) {
     case 'invalid_grant':
-      // Check error description for more specific error
+      // Check error description for more specific error - order matters as
+      // some patterns may overlap; more specific patterns are checked first
       if (descLower.includes('invalid user credentials')) {
         return AuthErrorCode.INVALID_USER_PASSWORD;
       }
@@ -69,28 +79,26 @@ const mapKeycloakError = (
       if (descLower.includes('account locked')) {
         return AuthErrorCode.TOO_MANY_ATTEMPTS;
       }
-      if (
-        descLower.includes('account is not fully set up') ||
-        descLower.includes('not fully set up')
-      ) {
+      // Account setup incomplete (Keycloak 23+ requires first/last name by default)
+      if (descLower.includes('not fully set up')) {
         return AuthErrorCode.ACCOUNT_NOT_FULLY_SET_UP;
       }
+      // Email verification required
       if (
         descLower.includes('verify email') ||
         descLower.includes('email not verified')
       ) {
         return AuthErrorCode.EMAIL_NOT_VERIFIED;
       }
-      if (
-        descLower.includes('required action') ||
-        descLower.includes('action required')
-      ) {
+      // User must complete required actions before login
+      if (descLower.includes('required action')) {
         return AuthErrorCode.ACTION_REQUIRED;
       }
-      if (descLower.includes('account expired')) {
-        return AuthErrorCode.ACCOUNT_EXPIRED;
-      }
-      if (descLower.includes('user expired')) {
+      // Account has expired
+      if (
+        descLower.includes('account expired') ||
+        descLower.includes('user expired')
+      ) {
         return AuthErrorCode.ACCOUNT_EXPIRED;
       }
       return AuthErrorCode.INVALID_GRANT;
