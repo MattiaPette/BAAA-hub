@@ -305,4 +305,248 @@ describe('Router', () => {
       expect(screen.getByText('Sign Up')).toBeInTheDocument();
     });
   });
+
+  it('should show loading when isLoading is true', () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: false,
+      localStorageAvailable: true,
+      isLoading: true,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: null,
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    const { container } = render(
+      <MemoryRouter>
+        <Router />
+      </MemoryRouter>,
+    );
+
+    // Loader should be visible
+    expect(
+      container.querySelector('.MuiCircularProgress-root'),
+    ).toBeInTheDocument();
+  });
+
+  it('should redirect to profile setup from any route when authenticated but no profile', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      isLoading: false,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: {
+        idTokenPayload: {
+          name: 'Test User',
+          email: 'test@example.com',
+        },
+      },
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    vi.mocked(UserProviderModule.useUser).mockReturnValue({
+      user: null,
+      hasProfile: false,
+      isLoading: false,
+      error: null,
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
+    });
+
+    const { container } = render(
+      <MemoryRouter initialEntries={['/settings']}>
+        <Router />
+      </MemoryRouter>,
+    );
+
+    // Should redirect to profile setup
+    await waitFor(() => {
+      expect(container.textContent).toMatch(/complete your profile/i);
+    });
+  });
+
+  it('should show Loader when authenticated but user loading', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      isLoading: false,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: {
+        idTokenPayload: {
+          name: 'Test User',
+          email: 'test@example.com',
+        },
+      },
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    vi.mocked(UserProviderModule.useUser).mockReturnValue({
+      user: null,
+      hasProfile: true,
+      isLoading: true,
+      error: null,
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
+    });
+
+    const { container } = render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/profile']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
+    );
+
+    // Should show loader while user is loading
+    await waitFor(() => {
+      expect(
+        container.querySelector('.MuiCircularProgress-root'),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should redirect to login for profile route when not authenticated', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: false,
+      localStorageAvailable: true,
+      isLoading: false,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: null,
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    const { container } = render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/login']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
+    );
+
+    // Should show login form
+    await waitFor(() => {
+      expect(container.textContent).toMatch(/email|password/i);
+    });
+  });
+
+  it('should redirect authenticated user from login to dashboard', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      isLoading: false,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: {
+        idTokenPayload: {
+          name: 'Test User',
+          email: 'test@example.com',
+        },
+      },
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    vi.mocked(UserProviderModule.useUser).mockReturnValue({
+      user: null,
+      hasProfile: true,
+      isLoading: false,
+      error: null,
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
+    });
+
+    const { container } = render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/login']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
+    );
+
+    // Should redirect to dashboard since user is authenticated
+    await waitFor(() => {
+      expect(container.textContent).toMatch(/dashboard/i);
+    });
+  });
+
+  it('should redirect non-admin from administration to dashboard', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      isLoading: false,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: {
+        idTokenPayload: {
+          name: 'Test User',
+          email: 'test@example.com',
+        },
+      },
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    vi.mocked(UserProviderModule.useUser).mockReturnValue({
+      user: {
+        id: '1',
+        authId: 'auth0|1',
+        name: 'John',
+        surname: 'Doe',
+        nickname: 'johndoe',
+        email: 'john@example.com',
+        dateOfBirth: '1990-01-01',
+        sportTypes: [],
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z',
+        isBlocked: false,
+        isEmailVerified: true,
+        mfaEnabled: false,
+        mfaType: 'none' as any,
+        roles: ['member' as any], // Regular user, not admin
+        privacySettings: {
+          email: 'PUBLIC' as any,
+          dateOfBirth: 'PUBLIC' as any,
+          sportTypes: 'PUBLIC' as any,
+          socialLinks: 'PUBLIC' as any,
+        },
+      },
+      hasProfile: true,
+      isLoading: false,
+      error: null,
+      refreshUser: vi.fn(),
+      setUser: vi.fn(),
+    });
+
+    const { container } = render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/administration']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
+    );
+
+    // Should redirect to dashboard since user is not admin
+    await waitFor(() => {
+      expect(container.textContent).toMatch(/dashboard/i);
+    });
+  });
 });
