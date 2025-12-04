@@ -123,6 +123,38 @@ describe('getErrorDescription', () => {
     expect(typeof result).toBe('string');
   });
 
+  it('should return correct message for ACCOUNT_NOT_FULLY_SET_UP', () => {
+    const result = getErrorDescription({
+      errorCode: AuthErrorCode.ACCOUNT_NOT_FULLY_SET_UP,
+    });
+    expect(result).toBeTruthy();
+    expect(typeof result).toBe('string');
+  });
+
+  it('should return correct message for EMAIL_NOT_VERIFIED', () => {
+    const result = getErrorDescription({
+      errorCode: AuthErrorCode.EMAIL_NOT_VERIFIED,
+    });
+    expect(result).toBeTruthy();
+    expect(typeof result).toBe('string');
+  });
+
+  it('should return correct message for ACTION_REQUIRED', () => {
+    const result = getErrorDescription({
+      errorCode: AuthErrorCode.ACTION_REQUIRED,
+    });
+    expect(result).toBeTruthy();
+    expect(typeof result).toBe('string');
+  });
+
+  it('should return correct message for ACCOUNT_EXPIRED', () => {
+    const result = getErrorDescription({
+      errorCode: AuthErrorCode.ACCOUNT_EXPIRED,
+    });
+    expect(result).toBeTruthy();
+    expect(typeof result).toBe('string');
+  });
+
   it('should return correct message for INVALID_SIGNUP', () => {
     const result = getErrorDescription({
       errorCode: AuthErrorCode.INVALID_SIGNUP,

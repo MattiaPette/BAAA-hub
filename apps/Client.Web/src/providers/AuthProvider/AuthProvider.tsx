@@ -54,20 +54,44 @@ const mapKeycloakError = (
   error: string,
   errorDescription?: string,
 ): AuthErrorCode => {
+  const descLower = errorDescription?.toLowerCase() ?? '';
+
   // Handle OAuth2 standard errors
   switch (error) {
     case 'invalid_grant':
       // Check error description for more specific error
-      if (
-        errorDescription?.toLowerCase().includes('invalid user credentials')
-      ) {
+      if (descLower.includes('invalid user credentials')) {
         return AuthErrorCode.INVALID_USER_PASSWORD;
       }
-      if (errorDescription?.toLowerCase().includes('account disabled')) {
+      if (descLower.includes('account disabled')) {
         return AuthErrorCode.BLOCKED_USER;
       }
-      if (errorDescription?.toLowerCase().includes('account locked')) {
+      if (descLower.includes('account locked')) {
         return AuthErrorCode.TOO_MANY_ATTEMPTS;
+      }
+      if (
+        descLower.includes('account is not fully set up') ||
+        descLower.includes('not fully set up')
+      ) {
+        return AuthErrorCode.ACCOUNT_NOT_FULLY_SET_UP;
+      }
+      if (
+        descLower.includes('verify email') ||
+        descLower.includes('email not verified')
+      ) {
+        return AuthErrorCode.EMAIL_NOT_VERIFIED;
+      }
+      if (
+        descLower.includes('required action') ||
+        descLower.includes('action required')
+      ) {
+        return AuthErrorCode.ACTION_REQUIRED;
+      }
+      if (descLower.includes('account expired')) {
+        return AuthErrorCode.ACCOUNT_EXPIRED;
+      }
+      if (descLower.includes('user expired')) {
+        return AuthErrorCode.ACCOUNT_EXPIRED;
       }
       return AuthErrorCode.INVALID_GRANT;
     case 'invalid_client':
@@ -80,6 +104,10 @@ const mapKeycloakError = (
       return AuthErrorCode.INVALID_SCOPE;
     case 'access_denied':
       return AuthErrorCode.ACCESS_DENIED;
+    case 'temporarily_unavailable':
+      return AuthErrorCode.TEMPORARILY_UNAVAILABLE;
+    case 'server_error':
+      return AuthErrorCode.SERVER_ERROR;
     default:
       return AuthErrorCode.UNKNOWN_ERROR;
   }

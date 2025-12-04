@@ -33,6 +33,14 @@ export enum AuthErrorCode {
   USER_EXISTS = 'user_exists',
   /** The username is already taken */
   USERNAME_EXISTS = 'username_exists',
+  /** Account setup is incomplete (e.g., missing required profile fields) */
+  ACCOUNT_NOT_FULLY_SET_UP = 'account_not_fully_set_up',
+  /** Email verification is required before login */
+  EMAIL_NOT_VERIFIED = 'email_not_verified',
+  /** User must complete required actions before login */
+  ACTION_REQUIRED = 'action_required',
+  /** Account has expired */
+  ACCOUNT_EXPIRED = 'account_expired',
 
   // Session and token errors
   /** Login is required to access this resource */
