@@ -279,6 +279,8 @@ export type AuthenticateFunction = (
  * @property {boolean} isLoading - Whether an authentication operation is in progress
  * @property {Dispatch<SetStateAction<boolean>>} setLoading - Function to update loading state
  * @property {boolean} localStorageAvailable - Whether localStorage is available in the current environment
+ * @property {string[]} authErrorMessages - Array of authentication error messages to display
+ * @property {DispatchWithoutAction} clearAuthErrors - Function to clear authentication error messages
  */
 export type AuthContextValue = Readonly<{
   authClientData: AuthClient;
@@ -293,4 +295,6 @@ export type AuthContextValue = Readonly<{
   isLoading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   localStorageAvailable: boolean;
+  authErrorMessages: string[];
+  clearAuthErrors: DispatchWithoutAction;
 }>;

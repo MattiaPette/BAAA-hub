@@ -7,6 +7,7 @@ import { useAuth } from '../../../providers/AuthProvider/AuthProvider';
 import { useUser } from '../../../providers/UserProvider/UserProvider';
 
 import { Login } from '../../Login/Login';
+import { Signup } from '../../Signup/Signup';
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
@@ -119,12 +120,12 @@ const PublicFirstRoutes: FC = () => {
         </GuestRoute>
       ),
     },
-    // Signup route - same form in signup mode (guest only)
+    // Signup route - separate signup page (guest only)
     {
       path: '/signup',
       element: (
         <GuestRoute>
-          <Login initialSignupMode />
+          <Signup />
         </GuestRoute>
       ),
     },

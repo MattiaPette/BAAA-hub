@@ -27,7 +27,7 @@ export const Logout: FC = () => {
   useEffect(() => {
     logout();
 
-    navigateTo('/login');
+    navigateTo('/dsahboard');
   });
 
   return <h1>{pageTitle}</h1>;
