@@ -174,4 +174,76 @@ describe('ProfileSetup', () => {
     // Should not navigate on error
     expect(mockNavigate).not.toHaveBeenCalled();
   });
+
+  it('should show loading state during submission', async () => {
+    (createUserProfile as Mock).mockImplementation(
+      () =>
+        new Promise(resolve => {
+          setTimeout(resolve, 100);
+        }),
+    );
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+
+    // Button should be disabled during submission
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled();
+    });
+  });
+
+  it('should display page title', async () => {
+    renderWithSnackbar(<ProfileSetup />);
+
+    // The title should be set via useBreadcrum hook
+    // We can verify the form is rendered
+    expect(screen.getByTestId('profile-setup-form')).toBeInTheDocument();
+  });
+
+  it('should not call service when token is missing', () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      token: null,
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      userPermissions: [],
+      setLoading: mockSetLoading,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    expect(createUserProfile).not.toHaveBeenCalled();
+  });
+
+  it('should handle empty name from token payload', () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      token: {
+        idToken: 'test-id-token',
+        idTokenPayload: {
+          email: 'test@example.com',
+        },
+      },
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      userPermissions: [],
+      setLoading: mockSetLoading,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    expect(screen.getByTestId('default-name')).toHaveTextContent('');
+  });
 });

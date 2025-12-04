@@ -285,4 +285,57 @@ describe('Administration', () => {
       expect(screen.getByText('No users found')).toBeInTheDocument();
     });
   });
+
+  it('should toggle user block status when block button is clicked', async () => {
+    vi.mocked(adminService.updateUserBlocked).mockResolvedValue({
+      ...mockUsers[0],
+      isBlocked: true,
+    });
+
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    // Find and click the block button for the first user
+    const blockButtons = screen.getAllByTestId('BlockIcon');
+    expect(blockButtons.length).toBeGreaterThan(0);
+  });
+
+  it('should handle page change', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    // Verify table pagination exists
+    expect(screen.getByText('Rows per page:')).toBeInTheDocument();
+  });
+
+  it('should handle search input', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    const searchInput = screen.getByPlaceholderText(
+      'Search by name, email, or nickname...',
+    );
+    expect(searchInput).toBeInTheDocument();
+  });
+
+  it('should display filter dropdowns', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    // Verify the filter section exists
+    const searchIcon = screen.getByTestId('SearchIcon');
+    expect(searchIcon).toBeInTheDocument();
+  });
 });

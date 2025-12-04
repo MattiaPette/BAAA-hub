@@ -12,6 +12,9 @@ import {
   getCurrentUser,
   updateUserProfile,
   checkNicknameAvailability,
+  deleteUserImage,
+  getUserImageUrl,
+  getMyImageUrl,
 } from './userService';
 
 // Mock axios
@@ -21,6 +24,7 @@ vi.mock('axios', () => ({
       get: vi.fn(),
       post: vi.fn(),
       patch: vi.fn(),
+      delete: vi.fn(),
     })),
   },
 }));
@@ -28,6 +32,7 @@ vi.mock('axios', () => ({
 describe('userService', () => {
   let mockAxiosInstance: {
     get: Mock;
+    delete: Mock;
     post: Mock;
     patch: Mock;
   };
@@ -39,6 +44,7 @@ describe('userService', () => {
       get: vi.fn(),
       post: vi.fn(),
       patch: vi.fn(),
+      delete: vi.fn(),
     };
 
     (axios.create as Mock).mockReturnValue(mockAxiosInstance);
@@ -359,6 +365,80 @@ describe('userService', () => {
           Authorization: 'Bearer my-access-token',
         },
       });
+    });
+  });
+
+  describe('deleteUserImage', () => {
+    it('should delete user avatar', async () => {
+      mockAxiosInstance.delete.mockResolvedValue({});
+
+      await deleteUserImage('test-token', 'avatar');
+
+      expect(mockAxiosInstance.delete).toHaveBeenCalledWith(
+        '/api/images/me/avatar',
+      );
+    });
+
+    it('should delete user banner', async () => {
+      mockAxiosInstance.delete.mockResolvedValue({});
+
+      await deleteUserImage('test-token', 'banner');
+
+      expect(mockAxiosInstance.delete).toHaveBeenCalledWith(
+        '/api/images/me/banner',
+      );
+    });
+  });
+
+  describe('getUserImageUrl', () => {
+    it('should return avatar URL without query params by default', () => {
+      const url = getUserImageUrl('user-123', 'avatar');
+      expect(url).toBe('http://localhost:3000/api/images/user/user-123/avatar');
+    });
+
+    it('should return banner URL without query params by default', () => {
+      const url = getUserImageUrl('user-123', 'banner');
+      expect(url).toBe('http://localhost:3000/api/images/user/user-123/banner');
+    });
+
+    it('should return URL with original=true when original is true', () => {
+      const url = getUserImageUrl('user-123', 'avatar', true);
+      expect(url).toBe(
+        'http://localhost:3000/api/images/user/user-123/avatar?original=true',
+      );
+    });
+
+    it('should return URL with cache buster', () => {
+      const url = getUserImageUrl('user-123', 'avatar', false, 1234567890);
+      expect(url).toBe(
+        'http://localhost:3000/api/images/user/user-123/avatar?t=1234567890',
+      );
+    });
+
+    it('should return URL with original and cache buster', () => {
+      const url = getUserImageUrl('user-123', 'avatar', true, 1234567890);
+      expect(url).toBe(
+        'http://localhost:3000/api/images/user/user-123/avatar?original=true&t=1234567890',
+      );
+    });
+  });
+
+  describe('getMyImageUrl', () => {
+    it('should return avatar URL without original param by default', () => {
+      const url = getMyImageUrl('avatar');
+      expect(url).toBe('http://localhost:3000/api/images/me/avatar');
+    });
+
+    it('should return banner URL without original param by default', () => {
+      const url = getMyImageUrl('banner');
+      expect(url).toBe('http://localhost:3000/api/images/me/banner');
+    });
+
+    it('should return URL with original=true when original is true', () => {
+      const url = getMyImageUrl('avatar', true);
+      expect(url).toBe(
+        'http://localhost:3000/api/images/me/avatar?original=true',
+      );
     });
   });
 });
