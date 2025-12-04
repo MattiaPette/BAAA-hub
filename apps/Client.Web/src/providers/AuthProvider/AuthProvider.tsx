@@ -404,8 +404,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
         formData.append('password', password);
         formData.append('scope', 'openid profile email');
 
-        console.log('Sending login request to:', tokenEndpoint);
-
         const response = await fetch(tokenEndpoint, {
           method: 'POST',
           headers: {
@@ -414,30 +412,21 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
           body: formData,
         });
 
-        console.log('Login response status:', response.status);
-
         if (!response.ok) {
-          console.log('Login failed, parsing error response');
           const errorData = (await response.json()) as {
             error?: string;
             error_description?: string;
           };
-          console.log('Login error data:', errorData);
           const errorCode = mapKeycloakError(
             errorData.error || 'unknown_error',
             errorData.error_description,
           );
-          console.log('Mapped error code:', errorCode);
           const errorMessage = getErrorDescription({ errorCode });
           setAuthErrorMessages([errorMessage]);
           setLoading(false);
-          console.log('Calling onErrorCallback with:', errorCode);
           onErrorCallback?.(errorCode);
-          console.log('Login process ended with error.');
           return;
         }
-
-        console.log('Login successful, parsing token response');
 
         const tokenResponse = (await response.json()) as {
           access_token: string;
@@ -446,10 +435,8 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
           expires_in: number;
           token_type: string;
         };
-        console.log('Token response:', tokenResponse);
 
         const idTokenPayload = parseJwt(tokenResponse.id_token);
-        console.log('idTokenPayload:', idTokenPayload);
 
         const authToken: AuthToken = {
           accessToken: tokenResponse.access_token,
@@ -457,30 +444,21 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
           refreshToken: tokenResponse.refresh_token,
           idTokenPayload: idTokenPayload || undefined,
         };
-        console.log('Auth token constructed:', authToken);
 
         setAuthErrorMessages([]); // Clear errors on successful login
         saveAuthToken(authToken);
-        console.log('Login process completed successfully.');
         setLoading(false);
-        console.log('Login process ended successfully.');
       } catch (error) {
-        console.log('Login error caught:', error);
-
         setLoading(false);
         // Distinguish between network errors and other errors
         if (error instanceof TypeError && error.message.includes('fetch')) {
-          console.log('Network error during login:', error);
           onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
         } else if (error instanceof SyntaxError) {
-          console.log('JSON parsing error during login:', error);
           // JSON parsing error from unexpected response format
           onErrorCallback?.(AuthErrorCode.SERVER_ERROR);
         } else {
-          console.log('Unknown error during login:', error);
           onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
         }
-        console.log('Login process ended with error.');
       }
     },
     [url, realm, clientId, saveAuthToken],
