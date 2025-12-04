@@ -137,4 +137,18 @@ describe('LoginForm', () => {
       screen.getByText(/account created successfully!/i),
     ).toBeInTheDocument();
   });
+
+  it('should disable form when isLoading is true', () => {
+    render(<LoginForm isLoading />);
+
+    expect(screen.getByLabelText(/email/i)).toBeDisabled();
+    expect(screen.getByLabelText(/password/i)).toBeDisabled();
+    expect(screen.getByRole('button', { name: /login/i })).toBeDisabled();
+  });
+
+  it('should show loading spinner when isLoading is true', () => {
+    render(<LoginForm isLoading />);
+
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  });
 });

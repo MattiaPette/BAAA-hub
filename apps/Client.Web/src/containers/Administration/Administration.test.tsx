@@ -112,6 +112,7 @@ describe('Administration', () => {
       localStorageAvailable: true,
       login: vi.fn(),
       signup: vi.fn(),
+
       logout: vi.fn(),
       authenticate: vi.fn(),
       isLoading: false,

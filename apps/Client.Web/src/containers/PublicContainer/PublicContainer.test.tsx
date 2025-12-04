@@ -7,15 +7,22 @@ import { PublicContainer } from './PublicContainer';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 import * as BreadcrumProviderModule from '../../providers/BreadcrumProvider/BreadcrumProvider';
 
-describe('PublicContainer', () => {
-  const mockLogin = vi.fn();
-  const mockSignup = vi.fn();
+// Mock useNavigate
+const mockNavigate = vi.fn();
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual('react-router');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
+describe('PublicContainer', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
-      login: mockLogin,
-      signup: mockSignup,
+      login: vi.fn(),
+      signup: vi.fn(),
       isAuthenticated: false,
       localStorageAvailable: true,
       logout: vi.fn(),
@@ -60,7 +67,7 @@ describe('PublicContainer', () => {
     );
   });
 
-  it('should call login when login button is clicked', async () => {
+  it('should navigate to /login when login button is clicked', async () => {
     render(
       <MemoryRouter>
         <PublicContainer />
@@ -72,15 +79,11 @@ describe('PublicContainer', () => {
     fireEvent.click(loginButton);
 
     await waitFor(() => {
-      expect(mockLogin).toHaveBeenCalledWith({
-        email: '',
-        password: '',
-        onErrorCallback: expect.any(Function),
-      });
+      expect(mockNavigate).toHaveBeenCalledWith('/login');
     });
   });
 
-  it('should call signup when signup button is clicked', async () => {
+  it('should navigate to /signup when signup button is clicked', async () => {
     render(
       <MemoryRouter>
         <PublicContainer />
@@ -92,11 +95,7 @@ describe('PublicContainer', () => {
     fireEvent.click(signupButton);
 
     await waitFor(() => {
-      expect(mockSignup).toHaveBeenCalledWith({
-        email: '',
-        password: '',
-        onErrorCallback: expect.any(Function),
-      });
+      expect(mockNavigate).toHaveBeenCalledWith('/signup');
     });
   });
 

@@ -11,6 +11,7 @@ export type LoginFormProps = Readonly<{
   errorMessages?: string[];
   successMessage?: string;
   isSignupMode?: boolean;
+  isLoading?: boolean;
 
   onSubmit?: Dispatch<LoginFormValue>;
   onSignup?: Dispatch<LoginFormValue>;

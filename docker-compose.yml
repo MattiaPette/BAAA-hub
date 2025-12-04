@@ -72,8 +72,6 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
     command: start-dev
-    volumes:
-      - ./keycloak-theme/baaa-hub:/opt/keycloak/themes/baaa-hub
     depends_on:
       keycloak-db:
         condition: service_healthy

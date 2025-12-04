@@ -26,6 +26,7 @@ describe('LoginCallback', () => {
       isAuthenticated: false,
       localStorageAvailable: true,
       login: vi.fn(),
+
       logout: vi.fn(),
       signup: vi.fn(),
       setLoading: vi.fn(),
@@ -165,6 +166,7 @@ describe('LoginCallback', () => {
       isAuthenticated: true,
       localStorageAvailable: true,
       login: vi.fn(),
+
       logout: vi.fn(),
       signup: vi.fn(),
       setLoading: vi.fn(),

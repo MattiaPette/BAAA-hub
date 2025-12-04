@@ -188,11 +188,10 @@ export type AuthLoginData = Readonly<{
 
 /**
  * Parameters for the login function.
- * Note: With Keycloak, login is handled via redirect, so email/password
- * are not passed directly but handled by Keycloak's login page.
+ * With embedded Keycloak login, credentials are sent directly to the token endpoint.
  *
- * @property {string} email - User's email address (used for hint)
- * @property {string} password - User's password (not used with Keycloak redirect)
+ * @property {string} email - User's email address
+ * @property {string} password - User's password
  * @property {function} [onErrorCallback] - Optional callback invoked when login fails
  */
 export type AuthLoginFunctionParameters = Readonly<{
@@ -202,13 +201,15 @@ export type AuthLoginFunctionParameters = Readonly<{
 }>;
 
 /**
- * Function type for initiating user login.
+ * Function type for initiating user login via embedded authentication.
+ * Uses Keycloak's Resource Owner Password Credentials (ROPC) flow.
  *
  * @param {AuthLoginFunctionParameters} parameters - Login credentials and optional error callback
+ * @returns {Promise<void>} A promise that resolves when login completes (successfully or with error)
  */
 export type AuthLoginFunction = (
   parameters: AuthLoginFunctionParameters,
-) => void;
+) => Promise<void>;
 
 /**
  * Parameters for the signup function.
@@ -229,10 +230,11 @@ export type AuthSignupFunctionParameters = Readonly<{
  * Function type for initiating user signup.
  *
  * @param {AuthSignupFunctionParameters} parameters - Signup credentials and optional callbacks
+ * @returns {Promise<void>} A promise that resolves when signup completes (successfully or with error)
  */
 export type AuthSignupFunction = (
   parameters: AuthSignupFunctionParameters,
-) => void;
+) => Promise<void>;
 
 /**
  * Parameters for the authenticate function.
@@ -262,8 +264,8 @@ export type AuthenticateFunction = (
  * @property {AuthToken | null} token - Current authentication token, or null if not authenticated
  * @property {string[]} userPermissions - Array of permission strings for the authenticated user
  * @property {AuthenticateFunction} authenticate - Function to authenticate from existing session/token
- * @property {AuthLoginFunction} login - Function to log in with credentials (redirects to Keycloak)
- * @property {AuthSignupFunction} signup - Function to sign up (redirects to Keycloak registration)
+ * @property {AuthLoginFunction} login - Function to log in with credentials (embedded login via Keycloak token endpoint)
+ * @property {AuthSignupFunction} signup - Function to sign up a new user
  * @property {DispatchWithoutAction} logout - Function to log out the current user
  * @property {boolean} isAuthenticated - Whether the user is currently authenticated
  * @property {boolean} isLoading - Whether an authentication operation is in progress
