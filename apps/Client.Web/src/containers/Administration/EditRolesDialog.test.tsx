@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
@@ -239,7 +239,10 @@ describe('EditRolesDialog', () => {
     const user = userEvent.setup();
     // Create a mock that takes time to resolve
     mockOnSave.mockImplementation(
-      () => new Promise(resolve => setTimeout(resolve, 1000)),
+      () =>
+        new Promise(resolve => {
+          setTimeout(resolve, 1000);
+        }),
     );
 
     const mockUser = createMockUser({ roles: [UserRole.MEMBER] });

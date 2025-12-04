@@ -481,7 +481,7 @@ describe('AuthProvider', () => {
 
   it('handles login function with direct password flow', async () => {
     const mockFetch = vi.fn();
-    global.fetch = mockFetch;
+    globalThis.fetch = mockFetch;
 
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -546,7 +546,7 @@ describe('AuthProvider', () => {
 
   it('handles login function error', async () => {
     const mockFetch = vi.fn();
-    global.fetch = mockFetch;
+    globalThis.fetch = mockFetch;
 
     const mockErrorCallback = vi.fn();
 
@@ -609,7 +609,7 @@ describe('AuthProvider', () => {
 
   it('handles signup function success', async () => {
     const mockFetch = vi.fn();
-    global.fetch = mockFetch;
+    globalThis.fetch = mockFetch;
 
     const mockSuccessCallback = vi.fn();
 
@@ -671,7 +671,7 @@ describe('AuthProvider', () => {
 
   it('handles signup function error', async () => {
     const mockFetch = vi.fn();
-    global.fetch = mockFetch;
+    globalThis.fetch = mockFetch;
 
     const mockErrorCallback = vi.fn();
 

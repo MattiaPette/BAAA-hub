@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
+import { UserRole, MfaType, PrivacyLevel } from '@baaa-hub/shared-types';
 import { renderWithProviders as render } from '../../../test-utils';
 import { Router } from './Router';
 import { BreadcrumProvider } from '../../../providers/BreadcrumProvider/BreadcrumProvider';
@@ -520,13 +521,13 @@ describe('Router', () => {
         isBlocked: false,
         isEmailVerified: true,
         mfaEnabled: false,
-        mfaType: 'none' as any,
-        roles: ['member' as any], // Regular user, not admin
+        mfaType: MfaType.NONE,
+        roles: [UserRole.MEMBER], // Regular user, not admin
         privacySettings: {
-          email: 'PUBLIC' as any,
-          dateOfBirth: 'PUBLIC' as any,
-          sportTypes: 'PUBLIC' as any,
-          socialLinks: 'PUBLIC' as any,
+          email: PrivacyLevel.PUBLIC,
+          dateOfBirth: PrivacyLevel.PUBLIC,
+          sportTypes: PrivacyLevel.PUBLIC,
+          socialLinks: PrivacyLevel.PUBLIC,
         },
       },
       hasProfile: true,
