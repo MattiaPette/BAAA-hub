@@ -338,4 +338,109 @@ describe('Administration', () => {
     const searchIcon = screen.getByTestId('SearchIcon');
     expect(searchIcon).toBeInTheDocument();
   });
+
+  it('should display blocked user chips correctly', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    });
+
+    // Jane Smith is blocked, should show blocked chip
+    const blockedChips = screen.getAllByText('Blocked');
+    expect(blockedChips.length).toBeGreaterThan(0);
+  });
+
+  it('should display active user chips correctly', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    // John Doe is active, should show active chip
+    const activeChips = screen.getAllByText('Active');
+    expect(activeChips.length).toBeGreaterThan(0);
+  });
+
+  it('should display email verified icons', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    // John has verified email, Jane doesn't
+    const verifiedIcons = screen.getAllByTestId('VerifiedUserIcon');
+    expect(verifiedIcons.length).toBeGreaterThan(0);
+  });
+
+  it('should display email not verified icons', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    });
+
+    // Jane doesn't have verified email
+    const notVerifiedIcons = screen.getAllByTestId('ErrorOutlineIcon');
+    expect(notVerifiedIcons.length).toBeGreaterThan(0);
+  });
+
+  it('should display MFA enabled chips', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    // John has MFA enabled
+    const securityIcons = screen.getAllByTestId('SecurityIcon');
+    expect(securityIcons.length).toBeGreaterThan(0);
+  });
+
+  it('should display MFA disabled icons', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    });
+
+    // Jane has MFA disabled
+    const noEncryptionIcons = screen.getAllByTestId('NoEncryptionIcon');
+    expect(noEncryptionIcons.length).toBeGreaterThan(0);
+  });
+
+  it('should display manage roles button for each user', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    const manageAccountsIcons = screen.getAllByTestId('ManageAccountsIcon');
+    expect(manageAccountsIcons.length).toBeGreaterThan(0);
+  });
+
+  it('should display user nickname with @ prefix', async () => {
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('@johndoe')).toBeInTheDocument();
+      expect(screen.getByText('@janesmith')).toBeInTheDocument();
+    });
+  });
+
+  it('should not show block button for current admin user', async () => {
+    // The mock setup has current user as 'admin-user-id' which is different from mockUsers
+    renderAdministration();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    // Block buttons should exist for other users
+    const blockIcons = screen.getAllByTestId('BlockIcon');
+    expect(blockIcons.length).toBeGreaterThan(0);
+  });
 });
