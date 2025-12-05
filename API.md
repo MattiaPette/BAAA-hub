@@ -37,7 +37,7 @@ developers, contributors, and AI tools to understand the codebase structure.
 - **React Router** - Client-side routing
 - **TanStack Query** - Server state management
 - **Lingui** - Internationalization (i18n)
-- **Auth0** - Authentication
+- **Keycloak** - Authentication
 - **MinIO** - Object storage for user images
 - **Vitest** - Unit testing framework
 
@@ -181,12 +181,12 @@ curl -X PUT \
 
 ### Webhook Endpoints
 
-Webhook endpoints are used for server-to-server communication with Auth0. These
+Webhook endpoints are used for server-to-server communication with Keycloak. These
 endpoints are not for client use.
 
-| Method | Endpoint                          | Auth           | Description                            |
-| ------ | --------------------------------- | -------------- | -------------------------------------- |
-| POST   | `/api/webhooks/auth0/user-update` | Webhook Secret | Auth0 Post-Login Action MFA/email sync |
+| Method | Endpoint                              | Auth           | Description                              |
+| ------ | ------------------------------------- | -------------- | ---------------------------------------- |
+| POST   | `/api/webhooks/keycloak/user-update`  | Webhook Secret | Keycloak Event Listener MFA/email sync   |
 
 **Authentication:**
 
@@ -196,15 +196,15 @@ Webhook endpoints require a shared secret in the `x-webhook-secret` header:
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "x-webhook-secret: <webhook-secret>" \
-  -d '{"user_id": "auth0|123", "email": "user@example.com", "email_verified": true, "mfa_enabled": true, "mfa_type": "totp"}' \
-  http://localhost:3000/api/webhooks/auth0/user-update
+  -d '{"user_id": "user-uuid", "email": "user@example.com", "email_verified": true, "mfa_enabled": true, "mfa_type": "totp"}' \
+  http://localhost:3000/api/webhooks/keycloak/user-update
 ```
 
 **Request Body:**
 
 ```json
 {
-  "user_id": "auth0|123456",
+  "user_id": "user-uuid",
   "email": "user@example.com",
   "email_verified": true,
   "mfa_enabled": true,
@@ -227,7 +227,7 @@ curl -X POST \
 {
   "success": true,
   "message": "User updated successfully",
-  "user_id": "auth0|123456",
+  "user_id": "user-uuid",
   "email_verified": true,
   "mfa_enabled": true,
   "mfa_type": "TOTP"
@@ -391,7 +391,7 @@ React Context providers for managing global application state.
 
 **File:** `src/providers/AuthProvider/AuthProvider.tsx`
 
-Manages authentication state using Auth0, including login, logout, token
+Manages authentication state using Keycloak, including login, logout, token
 management, and session persistence.
 
 **Type Definitions:**
@@ -399,12 +399,9 @@ management, and session persistence.
 ```typescript
 interface AuthProviderProps {
   children: React.ReactNode;
-  domain: string;
-  clientID: string;
-  responseType: string;
-  userDatabaseConnection: string;
-  scope: string;
-  redirectUri: string;
+  keycloakUrl: string;
+  realm: string;
+  clientId: string;
 }
 
 interface AuthContextValue {
@@ -431,7 +428,7 @@ interface AuthContextValue {
 import { AuthProvider, useAuth } from './providers/AuthProvider/AuthProvider';
 
 // In app root:
-<AuthProvider domain="your-tenant.auth0.com" clientID="..." {...otherProps}>
+<AuthProvider keycloakUrl="https://your-domain.com/auth" realm="baaa-hub" clientId="baaa-hub-client">
   <App />
 </AuthProvider>
 
@@ -759,12 +756,9 @@ interface AuthToken {
 }
 
 interface AuthConfigurationProps {
-  domain: string;
-  clientID: string;
-  responseType: string;
-  userDatabaseConnection: string;
-  scope: string;
-  redirectUri: string;
+  keycloakUrl: string;
+  realm: string;
+  clientId: string;
 }
 ```
 
@@ -781,12 +775,9 @@ import { AuthConfigurationProps } from './containers/core/App/App.model';
 
 // 1. Configure authentication
 const auth: AuthConfigurationProps = {
-  domain: 'your-tenant.auth0.com',
-  clientID: 'your-client-id',
-  responseType: 'token id_token',
-  userDatabaseConnection: 'Username-Password-Authentication',
-  scope: 'openid profile email',
-  redirectUri: 'http://localhost:5173/login/callback',
+  keycloakUrl: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 };
 
 // 2. Register service worker (PWA support)

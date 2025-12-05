@@ -11,7 +11,7 @@ Learn how to set up the basic application structure with all required providers.
 
 ### 2. [Authentication](./02-authentication.md)
 
-Understand how to integrate Auth0 authentication, handle login/logout, and
+Understand how to integrate Keycloak authentication, handle login/logout, and
 access user information.
 
 ### 3. [Theme and Styling](./03-theme-and-styling.md)
