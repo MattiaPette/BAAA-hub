@@ -15,7 +15,7 @@ Quick setup:
 # From the repository root
 cp environments/.env.example environments/.env.dev
 
-# Edit the file with your Auth0 and API configuration
+# Edit the file with your Keycloak and API configuration
 ```
 
 See [environments/README.md](../../environments/README.md) for detailed

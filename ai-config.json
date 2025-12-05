@@ -75,7 +75,7 @@
     ],
     "testing": ["Vitest 3.0.1", "Testing Library", "jsdom"],
     "tooling": ["ESLint 8.57.1", "Prettier 3.6.1", "TypeScript ESLint 6.21.0"],
-    "authentication": ["Auth0"],
+    "authentication": ["Keycloak"],
     "pwa": ["Vite PWA Plugin", "Workbox"]
   },
   "buildOutput": {
@@ -118,10 +118,9 @@
   "environments": {
     "envDirectory": "environments",
     "variables": [
-      "VITE_AUTH_DOMAIN",
-      "VITE_AUTH_CLIENT_ID",
-      "VITE_AUTH_DATABASE_CONNECTION",
-      "VITE_AUTH_REDIRECT_URI"
+      "VITE_KEYCLOAK_URL",
+      "VITE_KEYCLOAK_REALM",
+      "VITE_KEYCLOAK_CLIENT_ID"
     ]
   },
   "i18n": {

@@ -35,10 +35,13 @@ BAAA Hub uses an automated CI/CD pipeline:
 │                                                                     │
 │  ┌─────────────────────────────────────────────────────────────┐    │
 │  │  nginx (port 8080)                                          │    │
-│  │  ┌─────────────┐  ┌─────────────┐                           │    │
-│  │  │  frontend   │  │  backend    │──> mongodb                │    │
-│  │  │  (static)   │  │  (API)      │──> minio                  │    │
-│  │  └─────────────┘  └─────────────┘                           │    │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │    │
+│  │  │  frontend   │  │  backend    │  │  keycloak   │          │    │
+│  │  │  (static)   │  │  (API)      │  │  (auth)     │          │    │
+│  │  └─────────────┘  └──────┬──────┘  └─────────────┘          │    │
+│  │                          │                                   │    │
+│  │                          ├──> mongodb                        │    │
+│  │                          └──> minio                          │    │
 │  └─────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -78,29 +81,32 @@ docker compose up -d
 
 ### Production Environment (`deployment/.env`)
 
-| Variable               | Description                    | Required |
-| ---------------------- | ------------------------------ | -------- |
-| `APP_PORT`             | Port to expose (default: 8080) | No       |
-| `CORS_ORIGIN`          | Allowed CORS origin            | Yes      |
-| `DEBUG`                | Enable debug logging           | No       |
-| `AUTH0_DOMAIN`         | Auth0 tenant domain            | Yes      |
-| `AUTH0_AUDIENCE`       | Auth0 API audience             | Yes      |
-| `AUTH0_WEBHOOK_SECRET` | Webhook authentication secret  | Yes      |
-| `MINIO_ACCESS_KEY`     | MinIO access key               | Yes      |
-| `MINIO_SECRET_KEY`     | MinIO secret key               | Yes      |
-| `MINIO_BUCKET`         | MinIO bucket name              | No       |
+| Variable                   | Description                                     | Required |
+| -------------------------- | ----------------------------------------------- | -------- |
+| `APP_PORT`                 | Port to expose (default: 8080)                  | No       |
+| `CORS_ORIGIN`              | Allowed CORS origin                             | Yes      |
+| `DEBUG`                    | Enable debug logging                            | No       |
+| `KEYCLOAK_REALM`           | Keycloak realm name                             | Yes      |
+| `KEYCLOAK_CLIENT_ID`       | Keycloak client ID                              | Yes      |
+| `KEYCLOAK_WEBHOOK_SECRET`  | Webhook authentication secret                   | Yes      |
+| `KEYCLOAK_ADMIN`           | Keycloak admin username                         | Yes      |
+| `KEYCLOAK_ADMIN_PASSWORD`  | Keycloak admin password                         | Yes      |
+| `KEYCLOAK_DB_USER`         | PostgreSQL user for Keycloak                    | Yes      |
+| `KEYCLOAK_DB_PASSWORD`     | PostgreSQL password for Keycloak                | Yes      |
+| `MINIO_ACCESS_KEY`         | MinIO access key                                | Yes      |
+| `MINIO_SECRET_KEY`         | MinIO secret key                                | Yes      |
+| `MINIO_BUCKET`             | MinIO bucket name                               | No       |
 
 ### Frontend Build Variables (CI/CD)
 
 Frontend variables are baked in at build time via GitHub repository secrets:
 
-| Secret                          | Description               |
-| ------------------------------- | ------------------------- |
-| `VITE_AUTH_DOMAIN`              | Auth0 domain              |
-| `VITE_AUTH_CLIENT_ID`           | Auth0 client ID           |
-| `VITE_AUTH_REDIRECT_URI`        | OAuth callback URL        |
-| `VITE_AUTH_DATABASE_CONNECTION` | Auth0 database connection |
-| `VITE_API_URL`                  | API base URL              |
+| Secret                   | Description               |
+| ------------------------ | ------------------------- |
+| `VITE_KEYCLOAK_URL`      | Keycloak server URL       |
+| `VITE_KEYCLOAK_REALM`    | Keycloak realm name       |
+| `VITE_KEYCLOAK_CLIENT_ID`| Keycloak client ID        |
+| `VITE_API_URL`           | API base URL              |
 
 To update frontend config, update GitHub secrets and trigger a new build.
 
@@ -108,18 +114,20 @@ To update frontend config, update GitHub secrets and trigger a new build.
 
 ### Containers
 
-| Container           | Image                                   | Purpose         |
-| ------------------- | --------------------------------------- | --------------- |
-| `baaa-hub-nginx`    | `nginx:alpine`                          | Reverse proxy   |
-| `baaa-hub-frontend` | `ghcr.io/mattiapette/baaa-hub/frontend` | Static frontend |
-| `baaa-hub-backend`  | `ghcr.io/mattiapette/baaa-hub/backend`  | API server      |
-| `baaa-hub-mongodb`  | `mongo:8.0`                             | Database        |
-| `baaa-hub-minio`    | `minio/minio:latest`                    | Object storage  |
+| Container              | Image                                   | Purpose            |
+| ---------------------- | --------------------------------------- | ------------------ |
+| `baaa-hub-nginx`       | `nginx:alpine`                          | Reverse proxy      |
+| `baaa-hub-frontend`    | `ghcr.io/mattiapette/baaa-hub/frontend` | Static frontend    |
+| `baaa-hub-backend`     | `ghcr.io/mattiapette/baaa-hub/backend`  | API server         |
+| `baaa-hub-keycloak`    | `quay.io/keycloak/keycloak:26.0`        | Identity provider  |
+| `baaa-hub-keycloak-db` | `postgres:16-alpine`                    | Keycloak database  |
+| `baaa-hub-mongodb`     | `mongo:8.0`                             | Database           |
+| `baaa-hub-minio`       | `minio/minio:latest`                    | Object storage     |
 
 ### Ports
 
 - **8080**: Application (nginx reverse proxy)
-- Internal only: frontend (80), backend (3000), mongodb (27017), minio
+- Internal only: frontend (80), backend (3000), keycloak (8080), mongodb (27017), minio
   (9000/9001)
 
 ### Network
@@ -159,19 +167,19 @@ networks:
 CORS_ORIGIN=https://your-domain.com
 ```
 
-### 5. Update Auth0
+### 5. Update Keycloak
 
-In Auth0 Dashboard, update:
+In Keycloak Admin Console, update the client settings:
 
-- Allowed Callback URLs: `https://your-domain.com/login/callback`
-- Allowed Logout URLs: `https://your-domain.com`
-- Allowed Web Origins: `https://your-domain.com`
+- **Valid Redirect URIs**: `https://your-domain.com/*`
+- **Valid Post Logout Redirect URIs**: `https://your-domain.com/*`
+- **Web Origins**: `https://your-domain.com`
 
 ### 6. Update GitHub Secrets
 
 Update these secrets and trigger a new build:
 
-- `VITE_AUTH_REDIRECT_URI=https://your-domain.com/login/callback`
+- `VITE_KEYCLOAK_URL=https://your-domain.com/auth`
 - `VITE_API_URL=https://your-domain.com`
 
 ## Common Operations
@@ -304,10 +312,9 @@ The Docker build workflow (`.github/workflows/docker-build-push.yml`):
 ```bash
 # From repository root
 docker build -f deployment/Dockerfile.frontend \
-  --build-arg VITE_AUTH_DOMAIN=... \
-  --build-arg VITE_AUTH_CLIENT_ID=... \
-  --build-arg VITE_AUTH_REDIRECT_URI=... \
-  --build-arg VITE_AUTH_DATABASE_CONNECTION=... \
+  --build-arg VITE_KEYCLOAK_URL=... \
+  --build-arg VITE_KEYCLOAK_REALM=... \
+  --build-arg VITE_KEYCLOAK_CLIENT_ID=... \
   --build-arg VITE_API_URL=... \
   -t baaa-hub-frontend .
 

@@ -18,14 +18,11 @@ import { createRoot } from 'react-dom/client';
 import { App } from './containers/core/App/App.tsx';
 import { AuthConfigurationProps } from './containers/core/App/App.model.ts';
 
-// Configure Auth0 authentication
+// Configure Keycloak authentication
 const auth: AuthConfigurationProps = {
-  domain: 'your-tenant.auth0.com',
-  clientID: 'your-client-id',
-  responseType: 'token id_token',
-  userDatabaseConnection: 'Username-Password-Authentication',
-  scope: 'openid profile email',
-  redirectUri: 'https://your-app.com/login/callback',
+  keycloakUrl: 'https://your-domain.com/auth',
+  realm: 'baaa-hub',
+  clientId: 'baaa-hub-client',
 };
 
 // Render the application
@@ -40,7 +37,7 @@ The `App` component internally wraps your application with multiple providers in
 the following order (from outermost to innermost):
 
 1. **ErrorBoundary** - Catches and handles React errors
-2. **AuthProvider** - Manages authentication state and Auth0 integration
+2. **AuthProvider** - Manages authentication state and Keycloak integration
 3. **LanguageProvider** - Handles internationalization language selection
 4. **ThemeModeProvider** - Manages theme mode (light/dark)
 5. **TranslationProvider** - Provides translated strings via Lingui
@@ -57,10 +54,9 @@ the centralized `environments/` folder:
 
 ```bash
 # environments/.env.dev
-VITE_AUTH_DOMAIN=your-tenant.auth0.com
-VITE_AUTH_CLIENT_ID=your-client-id
-VITE_AUTH_DATABASE_CONNECTION=Username-Password-Authentication
-VITE_AUTH_REDIRECT_URI=http://localhost:4000/login/callback
+VITE_KEYCLOAK_URL=http://localhost:8180
+VITE_KEYCLOAK_REALM=baaa-hub
+VITE_KEYCLOAK_CLIENT_ID=baaa-hub-client
 ```
 
 See [environments/.env.example](../environments/.env.example) for complete setup
@@ -75,12 +71,9 @@ import { AuthConfigurationProps } from './containers/core/App/App.model.ts';
 
 // Load configuration from environment variables
 const auth: AuthConfigurationProps = {
-  domain: import.meta.env.VITE_AUTH_DOMAIN,
-  clientID: import.meta.env.VITE_AUTH_CLIENT_ID,
-  responseType: 'token id_token',
-  userDatabaseConnection: import.meta.env.VITE_AUTH_DATABASE_CONNECTION,
-  scope: 'openid profile email',
-  redirectUri: import.meta.env.VITE_AUTH_REDIRECT_URI,
+  keycloakUrl: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 };
 
 // Optional: Register service worker for PWA support

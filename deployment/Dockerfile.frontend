@@ -23,10 +23,9 @@ COPY tsconfig.json ./
 COPY eslint.config.base.js ./
 
 # Build arguments for environment variables
-ARG VITE_AUTH_DOMAIN
-ARG VITE_AUTH_CLIENT_ID
-ARG VITE_AUTH_REDIRECT_URI
-ARG VITE_AUTH_DATABASE_CONNECTION
+ARG VITE_KEYCLOAK_URL
+ARG VITE_KEYCLOAK_REALM
+ARG VITE_KEYCLOAK_CLIENT_ID
 ARG VITE_API_URL
 
 # Build shared-types first to compile TypeScript to JavaScript
@@ -36,10 +35,9 @@ RUN pnpm --filter @baaa-hub/shared-types build
 # Build frontend with environment variables properly set
 # Vite embeds these at build time since it's a static frontend
 ENV ENV=production \
-    VITE_AUTH_DOMAIN=${VITE_AUTH_DOMAIN} \
-    VITE_AUTH_CLIENT_ID=${VITE_AUTH_CLIENT_ID} \
-    VITE_AUTH_REDIRECT_URI=${VITE_AUTH_REDIRECT_URI} \
-    VITE_AUTH_DATABASE_CONNECTION=${VITE_AUTH_DATABASE_CONNECTION} \
+    VITE_KEYCLOAK_URL=${VITE_KEYCLOAK_URL} \
+    VITE_KEYCLOAK_REALM=${VITE_KEYCLOAK_REALM} \
+    VITE_KEYCLOAK_CLIENT_ID=${VITE_KEYCLOAK_CLIENT_ID} \
     VITE_API_URL=${VITE_API_URL}
 RUN pnpm --filter frontend build
 
