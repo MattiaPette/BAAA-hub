@@ -124,6 +124,8 @@ describe('Administration', () => {
       },
       userPermissions: ['admin'],
       keycloak: null,
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
 
     // Mock the useUser hook
