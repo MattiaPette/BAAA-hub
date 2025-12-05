@@ -72,7 +72,6 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -80,6 +79,8 @@ describe('useCurrentUser', () => {
       userPermissions: [],
       authClientData: {} as never,
       keycloak: null,
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
 
     vi.spyOn(userService, 'getCurrentUser').mockResolvedValue(mockUser);
@@ -101,7 +102,6 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -109,6 +109,8 @@ describe('useCurrentUser', () => {
       userPermissions: [],
       authClientData: {} as never,
       keycloak: null,
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });
@@ -125,7 +127,6 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -133,6 +134,8 @@ describe('useCurrentUser', () => {
       userPermissions: [],
       authClientData: {} as never,
       keycloak: null,
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });
@@ -152,7 +155,6 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -160,6 +162,8 @@ describe('useCurrentUser', () => {
       userPermissions: [],
       authClientData: {} as never,
       keycloak: null,
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
 
     const mockError = new Error('Failed to fetch user');
@@ -185,7 +189,6 @@ describe('useCurrentUser', () => {
       isLoading: false,
       localStorageAvailable: true,
       login: vi.fn(),
-
       logout: vi.fn(),
       authenticate: vi.fn(),
       signup: vi.fn(),
@@ -193,6 +196,8 @@ describe('useCurrentUser', () => {
       userPermissions: [],
       authClientData: {} as never,
       keycloak: null,
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });

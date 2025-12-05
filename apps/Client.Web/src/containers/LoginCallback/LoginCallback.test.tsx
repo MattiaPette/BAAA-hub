@@ -39,6 +39,8 @@ describe('LoginCallback', () => {
         realm: 'test-realm',
         clientId: 'test-client',
       },
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
   });
 
@@ -166,7 +168,6 @@ describe('LoginCallback', () => {
       isAuthenticated: true,
       localStorageAvailable: true,
       login: vi.fn(),
-
       logout: vi.fn(),
       signup: vi.fn(),
       setLoading: vi.fn(),
@@ -182,6 +183,8 @@ describe('LoginCallback', () => {
         realm: 'test-realm',
         clientId: 'test-client',
       },
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
     });
 
     render(
