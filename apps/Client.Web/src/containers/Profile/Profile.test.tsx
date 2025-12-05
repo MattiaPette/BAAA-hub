@@ -14,6 +14,14 @@ import * as useCurrentUserModule from '../../hooks/useCurrentUser';
 // Mock the user service
 vi.mock('../../services/userService', () => ({
   updateUserProfile: vi.fn(),
+  getUserImageUrl: vi
+    .fn()
+    .mockImplementation(
+      (userId, type, full, cacheBuster) =>
+        `https://example.com/${userId}/${type}${full ? '/full' : ''}${cacheBuster ? `?t=${cacheBuster}` : ''}`,
+    ),
+  uploadUserImage: vi.fn(),
+  deleteUserImage: vi.fn(),
 }));
 
 // Mock the useCurrentUser hook
@@ -423,5 +431,116 @@ describe('Profile', () => {
 
     const avatar = screen.getByRole('img');
     expect(avatar).toHaveAttribute('src', 'https://example.com/pic.jpg');
+  });
+
+  it('should render user with avatarKey', async () => {
+    const userWithAvatarKey = {
+      ...mockUser,
+      avatarKey: 'avatar-key-123',
+    };
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: userWithAvatarKey,
+      isLoading: false,
+      error: null,
+    });
+
+    renderWithSnackbar(<Profile />);
+
+    // getUserImageUrl should be called for avatar
+    expect(userService.getUserImageUrl).toHaveBeenCalledWith(
+      '1',
+      'avatar',
+      false,
+      undefined,
+    );
+  });
+
+  it('should render user with bannerKey', async () => {
+    const userWithBannerKey = {
+      ...mockUser,
+      bannerKey: 'banner-key-123',
+    };
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: userWithBannerKey,
+      isLoading: false,
+      error: null,
+    });
+
+    renderWithSnackbar(<Profile />);
+
+    // getUserImageUrl should be called for banner
+    expect(userService.getUserImageUrl).toHaveBeenCalledWith(
+      '1',
+      'banner',
+      false,
+      undefined,
+    );
+  });
+
+  it('should display no sports message when sportTypes is empty', async () => {
+    const userWithNoSports = {
+      ...mockUser,
+      sportTypes: [],
+    };
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: userWithNoSports,
+      isLoading: false,
+      error: null,
+    });
+
+    renderWithSnackbar(<Profile />);
+
+    expect(screen.getByText('No sports selected yet.')).toBeInTheDocument();
+  });
+
+  it('should not render social links section when no links available', async () => {
+    const userWithNoLinks = {
+      ...mockUser,
+      stravaLink: undefined,
+      instagramLink: undefined,
+    };
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: userWithNoLinks,
+      isLoading: false,
+      error: null,
+    });
+
+    renderWithSnackbar(<Profile />);
+
+    // Should not render social section
+    expect(screen.queryByText('Social')).not.toBeInTheDocument();
+  });
+
+  it('should not update profile when token is missing', async () => {
+    (useCurrentUserModule.useCurrentUser as Mock).mockReturnValue({
+      data: mockUser,
+      isLoading: false,
+      error: null,
+    });
+
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      token: null,
+      isAuthenticated: true,
+      localStorageAvailable: true,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      userPermissions: [],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    renderWithSnackbar(<Profile />);
+
+    fireEvent.click(screen.getByRole('button', { name: /edit profile/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: /save changes/i }));
+
+    // Should not call updateUserProfile when token is missing
+    expect(userService.updateUserProfile).not.toHaveBeenCalled();
   });
 });
