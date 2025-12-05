@@ -1,13 +1,15 @@
 # Authentication
 
-This example demonstrates how to use the Auth0 authentication system in the
+This example demonstrates how to use the Keycloak authentication system in the
 Activity Tracker application.
 
 ## Overview
 
-The application uses Auth0 for authentication. The `AuthProvider` component
+The application uses Keycloak for authentication. The `AuthProvider` component
 manages authentication state, token persistence, and provides hooks for login,
-logout, and checking authentication status.
+logout, and checking authentication status. Keycloak provides a self-hosted
+open-source identity provider with full support for OAuth 2.0, OpenID Connect,
+SSO, MFA, and RBAC.
 
 ## Basic Usage
 
@@ -27,6 +29,7 @@ function MyComponent() {
     login,
     logout,
     authenticate,
+    keycloak,
   } = useAuth();
 
   if (isLoading) {
@@ -43,7 +46,8 @@ function MyComponent() {
 
 ## Login Example
 
-Create a login form that authenticates users with email and password:
+With Keycloak, login is handled via a redirect to the Keycloak login page. The
+`login` function redirects to Keycloak with an optional email hint:
 
 ```tsx
 import { useState } from 'react';
@@ -52,24 +56,21 @@ import { AuthErrorCode } from '../providers/AuthProvider/AuthProvider.model';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const { login, isLoading } = useAuth();
+  const { login, loginWithRedirect, isLoading } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
+    // Login with email hint - redirects to Keycloak
     login({
       email,
-      password,
+      password: '', // Password is handled by Keycloak, not passed here
       onErrorCallback: (errorCode?: AuthErrorCode) => {
         switch (errorCode) {
-          case AuthErrorCode.INVALID_CREDENTIALS:
-            setError('Invalid email or password');
-            break;
-          case AuthErrorCode.ACCOUNT_BLOCKED:
-            setError('Your account has been blocked');
+          case AuthErrorCode.INVALID_CONFIGURATION:
+            setError('Authentication is not configured');
             break;
           default:
             setError('An error occurred during login');
@@ -78,27 +79,27 @@ function LoginForm() {
     });
   };
 
+  // Alternative: Simple redirect without email hint
+  const handleDirectLogin = () => {
+    loginWithRedirect();
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-      />
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Logging in...' : 'Log In'}
-      </button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Email (optional)"
+        />
+        {error && <div style={{ color: 'red' }}>{error}</div>}
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Log In'}
+        </button>
+      </form>
+      <button onClick={handleDirectLogin}>Log In with Keycloak</button>
+    </div>
   );
 }
 ```
@@ -117,14 +118,15 @@ function LogoutButton() {
     return null;
   }
 
+  // Logout redirects to Keycloak logout and then back to the app
   return <button onClick={logout}>Log Out</button>;
 }
 ```
 
 ## Handling Authentication Callback
 
-After Auth0 redirects back to your app, you need to parse the authentication
-result:
+After Keycloak redirects back to your app (using authorization code flow with
+PKCE), the callback is processed automatically by the Keycloak adapter:
 
 ```tsx
 import { useEffect } from 'react';
@@ -134,7 +136,7 @@ import { AuthErrorCode } from '../providers/AuthProvider/AuthProvider.model';
 
 function AuthCallback() {
   const navigate = useNavigate();
-  const { authenticate } = useAuth();
+  const { authenticate, isAuthenticated } = useAuth();
 
   useEffect(() => {
     authenticate({
@@ -144,6 +146,13 @@ function AuthCallback() {
       },
     });
   }, [authenticate, navigate]);
+
+  // Redirect to home when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   return <div>Processing authentication...</div>;
 }
@@ -335,13 +344,14 @@ function UserProfile() {
     return <div>No user information available</div>;
   }
 
-  const { email, name, picture } = token.idTokenPayload;
+  const { email, name, preferred_username, given_name, family_name } =
+    token.idTokenPayload;
 
   return (
     <div>
-      {picture && <img src={picture} alt={name || email} />}
-      <h2>{name || 'User'}</h2>
-      <p>{email}</p>
+      <h2>{name || `${given_name} ${family_name}` || 'User'}</h2>
+      <p>Username: {preferred_username}</p>
+      <p>Email: {email}</p>
     </div>
   );
 }
@@ -353,7 +363,8 @@ The `AuthProvider` automatically:
 
 - Saves tokens to `localStorage` when available
 - Restores tokens on page reload
-- Refreshes tokens every hour
+- Uses Keycloak's built-in token refresh mechanism
+- Refreshes tokens periodically (every 60 seconds)
 - Checks token expiration every 30 seconds
 - Logs out users when tokens expire
 
@@ -362,9 +373,36 @@ The `AuthProvider` automatically:
 Common authentication error codes you may encounter:
 
 - `AuthErrorCode.INVALID_TOKEN` - Token validation failed
-- `AuthErrorCode.INVALID_CREDENTIALS` - Wrong email or password
-- `AuthErrorCode.ACCOUNT_BLOCKED` - User account is blocked
+- `AuthErrorCode.INVALID_CONFIGURATION` - Keycloak not configured properly
+- `AuthErrorCode.ACCESS_DENIED` - Access was denied
 - `AuthErrorCode.TOO_MANY_ATTEMPTS` - Too many login attempts
+
+## Signup / Registration
+
+With Keycloak, user registration is handled via Keycloak's registration page:
+
+```tsx
+import { useAuth } from '../providers/AuthProvider/AuthProvider';
+
+function SignupButton() {
+  const { signup } = useAuth();
+
+  const handleSignup = () => {
+    signup({
+      email: '', // Optional email hint
+      password: '', // Password is handled by Keycloak
+      onSuccessCallback: () => {
+        console.log('User will be redirected to Keycloak registration');
+      },
+      onErrorCallback: error => {
+        console.error('Signup error:', error);
+      },
+    });
+  };
+
+  return <button onClick={handleSignup}>Sign Up</button>;
+}
+```
 
 ## Complete Working Example
 
@@ -398,7 +436,11 @@ function AuthenticatedApp() {
       <header>
         <h1>Activity Tracker</h1>
         <div>
-          <span>Welcome, {token?.idTokenPayload?.name}</span>
+          <span>
+            Welcome,{' '}
+            {token?.idTokenPayload?.name ||
+              token?.idTokenPayload?.preferred_username}
+          </span>
           <button onClick={logout}>Logout</button>
         </div>
       </header>
@@ -407,6 +449,104 @@ function AuthenticatedApp() {
   );
 }
 ```
+
+## Public-First Architecture
+
+The application implements a **public-first** approach similar to Strava:
+
+- Most content is publicly accessible by default
+- Users don't need to log in to browse content
+- Login/signup buttons are displayed in the header for unauthenticated users
+- Advanced features (profile, settings, admin) require authentication
+- All login/signup flows are handled by Keycloak (no native login forms)
+
+### Public vs Protected Routes
+
+```tsx
+// Public routes - accessible to everyone
+const publicRoutes = [
+  '/dashboard', // Main dashboard
+  '/activities', // View activities
+];
+
+// Protected routes - require authentication
+const protectedRoutes = [
+  '/profile', // User profile
+  '/settings', // User settings
+  '/administration', // Admin only
+];
+```
+
+### PublicContainer
+
+The `PublicContainer` component renders the layout for unauthenticated users:
+
+```tsx
+import { PublicContainer } from '../containers/PublicContainer/PublicContainer';
+
+// This container shows:
+// - Login button in the header
+// - Sign Up button in the header
+// - Limited sidebar navigation
+// - Public content
+```
+
+### Route Guards
+
+The `Router` component handles authentication routing:
+
+```tsx
+// Unauthenticated users
+// - See PublicContainer with login/signup buttons
+// - Can access public routes (dashboard)
+// - Redirected to dashboard for unknown routes
+
+// Authenticated users
+// - See MainContainer with full navigation
+// - Can access all routes based on permissions
+// - Profile setup required before accessing other routes
+```
+
+## Keycloak Theme Customization
+
+The application includes a custom Keycloak theme (`keycloak-theme/baaa-hub/`)
+that matches the app's branding:
+
+1. **Location**: `/keycloak-theme/baaa-hub/`
+2. **Theme files**:
+   - `login/resources/css/login.css` - Custom styles
+   - `login/resources/img/logo.png` - App logo
+   - `login/messages/messages_en.properties` - English translations
+   - `login/messages/messages_it.properties` - Italian translations
+
+3. **To customize**:
+   - Edit CSS variables in `login.css` for colors
+   - Replace `logo.png` with your logo
+   - Edit message files for custom text
+
+See [Keycloak Theme README](../keycloak-theme/README.md) for detailed
+customization instructions.
+
+## Keycloak Configuration
+
+To configure Keycloak for this application:
+
+1. Create a realm (e.g., `baaa-hub`)
+2. Create a client (e.g., `baaa-hub-client`)
+   - Client Protocol: OpenID Connect
+   - Access Type: public
+   - Standard Flow Enabled: ON
+   - Direct Access Grants: OFF (for security)
+   - Valid Redirect URIs: `http://localhost:4000/*` (development)
+   - Web Origins: `http://localhost:4000` (development)
+3. Configure the theme:
+   - Go to Realm Settings > Themes
+   - Set Login Theme to `baaa-hub`
+   - Set Account Theme to `baaa-hub`
+4. Configure environment variables:
+   - `VITE_KEYCLOAK_URL`: Keycloak server URL
+   - `VITE_KEYCLOAK_REALM`: Realm name
+   - `VITE_KEYCLOAK_CLIENT_ID`: Client ID
 
 ## What's Next?
 
@@ -417,4 +557,7 @@ function AuthenticatedApp() {
 
 - [AuthProvider implementation](../apps/Client.Web/src/providers/AuthProvider/AuthProvider.tsx)
 - [AuthProvider model types](../apps/Client.Web/src/providers/AuthProvider/AuthProvider.model.ts)
-- [Login component](../apps/Client.Web/src/containers/Login/)
+- [PublicContainer](../apps/Client.Web/src/containers/PublicContainer/PublicContainer.tsx)
+- [Router](../apps/Client.Web/src/containers/core/Router/Router.tsx)
+- [Keycloak Theme](../keycloak-theme/README.md)
+- [Keycloak Documentation](https://www.keycloak.org/documentation)

@@ -28,7 +28,7 @@ export const Logout: FC = () => {
     logout();
 
     navigateTo('/login');
-  });
+  }, [logout, navigateTo]);
 
   return <h1>{pageTitle}</h1>;
 };

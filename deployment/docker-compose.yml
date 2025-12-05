@@ -35,6 +35,64 @@ services:
       timeout: 5s
       retries: 5
 
+  # PostgreSQL for Keycloak
+  keycloak-db:
+    image: postgres:16-alpine
+    container_name: baaa-hub-keycloak-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: ${KEYCLOAK_DB_USER:-keycloak}
+      POSTGRES_PASSWORD:
+        ${KEYCLOAK_DB_PASSWORD:?KEYCLOAK_DB_PASSWORD is required}
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql/data
+    networks:
+      - baaa-hub-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${KEYCLOAK_DB_USER:-keycloak}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Keycloak Identity Provider
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: baaa-hub-keycloak
+    restart: unless-stopped
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USER:-keycloak}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?KEYCLOAK_DB_PASSWORD is required}
+      KC_HOSTNAME_STRICT: 'false'
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      KC_HTTP_ENABLED: 'true'
+      KC_PROXY_HEADERS: xforwarded
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD:
+        ${KEYCLOAK_ADMIN_PASSWORD:?KEYCLOAK_ADMIN_PASSWORD is required}
+    command: start
+    volumes:
+      - ../keycloak-theme/baaa-hub:/opt/keycloak/themes/baaa-hub:ro
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    networks:
+      - baaa-hub-network
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'exec 3<>/dev/tcp/127.0.0.1/8080;echo -e "GET /health/ready
+          HTTP/1.1\r\nhost: localhost\r\nConnection: close\r\n\r\n" >&3;grep
+          "UP" <&3',
+        ]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+
   # MinIO Object Storage
   minio:
     image: minio/minio:latest
@@ -65,9 +123,10 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/baaa-hub
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
       DEBUG: ${DEBUG:-false}
-      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
-      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
-      AUTH0_WEBHOOK_SECRET: ${AUTH0_WEBHOOK_SECRET}
+      KEYCLOAK_URL: http://keycloak:8080
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-baaa-hub}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:-baaa-hub-client}
+      KEYCLOAK_WEBHOOK_SECRET: ${KEYCLOAK_WEBHOOK_SECRET}
       MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
       MINIO_USE_SSL: 'false'
@@ -78,6 +137,8 @@ services:
       mongodb:
         condition: service_healthy
       minio:
+        condition: service_healthy
+      keycloak:
         condition: service_healthy
     networks:
       - baaa-hub-network
@@ -133,6 +194,8 @@ services:
         condition: service_healthy
       frontend:
         condition: service_healthy
+      keycloak:
+        condition: service_healthy
     networks:
       - baaa-hub-network
     healthcheck:
@@ -156,6 +219,8 @@ networks:
 
 volumes:
   mongodb_data:
+    driver: local
+  keycloak_db_data:
     driver: local
   minio_data:
     driver: local

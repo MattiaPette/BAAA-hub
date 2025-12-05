@@ -17,7 +17,7 @@ import MuiCard from '@mui/material/Card';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { IFormInput, LoginFormProps } from './LoginForm.model';
+import { IFormInput, LoginFormProps } from '../LoginForm/LoginForm.model';
 
 import logo from '../../../assets/baaa.png';
 
@@ -58,7 +58,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 /**
- * This is a React functional component that manages the login form.
+ * This is a React functional component that manages the signup form.
  * It uses the useForm hook to handle form state and input validation.
  * It also uses the useTheme hook to access the application's current theme.
  * If an error is detected during form submission, an error message is displayed.
@@ -66,17 +66,19 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
  * @param {Object} props - The properties passed to the component.
  * @param {string[]} props.errorMessages - Array of error messages to display.
  * @param {string} props.successMessage - Success message to display.
- * @param {Function} props.onSubmit - The function to call when the form is submitted.
+ * @param {Function} props.onSignup - The function to call when the form is submitted.
  * @param {boolean} props.isLoading - Whether a request is in progress.
  *
- * @returns {JSX.Element} The rendered login form.
+ * @returns {JSX.Element} The rendered signup form.
  *
  * @example
- * <LoginForm errorMessages={[]} onSubmit={handleLogin} isLoading={false} />
+ * <SignupForm errorMessages={[]} onSignup={handleSignup} isLoading={false} />
  */
-export const LoginForm: FC<
-  Omit<LoginFormProps, 'isSignupMode' | 'onSignup'>
-> = ({ errorMessages, successMessage, isLoading = false, onSubmit }) => {
+export const SignupForm: FC<
+  Omit<LoginFormProps, 'isSignupMode' | 'onSubmit'> & {
+    onSignup?: (value: Readonly<IFormInput>) => void;
+  }
+> = ({ errorMessages, successMessage, isLoading = false, onSignup }) => {
   const {
     register,
     handleSubmit: handleSubmitForm,
@@ -86,14 +88,14 @@ export const LoginForm: FC<
   const theme = useTheme();
 
   /**
-   * Handler function for submitting the login form.
+   * Handler function for submitting the signup form.
    *
-   * @param {IFormInput} data - The object containing the login form data. Must have 'user' and 'password' properties.
+   * @param {IFormInput} data - The object containing the signup form data. Must have 'user' and 'password' properties.
    * @example
-   * handleSubmit({ user: 'username', password: 'password' });
+   * handleSubmit({ user: 'email@example.com', password: 'password123' });
    */
   const handleSubmit: SubmitHandler<IFormInput> = data => {
-    onSubmit?.({ user: data.user, password: data.password });
+    onSignup?.({ user: data.user, password: data.password });
   };
 
   return (
@@ -110,7 +112,7 @@ export const LoginForm: FC<
           variant="h4"
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
-          <Trans>Login</Trans>
+          <Trans>Sign Up</Trans>
         </Typography>
 
         {successMessage && (
@@ -164,7 +166,7 @@ export const LoginForm: FC<
               type="password"
               label={t({ message: 'Password' })}
               placeholder="••••••"
-              autoComplete="current-password"
+              autoComplete="new-password"
               fullWidth
               variant="outlined"
               disabled={isLoading}
@@ -176,6 +178,12 @@ export const LoginForm: FC<
                 required: {
                   value: true,
                   message: t({ message: 'Password is required' }),
+                },
+                minLength: {
+                  value: 8,
+                  message: t({
+                    message: 'Password must be at least 8 characters',
+                  }),
                 },
               })}
             />
@@ -196,7 +204,7 @@ export const LoginForm: FC<
               isLoading ? <CircularProgress size={20} color="inherit" /> : null
             }
           >
-            <Trans>Login</Trans>
+            <Trans>Create Account</Trans>
           </Button>
         </Box>
       </Card>

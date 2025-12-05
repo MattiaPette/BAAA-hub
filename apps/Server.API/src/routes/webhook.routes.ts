@@ -3,20 +3,24 @@ import {
   webhookSecretMiddleware,
   WebhookContext,
 } from '../middleware/webhook.js';
-import { handleAuth0UserUpdate } from '../controllers/webhook.controller.js';
+import { handleKeycloakUserUpdate } from '../controllers/webhook.controller.js';
 
 const webhookRouter = new Router({ prefix: '/api/webhooks' });
 
 /**
- * Auth0 Post-Login Action webhook endpoint
- * Updates user's MFA status and email verification from Auth0 events
+ * Keycloak Event Listener webhook endpoint
+ * Updates user's MFA status and email verification from Keycloak events
  *
  * Security:
- * - Requires x-webhook-secret header matching AUTH0_WEBHOOK_SECRET
+ * - Requires x-webhook-secret header matching KEYCLOAK_WEBHOOK_SECRET
  * - Uses constant-time comparison to prevent timing attacks
  */
-webhookRouter.post('/auth0/user-update', webhookSecretMiddleware, async ctx => {
-  await handleAuth0UserUpdate(ctx as WebhookContext);
-});
+webhookRouter.post(
+  '/keycloak/user-update',
+  webhookSecretMiddleware,
+  async ctx => {
+    await handleKeycloakUserUpdate(ctx as WebhookContext);
+  },
+);
 
 export { webhookRouter };

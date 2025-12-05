@@ -1,4 +1,4 @@
-import { Dispatch, DispatchWithoutAction } from 'react';
+import { Dispatch } from 'react';
 
 export interface IFormInput {
   user: string;
@@ -11,9 +11,8 @@ export type LoginFormProps = Readonly<{
   errorMessages?: string[];
   successMessage?: string;
   isSignupMode?: boolean;
+  isLoading?: boolean;
 
   onSubmit?: Dispatch<LoginFormValue>;
   onSignup?: Dispatch<LoginFormValue>;
-  onLoginWithRedirect?: DispatchWithoutAction;
-  onToggleMode?: DispatchWithoutAction;
 }>;

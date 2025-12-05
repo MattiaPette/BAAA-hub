@@ -77,7 +77,7 @@ instructions and migration notes.
    cp environments/.env.example environments/.env.dev
 
    # Edit the .env.dev file with your configuration
-   # Update Auth0 credentials, ports, and other settings as needed
+   # Update Keycloak settings, ports, and other settings as needed
    ```
 
 ## Quick Start
@@ -98,14 +98,34 @@ pnpm fe:dev
 To run the complete application with backend and database:
 
 ```bash
-# Start MongoDB, backend, and frontend concurrently
+# Start MongoDB, MinIO, Keycloak, backend, and frontend concurrently
 pnpm dev
 
 # The application will be available at:
 # - Frontend: http://localhost:5173
 # - Backend API: http://localhost:3000
 # - API Docs: http://localhost:3000/api/docs
+# - Keycloak Admin: http://localhost:8180 (admin/admin)
+# - MinIO Console: http://localhost:9001 (minioadmin/minioadmin)
 ```
+
+### Keycloak Setup for Local Development
+
+The local development environment includes Keycloak for authentication. After
+starting the services with `pnpm dev`, you'll need to configure Keycloak:
+
+1. **Access Keycloak Admin Console**: http://localhost:8180
+2. **Login with admin credentials**: admin/admin (see `.env.dev`)
+3. **Create a new realm** named `baaa-hub`
+4. **Create a client** named `baaa-hub-client`:
+   - Client Protocol: OpenID Connect
+   - Access Type: public
+   - Standard Flow Enabled: ON
+   - Valid Redirect URIs: `http://localhost:4000/*`, `http://localhost:5173/*`
+   - Web Origins: `http://localhost:4000`, `http://localhost:5173`
+
+For detailed authentication setup, see
+[examples/02-authentication.md](./examples/02-authentication.md).
 
 ## Docker Deployment
 
@@ -143,6 +163,7 @@ The Docker deployment includes:
 - ✅ Frontend (React + Vite) served by nginx
 - ✅ Backend (Node.js + Koa) API server
 - ✅ MongoDB database + MinIO object storage
+- ✅ Keycloak identity provider
 - ✅ nginx reverse proxy for unified endpoint
 - ✅ Health checks and container orchestration
 
@@ -152,13 +173,14 @@ See [docs/README.md](docs/README.md) for complete deployment documentation.
 
 ### Development commands
 
-- `pnpm dev` - Start both frontend and backend with MongoDB (recommended for
-  full stack development)
+- `pnpm dev` - Start both frontend and backend with MongoDB, MinIO, and Keycloak
+  (recommended for full stack development)
 - `pnpm fe:dev` - Start frontend development server with hot module replacement
   (HMR)
 - `pnpm be:dev` - Start backend development server with hot reload
-- `pnpm db:start` - Start MongoDB container with Docker Compose
-- `pnpm db:stop` - Stop MongoDB container
+- `pnpm db:start` - Start local services (MongoDB, MinIO, Keycloak) with Docker
+  Compose
+- `pnpm db:stop` - Stop local services
 
 ### Code Quality
 
@@ -239,7 +261,7 @@ baaa-hub/
 │       │   ├── types/       # TypeScript types and Zod schemas
 │       │   └── utils/       # Utility functions
 │       └── package.json     # Backend dependencies
-├── docker-compose.yml       # MongoDB container configuration
+├── docker-compose.yml       # Local dev services (MongoDB, MinIO, Keycloak)
 ├── package.json             # Root workspace configuration
 └── README.md               # This file
 ```
@@ -420,7 +442,7 @@ for comprehensive guides:
 
 - **[Basic Initialization](./examples/01-basic-initialization.md)** - Set up the
   application with all providers
-- **[Authentication](./examples/02-authentication.md)** - Auth0 integration,
+- **[Authentication](./examples/02-authentication.md)** - Keycloak integration,
   login/logout flows
 - **[Theme and Styling](./examples/03-theme-and-styling.md)** - Material-UI
   theming and customization

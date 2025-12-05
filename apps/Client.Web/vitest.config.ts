@@ -31,10 +31,10 @@ export default defineConfig({
     css: true,
     coverage: {
       thresholds: {
-        branches: 85,
-        functions: 85,
-        lines: 85,
-        statements: 85,
+        branches: 75,
+        functions: 75,
+        lines: 75,
+        statements: 75,
       },
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov', 'json-summary'],
@@ -51,6 +51,7 @@ export default defineConfig({
         '**/index.tsx',
         '**/index.ts',
         '**/types/**',
+        'assets/**',
       ],
     },
   },

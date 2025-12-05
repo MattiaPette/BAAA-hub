@@ -42,7 +42,7 @@ msgstr "Statistiche Attività"
 msgid "Add a profile picture and banner to personalize your profile"
 msgstr "Aggiungi un'immagine del profilo e un banner per personalizzare il tuo profilo"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:102
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:122
 msgid "Additional interaction is required"
 msgstr "È richiesta un'interazione aggiuntiva"
 
@@ -74,11 +74,11 @@ msgstr "Tutti"
 msgid "All Roles"
 msgstr "Tutti i ruoli"
 
-#: src/components/login/LoginForm/LoginForm.tsx:258
+#: src/components/login/LoginForm/LoginForm.tsx:262
 msgid "Already have an account?"
 msgstr "Hai già un account?"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:115
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:135
 msgid "An error occurred during authentication. Please try again"
 msgstr "Si è verificato un errore durante l'autenticazione. Riprova"
 
@@ -204,7 +204,7 @@ msgstr "Community Star"
 msgid "Complete Your Profile"
 msgstr "Completa il Tuo Profilo"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:100
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:120
 msgid "Consent is required"
 msgstr "È richiesto il consenso"
 
@@ -212,7 +212,7 @@ msgstr "È richiesto il consenso"
 msgid "Contact & Social"
 msgstr "Contatti e Social"
 
-#: src/components/login/LoginForm/LoginForm.tsx:245
+#: src/components/login/LoginForm/LoginForm.tsx:249
 msgid "Create Account"
 msgstr "Crea Account"
 
@@ -245,6 +245,7 @@ msgstr "Modalità scura"
 #: src/containers/Dashboard/Dashboard.tsx:21
 #: src/containers/Dashboard/Dashboard.tsx:27
 #: src/containers/MainContainer/MainContainer.tsx:44
+#: src/containers/PublicContainer/PublicContainer.tsx:138
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -268,7 +269,7 @@ msgstr "Privacy Data di Nascita"
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: src/components/login/LoginForm/LoginForm.tsx:281
+#: src/components/login/LoginForm/LoginForm.tsx:286
 msgid "Don't have an account?"
 msgstr "Non hai un account?"
 
@@ -304,7 +305,7 @@ msgstr "Modifica ruoli per {0} {1}"
 msgid "Email"
 msgstr "Email"
 
-#: src/components/login/LoginForm/LoginForm.tsx:192
+#: src/components/login/LoginForm/LoginForm.tsx:193
 msgid "Email is required"
 msgstr "L'email è obbligatoria"
 
@@ -435,8 +436,8 @@ msgid "Gym"
 msgstr "Palestra"
 
 #: src/components/login/LoginForm/LoginForm.tsx:319
-msgid "Having trouble signing in?"
-msgstr "Hai problemi ad accedere?"
+#~ msgid "Having trouble signing in?"
+#~ msgstr "Hai problemi ad accedere?"
 
 #: src/helpers/roleLabels/roleLabels.ts:23
 msgid "Highest privilege level - can manage admins"
@@ -467,7 +468,7 @@ msgstr "Installa l'app"
 msgid "Invalid authentication code"
 msgstr "Codice di autenticazione non valido"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:112
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:132
 msgid "Invalid configuration"
 msgstr "Configurazione non valida"
 
@@ -475,7 +476,7 @@ msgstr "Configurazione non valida"
 msgid "Invalid credentials or session expired"
 msgstr "Credenziali non valide o sessione scaduta"
 
-#: src/components/login/LoginForm/LoginForm.tsx:196
+#: src/components/login/LoginForm/LoginForm.tsx:197
 msgid "Invalid email address"
 msgstr "Indirizzo email non valido"
 
@@ -489,15 +490,15 @@ msgstr "File non valido"
 msgid "Invalid Instagram profile URL"
 msgstr "URL profilo Instagram non valido"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:69
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:89
 msgid "Invalid registration. Please check the information you entered"
 msgstr "Registrazione non valida. Verifica i dati inseriti"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:104
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:124
 msgid "Invalid request"
 msgstr "Richiesta non valida"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:110
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:130
 msgid "Invalid scope"
 msgstr "Ambito non valido"
 
@@ -506,7 +507,7 @@ msgstr "Ambito non valido"
 msgid "Invalid Strava profile URL"
 msgstr "URL profilo Strava non valido"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:96
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:116
 msgid "Invalid token"
 msgstr "Token non valido"
 
@@ -546,8 +547,10 @@ msgid "Light Mode"
 msgstr "Modalità chiara"
 
 #: src/components/login/LoginForm/LoginForm.tsx:154
-#: src/components/login/LoginForm/LoginForm.tsx:247
-#: src/components/login/LoginForm/LoginForm.tsx:276
+#: src/components/login/LoginForm/LoginForm.tsx:251
+#: src/components/login/LoginForm/LoginForm.tsx:281
+#: src/containers/PublicContainer/PublicContainer.tsx:241
+#: src/containers/PublicContainer/PublicContainer.tsx:265
 msgid "Login"
 msgstr "Accedi"
 
@@ -596,7 +599,7 @@ msgstr "È richiesta l'autenticazione a più fattori"
 msgid "Name"
 msgstr "Nome"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:90
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:110
 msgid "Network error. Check your internet connection"
 msgstr "Errore di rete. Verifica la connessione internet"
 
@@ -663,9 +666,13 @@ msgstr "Codici monouso inviati via SMS al tuo numero di telefono"
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Sono consentite solo lettere, numeri e underscore"
 
+#: src/containers/PublicContainer/PublicContainer.tsx:175
+msgid "Open menu"
+msgstr "Apri menu"
+
 #: src/components/login/LoginForm/LoginForm.tsx:309
-msgid "or"
-msgstr "oppure"
+#~ msgid "or"
+#~ msgstr "oppure"
 
 #: src/helpers/roleLabels/roleLabels.ts:11
 msgid "Organization Committee"
@@ -680,15 +687,15 @@ msgstr "Membro del comitato organizzativo"
 msgid "Other"
 msgstr "Altro"
 
-#: src/components/login/LoginForm/LoginForm.tsx:205
+#: src/components/login/LoginForm/LoginForm.tsx:206
 msgid "Password"
 msgstr "Password"
 
-#: src/components/login/LoginForm/LoginForm.tsx:217
+#: src/components/login/LoginForm/LoginForm.tsx:219
 msgid "Password is required"
 msgstr "Password necessaria"
 
-#: src/components/login/LoginForm/LoginForm.tsx:222
+#: src/components/login/LoginForm/LoginForm.tsx:224
 msgid "Password must be at least 8 characters"
 msgstr "La password deve essere di almeno 8 caratteri"
 
@@ -826,7 +833,7 @@ msgstr "Rimuovi foto"
 msgid "Remove profile picture"
 msgstr "Rimuovi foto profilo"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:108
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:128
 msgid "Response type not supported"
 msgstr "Tipo di risposta non supportato"
 
@@ -894,7 +901,9 @@ msgid "Settings"
 msgstr "Impostazioni"
 
 #: src/components/login/LoginForm/LoginForm.tsx:154
-#: src/components/login/LoginForm/LoginForm.tsx:299
+#: src/components/login/LoginForm/LoginForm.tsx:305
+#: src/containers/PublicContainer/PublicContainer.tsx:256
+#: src/containers/PublicContainer/PublicContainer.tsx:280
 msgid "Sign Up"
 msgstr "Registrati"
 
@@ -971,15 +980,15 @@ msgstr "Passato al tema scuro"
 msgid "Switched to light theme"
 msgstr "Passato al tema chiaro"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:78
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:98
 msgid "The password cannot contain personal information"
 msgstr "La password non può contenere informazioni personali"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:74
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:94
 msgid "The password does not meet the minimum security requirements"
 msgstr "La password non soddisfa i requisiti minimi di sicurezza"
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:94
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:114
 msgid "The request has expired. Please try again"
 msgstr "La richiesta è scaduta. Riprova"
 
@@ -1028,11 +1037,11 @@ msgstr "Questo sarà il tuo nome utente pubblico"
 msgid "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
 msgstr "Password monouso basata sul tempo tramite app di autenticazione (Google Authenticator, Authy, ecc.). Consigliato per la massima sicurezza."
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:86
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:106
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Troppi tentativi. Riprova tra qualche minuto"
 
-#: src/components/login/LoginForm/LoginForm.tsx:188
+#: src/components/login/LoginForm/LoginForm.tsx:189
 msgid "Too many characters"
 msgstr "Troppi caratteri"
 
@@ -1051,8 +1060,8 @@ msgid "Triathlon"
 msgstr "Triathlon"
 
 #: src/components/login/LoginForm/LoginForm.tsx:337
-msgid "Try alternative login"
-msgstr "Prova un accesso alternativo"
+#~ msgid "Try alternative login"
+#~ msgstr "Prova un accesso alternativo"
 
 #: src/containers/Settings/Settings.tsx:106
 msgid "Two-Factor Authentication (2FA)"
@@ -1066,7 +1075,7 @@ msgstr "Autenticazione a Due Fattori (2FA)"
 msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, you will be prompted during your next login, or you can contact an administrator for assistance."
 msgstr "L'autenticazione a due fattori aggiunge un ulteriore livello di sicurezza al tuo account. Per abilitare o gestire il 2FA, ti verrà richiesto durante il prossimo accesso, oppure puoi contattare un amministratore per assistenza."
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:106
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:126
 msgid "Unauthorized client"
 msgstr "Client non autorizzato"
 
@@ -1175,7 +1184,7 @@ msgstr "Devi avere almeno 13 anni"
 msgid "You must be at least 13 years old to sign up."
 msgstr "Devi avere almeno 13 anni per registrarti."
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:98
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:118
 msgid "You must log in"
 msgstr "È necessario effettuare l'accesso"
 
@@ -1195,11 +1204,27 @@ msgstr "Il tuo account è stato bloccato per motivi di sicurezza"
 msgid "Your account has been locked after too many consecutive login attempts. We have sent you an email with instructions on how to unlock it"
 msgstr "Il tuo account è stato bloccato dopo troppi tentativi di accesso consecutivi. Ti abbiamo inviato un'email con le istruzioni su come sbloccarlo"
 
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:84
+msgid "Your account has expired. Please contact support for assistance"
+msgstr "Il tuo account è scaduto. Contatta l'assistenza per ricevere supporto"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:79
+msgid "Your account requires additional steps to be completed before you can log in"
+msgstr "Il tuo account richiede il completamento di passaggi aggiuntivi prima di poter effettuare l'accesso"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:69
+msgid "Your account setup is incomplete. Please complete your profile to continue"
+msgstr "La configurazione del tuo account è incompleta. Completa il tuo profilo per continuare"
+
 #: src/containers/Settings/Settings.tsx:202
 msgid "Your email address has been verified."
 msgstr "Il tuo indirizzo email è stato verificato."
 
-#: src/helpers/getErrorDescription/getErrorDescription.tsx:82
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:74
+msgid "Your email address has not been verified. Please check your inbox and verify your email"
+msgstr "Il tuo indirizzo email non è stato verificato. Controlla la tua casella di posta e verifica la tua email"
+
+#: src/helpers/getErrorDescription/getErrorDescription.tsx:102
 msgid "Your password is too common. Choose a more secure one"
 msgstr "La password è troppo comune. Scegline una più sicura"
 

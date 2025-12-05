@@ -34,8 +34,58 @@ services:
       timeout: 5s
       retries: 5
 
+  # PostgreSQL for Keycloak
+  keycloak-db:
+    image: postgres:16-alpine
+    container_name: baaa-hub-keycloak-db
+    restart: unless-stopped
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: ${KEYCLOAK_DB_USER:-keycloak}
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-keycloak}
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${KEYCLOAK_DB_USER:-keycloak}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Keycloak Identity Provider
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    container_name: baaa-hub-keycloak
+    restart: unless-stopped
+    ports:
+      - '8180:8080'
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USER:-keycloak}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-keycloak}
+      KC_HOSTNAME_STRICT: 'false'
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      KC_HTTP_ENABLED: 'true'
+      KC_HEALTH_ENABLED: 'true'
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    command: start-dev
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'cat < /dev/null > /dev/tcp/127.0.0.1/8080']
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+
 volumes:
   mongodb_data:
     driver: local
   minio_data:
+    driver: local
+  keycloak_db_data:
     driver: local

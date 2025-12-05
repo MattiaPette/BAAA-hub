@@ -1,24 +1,43 @@
 import { MfaType } from '@baaa-hub/shared-types';
 import { User as UserMongooseModel } from '../models/user.model.js';
-import { auth0UserUpdateWebhookSchema } from '../models/webhook.validation.js';
+import { keycloakUserUpdateWebhookSchema } from '../models/webhook.validation.js';
 import { WebhookContext } from '../middleware/webhook.js';
 
 /**
- * Map Auth0 MFA factor types to our MfaType enum
+ * Map Keycloak MFA factor types to our MfaType enum
+ *
+ * Keycloak credential types:
+ * - 'otp' / 'totp' / 'otp-credentials': Time-based One-Time Password
+ * - 'sms': SMS-based verification
+ * - 'email': Email-based verification
+ * - 'push' / 'push-notification': Push notification
+ * - 'webauthn' / 'webauthn-roaming' / 'webauthn-platform': WebAuthn/FIDO2
+ * - 'webauthn-credentials' / 'webauthn-passwordless': Keycloak WebAuthn credentials
+ * - 'recovery-code': Backup recovery codes
  */
 const mapMfaType = (mfaType?: string): MfaType => {
   if (!mfaType) return MfaType.NONE;
 
+  // Standard Keycloak credential type mappings
   const typeMapping: Record<string, MfaType> = {
+    // TOTP authenticator apps
     otp: MfaType.TOTP,
     totp: MfaType.TOTP,
+    'otp-credentials': MfaType.TOTP, // Keycloak internal credential type
+    // SMS-based MFA
     sms: MfaType.SMS,
+    // Email-based MFA
     email: MfaType.EMAIL,
+    // Push notification MFA
     push: MfaType.PUSH,
     'push-notification': MfaType.PUSH,
+    // WebAuthn/FIDO2 security keys and platform authenticators
     webauthn: MfaType.WEBAUTHN,
-    'webauthn-roaming': MfaType.WEBAUTHN,
-    'webauthn-platform': MfaType.WEBAUTHN,
+    'webauthn-roaming': MfaType.WEBAUTHN, // Roaming authenticators (USB keys)
+    'webauthn-platform': MfaType.WEBAUTHN, // Platform authenticators (Touch ID, Windows Hello)
+    'webauthn-credentials': MfaType.WEBAUTHN, // Keycloak internal credential type
+    'webauthn-passwordless': MfaType.WEBAUTHN, // Keycloak passwordless WebAuthn
+    // Recovery codes
     'recovery-code': MfaType.RECOVERY_CODE,
   };
 
@@ -26,14 +45,14 @@ const mapMfaType = (mfaType?: string): MfaType => {
 };
 
 /**
- * Handle Auth0 Post-Login Action webhook
+ * Handle Keycloak Event Listener webhook
  * Updates user's MFA status and email verification in the database
  */
-export const handleAuth0UserUpdate = async (
+export const handleKeycloakUserUpdate = async (
   ctx: WebhookContext,
 ): Promise<void> => {
   // Validate request body
-  const validationResult = auth0UserUpdateWebhookSchema.safeParse(
+  const validationResult = keycloakUserUpdateWebhookSchema.safeParse(
     ctx.request.body,
   );
   if (!validationResult.success) {
@@ -43,7 +62,7 @@ export const handleAuth0UserUpdate = async (
   const { user_id, email_verified, mfa_enabled, mfa_type } =
     validationResult.data;
 
-  // Find user by Auth0 ID
+  // Find user by Keycloak ID
   const user = await UserMongooseModel.findByAuthId(user_id);
 
   if (!user) {

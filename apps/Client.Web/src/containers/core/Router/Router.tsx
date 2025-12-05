@@ -7,6 +7,7 @@ import { useAuth } from '../../../providers/AuthProvider/AuthProvider';
 import { useUser } from '../../../providers/UserProvider/UserProvider';
 
 import { Login } from '../../Login/Login';
+import { Signup } from '../../Signup/Signup';
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
@@ -17,7 +18,35 @@ import { Administration } from '../../Administration/Administration';
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
 import { MainContainer } from '../../MainContainer/MainContainer';
+import { PublicContainer } from '../../PublicContainer/PublicContainer';
 import { LoginCallback } from '../../LoginCallback/LoginCallback';
+
+/**
+ * AuthenticatedRoute - A guard component that requires authentication to access.
+ * Unauthenticated users are redirected to the login page.
+ */
+const AuthenticatedRoute: FC<{ children: ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  const { hasProfile, isLoading: isUserLoading } = useUser();
+
+  // Show loader while authentication/profile is being checked
+  if (isUserLoading && isAuthenticated) {
+    return <Loader />;
+  }
+
+  // If authenticated but no profile, redirect to setup
+  if (isAuthenticated && !hasProfile) {
+    return <Navigate to="/profile/setup" replace />;
+  }
+
+  // If not authenticated, redirect to login
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment -- children must be wrapped in JSX for FC return type
+  return <>{children}</>;
+};
 
 /**
  * AdminRoute - A guard component that only allows users with admin role to access the route.
@@ -35,30 +64,19 @@ const AdminRoute: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 /**
- * Function that uses the useRoutes hook to define routes for unauthenticated users.
- * The defined routes include the login page and a general redirect to the login page.
- *
- * @returns {ReactElement} A React element representing the routes for unauthenticated users.
- *
- * @example
- * // Usage of the function inside a React component
- * const NotAuthenticatedRoutes: FC = () => useRoutesForUnauthenticatedUsers();
+ * GuestRoute - A guard component that only allows unauthenticated users.
+ * Authenticated users are redirected to the dashboard.
  */
-const NotAuthenticatedRoutes: FC = () =>
-  useRoutes([
-    {
-      path: '/login',
-      element: <Login />,
-    },
-    {
-      path: '/login/callback',
-      element: <LoginCallback />,
-    },
-    {
-      path: '*',
-      element: <Navigate to="/login" />,
-    },
-  ]);
+const GuestRoute: FC<{ children: ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment -- children must be wrapped in JSX for FC return type
+  return <>{children}</>;
+};
 
 /**
  * Routes for users who need to complete profile setup
@@ -80,70 +98,94 @@ const ProfileSetupRoutes: FC = () =>
   ]);
 
 /**
- * Function that defines the authenticated routes of the application.
- * Uses the useRoutes hook to define the routes and their corresponding components.
- * The routes include sections such as example sections, data tables, dialogs, text areas, and language selection sections.
- * Additionally, it includes a route for logout and a fallback route that redirects to the example section.
- *
- * @returns {JSX.Element[]} An array of objects representing the authenticated routes of the application.
- *
- * @example
- * const AuthenticatedRoutes = () => {
- *   const routes = useRoutes([
- *     {
- *       element: <MainContainer />,
- *       children: [
- *         {
- *           index: true,
- *           path: 'example-section/*',
- *           element: <h1><Trans>Example Section</Trans></h1>,
- *         },
- *         // ... other routes
- *       ],
- *     },
- *     {
- *       path: '/logout',
- *       element: <Logout />,
- *     },
- *     {
- *       path: '*',
- *       element: <Navigate to="/example-section" />,
- *     },
- *   ]);
- *   return routes;
- * };
+ * Public-first routes - Most pages are publicly accessible.
+ * Authentication is required only for specific features (profile, settings, admin).
+ * Login/signup is available at /login and /signup routes with embedded forms.
  */
-const AuthenticatedRoutes: FC = () => {
+const PublicFirstRoutes: FC = () => {
+  const { isAuthenticated } = useAuth();
+
   const routes = useRoutes([
+    // Login callback for Keycloak OAuth flow
     {
-      element: <MainContainer />,
-      children: [
-        {
-          path: '/dashboard/*',
-          element: <Dashboard />,
-        },
-        {
-          path: '/profile',
-          element: <Profile />,
-        },
-        {
-          path: '/settings',
-          element: <Settings />,
-        },
-        {
-          path: '/administration',
-          element: (
-            <AdminRoute>
-              <Administration />
-            </AdminRoute>
-          ),
-        },
-      ],
+      path: '/login/callback',
+      element: <LoginCallback />,
     },
+    // Login route with embedded form (guest only)
+    {
+      path: '/login',
+      element: (
+        <GuestRoute>
+          <Login />
+        </GuestRoute>
+      ),
+    },
+    // Signup route - separate signup page (guest only)
+    {
+      path: '/signup',
+      element: (
+        <GuestRoute>
+          <Signup />
+        </GuestRoute>
+      ),
+    },
+    // Logout route
     {
       path: '/logout',
       element: <Logout />,
     },
+    // Routes with authenticated MainContainer (with user info in sidebar)
+    ...(isAuthenticated
+      ? [
+          {
+            element: <MainContainer />,
+            children: [
+              {
+                path: '/dashboard/*',
+                element: <Dashboard />,
+              },
+              {
+                path: '/profile',
+                element: (
+                  <AuthenticatedRoute>
+                    <Profile />
+                  </AuthenticatedRoute>
+                ),
+              },
+              {
+                path: '/settings',
+                element: (
+                  <AuthenticatedRoute>
+                    <Settings />
+                  </AuthenticatedRoute>
+                ),
+              },
+              {
+                path: '/administration',
+                element: (
+                  <AuthenticatedRoute>
+                    <AdminRoute>
+                      <Administration />
+                    </AdminRoute>
+                  </AuthenticatedRoute>
+                ),
+              },
+            ],
+          },
+        ]
+      : [
+          // Routes with PublicContainer (with login/signup buttons)
+          {
+            element: <PublicContainer />,
+            children: [
+              {
+                path: '/dashboard/*',
+                element: <Dashboard />,
+              },
+            ],
+          },
+        ]),
+    // Default redirect to dashboard (public)
     {
       path: '*',
       element: <Navigate to="/dashboard" />,
@@ -154,34 +196,35 @@ const AuthenticatedRoutes: FC = () => {
 };
 
 /**
- * Anonymous function that manages the application's routing based on the user's authentication state.
- * Uses the useAuth hook to check if the user is authenticated and if localStorage is available.
- * If localStorage is not available, it returns a Loader component.
- * If the user is authenticated but hasn't completed profile setup, redirects to profile setup.
- * If the user is authenticated and has a profile, it returns the authenticated routes; otherwise, it returns the unauthenticated routes.
+ * Router component that manages the application's routing.
  *
- * @returns {JSX.Element} Returns a Loader component if localStorage is not available, otherwise returns the authenticated or unauthenticated routes based on the user's authentication state.
+ * Implements a public-first approach where most content is publicly accessible.
+ * - Public users see the dashboard and can browse content
+ * - Login/signup is available at /login and /signup routes with embedded forms
+ * - Authenticated users have access to additional features (profile, settings)
+ * - Admin features require admin role
+ *
+ * @returns {JSX.Element} The appropriate route component based on auth state
  */
 export const Router: FC = () => {
-  const { isAuthenticated, localStorageAvailable } = useAuth();
+  const { isAuthenticated, localStorageAvailable, isLoading } = useAuth();
   const { hasProfile, isLoading: isUserLoading } = useUser();
 
+  // Wait for localStorage check
   if (!localStorageAvailable) {
     return <Loader />;
   }
 
-  if (isAuthenticated) {
-    // Show loader while checking profile status
-    if (isUserLoading) {
-      return <Loader />;
-    }
-
-    // If user hasn't completed profile setup, show setup routes
-    if (!hasProfile) {
-      return <ProfileSetupRoutes />;
-    }
-
-    return <AuthenticatedRoutes />;
+  // Show loader during initial auth check
+  if (isLoading) {
+    return <Loader />;
   }
-  return <NotAuthenticatedRoutes />;
+
+  // If authenticated but needs profile setup, show setup routes
+  if (isAuthenticated && !isUserLoading && !hasProfile) {
+    return <ProfileSetupRoutes />;
+  }
+
+  // Show public-first routes (works for both authenticated and unauthenticated users)
+  return <PublicFirstRoutes />;
 };

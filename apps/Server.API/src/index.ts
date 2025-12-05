@@ -11,6 +11,7 @@ import { userRouter } from './routes/user.routes.js';
 import { imageRouter } from './routes/image.routes.js';
 import { adminRouter } from './routes/admin.routes.js';
 import { webhookRouter } from './routes/webhook.routes.js';
+import { authRouter } from './routes/auth.routes.js';
 import { initializeStorage } from './services/storage.service.js';
 import path from 'path';
 
@@ -97,6 +98,7 @@ app.use(
  * Register routes
  */
 app.use(healthRouter.routes()).use(healthRouter.allowedMethods());
+app.use(authRouter.routes()).use(authRouter.allowedMethods());
 app.use(userRouter.routes()).use(userRouter.allowedMethods());
 app.use(imageRouter.routes()).use(imageRouter.allowedMethods());
 app.use(adminRouter.routes()).use(adminRouter.allowedMethods());

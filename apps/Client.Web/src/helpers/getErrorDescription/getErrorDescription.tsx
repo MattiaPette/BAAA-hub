@@ -65,6 +65,26 @@ export const getErrorDescription: GetErrorDescriptionHelper = ({
       return t({ message: 'There is already a user with this email address' });
     case AuthErrorCode.USERNAME_EXISTS:
       return t({ message: 'This username is already in use' });
+    case AuthErrorCode.ACCOUNT_NOT_FULLY_SET_UP:
+      return t({
+        message:
+          'Your account setup is incomplete. Please complete your profile to continue',
+      });
+    case AuthErrorCode.EMAIL_NOT_VERIFIED:
+      return t({
+        message:
+          'Your email address has not been verified. Please check your inbox and verify your email',
+      });
+    case AuthErrorCode.ACTION_REQUIRED:
+      return t({
+        message:
+          'Your account requires additional steps to be completed before you can log in',
+      });
+    case AuthErrorCode.ACCOUNT_EXPIRED:
+      return t({
+        message:
+          'Your account has expired. Please contact support for assistance',
+      });
     case AuthErrorCode.INVALID_SIGNUP:
       return t({
         message:
