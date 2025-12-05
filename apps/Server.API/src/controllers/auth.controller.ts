@@ -101,6 +101,17 @@ export const register = async (ctx: Context): Promise<void> => {
   }
 
   // Validate email format
+  // Use a more specific regex that avoids catastrophic backtracking
+  // Also limit email length to prevent ReDoS attacks
+  if (body.email.length > 320) {
+    // RFC 5321 maximum email length
+    ctx.status = 400;
+    ctx.body = {
+      error: 'Invalid email format',
+      code: ErrorCode.VALIDATION_ERROR,
+    };
+    return;
+  }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(body.email)) {
     ctx.status = 400;
