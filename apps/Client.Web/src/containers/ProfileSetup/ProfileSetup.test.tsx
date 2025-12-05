@@ -24,13 +24,47 @@ vi.mock('../../services/userService', () => ({
   createUserProfile: vi.fn(),
 }));
 
+/**
+ * Helper to create axios-like error objects for testing
+ */
+const createAxiosError = (
+  code: string,
+  errorMessage?: string,
+  details?: Array<{ path: string; message: string }>,
+): Error => {
+  const error = new Error(errorMessage || code);
+  // Add axios-like response structure
+  (
+    error as Error & {
+      response: { data: { code: string; error?: string; details?: unknown[] } };
+    }
+  ).response = {
+    data: {
+      code,
+      ...(errorMessage && { error: errorMessage }),
+      ...(details && { details }),
+    },
+  };
+  return error;
+};
+
 // Mock ProfileSetupForm to avoid testing wizard logic here
 vi.mock('./ProfileSetupForm', () => ({
   ProfileSetupForm: vi.fn(
-    ({ defaultEmail, defaultName, onSubmit, isSubmitting }) => (
+    ({
+      defaultEmail,
+      defaultName,
+      onSubmit,
+      isSubmitting,
+      onLogout,
+      errorMessage,
+    }) => (
       <div data-testid="profile-setup-form">
         <span data-testid="default-email">{defaultEmail}</span>
         <span data-testid="default-name">{defaultName}</span>
+        {errorMessage && (
+          <span data-testid="error-message">{errorMessage}</span>
+        )}
         <button
           type="button"
           data-testid="submit-button"
@@ -53,6 +87,9 @@ vi.mock('./ProfileSetupForm', () => ({
           }
         >
           Submit
+        </button>
+        <button type="button" data-testid="logout-button" onClick={onLogout}>
+          Logout
         </button>
       </div>
     ),
@@ -270,7 +307,139 @@ describe('ProfileSetup', () => {
 
     renderWithSnackbar(<ProfileSetup />);
 
-    // We'd need to expose the logout button in the mock to test this
-    expect(screen.getByTestId('profile-setup-form')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('logout-button'));
+
+    expect(mockLogout).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith('/login', { replace: true });
+  });
+
+  it('should handle NICKNAME_TAKEN error', async () => {
+    const error = createAxiosError('NICKNAME_TAKEN');
+    (createUserProfile as Mock).mockRejectedValue(error);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'This nickname is already taken',
+      );
+    });
+  });
+
+  it('should handle EMAIL_TAKEN error', async () => {
+    const error = createAxiosError('EMAIL_TAKEN');
+    (createUserProfile as Mock).mockRejectedValue(error);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'This email is already registered',
+      );
+    });
+  });
+
+  it('should handle USER_ALREADY_EXISTS error and redirect', async () => {
+    vi.useFakeTimers();
+    const error = createAxiosError('USER_ALREADY_EXISTS');
+    (createUserProfile as Mock).mockRejectedValue(error);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'You already have a profile',
+      );
+    });
+
+    // Advance timers to trigger the redirect
+    await vi.advanceTimersByTimeAsync(2000);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true });
+
+    vi.useRealTimers();
+  });
+
+  it('should handle AGE_REQUIREMENT_NOT_MET error', async () => {
+    const error = createAxiosError('AGE_REQUIREMENT_NOT_MET');
+    (createUserProfile as Mock).mockRejectedValue(error);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'You must be at least 13 years old',
+      );
+    });
+  });
+
+  it('should handle VALIDATION_ERROR with details', async () => {
+    const error = createAxiosError('VALIDATION_ERROR', undefined, [
+      { path: 'email', message: 'Invalid email format' },
+      { path: 'nickname', message: 'Too short' },
+    ]);
+    (createUserProfile as Mock).mockRejectedValue(error);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'email: Invalid email format',
+      );
+    });
+  });
+
+  it('should handle VALIDATION_ERROR without details', async () => {
+    const error = createAxiosError('VALIDATION_ERROR', 'Validation failed');
+    (createUserProfile as Mock).mockRejectedValue(error);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'Validation failed',
+      );
+    });
+  });
+
+  it('should handle unknown error code with error message', async () => {
+    const error = createAxiosError('UNKNOWN_CODE', 'Something went wrong');
+    (createUserProfile as Mock).mockRejectedValue(error);
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'Something went wrong',
+      );
+    });
+  });
+
+  it('should handle non-Error exception', async () => {
+    (createUserProfile as Mock).mockRejectedValue('string error');
+
+    renderWithSnackbar(<ProfileSetup />);
+
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toHaveTextContent(
+        'Failed to create profile',
+      );
+    });
   });
 });
