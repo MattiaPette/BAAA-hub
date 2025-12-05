@@ -38,9 +38,20 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: [
+        'favicon.ico',
+        'apple-touch-icon.png',
+        'masked-icon.svg',
+        'silent-check-sso.html',
+      ],
       workbox: {
-        navigateFallbackDenylist: [/silent-check-sso.html/],
+        // Exclude silent-check-sso.html AND Keycloak paths (/realms/...) from the SW navigation fallback
+        navigateFallbackDenylist: [
+          /silent-check-sso\.html$/,
+          /^\/realms\//,
+          /^\/resources\//,
+          /^\/robots\.txt/,
+        ],
         globIgnores: ['**/silent-check-sso.html'],
       },
       manifest: {
