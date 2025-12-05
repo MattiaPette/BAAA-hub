@@ -1,6 +1,6 @@
 import { screen, waitFor, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { renderWithProviders as render } from '../../test-utils';
 import { Signup } from './Signup';
@@ -247,12 +247,12 @@ describe('Signup', () => {
   });
 
   it('should show loading state during signup', async () => {
-    let resolveSignup: () => void;
-    mockSignup.mockImplementation(() => {
-      return new Promise<void>(resolve => {
-        resolveSignup = resolve;
-      });
-    });
+    mockSignup.mockImplementation(
+      () =>
+        new Promise<void>(() => {
+          /* intentionally left pending to simulate loading state */
+        }),
+    );
 
     renderComponent();
 

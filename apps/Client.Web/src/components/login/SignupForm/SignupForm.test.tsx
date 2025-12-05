@@ -94,7 +94,7 @@ describe('SignupForm', () => {
 
     const emailInput = screen.getByLabelText(/email/i);
     // Create a string longer than 100 characters
-    const longEmail = 'a'.repeat(95) + '@test.com';
+    const longEmail = `${'a'.repeat(95)}@test.com`;
     fireEvent.change(emailInput, { target: { value: longEmail } });
 
     const submitButton = screen.getByRole('button', {
