@@ -1,4 +1,4 @@
-import { screen, waitFor, fireEvent } from '@testing-library/react';
+import { screen, waitFor, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SnackbarProvider } from 'notistack';
@@ -483,11 +483,13 @@ describe('Administration', () => {
       expect(screen.getByText('Jane Smith')).toBeInTheDocument();
     });
 
-    // Find the unblock button for Jane (who is blocked)
-    const unblockButtons = screen.getAllByTestId('CheckCircleIcon');
-    // The first CheckCircle is for Active status, second row has it as unblock button
-    // Find the button in the actions column
-    fireEvent.click(unblockButtons[unblockButtons.length - 1]);
+    // Find the row containing Jane Smith, then find the unblock button within it
+    const janeRow = screen.getByText('Jane Smith').closest('tr');
+    expect(janeRow).toBeInTheDocument();
+
+    // Within Jane's row, find the CheckCircleIcon (unblock button)
+    const unblockButton = within(janeRow!).getByTestId('CheckCircleIcon');
+    fireEvent.click(unblockButton);
 
     await waitFor(() => {
       expect(adminService.updateUserBlocked).toHaveBeenCalled();

@@ -24,6 +24,30 @@ vi.mock('../../services/userService', () => ({
   createUserProfile: vi.fn(),
 }));
 
+/**
+ * Helper to create axios-like error objects for testing
+ */
+const createAxiosError = (
+  code: string,
+  errorMessage?: string,
+  details?: Array<{ path: string; message: string }>,
+): Error => {
+  const error = new Error(errorMessage || code);
+  // Add axios-like response structure
+  (
+    error as Error & {
+      response: { data: { code: string; error?: string; details?: unknown[] } };
+    }
+  ).response = {
+    data: {
+      code,
+      ...(errorMessage && { error: errorMessage }),
+      ...(details && { details }),
+    },
+  };
+  return error;
+};
+
 // Mock ProfileSetupForm to avoid testing wizard logic here
 vi.mock('./ProfileSetupForm', () => ({
   ProfileSetupForm: vi.fn(
@@ -290,14 +314,7 @@ describe('ProfileSetup', () => {
   });
 
   it('should handle NICKNAME_TAKEN error', async () => {
-    const error = {
-      response: {
-        data: {
-          code: 'NICKNAME_TAKEN',
-        },
-      },
-    };
-    Object.setPrototypeOf(error, Error.prototype);
+    const error = createAxiosError('NICKNAME_TAKEN');
     (createUserProfile as Mock).mockRejectedValue(error);
 
     renderWithSnackbar(<ProfileSetup />);
@@ -312,14 +329,7 @@ describe('ProfileSetup', () => {
   });
 
   it('should handle EMAIL_TAKEN error', async () => {
-    const error = {
-      response: {
-        data: {
-          code: 'EMAIL_TAKEN',
-        },
-      },
-    };
-    Object.setPrototypeOf(error, Error.prototype);
+    const error = createAxiosError('EMAIL_TAKEN');
     (createUserProfile as Mock).mockRejectedValue(error);
 
     renderWithSnackbar(<ProfileSetup />);
@@ -335,14 +345,7 @@ describe('ProfileSetup', () => {
 
   it('should handle USER_ALREADY_EXISTS error and redirect', async () => {
     vi.useFakeTimers();
-    const error = {
-      response: {
-        data: {
-          code: 'USER_ALREADY_EXISTS',
-        },
-      },
-    };
-    Object.setPrototypeOf(error, Error.prototype);
+    const error = createAxiosError('USER_ALREADY_EXISTS');
     (createUserProfile as Mock).mockRejectedValue(error);
 
     renderWithSnackbar(<ProfileSetup />);
@@ -364,14 +367,7 @@ describe('ProfileSetup', () => {
   });
 
   it('should handle AGE_REQUIREMENT_NOT_MET error', async () => {
-    const error = {
-      response: {
-        data: {
-          code: 'AGE_REQUIREMENT_NOT_MET',
-        },
-      },
-    };
-    Object.setPrototypeOf(error, Error.prototype);
+    const error = createAxiosError('AGE_REQUIREMENT_NOT_MET');
     (createUserProfile as Mock).mockRejectedValue(error);
 
     renderWithSnackbar(<ProfileSetup />);
@@ -386,18 +382,10 @@ describe('ProfileSetup', () => {
   });
 
   it('should handle VALIDATION_ERROR with details', async () => {
-    const error = {
-      response: {
-        data: {
-          code: 'VALIDATION_ERROR',
-          details: [
-            { path: 'email', message: 'Invalid email format' },
-            { path: 'nickname', message: 'Too short' },
-          ],
-        },
-      },
-    };
-    Object.setPrototypeOf(error, Error.prototype);
+    const error = createAxiosError('VALIDATION_ERROR', undefined, [
+      { path: 'email', message: 'Invalid email format' },
+      { path: 'nickname', message: 'Too short' },
+    ]);
     (createUserProfile as Mock).mockRejectedValue(error);
 
     renderWithSnackbar(<ProfileSetup />);
@@ -412,15 +400,7 @@ describe('ProfileSetup', () => {
   });
 
   it('should handle VALIDATION_ERROR without details', async () => {
-    const error = {
-      response: {
-        data: {
-          code: 'VALIDATION_ERROR',
-          error: 'Validation failed',
-        },
-      },
-    };
-    Object.setPrototypeOf(error, Error.prototype);
+    const error = createAxiosError('VALIDATION_ERROR', 'Validation failed');
     (createUserProfile as Mock).mockRejectedValue(error);
 
     renderWithSnackbar(<ProfileSetup />);
@@ -435,15 +415,7 @@ describe('ProfileSetup', () => {
   });
 
   it('should handle unknown error code with error message', async () => {
-    const error = {
-      response: {
-        data: {
-          code: 'UNKNOWN_CODE',
-          error: 'Something went wrong',
-        },
-      },
-    };
-    Object.setPrototypeOf(error, Error.prototype);
+    const error = createAxiosError('UNKNOWN_CODE', 'Something went wrong');
     (createUserProfile as Mock).mockRejectedValue(error);
 
     renderWithSnackbar(<ProfileSetup />);
