@@ -68,6 +68,7 @@ services:
       KC_HOSTNAME_STRICT: 'false'
       KC_HOSTNAME_STRICT_HTTPS: 'false'
       KC_HTTP_ENABLED: 'true'
+      KC_HEALTH_ENABLED: 'true'
       KC_PROXY_HEADERS: xforwarded
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD:
@@ -84,7 +85,7 @@ services:
       test:
         [
           'CMD-SHELL',
-          'exec 3<>/dev/tcp/127.0.0.1/8080;echo -e "GET /health/ready
+          'exec 3<>/dev/tcp/127.0.0.1/9000;echo -e "GET /health/ready
           HTTP/1.1\r\nhost: localhost\r\nConnection: close\r\n\r\n" >&3;grep
           "UP" <&3',
         ]
