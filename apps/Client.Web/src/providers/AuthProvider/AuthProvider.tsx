@@ -293,11 +293,22 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     };
 
     // Initialize Keycloak - check if user is already logged in
+    const silentCheckSsoRedirectUri = `${window.location.origin}${import.meta.env.BASE_URL}silent-check-sso.html`;
+
+    console.log('Initializing Keycloak:', {
+      url,
+      realm,
+      clientId,
+      silentCheckSsoRedirectUri,
+      checkLoginIframe: false,
+    });
+
     kc.init({
       onLoad: 'check-sso',
-      silentCheckSsoRedirectUri: `${window.location.origin}${import.meta.env.BASE_URL}silent-check-sso.html`,
+      silentCheckSsoRedirectUri,
       checkLoginIframe: false,
       pkceMethod: 'S256',
+      enableLogging: true,
     })
       .then(authenticated => {
         setKeycloak(kc);

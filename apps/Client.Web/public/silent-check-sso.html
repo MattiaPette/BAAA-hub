@@ -5,7 +5,8 @@
   </head>
   <body>
     <script>
-      parent.postMessage(location.href, location.origin);
+      console.log('Silent SSO iframe loaded:', location.href);
+      parent.postMessage(location.href, '*');
     </script>
   </body>
 </html>
