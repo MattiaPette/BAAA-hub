@@ -47,7 +47,8 @@ but the accent color is not defined in the theme configuration files.
 **Coverage:** 18.03% lines (30-94 uncovered)
 
 **Blocking Issue:** The Sidebar component used within BaseContainer requires
-`useAuth` hook from AuthProvider. Testing requires mocking Keycloak authentication.
+`useAuth` hook from AuthProvider. Testing requires mocking Keycloak
+authentication.
 
 **Action Required:**
 

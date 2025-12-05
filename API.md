@@ -181,12 +181,12 @@ curl -X PUT \
 
 ### Webhook Endpoints
 
-Webhook endpoints are used for server-to-server communication with Keycloak. These
-endpoints are not for client use.
+Webhook endpoints are used for server-to-server communication with Keycloak.
+These endpoints are not for client use.
 
-| Method | Endpoint                              | Auth           | Description                              |
-| ------ | ------------------------------------- | -------------- | ---------------------------------------- |
-| POST   | `/api/webhooks/keycloak/user-update`  | Webhook Secret | Keycloak Event Listener MFA/email sync   |
+| Method | Endpoint                             | Auth           | Description                            |
+| ------ | ------------------------------------ | -------------- | -------------------------------------- |
+| POST   | `/api/webhooks/keycloak/user-update` | Webhook Secret | Keycloak Event Listener MFA/email sync |
 
 **Authentication:**
 

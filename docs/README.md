@@ -81,32 +81,32 @@ docker compose up -d
 
 ### Production Environment (`deployment/.env`)
 
-| Variable                   | Description                                     | Required |
-| -------------------------- | ----------------------------------------------- | -------- |
-| `APP_PORT`                 | Port to expose (default: 8080)                  | No       |
-| `CORS_ORIGIN`              | Allowed CORS origin                             | Yes      |
-| `DEBUG`                    | Enable debug logging                            | No       |
-| `KEYCLOAK_REALM`           | Keycloak realm name                             | Yes      |
-| `KEYCLOAK_CLIENT_ID`       | Keycloak client ID                              | Yes      |
-| `KEYCLOAK_WEBHOOK_SECRET`  | Webhook authentication secret                   | Yes      |
-| `KEYCLOAK_ADMIN`           | Keycloak admin username                         | Yes      |
-| `KEYCLOAK_ADMIN_PASSWORD`  | Keycloak admin password                         | Yes      |
-| `KEYCLOAK_DB_USER`         | PostgreSQL user for Keycloak                    | Yes      |
-| `KEYCLOAK_DB_PASSWORD`     | PostgreSQL password for Keycloak                | Yes      |
-| `MINIO_ACCESS_KEY`         | MinIO access key                                | Yes      |
-| `MINIO_SECRET_KEY`         | MinIO secret key                                | Yes      |
-| `MINIO_BUCKET`             | MinIO bucket name                               | No       |
+| Variable                  | Description                      | Required |
+| ------------------------- | -------------------------------- | -------- |
+| `APP_PORT`                | Port to expose (default: 8080)   | No       |
+| `CORS_ORIGIN`             | Allowed CORS origin              | Yes      |
+| `DEBUG`                   | Enable debug logging             | No       |
+| `KEYCLOAK_REALM`          | Keycloak realm name              | Yes      |
+| `KEYCLOAK_CLIENT_ID`      | Keycloak client ID               | Yes      |
+| `KEYCLOAK_WEBHOOK_SECRET` | Webhook authentication secret    | Yes      |
+| `KEYCLOAK_ADMIN`          | Keycloak admin username          | Yes      |
+| `KEYCLOAK_ADMIN_PASSWORD` | Keycloak admin password          | Yes      |
+| `KEYCLOAK_DB_USER`        | PostgreSQL user for Keycloak     | Yes      |
+| `KEYCLOAK_DB_PASSWORD`    | PostgreSQL password for Keycloak | Yes      |
+| `MINIO_ACCESS_KEY`        | MinIO access key                 | Yes      |
+| `MINIO_SECRET_KEY`        | MinIO secret key                 | Yes      |
+| `MINIO_BUCKET`            | MinIO bucket name                | No       |
 
 ### Frontend Build Variables (CI/CD)
 
 Frontend variables are baked in at build time via GitHub repository secrets:
 
-| Secret                   | Description               |
-| ------------------------ | ------------------------- |
-| `VITE_KEYCLOAK_URL`      | Keycloak server URL       |
-| `VITE_KEYCLOAK_REALM`    | Keycloak realm name       |
-| `VITE_KEYCLOAK_CLIENT_ID`| Keycloak client ID        |
-| `VITE_API_URL`           | API base URL              |
+| Secret                    | Description         |
+| ------------------------- | ------------------- |
+| `VITE_KEYCLOAK_URL`       | Keycloak server URL |
+| `VITE_KEYCLOAK_REALM`     | Keycloak realm name |
+| `VITE_KEYCLOAK_CLIENT_ID` | Keycloak client ID  |
+| `VITE_API_URL`            | API base URL        |
 
 To update frontend config, update GitHub secrets and trigger a new build.
 
@@ -114,21 +114,21 @@ To update frontend config, update GitHub secrets and trigger a new build.
 
 ### Containers
 
-| Container              | Image                                   | Purpose            |
-| ---------------------- | --------------------------------------- | ------------------ |
-| `baaa-hub-nginx`       | `nginx:alpine`                          | Reverse proxy      |
-| `baaa-hub-frontend`    | `ghcr.io/mattiapette/baaa-hub/frontend` | Static frontend    |
-| `baaa-hub-backend`     | `ghcr.io/mattiapette/baaa-hub/backend`  | API server         |
-| `baaa-hub-keycloak`    | `quay.io/keycloak/keycloak:26.0`        | Identity provider  |
-| `baaa-hub-keycloak-db` | `postgres:16-alpine`                    | Keycloak database  |
-| `baaa-hub-mongodb`     | `mongo:8.0`                             | Database           |
-| `baaa-hub-minio`       | `minio/minio:latest`                    | Object storage     |
+| Container              | Image                                   | Purpose           |
+| ---------------------- | --------------------------------------- | ----------------- |
+| `baaa-hub-nginx`       | `nginx:alpine`                          | Reverse proxy     |
+| `baaa-hub-frontend`    | `ghcr.io/mattiapette/baaa-hub/frontend` | Static frontend   |
+| `baaa-hub-backend`     | `ghcr.io/mattiapette/baaa-hub/backend`  | API server        |
+| `baaa-hub-keycloak`    | `quay.io/keycloak/keycloak:26.0`        | Identity provider |
+| `baaa-hub-keycloak-db` | `postgres:16-alpine`                    | Keycloak database |
+| `baaa-hub-mongodb`     | `mongo:8.0`                             | Database          |
+| `baaa-hub-minio`       | `minio/minio:latest`                    | Object storage    |
 
 ### Ports
 
 - **8080**: Application (nginx reverse proxy)
-- Internal only: frontend (80), backend (3000), keycloak (8080), mongodb (27017), minio
-  (9000/9001)
+- Internal only: frontend (80), backend (3000), keycloak (8080), mongodb
+  (27017), minio (9000/9001)
 
 ### Network
 
