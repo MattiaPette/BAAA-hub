@@ -39,6 +39,10 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      workbox: {
+        navigateFallbackDenylist: [/silent-check-sso.html/],
+        globIgnores: ['**/silent-check-sso.html'],
+      },
       manifest: {
         name: 'BAAA Hub',
         short_name: 'BAAA Hub',

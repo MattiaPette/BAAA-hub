@@ -293,7 +293,8 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     };
 
     // Initialize Keycloak - check if user is already logged in
-    const silentCheckSsoRedirectUri = `${window.location.origin}${import.meta.env.BASE_URL}silent-check-sso.html`;
+    // Append timestamp to force bypass of Service Worker/Browser cache
+    const silentCheckSsoRedirectUri = `${window.location.origin}${import.meta.env.BASE_URL}silent-check-sso.html?v=${new Date().getTime()}`;
 
     console.log('Initializing Keycloak:', {
       url,
