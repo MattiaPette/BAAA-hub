@@ -293,9 +293,25 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     };
 
     // Initialize Keycloak - check if user is already logged in
-    // Append timestamp to force bypass of Service Worker/Browser cache
-    const silentCheckSsoRedirectUri = `${window.location.origin}${import.meta.env.BASE_URL}silent-check-sso.html?v=${new Date().getTime()}`;
+    // We removed the timestamp query param because it causes the Service Worker
+    // to fall back to index.html (the app) instead of serving the static file.
+    const silentCheckSsoRedirectUri = `${window.location.origin}${import.meta.env.BASE_URL}silent-check-sso.html`;
 
+    // CRITICAL SAFETY CHECK:
+    // If this React application is running inside the silent-check-sso iframe,
+    // it means the Service Worker served index.html instead of the static file.
+    // We must abort initialization to prevent errors and infinite loops.
+    if (
+      window.parent !== window &&
+      window.location.href.includes('silent-check-sso.html')
+    ) {
+      console.error(
+        'CRITICAL: The React App is running inside the Silent Check SSO iframe. ' +
+          'This means the Service Worker is serving index.html instead of the static silent-check-sso.html file. ' +
+          'Please check your vite-plugin-pwa configuration to exclude this file from navigation fallback.',
+      );
+      return;
+    }
     console.log('Initializing Keycloak:', {
       url,
       realm,
