@@ -13,7 +13,7 @@ import {
   Zoom,
   useMediaQuery,
 } from '@mui/material';
-import { styled, alpha, keyframes, useTheme } from '@mui/material/styles';
+import { styled, alpha, keyframes } from '@mui/material/styles';
 
 import baaaLogo from '../../../../assets/baaa.png';
 import { SidebarProps, SidebarRoute, RoutePermission } from './Sidebar.model';
@@ -236,7 +236,7 @@ const hasPermission = (
  * - Automatic route ordering
  * - PWA install prompt support
  * - User information display at bottom
- * - Logo/title hidden in mobile landscape view
+ * - Logo/title hidden when screen height is small (< 500px)
  */
 export const Sidebar: React.FC<SidebarProps> = ({
   routes = [],
@@ -250,12 +250,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ...props
 }) => {
   const navigate = useNavigate();
-  const theme = useTheme();
 
-  // Check for mobile landscape orientation
-  const isMobileLandscape = useMediaQuery(
-    `${theme.breakpoints.down('md')} and (orientation: landscape)`,
-  );
+  // Check for small screen height (e.g., mobile landscape)
+  const isSmallHeight = useMediaQuery('(max-height: 500px)');
 
   /* PWA install handler */
   const [deferredPrompt, setDeferredPrompt] =
@@ -340,8 +337,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {...props}
     >
       <AnimatedContent>
-        {/* Animated Header - hidden in mobile landscape */}
-        {!isMobileLandscape && (
+        {/* Animated Header - hidden when screen height is small (< 500px) */}
+        {!isSmallHeight && (
           <SidebarHeader>
             <Box className="logo-container">
               <Box
