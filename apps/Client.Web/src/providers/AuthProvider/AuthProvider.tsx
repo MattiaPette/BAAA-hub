@@ -312,20 +312,12 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       );
       return;
     }
-    console.log('Initializing Keycloak:', {
-      url,
-      realm,
-      clientId,
-      silentCheckSsoRedirectUri,
-      checkLoginIframe: false,
-    });
 
     kc.init({
       onLoad: 'check-sso',
       silentCheckSsoRedirectUri,
       checkLoginIframe: false,
       pkceMethod: 'S256',
-      enableLogging: true,
     })
       .then(authenticated => {
         setKeycloak(kc);
