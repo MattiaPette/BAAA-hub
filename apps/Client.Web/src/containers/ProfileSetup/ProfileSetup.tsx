@@ -53,31 +53,35 @@ export const ProfileSetup: FC = () => {
           privacySettings: data.privacySettings,
         };
 
-        await createUserProfile(token.idToken || '', createData);
+        await createUserProfile(token.accessToken || '', createData);
 
         // Upload images after profile is created (if provided)
         const avatarUpload = data.avatarFile
-          ? uploadUserImage(token.idToken, 'avatar', data.avatarFile).catch(
-              err => {
-                console.error('Failed to upload avatar:', err);
-                enqueueSnackbar(
-                  t`Profile created but failed to upload profile picture. You can add it later.`,
-                  { variant: 'warning' },
-                );
-              },
-            )
+          ? uploadUserImage(
+              token.accessToken || '',
+              'avatar',
+              data.avatarFile,
+            ).catch(err => {
+              console.error('Failed to upload avatar:', err);
+              enqueueSnackbar(
+                t`Profile created but failed to upload profile picture. You can add it later.`,
+                { variant: 'warning' },
+              );
+            })
           : Promise.resolve();
 
         const bannerUpload = data.bannerFile
-          ? uploadUserImage(token.idToken, 'banner', data.bannerFile).catch(
-              err => {
-                console.error('Failed to upload banner:', err);
-                enqueueSnackbar(
-                  t`Profile created but failed to upload banner. You can add it later.`,
-                  { variant: 'warning' },
-                );
-              },
-            )
+          ? uploadUserImage(
+              token.accessToken || '',
+              'banner',
+              data.bannerFile,
+            ).catch(err => {
+              console.error('Failed to upload banner:', err);
+              enqueueSnackbar(
+                t`Profile created but failed to upload banner. You can add it later.`,
+                { variant: 'warning' },
+              );
+            })
           : Promise.resolve();
 
         // Wait for image uploads to complete

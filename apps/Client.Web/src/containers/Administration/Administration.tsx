@@ -142,13 +142,13 @@ export const Administration: FC = () => {
 
   // Fetch users
   const fetchUsers = useCallback(async () => {
-    if (!token?.idToken) return;
+    if (!token?.accessToken) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const response = await listUsers(token.idToken, queryParams);
+      const response = await listUsers(token.accessToken, queryParams);
       setUsers(response.data);
       setTotalUsers(response.pagination.total);
     } catch (err) {
@@ -157,7 +157,7 @@ export const Administration: FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [token?.idToken, queryParams]);
+  }, [token?.accessToken, queryParams]);
 
   useEffect(() => {
     fetchUsers();
@@ -197,11 +197,11 @@ export const Administration: FC = () => {
   };
 
   const handleToggleBlocked = async (user: Readonly<User>) => {
-    if (!token?.idToken) return;
+    if (!token?.accessToken) return;
 
     try {
       const updatedUser = await updateUserBlocked(
-        token.idToken,
+        token.accessToken,
         user.id,
         !user.isBlocked,
       );
@@ -226,11 +226,11 @@ export const Administration: FC = () => {
   };
 
   const handleSaveRoles = async (roles: UserRole[]) => {
-    if (!token?.idToken || !selectedUser) return;
+    if (!token?.accessToken || !selectedUser) return;
 
     try {
       const updatedUser = await updateUserRoles(
-        token.idToken,
+        token.accessToken,
         selectedUser.id,
         roles,
       );
