@@ -11,9 +11,9 @@ import {
   Stack,
   Link,
   Zoom,
+  useMediaQuery,
 } from '@mui/material';
 import { styled, alpha, keyframes } from '@mui/material/styles';
-import GitHubIcon from '@mui/icons-material/GitHub';
 
 import baaaLogo from '../../../../assets/baaa.png';
 import { SidebarProps, SidebarRoute, RoutePermission } from './Sidebar.model';
@@ -236,6 +236,7 @@ const hasPermission = (
  * - Automatic route ordering
  * - PWA install prompt support
  * - User information display at bottom
+ * - Logo/title hidden when screen height is small (< 500px)
  */
 export const Sidebar: React.FC<SidebarProps> = ({
   routes = [],
@@ -249,6 +250,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ...props
 }) => {
   const navigate = useNavigate();
+
+  // Check for small screen height (e.g., mobile landscape)
+  const isSmallHeight = useMediaQuery('(max-height: 500px)');
 
   /* PWA install handler */
   const [deferredPrompt, setDeferredPrompt] =
@@ -333,30 +337,32 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {...props}
     >
       <AnimatedContent>
-        {/* Animated Header */}
-        <SidebarHeader>
-          <Box className="logo-container">
-            <Box
-              component="img"
-              src={baaaLogo}
-              alt="BAAA Hub"
-              sx={{
-                width: 120,
-                height: 120,
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
-                transition: 'transform 0.3s ease',
-                '&:hover': {
-                  transform: 'scale(1.1) rotate(5deg)',
-                },
-              }}
-            />
-          </Box>
-          <Typography className="header-title">BAAA Hub</Typography>
-          <Typography className="header-subtitle">
-            Boss Anna Athlete Army
-          </Typography>
-        </SidebarHeader>
+        {/* Animated Header - hidden when screen height is small (< 500px) */}
+        {!isSmallHeight && (
+          <SidebarHeader>
+            <Box className="logo-container">
+              <Box
+                component="img"
+                src={baaaLogo}
+                alt="BAAA Hub"
+                sx={{
+                  width: 120,
+                  height: 120,
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.1) rotate(5deg)',
+                  },
+                }}
+              />
+            </Box>
+            <Typography className="header-title">BAAA Hub</Typography>
+            <Typography className="header-subtitle">
+              Boss Anna Athlete Army
+            </Typography>
+          </SidebarHeader>
+        )}
 
         {/* Main navigation list */}
         <List
@@ -428,48 +434,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 Mattia
               </Link>
             </Typography>
-
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              sx={{ opacity: 0.7 }}
-            >
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{ fontSize: '0.65rem' }}
-              >
-                with Copilot
-              </Typography>
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{
-                  height: 12,
-                  my: 'auto',
-                  borderColor: 'divider',
-                }}
-              />
-              <Link
-                href="https://github.com/mattiapette/baaa-hub"
-                target="_blank"
-                rel="noopener noreferrer"
-                color="text.secondary"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5,
-                  textDecoration: 'none',
-                  '&:hover': { color: 'primary.main' },
-                }}
-              >
-                <GitHubIcon sx={{ fontSize: '0.9rem' }} />
-                <Typography variant="caption" sx={{ fontSize: '0.65rem' }}>
-                  Source
-                </Typography>
-              </Link>
-            </Stack>
           </Stack>
         </Box>
 

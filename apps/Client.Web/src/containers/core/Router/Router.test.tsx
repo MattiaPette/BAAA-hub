@@ -417,7 +417,7 @@ describe('Router', () => {
     });
   });
 
-  it('should redirect to login for profile route when not authenticated', async () => {
+  it('should redirect to dashboard for profile route when not authenticated', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: false,
       localStorageAvailable: true,
@@ -428,24 +428,56 @@ describe('Router', () => {
       authenticate: vi.fn(),
       token: null,
       userPermissions: [],
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     const { container } = render(
       <BreadcrumProvider>
-        <MemoryRouter initialEntries={['/login']}>
+        <MemoryRouter initialEntries={['/profile']}>
           <Router />
         </MemoryRouter>
       </BreadcrumProvider>,
     );
 
-    // Should show login form
+    // Should redirect to dashboard since user is not authenticated
     await waitFor(() => {
-      expect(container.textContent).toMatch(/email|password/i);
+      expect(container.textContent).toMatch(/dashboard/i);
     });
   });
 
-  it('should redirect authenticated user from login to dashboard', async () => {
+  it('should redirect to dashboard for unknown routes when not authenticated', async () => {
+    vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
+      isAuthenticated: false,
+      localStorageAvailable: true,
+      isLoading: false,
+      login: vi.fn(),
+      signup: vi.fn(),
+      logout: vi.fn(),
+      authenticate: vi.fn(),
+      token: null,
+      userPermissions: [],
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    const { container } = render(
+      <BreadcrumProvider>
+        <MemoryRouter initialEntries={['/unknown']}>
+          <Router />
+        </MemoryRouter>
+      </BreadcrumProvider>,
+    );
+
+    // Should redirect to dashboard
+    await waitFor(() => {
+      expect(container.textContent).toMatch(/dashboard/i);
+    });
+  });
+
+  it('should redirect authenticated user from unknown routes to dashboard', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
@@ -475,7 +507,7 @@ describe('Router', () => {
 
     const { container } = render(
       <BreadcrumProvider>
-        <MemoryRouter initialEntries={['/login']}>
+        <MemoryRouter initialEntries={['/unknown']}>
           <Router />
         </MemoryRouter>
       </BreadcrumProvider>,

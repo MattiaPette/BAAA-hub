@@ -24,7 +24,7 @@ export const ProfileSetup: FC = () => {
 
   const handleLogout = useCallback(() => {
     logout();
-    navigate('/login', { replace: true });
+    navigate('/dashboard', { replace: true });
   }, [logout, navigate]);
 
   const handleSubmit = useCallback(

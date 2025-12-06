@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import { FC, useState, useCallback } from 'react';
+import { Outlet, useLocation } from 'react-router';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
@@ -16,6 +16,7 @@ import { styled, keyframes } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
@@ -25,6 +26,8 @@ import {
   RoutePermission,
 } from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
+import { LoginDialog } from '../../components/login/LoginDialog/LoginDialog';
+import { SignupDialog } from '../../components/login/SignupDialog/SignupDialog';
 import logo from '../../assets/shrimp.png';
 
 // Subtle gradient animation for the header accent
@@ -114,18 +117,19 @@ const AuthButtonsSection = styled(Stack)(({ theme }) => ({
 }));
 
 /**
- * PublicContainer — a container for public-facing pages with login/signup buttons.
+ * PublicContainer — a container for public-facing pages with login/signup dialogs.
  *
  * This container is used when users are not authenticated. It displays
  * the main layout with a header containing login and signup buttons
- * that navigate to the /login and /signup routes.
+ * that open dialog modals for authentication.
  */
 export const PublicContainer: FC = () => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const { title } = useBreadcrum();
   const { i18n } = useLingui();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+  const [signupDialogOpen, setSignupDialogOpen] = useState(false);
 
   const currentPath = pathname.split('/').filter(Boolean).join('/');
 
@@ -140,21 +144,67 @@ export const PublicContainer: FC = () => {
       order: 1,
       permission: 'public' as RoutePermission,
     },
+    {
+      id: 'divider-settings',
+      path: 'divider-settings',
+      label: '',
+      isDivider: true,
+      order: 10,
+    },
+    {
+      id: 'settings',
+      path: 'settings',
+      icon: SettingsIcon,
+      label: t`Settings`,
+      linkTo: { to: '/settings' },
+      order: 11,
+      permission: 'public' as RoutePermission,
+    },
   ];
 
   /**
-   * Handle login button click - navigates to /login route.
+   * Handle login button click - opens login dialog.
    */
-  const handleLogin = () => {
-    navigate('/login');
-  };
+  const handleOpenLogin = useCallback(() => {
+    setLoginDialogOpen(true);
+  }, []);
 
   /**
-   * Handle signup button click - navigates to /signup route.
+   * Handle signup button click - opens signup dialog.
    */
-  const handleSignup = () => {
-    navigate('/signup');
-  };
+  const handleOpenSignup = useCallback(() => {
+    setSignupDialogOpen(true);
+  }, []);
+
+  /**
+   * Close login dialog
+   */
+  const handleCloseLogin = useCallback(() => {
+    setLoginDialogOpen(false);
+  }, []);
+
+  /**
+   * Close signup dialog
+   */
+  const handleCloseSignup = useCallback(() => {
+    setSignupDialogOpen(false);
+  }, []);
+
+  /**
+   * Switch from login to signup dialog
+   */
+  const handleSwitchToSignup = useCallback(() => {
+    setLoginDialogOpen(false);
+    setSignupDialogOpen(true);
+  }, []);
+
+  /**
+   * Switch from signup to login dialog
+   */
+  const handleSwitchToLogin = useCallback(() => {
+    setSignupDialogOpen(false);
+    setLoginDialogOpen(true);
+  }, []);
 
   return (
     <FlexContainer direction="column">
@@ -229,7 +279,7 @@ export const PublicContainer: FC = () => {
             variant="outlined"
             size="small"
             startIcon={<LoginIcon />}
-            onClick={handleLogin}
+            onClick={handleOpenLogin}
             sx={{
               textTransform: 'none',
               fontWeight: 500,
@@ -244,7 +294,7 @@ export const PublicContainer: FC = () => {
             variant="contained"
             size="small"
             startIcon={<PersonAddIcon />}
-            onClick={handleSignup}
+            onClick={handleOpenSignup}
             sx={{
               textTransform: 'none',
               fontWeight: 500,
@@ -257,7 +307,7 @@ export const PublicContainer: FC = () => {
           </Button>
           {/* Mobile: Icon-only buttons */}
           <IconButton
-            onClick={handleLogin}
+            onClick={handleOpenLogin}
             color="primary"
             sx={{
               display: { xs: 'flex', sm: 'none' },
@@ -267,7 +317,7 @@ export const PublicContainer: FC = () => {
             <LoginIcon />
           </IconButton>
           <IconButton
-            onClick={handleSignup}
+            onClick={handleOpenSignup}
             color="primary"
             sx={{
               display: { xs: 'flex', sm: 'none' },
@@ -304,6 +354,20 @@ export const PublicContainer: FC = () => {
         onClose={() => setDrawerOpen(false)}
         userPermission={'public' as RoutePermission}
         key={i18n.locale}
+      />
+
+      {/* Login Dialog */}
+      <LoginDialog
+        open={loginDialogOpen}
+        onClose={handleCloseLogin}
+        onSwitchToSignup={handleSwitchToSignup}
+      />
+
+      {/* Signup Dialog */}
+      <SignupDialog
+        open={signupDialogOpen}
+        onClose={handleCloseSignup}
+        onSwitchToLogin={handleSwitchToLogin}
       />
     </FlexContainer>
   );
