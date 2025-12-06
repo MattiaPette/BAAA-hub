@@ -29,7 +29,7 @@ export const ProfileSetup: FC = () => {
 
   const handleSubmit = useCallback(
     async (data: Readonly<ProfileSetupFormData>) => {
-      if (!token?.idToken) {
+      if (!token?.accessToken) {
         setErrorMessage(
           t`Authentication required. Please try logging in again.`,
         );

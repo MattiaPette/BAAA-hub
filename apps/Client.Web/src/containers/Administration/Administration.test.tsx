@@ -90,7 +90,7 @@ describe('Administration', () => {
     // Mock the auth context
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
-        idToken: 'test-access-token',
+        idToken: 'test-id-token',
         accessToken: 'test-access-token',
         refreshToken: 'test-refresh-token',
         idTokenPayload: {
