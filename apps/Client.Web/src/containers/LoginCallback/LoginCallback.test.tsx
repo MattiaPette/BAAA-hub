@@ -97,7 +97,7 @@ describe('LoginCallback', () => {
     });
   });
 
-  it('should navigate to login with error when authentication fails', async () => {
+  it('should navigate to dashboard with error when authentication fails', async () => {
     mockAuthenticate.mockImplementation(({ onErrorCallback }) => {
       onErrorCallback('invalid_token');
     });
@@ -111,11 +111,13 @@ describe('LoginCallback', () => {
     );
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/login?error=invalid_token');
+      expect(mockNavigate).toHaveBeenCalledWith(
+        '/dashboard?error=invalid_token',
+      );
     });
   });
 
-  it('should navigate to login when error is in hash (legacy fallback)', async () => {
+  it('should navigate to dashboard when error is in hash (legacy fallback)', async () => {
     render(
       <MemoryRouter
         initialEntries={[
@@ -127,7 +129,9 @@ describe('LoginCallback', () => {
     );
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/login?error=access_denied');
+      expect(mockNavigate).toHaveBeenCalledWith(
+        '/dashboard?error=access_denied',
+      );
     });
   });
 

@@ -45,7 +45,7 @@ describe('Logout', () => {
     });
   });
 
-  it('should navigate to login after logout', async () => {
+  it('should navigate to dashboard after logout', async () => {
     render(
       <MemoryRouter>
         <Logout />
@@ -53,7 +53,7 @@ describe('Logout', () => {
     );
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/login');
+      expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
     });
   });
 
