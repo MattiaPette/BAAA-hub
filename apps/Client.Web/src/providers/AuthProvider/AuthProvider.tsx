@@ -414,7 +414,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
    * providing an embedded login experience without redirecting to Keycloak's login page.
    */
   const login = useCallback<AuthContextValue['login']>(
-    async ({ email, password, onErrorCallback }) => {
+    async ({ email, password, onSuccessCallback, onErrorCallback }) => {
       if (!url || !realm || !clientId) {
         onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
         return;
@@ -476,6 +476,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
         setAuthErrorMessages([]); // Clear errors on successful login
         saveAuthToken(authToken);
         setLoading(false);
+        onSuccessCallback?.();
       } catch (error) {
         setLoading(false);
         // Distinguish between network errors and other errors

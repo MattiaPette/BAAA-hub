@@ -25,6 +25,14 @@ msgstr "About"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
 
+#: src/components/login/SignupDialog/SignupDialog.tsx:79
+msgid "Account created successfully! You can now log in."
+msgstr "Account created successfully! You can now log in."
+
+#: src/containers/Settings/Settings.tsx:140
+msgid "Account Security"
+msgstr "Account Security"
+
 #: src/containers/Administration/Administration.tsx:361
 msgid "Actions"
 msgstr "Actions"
@@ -74,7 +82,7 @@ msgstr "All"
 msgid "All Roles"
 msgstr "All Roles"
 
-#: src/components/login/LoginForm/LoginForm.tsx:262
+#: src/components/login/SignupDialog/SignupDialog.tsx:240
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
@@ -82,9 +90,13 @@ msgstr "Already have an account?"
 msgid "An error occurred during authentication. Please try again"
 msgstr "An error occurred during authentication. Please try again"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:279
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:286
 msgid "App is already installed"
 msgstr "App is already installed"
+
+#: src/containers/Settings/Settings.tsx:133
+msgid "Appearance"
+msgstr "Appearance"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:194
 msgid "Apply"
@@ -98,7 +110,7 @@ msgstr "Authentication required. Please try logging in again."
 msgid "Authenticator App"
 msgstr "Authenticator App"
 
-#: src/containers/Settings/Settings.tsx:156
+#: src/containers/Settings/Settings.tsx:278
 msgid "Available MFA Methods:"
 msgstr "Available MFA Methods:"
 
@@ -167,7 +179,7 @@ msgstr "Change profile picture"
 msgid "Choose a unique nickname"
 msgstr "Choose a unique nickname"
 
-#: src/containers/Settings/Settings.tsx:252
+#: src/containers/Settings/Settings.tsx:193
 msgid "Choose your preferred language"
 msgstr "Choose your preferred language"
 
@@ -177,6 +189,8 @@ msgstr "Click to upload banner"
 
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:49
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:92
+#: src/components/login/LoginDialog/LoginDialog.tsx:128
+#: src/components/login/SignupDialog/SignupDialog.tsx:137
 msgid "Close"
 msgstr "Close"
 
@@ -212,7 +226,8 @@ msgstr "Consent is required"
 msgid "Contact & Social"
 msgstr "Contact & Social"
 
-#: src/components/login/LoginForm/LoginForm.tsx:249
+#: src/components/login/SignupDialog/SignupDialog.tsx:233
+#: src/components/login/SignupForm/SignupForm.tsx:207
 msgid "Create Account"
 msgstr "Create Account"
 
@@ -238,14 +253,14 @@ msgstr "CrossFit"
 msgid "Cycling"
 msgstr "Cycling"
 
-#: src/containers/Settings/Settings.tsx:224
+#: src/containers/Settings/Settings.tsx:165
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
 #: src/containers/Dashboard/Dashboard.tsx:21
 #: src/containers/Dashboard/Dashboard.tsx:27
 #: src/containers/MainContainer/MainContainer.tsx:44
-#: src/containers/PublicContainer/PublicContainer.tsx:138
+#: src/containers/PublicContainer/PublicContainer.tsx:142
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -269,7 +284,7 @@ msgstr "Date of Birth Privacy"
 msgid "Disabled"
 msgstr "Disabled"
 
-#: src/components/login/LoginForm/LoginForm.tsx:286
+#: src/components/login/LoginDialog/LoginDialog.tsx:225
 msgid "Don't have an account?"
 msgstr "Don't have an account?"
 
@@ -296,8 +311,14 @@ msgstr "Edit Profile"
 msgid "Edit Roles for {0} {1}"
 msgstr "Edit Roles for {0} {1}"
 
-#: src/components/login/LoginForm/LoginForm.tsx:177
-#: src/components/login/LoginForm/LoginForm.tsx:178
+#: src/components/login/LoginDialog/LoginDialog.tsx:154
+#: src/components/login/LoginDialog/LoginDialog.tsx:155
+#: src/components/login/LoginForm/LoginForm.tsx:136
+#: src/components/login/LoginForm/LoginForm.tsx:137
+#: src/components/login/SignupDialog/SignupDialog.tsx:163
+#: src/components/login/SignupDialog/SignupDialog.tsx:164
+#: src/components/login/SignupForm/SignupForm.tsx:138
+#: src/components/login/SignupForm/SignupForm.tsx:139
 #: src/containers/Administration/Administration.tsx:354
 #: src/containers/Profile/Profile.tsx:431
 #: src/helpers/mfaLabels/mfaLabels.ts:11
@@ -305,7 +326,10 @@ msgstr "Edit Roles for {0} {1}"
 msgid "Email"
 msgstr "Email"
 
-#: src/components/login/LoginForm/LoginForm.tsx:193
+#: src/components/login/LoginDialog/LoginDialog.tsx:170
+#: src/components/login/LoginForm/LoginForm.tsx:152
+#: src/components/login/SignupDialog/SignupDialog.tsx:179
+#: src/components/login/SignupForm/SignupForm.tsx:154
 msgid "Email is required"
 msgstr "Email is required"
 
@@ -318,7 +342,7 @@ msgstr "Email Not Verified"
 msgid "Email Privacy"
 msgstr "Email Privacy"
 
-#: src/containers/Settings/Settings.tsx:192
+#: src/containers/Settings/Settings.tsx:320
 msgid "Email Verification"
 msgstr "Email Verification"
 
@@ -476,7 +500,10 @@ msgstr "Invalid configuration"
 msgid "Invalid credentials or session expired"
 msgstr "Invalid credentials or session expired"
 
-#: src/components/login/LoginForm/LoginForm.tsx:197
+#: src/components/login/LoginDialog/LoginDialog.tsx:174
+#: src/components/login/LoginForm/LoginForm.tsx:156
+#: src/components/login/SignupDialog/SignupDialog.tsx:183
+#: src/components/login/SignupForm/SignupForm.tsx:158
 msgid "Invalid email address"
 msgstr "Invalid email address"
 
@@ -515,15 +542,15 @@ msgstr "Invalid token"
 msgid "Joined"
 msgstr "Joined"
 
-#: src/containers/Settings/Settings.tsx:236
+#: src/containers/Settings/Settings.tsx:177
 msgid "Language"
 msgstr "Language"
 
-#: src/containers/Settings/Settings.tsx:77
+#: src/containers/Settings/Settings.tsx:110
 msgid "Language changed to English"
 msgstr "Language changed to English"
 
-#: src/containers/Settings/Settings.tsx:78
+#: src/containers/Settings/Settings.tsx:111
 msgid "Language changed to Italian"
 msgstr "Language changed to Italian"
 
@@ -542,18 +569,25 @@ msgstr "Last name is required"
 msgid "Last name must be 50 characters or less"
 msgstr "Last name must be 50 characters or less"
 
-#: src/containers/Settings/Settings.tsx:224
+#: src/containers/Settings/Settings.tsx:165
 msgid "Light Mode"
 msgstr "Light Mode"
 
-#: src/components/login/LoginForm/LoginForm.tsx:154
-#: src/components/login/LoginForm/LoginForm.tsx:251
-#: src/components/login/LoginForm/LoginForm.tsx:281
-#: src/containers/PublicContainer/PublicContainer.tsx:241
-#: src/containers/PublicContainer/PublicContainer.tsx:265
+#: src/components/login/LoginDialog/LoginDialog.tsx:125
+#: src/components/login/LoginDialog/LoginDialog.tsx:218
+#: src/components/login/LoginForm/LoginForm.tsx:113
+#: src/components/login/LoginForm/LoginForm.tsx:199
+#: src/components/login/SignupDialog/SignupDialog.tsx:259
+#: src/containers/PublicContainer/PublicContainer.tsx:291
+#: src/containers/PublicContainer/PublicContainer.tsx:315
 msgid "Login"
 msgstr "Login"
 
+#: src/components/login/LoginDialog/LoginDialog.tsx:75
+msgid "Login successful! Welcome back."
+msgstr "Login successful! Welcome back."
+
+#: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:250
 #: src/containers/MainContainer/MainContainer.tsx:95
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:999
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1005
@@ -641,12 +675,12 @@ msgstr "No users found"
 msgid "None"
 msgstr "None"
 
-#: src/containers/Settings/Settings.tsx:131
+#: src/containers/Settings/Settings.tsx:253
 msgid "Not Enabled"
 msgstr "Not Enabled"
 
 #: src/containers/Administration/Administration.tsx:322
-#: src/containers/Settings/Settings.tsx:198
+#: src/containers/Settings/Settings.tsx:327
 msgid "Not Verified"
 msgstr "Not Verified"
 
@@ -666,7 +700,7 @@ msgstr "One-time codes sent via SMS to your phone number"
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Only letters, numbers, and underscores allowed"
 
-#: src/containers/PublicContainer/PublicContainer.tsx:175
+#: src/containers/PublicContainer/PublicContainer.tsx:225
 msgid "Open menu"
 msgstr "Open menu"
 
@@ -687,15 +721,22 @@ msgstr "Organization committee member"
 msgid "Other"
 msgstr "Other"
 
-#: src/components/login/LoginForm/LoginForm.tsx:206
+#: src/components/login/LoginDialog/LoginDialog.tsx:183
+#: src/components/login/LoginForm/LoginForm.tsx:165
+#: src/components/login/SignupDialog/SignupDialog.tsx:192
+#: src/components/login/SignupForm/SignupForm.tsx:167
 msgid "Password"
 msgstr "Password"
 
-#: src/components/login/LoginForm/LoginForm.tsx:219
+#: src/components/login/LoginDialog/LoginDialog.tsx:196
+#: src/components/login/LoginForm/LoginForm.tsx:178
+#: src/components/login/SignupDialog/SignupDialog.tsx:205
+#: src/components/login/SignupForm/SignupForm.tsx:180
 msgid "Password is required"
 msgstr "Password is required"
 
-#: src/components/login/LoginForm/LoginForm.tsx:224
+#: src/components/login/SignupDialog/SignupDialog.tsx:209
+#: src/components/login/SignupForm/SignupForm.tsx:184
 msgid "Password must be at least 8 characters"
 msgstr "Password must be at least 8 characters"
 
@@ -715,11 +756,15 @@ msgstr "Physical security key (FIDO2/WebAuthn)"
 msgid "Please check your input and try again."
 msgstr "Please check your input and try again."
 
+#: src/containers/Settings/Settings.tsx:204
+msgid "Please log in to access account security settings."
+msgstr "Please log in to access account security settings."
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:752
 msgid "Please select at least one sport"
 msgstr "Please select at least one sport"
 
-#: src/containers/Settings/Settings.tsx:203
+#: src/containers/Settings/Settings.tsx:335
 msgid "Please verify your email address for enhanced security."
 msgstr "Please verify your email address for enhanced security."
 
@@ -742,6 +787,7 @@ msgstr "Private"
 msgid "Processing..."
 msgstr "Processing..."
 
+#: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:218
 #: src/containers/MainContainer/MainContainer.tsx:53
 #: src/containers/Profile/Profile.tsx:127
 msgid "Profile"
@@ -803,7 +849,7 @@ msgstr "Push Notification"
 msgid "Push notifications via Guardian app"
 msgstr "Push notifications via Guardian app"
 
-#: src/containers/Settings/Settings.tsx:168
+#: src/containers/Settings/Settings.tsx:290
 msgid "Recommended"
 msgstr "Recommended"
 
@@ -872,7 +918,7 @@ msgstr "Saving..."
 msgid "Search by name, email, or nickname..."
 msgstr "Search by name, email, or nickname..."
 
-#: src/containers/Settings/Settings.tsx:100
+#: src/containers/Settings/Settings.tsx:218
 msgid "Security"
 msgstr "Security"
 
@@ -885,8 +931,8 @@ msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
-#: src/containers/Settings/Settings.tsx:239
-#: src/containers/Settings/Settings.tsx:244
+#: src/containers/Settings/Settings.tsx:180
+#: src/containers/Settings/Settings.tsx:185
 msgid "Select Language"
 msgstr "Select Language"
 
@@ -894,16 +940,23 @@ msgstr "Select Language"
 msgid "Select the roles to assign to this user."
 msgstr "Select the roles to assign to this user."
 
+#: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:231
 #: src/containers/MainContainer/MainContainer.tsx:86
-#: src/containers/Settings/Settings.tsx:58
-#: src/containers/Settings/Settings.tsx:86
+#: src/containers/PublicContainer/PublicContainer.tsx:158
+#: src/containers/Settings/Settings.tsx:87
+#: src/containers/Settings/Settings.tsx:119
 msgid "Settings"
 msgstr "Settings"
 
-#: src/components/login/LoginForm/LoginForm.tsx:154
-#: src/components/login/LoginForm/LoginForm.tsx:305
-#: src/containers/PublicContainer/PublicContainer.tsx:256
-#: src/containers/PublicContainer/PublicContainer.tsx:280
+#: src/containers/Settings/Settings.tsx:126
+msgid "Settings tabs"
+msgstr "Settings tabs"
+
+#: src/components/login/LoginDialog/LoginDialog.tsx:244
+#: src/components/login/SignupDialog/SignupDialog.tsx:134
+#: src/components/login/SignupForm/SignupForm.tsx:115
+#: src/containers/PublicContainer/PublicContainer.tsx:306
+#: src/containers/PublicContainer/PublicContainer.tsx:330
 msgid "Sign Up"
 msgstr "Sign Up"
 
@@ -968,15 +1021,15 @@ msgstr "Supports JPG, PNG, WEBP, HEIC. Max 5MB."
 msgid "Swimming"
 msgstr "Swimming"
 
-#: src/containers/Settings/Settings.tsx:227
+#: src/containers/Settings/Settings.tsx:168
 msgid "Switch between light and dark theme"
 msgstr "Switch between light and dark theme"
 
-#: src/containers/Settings/Settings.tsx:67
+#: src/containers/Settings/Settings.tsx:100
 msgid "Switched to dark theme"
 msgstr "Switched to dark theme"
 
-#: src/containers/Settings/Settings.tsx:66
+#: src/containers/Settings/Settings.tsx:99
 msgid "Switched to light theme"
 msgstr "Switched to light theme"
 
@@ -996,7 +1049,7 @@ msgstr "The request has expired. Please try again"
 msgid "The service is temporarily unavailable. Please try again later"
 msgstr "The service is temporarily unavailable. Please try again later"
 
-#: src/containers/Settings/Settings.tsx:214
+#: src/containers/Settings/Settings.tsx:155
 msgid "Theme"
 msgstr "Theme"
 
@@ -1041,7 +1094,10 @@ msgstr "Time-based one-time password via authenticator app (Google Authenticator
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Too many attempts. Please try again in a few minutes"
 
-#: src/components/login/LoginForm/LoginForm.tsx:189
+#: src/components/login/LoginDialog/LoginDialog.tsx:166
+#: src/components/login/LoginForm/LoginForm.tsx:148
+#: src/components/login/SignupDialog/SignupDialog.tsx:175
+#: src/components/login/SignupForm/SignupForm.tsx:150
 msgid "Too many characters"
 msgstr "Too many characters"
 
@@ -1063,7 +1119,7 @@ msgstr "Triathlon"
 #~ msgid "Try alternative login"
 #~ msgstr "Try alternative login"
 
-#: src/containers/Settings/Settings.tsx:106
+#: src/containers/Settings/Settings.tsx:228
 msgid "Two-Factor Authentication (2FA)"
 msgstr "Two-Factor Authentication (2FA)"
 
@@ -1071,7 +1127,7 @@ msgstr "Two-Factor Authentication (2FA)"
 #~ msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
 #~ msgstr "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
 
-#: src/containers/Settings/Settings.tsx:144
+#: src/containers/Settings/Settings.tsx:266
 msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, you will be prompted during your next login, or you can contact an administrator for assistance."
 msgstr "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, you will be prompted during your next login, or you can contact an administrator for assistance."
 
@@ -1115,11 +1171,15 @@ msgstr "Uploading image"
 msgid "User blocked successfully"
 msgstr "User blocked successfully"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:302
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:309
 msgid "User installed the app"
 msgstr "User installed the app"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:304
+#: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:97
+msgid "User menu"
+msgstr "User menu"
+
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:311
 msgid "User rejected app installation"
 msgstr "User rejected app installation"
 
@@ -1132,7 +1192,7 @@ msgid "User unblocked successfully"
 msgstr "User unblocked successfully"
 
 #: src/containers/Administration/Administration.tsx:321
-#: src/containers/Settings/Settings.tsx:196
+#: src/containers/Settings/Settings.tsx:324
 msgid "Verified"
 msgstr "Verified"
 
@@ -1192,7 +1252,7 @@ msgstr "You must log in"
 msgid "You must register for multi-factor authentication"
 msgstr "You must register for multi-factor authentication"
 
-#: src/containers/Settings/Settings.tsx:136
+#: src/containers/Settings/Settings.tsx:258
 msgid "Your account does not have two-factor authentication enabled."
 msgstr "Your account does not have two-factor authentication enabled."
 
@@ -1216,7 +1276,7 @@ msgstr "Your account requires additional steps to be completed before you can lo
 msgid "Your account setup is incomplete. Please complete your profile to continue"
 msgstr "Your account setup is incomplete. Please complete your profile to continue"
 
-#: src/containers/Settings/Settings.tsx:202
+#: src/containers/Settings/Settings.tsx:334
 msgid "Your email address has been verified."
 msgstr "Your email address has been verified."
 

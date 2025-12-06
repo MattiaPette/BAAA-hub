@@ -7,16 +7,6 @@ import { PublicContainer } from './PublicContainer';
 import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 import * as BreadcrumProviderModule from '../../providers/BreadcrumProvider/BreadcrumProvider';
 
-// Mock useNavigate
-const mockNavigate = vi.fn();
-vi.mock('react-router', async () => {
-  const actual = await vi.importActual('react-router');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
-
 describe('PublicContainer', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -30,6 +20,8 @@ describe('PublicContainer', () => {
       token: null,
       userPermissions: [],
       isLoading: false,
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
@@ -67,35 +59,47 @@ describe('PublicContainer', () => {
     );
   });
 
-  it('should navigate to /login when login button is clicked', async () => {
+  it('should open login dialog when login button is clicked', async () => {
     render(
       <MemoryRouter>
         <PublicContainer />
       </MemoryRouter>,
     );
 
-    // Click the text button, not the icon button
-    const loginButton = screen.getByText('Login');
-    fireEvent.click(loginButton);
+    // Click the desktop login button (with text)
+    const loginButtons = screen.getAllByRole('button', { name: /Login/i });
+    // The first one is the text button (desktop), the second is the icon button (mobile)
+    fireEvent.click(loginButtons[0]);
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/login');
+      // Check that the login dialog is open
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      // Check that email field is present (login form specific)
+      expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     });
   });
 
-  it('should navigate to /signup when signup button is clicked', async () => {
+  it('should open signup dialog when signup button is clicked', async () => {
     render(
       <MemoryRouter>
         <PublicContainer />
       </MemoryRouter>,
     );
 
-    // Click the text button, not the icon button
-    const signupButton = screen.getByText('Sign Up');
-    fireEvent.click(signupButton);
+    // Click the desktop signup button (with text)
+    const signupButtons = screen.getAllByRole('button', { name: /Sign Up/i });
+    // The first one is the text button (desktop), the second is the icon button (mobile)
+    fireEvent.click(signupButtons[0]);
 
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/signup');
+      // Check that the signup dialog is open
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      // Check that email field is present (signup form specific)
+      expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+      // Check for Create Account button which is specific to signup
+      expect(
+        screen.getByRole('button', { name: /create account/i }),
+      ).toBeInTheDocument();
     });
   });
 

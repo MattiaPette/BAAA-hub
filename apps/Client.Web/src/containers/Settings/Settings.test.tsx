@@ -13,6 +13,7 @@ import { renderWithProviders as render } from '../../test-utils';
 
 import { BreadcrumProvider } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import * as UserProviderModule from '../../providers/UserProvider/UserProvider';
+import * as AuthProviderModule from '../../providers/AuthProvider/AuthProvider';
 
 // Mock the UserProvider module
 vi.mock('../../providers/UserProvider/UserProvider', async () => {
@@ -22,6 +23,17 @@ vi.mock('../../providers/UserProvider/UserProvider', async () => {
   return {
     ...actual,
     useUser: vi.fn(),
+  };
+});
+
+// Mock the AuthProvider module
+vi.mock('../../providers/AuthProvider/AuthProvider', async () => {
+  const actual = await vi.importActual(
+    '../../providers/AuthProvider/AuthProvider',
+  );
+  return {
+    ...actual,
+    useAuth: vi.fn(),
   };
 });
 
@@ -64,6 +76,21 @@ describe('Settings', () => {
       refreshUser: vi.fn(),
       setUser: vi.fn(),
     });
+    // Mock useAuth to return authenticated user
+    vi.mocked(AuthProviderModule.useAuth).mockReturnValue({
+      isAuthenticated: true,
+      isLoading: false,
+      localStorageAvailable: true,
+      login: vi.fn(),
+      logout: vi.fn(),
+      signup: vi.fn(),
+      authenticate: vi.fn(),
+      token: null,
+      userPermissions: [],
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
   });
 
   const renderSettings = () =>
@@ -83,13 +110,23 @@ describe('Settings', () => {
     ).toBeInTheDocument();
   });
 
-  it('should render theme section', () => {
+  it('should render tabs for Appearance and Account Security', () => {
+    renderSettings();
+    expect(
+      screen.getByRole('tab', { name: /Appearance/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: /Account Security/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('should render theme section in Appearance tab', () => {
     const { container } = renderSettings();
     const themeCard = container.querySelector('.MuiCard-root');
     expect(themeCard).toBeInTheDocument();
   });
 
-  it('should render language selector', () => {
+  it('should render language selector in Appearance tab', () => {
     renderSettings();
     expect(screen.getByLabelText(/select language/i)).toBeInTheDocument();
   });
@@ -197,25 +234,39 @@ describe('Settings', () => {
     }
   });
 
-  it('should render security section', () => {
+  it('should render security section when Account Security tab is selected', async () => {
     renderSettings();
-    // Check for security heading (use role query to be more specific)
-    expect(
-      screen.getByRole('heading', { name: /Security/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Two-Factor Authentication \(2FA\)/i),
-    ).toBeInTheDocument();
+
+    // Click on Account Security tab
+    const securityTab = screen.getByRole('tab', { name: /Account Security/i });
+    fireEvent.click(securityTab);
+
+    await waitFor(() => {
+      // Check for security heading (use role query to be more specific)
+      expect(
+        screen.getByRole('heading', { name: /Security/i }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/Two-Factor Authentication \(2FA\)/i),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should display MFA enabled status when user has MFA enabled', () => {
+  it('should display MFA enabled status when user has MFA enabled', async () => {
     renderSettings();
-    // User has TOTP enabled in mock - check the chip containing the MFA type
-    const mfaElements = screen.getAllByText('Authenticator App');
-    expect(mfaElements.length).toBeGreaterThan(0);
+
+    // Click on Account Security tab
+    const securityTab = screen.getByRole('tab', { name: /Account Security/i });
+    fireEvent.click(securityTab);
+
+    await waitFor(() => {
+      // User has TOTP enabled in mock - check the chip containing the MFA type
+      const mfaElements = screen.getAllByText('Authenticator App');
+      expect(mfaElements.length).toBeGreaterThan(0);
+    });
   });
 
-  it('should display MFA disabled status when user has no MFA', () => {
+  it('should display MFA disabled status when user has no MFA', async () => {
     // Override mock for this test
     vi.mocked(UserProviderModule.useUser).mockReturnValue({
       user: { ...mockUser, mfaEnabled: false, mfaType: MfaType.NONE },
@@ -227,18 +278,32 @@ describe('Settings', () => {
     });
 
     renderSettings();
-    expect(screen.getByText('Not Enabled')).toBeInTheDocument();
+
+    // Click on Account Security tab
+    const securityTab = screen.getByRole('tab', { name: /Account Security/i });
+    fireEvent.click(securityTab);
+
+    await waitFor(() => {
+      expect(screen.getByText('Not Enabled')).toBeInTheDocument();
+    });
   });
 
-  it('should display email verification status', () => {
+  it('should display email verification status', async () => {
     renderSettings();
-    expect(screen.getByText('Email Verification')).toBeInTheDocument();
-    // Use getAllByText since "Verified" may appear in multiple places
-    const verifiedElements = screen.getAllByText('Verified');
-    expect(verifiedElements.length).toBeGreaterThan(0);
+
+    // Click on Account Security tab
+    const securityTab = screen.getByRole('tab', { name: /Account Security/i });
+    fireEvent.click(securityTab);
+
+    await waitFor(() => {
+      expect(screen.getByText('Email Verification')).toBeInTheDocument();
+      // Use getAllByText since "Verified" may appear in multiple places
+      const verifiedElements = screen.getAllByText('Verified');
+      expect(verifiedElements.length).toBeGreaterThan(0);
+    });
   });
 
-  it('should display unverified email status when email is not verified', () => {
+  it('should display unverified email status when email is not verified', async () => {
     // Override mock for this test
     vi.mocked(UserProviderModule.useUser).mockReturnValue({
       user: { ...mockUser, isEmailVerified: false },
@@ -250,14 +315,52 @@ describe('Settings', () => {
     });
 
     renderSettings();
-    expect(screen.getByText('Not Verified')).toBeInTheDocument();
+
+    // Click on Account Security tab
+    const securityTab = screen.getByRole('tab', { name: /Account Security/i });
+    fireEvent.click(securityTab);
+
+    await waitFor(() => {
+      expect(screen.getByText('Not Verified')).toBeInTheDocument();
+    });
   });
 
-  it('should display available MFA methods', () => {
+  it('should display available MFA methods', async () => {
     renderSettings();
-    expect(screen.getByText('Available MFA Methods:')).toBeInTheDocument();
-    // Use getAllByText since "Recommended" appears in multiple places
-    const recommendedElements = screen.getAllByText(/Recommended/i);
-    expect(recommendedElements.length).toBeGreaterThan(0);
+
+    // Click on Account Security tab
+    const securityTab = screen.getByRole('tab', { name: /Account Security/i });
+    fireEvent.click(securityTab);
+
+    await waitFor(() => {
+      expect(screen.getByText('Available MFA Methods:')).toBeInTheDocument();
+      // Use getAllByText since "Recommended" appears in multiple places
+      const recommendedElements = screen.getAllByText(/Recommended/i);
+      expect(recommendedElements.length).toBeGreaterThan(0);
+    });
+  });
+
+  it('should disable Account Security tab when user is not authenticated', () => {
+    // Override mock for this test
+    vi.mocked(AuthProviderModule.useAuth).mockReturnValue({
+      isAuthenticated: false,
+      isLoading: false,
+      localStorageAvailable: true,
+      login: vi.fn(),
+      logout: vi.fn(),
+      signup: vi.fn(),
+      authenticate: vi.fn(),
+      token: null,
+      userPermissions: [],
+      authErrorMessages: [],
+      clearAuthErrors: vi.fn(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+
+    renderSettings();
+
+    const securityTab = screen.getByRole('tab', { name: /Account Security/i });
+    // MUI Tabs with disabled prop have the button disabled and Mui-disabled class
+    expect(securityTab).toHaveClass('Mui-disabled');
   });
 });
