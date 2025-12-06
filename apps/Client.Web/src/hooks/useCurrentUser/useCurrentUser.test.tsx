@@ -92,7 +92,9 @@ describe('useCurrentUser', () => {
     });
 
     expect(result.current.data).toEqual(mockUser);
-    expect(userService.getCurrentUser).toHaveBeenCalledWith('mock-id-token');
+    expect(userService.getCurrentUser).toHaveBeenCalledWith(
+      'mock-access-token',
+    );
   });
 
   it('should not fetch when not authenticated', () => {
@@ -178,12 +180,12 @@ describe('useCurrentUser', () => {
     expect(result.current.error).toEqual(mockError);
   });
 
-  it('should not fetch when idToken is missing', () => {
+  it('should not fetch when accessToken is missing', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       token: {
-        idToken: undefined as never,
-        accessToken: 'mock-access-token',
+        idToken: 'mock-id-token',
+        accessToken: undefined as never,
         refreshToken: 'mock-refresh-token',
       },
       isLoading: false,

@@ -189,8 +189,8 @@ export const Profile: FC = () => {
    */
   const handleAvatarUpload = useCallback(
     async (file: File) => {
-      if (!token?.idToken) return;
-      await uploadUserImage(token.idToken, 'avatar', file);
+      if (!token?.accessToken) return;
+      await uploadUserImage(token.accessToken, 'avatar', file);
       // Update cache buster to force browser to reload the new image
       setAvatarCacheBuster(Date.now());
       await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
@@ -202,8 +202,8 @@ export const Profile: FC = () => {
    * Handle avatar delete
    */
   const handleAvatarDelete = useCallback(async () => {
-    if (!token?.idToken) return;
-    await deleteUserImage(token.idToken, 'avatar');
+    if (!token?.accessToken) return;
+    await deleteUserImage(token.accessToken, 'avatar');
     setAvatarCacheBuster(undefined);
     await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
   }, [token, queryClient]);
@@ -213,8 +213,8 @@ export const Profile: FC = () => {
    */
   const handleBannerUpload = useCallback(
     async (file: File) => {
-      if (!token?.idToken) return;
-      await uploadUserImage(token.idToken, 'banner', file);
+      if (!token?.accessToken) return;
+      await uploadUserImage(token.accessToken, 'banner', file);
       // Update cache buster to force browser to reload the new image
       setBannerCacheBuster(Date.now());
       await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
@@ -226,19 +226,19 @@ export const Profile: FC = () => {
    * Handle banner delete
    */
   const handleBannerDelete = useCallback(async () => {
-    if (!token?.idToken) return;
-    await deleteUserImage(token.idToken, 'banner');
+    if (!token?.accessToken) return;
+    await deleteUserImage(token.accessToken, 'banner');
     setBannerCacheBuster(undefined);
     await queryClient.invalidateQueries({ queryKey: ['currentUser'] });
   }, [token, queryClient]);
 
   const handleUpdate = useCallback(
     async (data: Readonly<ProfileEditFormInput>) => {
-      if (!token?.idToken) return;
+      if (!token?.accessToken) return;
 
       setIsSubmitting(true);
       try {
-        await updateUserProfile(token.idToken, {
+        await updateUserProfile(token.accessToken, {
           name: data.name.trim(),
           surname: data.surname.trim(),
           dateOfBirth: data.dateOfBirth,

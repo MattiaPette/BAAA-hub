@@ -18,11 +18,11 @@ export type ImageType = 'avatar' | 'banner';
 /**
  * Create axios instance with default configuration
  */
-const createApiClient = (idToken?: string) => {
-  const headers: Readonly<Record<string, string>> = idToken
+const createApiClient = (accessToken?: string) => {
+  const headers: Readonly<Record<string, string>> = accessToken
     ? {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${idToken}`,
+        Authorization: `Bearer ${accessToken}`,
       }
     : {
         'Content-Type': 'application/json',
@@ -38,9 +38,9 @@ const createApiClient = (idToken?: string) => {
  * Check if user has completed profile setup
  */
 export const checkProfileStatus = async (
-  idToken: string,
+  accessToken: string,
 ): Promise<UserProfileStatusResponse> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   const response = await client.get<UserProfileStatusResponse>(
     '/api/users/profile/status',
   );
@@ -51,10 +51,10 @@ export const checkProfileStatus = async (
  * Create a new user profile
  */
 export const createUserProfile = async (
-  idToken: string,
+  accessToken: string,
   data: Readonly<CreateUserRequest>,
 ): Promise<User> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   const response = await client.post<UserResponse>('/api/users', data);
   return response.data.user;
 };
@@ -62,8 +62,8 @@ export const createUserProfile = async (
 /**
  * Get the current user's profile
  */
-export const getCurrentUser = async (idToken: string): Promise<User> => {
-  const client = createApiClient(idToken);
+export const getCurrentUser = async (accessToken: string): Promise<User> => {
+  const client = createApiClient(accessToken);
   const response = await client.get<UserResponse>('/api/users/me');
   return response.data.user;
 };
@@ -72,10 +72,10 @@ export const getCurrentUser = async (idToken: string): Promise<User> => {
  * Update the current user's profile
  */
 export const updateUserProfile = async (
-  idToken: string,
+  accessToken: string,
   data: Readonly<UpdateUserRequest>,
 ): Promise<User> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   const response = await client.patch<UserResponse>('/api/users/me', data);
   return response.data.user;
 };
@@ -95,13 +95,13 @@ export const checkNicknameAvailability = async (
 
 /**
  * Upload a user image (avatar or banner)
- * @param idToken - Authentication token
+ * @param accessToken - Authentication token
  * @param imageType - Type of image (avatar or banner)
  * @param file - The image file to upload
  * @returns The uploaded image key
  */
 export const uploadUserImage = async (
-  idToken: string,
+  accessToken: string,
   imageType: ImageType,
   file: File,
 ): Promise<{ key: string }> => {
@@ -112,7 +112,7 @@ export const uploadUserImage = async (
     {
       headers: {
         'Content-Type': file.type,
-        Authorization: `Bearer ${idToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     },
   );
@@ -121,14 +121,14 @@ export const uploadUserImage = async (
 
 /**
  * Delete a user image (avatar or banner)
- * @param idToken - Authentication token
+ * @param accessToken - Authentication token
  * @param imageType - Type of image (avatar or banner)
  */
 export const deleteUserImage = async (
-  idToken: string,
+  accessToken: string,
   imageType: ImageType,
 ): Promise<void> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   await client.delete(`/api/images/me/${imageType}`);
 };
 

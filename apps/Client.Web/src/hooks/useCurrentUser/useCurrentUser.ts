@@ -24,14 +24,14 @@ export const useCurrentUser = () => {
   const { token, isAuthenticated } = useAuth();
 
   return useQuery<User, Error>({
-    queryKey: ['currentUser', token?.idToken],
+    queryKey: ['currentUser', token?.accessToken],
     queryFn: async () => {
-      if (!token?.idToken) {
+      if (!token?.accessToken) {
         throw new Error('No authentication token available');
       }
-      return getCurrentUser(token.idToken);
+      return getCurrentUser(token.accessToken);
     },
-    enabled: isAuthenticated && !!token?.idToken,
+    enabled: isAuthenticated && !!token?.accessToken,
     staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
   });
 };

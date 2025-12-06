@@ -464,7 +464,7 @@ describe('Administration', () => {
 
     await waitFor(() => {
       expect(adminService.updateUserBlocked).toHaveBeenCalledWith(
-        'test-id-token',
+        'test-access-token',
         '1',
         true,
       );
@@ -641,7 +641,7 @@ describe('Administration', () => {
 
     await waitFor(() => {
       expect(adminService.listUsers).toHaveBeenCalledWith(
-        'test-id-token',
+        'test-access-token',
         expect.objectContaining({ search: 'John' }),
       );
     });
@@ -673,7 +673,7 @@ describe('Administration', () => {
 
     await waitFor(() => {
       expect(adminService.listUsers).toHaveBeenCalledWith(
-        'test-id-token',
+        'test-access-token',
         expect.objectContaining({ page: 2 }),
       );
     });
@@ -699,7 +699,7 @@ describe('Administration', () => {
 
     await waitFor(() => {
       expect(adminService.listUsers).toHaveBeenCalledWith(
-        'test-id-token',
+        'test-access-token',
         expect.objectContaining({ perPage: 25 }),
       );
     });
