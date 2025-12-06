@@ -7,12 +7,14 @@ import {
   Typography,
   Avatar,
   Stack,
+  useMediaQuery,
 } from '@mui/material';
-import { styled, keyframes } from '@mui/material/styles';
+import { styled, keyframes, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
+import { UserProfilePopup } from '../../components/commons/navigation/UserProfilePopup/UserProfilePopup';
 import {
   SidebarProps,
   RoutePermission,
@@ -109,7 +111,8 @@ const TitleSection = styled(Box)(({ theme }) => ({
 
 /**
  * Generic, reusable container layout for application modules.
- * Mobile-first design with overlay sidebar and user info in sidebar bottom.
+ * Mobile-first design with overlay sidebar and user info in sidebar bottom (mobile)
+ * or user profile popup in header (desktop).
  * Uses a content header that matches the sidebar style instead of a top bar.
  */
 export const BaseContainer: FC<BaseContainerProps> = ({
@@ -122,6 +125,8 @@ export const BaseContainer: FC<BaseContainerProps> = ({
   const { pathname } = useLocation();
   const { data: user } = useCurrentUser();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
 
   const currentPath = pathname.split('/').filter(Boolean).join('/');
 
@@ -137,6 +142,8 @@ export const BaseContainer: FC<BaseContainerProps> = ({
     return user.profilePicture;
   }, [user]);
 
+  const userName = user ? `${user.name} ${user.surname}` : undefined;
+
   // Wrap children with any providers passed
   const wrapWithProviders = (children: Readonly<React.ReactNode>) =>
     providers.reduceRight(
@@ -146,7 +153,7 @@ export const BaseContainer: FC<BaseContainerProps> = ({
 
   const content = (
     <FlexContainer direction="column">
-      {/* Content Header with logo, menu button, and breadcrumbs */}
+      {/* Content Header with logo, menu button, breadcrumbs, and user profile */}
       <ContentHeader>
         <LogoSection>
           {/* Menu button for mobile/tablet */}
@@ -211,12 +218,17 @@ export const BaseContainer: FC<BaseContainerProps> = ({
           </Typography>
         </TitleSection>
 
-        {/* End adornment slot */}
-        {endAdornment && (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {endAdornment}
-          </Box>
-        )}
+        {/* End adornment slot and User Profile Popup for desktop */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {endAdornment}
+          {isDesktop && (
+            <UserProfilePopup
+              userName={userName}
+              userEmail={user?.email}
+              userPicture={userPicture}
+            />
+          )}
+        </Box>
       </ContentHeader>
 
       {/* Main content area */}
@@ -231,15 +243,15 @@ export const BaseContainer: FC<BaseContainerProps> = ({
         <Outlet />
       </Box>
 
-      {/* Mobile-first overlay sidebar */}
+      {/* Mobile-first overlay sidebar - show user info only on mobile */}
       <Sidebar
         routes={routes}
         currentPath={currentPath}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        userName={user ? `${user.name} ${user.surname}` : undefined}
-        userEmail={user?.email}
-        userPicture={userPicture}
+        userName={!isDesktop ? userName : undefined}
+        userEmail={!isDesktop ? user?.email : undefined}
+        userPicture={!isDesktop ? userPicture : undefined}
         userPermission={userPermission}
       />
     </FlexContainer>

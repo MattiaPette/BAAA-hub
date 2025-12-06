@@ -12,7 +12,7 @@ import { Layout } from '../../components/commons/layouts/Layout/Layout';
  *
  * For Keycloak, authentication is handled via authorization code flow with PKCE.
  * The URL will contain a `code` query parameter after successful authentication.
- * On error it redirects the user back to the login page with an error code
+ * On error it redirects the user back to the dashboard page with an error code
  * so the UI can show a friendly message.
  *
  * @param {void} props - This component does not accept props; it reads
@@ -51,7 +51,7 @@ export const LoginCallback: FC = () => {
       authenticate({
         onErrorCallback: (errorCode: AuthErrorCode | undefined) => {
           if (errorCode) {
-            navigate(`/login?error=${errorCode}`);
+            navigate(`/dashboard?error=${errorCode}`);
           }
         },
       });
@@ -60,7 +60,7 @@ export const LoginCallback: FC = () => {
       if (location.hash.includes('error')) {
         const hashParams = new URLSearchParams(location.hash.substring(1));
         const error = hashParams.get('error');
-        navigate(`/login?error=${error}`);
+        navigate(`/dashboard?error=${error}`);
       }
     }
   }, [location, authenticate, navigate]);

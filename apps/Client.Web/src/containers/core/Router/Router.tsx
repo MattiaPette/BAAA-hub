@@ -6,8 +6,6 @@ import { isAdmin } from '@baaa-hub/shared-types';
 import { useAuth } from '../../../providers/AuthProvider/AuthProvider';
 import { useUser } from '../../../providers/UserProvider/UserProvider';
 
-import { Login } from '../../Login/Login';
-import { Signup } from '../../Signup/Signup';
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
 import { Dashboard } from '../../Dashboard/Dashboard';
@@ -23,7 +21,7 @@ import { LoginCallback } from '../../LoginCallback/LoginCallback';
 
 /**
  * AuthenticatedRoute - A guard component that requires authentication to access.
- * Unauthenticated users are redirected to the login page.
+ * Unauthenticated users are redirected to the dashboard.
  */
 const AuthenticatedRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -39,9 +37,9 @@ const AuthenticatedRoute: FC<{ children: ReactNode }> = ({ children }) => {
     return <Navigate to="/profile/setup" replace />;
   }
 
-  // If not authenticated, redirect to login
+  // If not authenticated, redirect to dashboard
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   // eslint-disable-next-line react/jsx-no-useless-fragment -- children must be wrapped in JSX for FC return type
@@ -56,21 +54,6 @@ const AdminRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const { user } = useUser();
 
   if (!user || !isAdmin(user.roles)) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  // eslint-disable-next-line react/jsx-no-useless-fragment -- children must be wrapped in JSX for FC return type
-  return <>{children}</>;
-};
-
-/**
- * GuestRoute - A guard component that only allows unauthenticated users.
- * Authenticated users are redirected to the dashboard.
- */
-const GuestRoute: FC<{ children: ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-
-  if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -99,8 +82,9 @@ const ProfileSetupRoutes: FC = () =>
 
 /**
  * Public-first routes - Most pages are publicly accessible.
- * Authentication is required only for specific features (profile, settings, admin).
- * Login/signup is available at /login and /signup routes with embedded forms.
+ * Authentication is required only for specific features (profile, admin).
+ * Login/signup is handled via dialogs in the PublicContainer.
+ * Settings page is accessible to all users.
  */
 const PublicFirstRoutes: FC = () => {
   const { isAuthenticated } = useAuth();
@@ -110,24 +94,6 @@ const PublicFirstRoutes: FC = () => {
     {
       path: '/login/callback',
       element: <LoginCallback />,
-    },
-    // Login route with embedded form (guest only)
-    {
-      path: '/login',
-      element: (
-        <GuestRoute>
-          <Login />
-        </GuestRoute>
-      ),
-    },
-    // Signup route - separate signup page (guest only)
-    {
-      path: '/signup',
-      element: (
-        <GuestRoute>
-          <Signup />
-        </GuestRoute>
-      ),
     },
     // Logout route
     {
@@ -154,11 +120,7 @@ const PublicFirstRoutes: FC = () => {
               },
               {
                 path: '/settings',
-                element: (
-                  <AuthenticatedRoute>
-                    <Settings />
-                  </AuthenticatedRoute>
-                ),
+                element: <Settings />,
               },
               {
                 path: '/administration',
@@ -174,13 +136,17 @@ const PublicFirstRoutes: FC = () => {
           },
         ]
       : [
-          // Routes with PublicContainer (with login/signup buttons)
+          // Routes with PublicContainer (with login/signup dialogs)
           {
             element: <PublicContainer />,
             children: [
               {
                 path: '/dashboard/*',
                 element: <Dashboard />,
+              },
+              {
+                path: '/settings',
+                element: <Settings />,
               },
             ],
           },
@@ -199,9 +165,9 @@ const PublicFirstRoutes: FC = () => {
  * Router component that manages the application's routing.
  *
  * Implements a public-first approach where most content is publicly accessible.
- * - Public users see the dashboard and can browse content
- * - Login/signup is available at /login and /signup routes with embedded forms
- * - Authenticated users have access to additional features (profile, settings)
+ * - Public users see the dashboard and settings, and can browse content
+ * - Login/signup is handled via dialogs in the header
+ * - Authenticated users have access to additional features (profile)
  * - Admin features require admin role
  *
  * @returns {JSX.Element} The appropriate route component based on auth state

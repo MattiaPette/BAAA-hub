@@ -310,7 +310,7 @@ describe('ProfileSetup', () => {
     fireEvent.click(screen.getByTestId('logout-button'));
 
     expect(mockLogout).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith('/login', { replace: true });
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true });
   });
 
   it('should handle NICKNAME_TAKEN error', async () => {

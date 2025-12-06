@@ -7,7 +7,7 @@ import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 
 /**
  * Logout function for the application. This function uses the `useAuth` hook to log out the user,
- * then uses the `useNavigate` hook to redirect the user to the login page. Finally, it returns a JSX element
+ * then uses the `useNavigate` hook to redirect the user to the dashboard page. Finally, it returns a JSX element
  * representing the logout page title.
  *
  * @returns {JSX.Element} The title of the logout page.
@@ -27,7 +27,7 @@ export const Logout: FC = () => {
   useEffect(() => {
     logout();
 
-    navigateTo('/login');
+    navigateTo('/dashboard');
   }, [logout, navigateTo]);
 
   return <h1>{pageTitle}</h1>;

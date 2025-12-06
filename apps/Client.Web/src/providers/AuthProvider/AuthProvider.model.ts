@@ -200,11 +200,13 @@ export type AuthLoginData = Readonly<{
  *
  * @property {string} email - User's email address
  * @property {string} password - User's password
+ * @property {function} [onSuccessCallback] - Optional callback invoked when login succeeds
  * @property {function} [onErrorCallback] - Optional callback invoked when login fails
  */
 export type AuthLoginFunctionParameters = Readonly<{
   email: string;
   password: string;
+  onSuccessCallback?: () => void;
   onErrorCallback?: (error: AuthErrorCode | undefined) => void;
 }>;
 
