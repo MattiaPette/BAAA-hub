@@ -75,9 +75,12 @@ CMD ["sh", "-c", "\
     echo \"MONGODB_URI=${MONGODB_URI}\" >> /app/environments/.env.production && \
     echo \"CORS_ORIGIN=${CORS_ORIGIN}\" >> /app/environments/.env.production && \
     echo \"DEBUG=${DEBUG:-false}\" >> /app/environments/.env.production && \
-    echo \"AUTH0_DOMAIN=${AUTH0_DOMAIN}\" >> /app/environments/.env.production && \
-    echo \"AUTH0_AUDIENCE=${AUTH0_AUDIENCE}\" >> /app/environments/.env.production && \
-    echo \"AUTH0_WEBHOOK_SECRET=${AUTH0_WEBHOOK_SECRET}\" >> /app/environments/.env.production && \
+    echo \"KEYCLOAK_URL=${KEYCLOAK_URL}\" >> /app/environments/.env.production && \
+    echo \"KEYCLOAK_REALM=${KEYCLOAK_REALM}\" >> /app/environments/.env.production && \
+    echo \"KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}\" >> /app/environments/.env.production && \
+    echo \"KEYCLOAK_ADMIN_CLIENT_ID=${KEYCLOAK_ADMIN_CLIENT_ID}\" >> /app/environments/.env.production && \
+    echo \"KEYCLOAK_ADMIN_CLIENT_SECRET=${KEYCLOAK_ADMIN_CLIENT_SECRET}\" >> /app/environments/.env.production && \
+    echo \"KEYCLOAK_WEBHOOK_SECRET=${KEYCLOAK_WEBHOOK_SECRET}\" >> /app/environments/.env.production && \
     echo \"MINIO_ENDPOINT=${MINIO_ENDPOINT:-minio}\" >> /app/environments/.env.production && \
     echo \"MINIO_PORT=${MINIO_PORT:-9000}\" >> /app/environments/.env.production && \
     echo \"MINIO_USE_SSL=${MINIO_USE_SSL:-false}\" >> /app/environments/.env.production && \
