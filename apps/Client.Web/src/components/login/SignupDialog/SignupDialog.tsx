@@ -110,6 +110,7 @@ export const SignupDialog: FC<SignupDialogProps> = ({
     <Dialog
       open={open}
       onClose={handleClose}
+      disableEscapeKeyDown={isLoading}
       fullScreen={isMobile}
       maxWidth="xs"
       fullWidth

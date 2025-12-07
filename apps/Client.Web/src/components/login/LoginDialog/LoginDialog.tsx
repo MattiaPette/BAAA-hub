@@ -101,6 +101,7 @@ export const LoginDialog: FC<LoginDialogProps> = ({
     <Dialog
       open={open}
       onClose={handleClose}
+      disableEscapeKeyDown={isLoading}
       fullScreen={isMobile}
       maxWidth="xs"
       fullWidth
