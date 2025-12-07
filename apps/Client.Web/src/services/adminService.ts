@@ -14,12 +14,12 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 /**
  * Create axios instance with default configuration
  */
-const createApiClient = (idToken: string) =>
+const createApiClient = (accessToken: string) =>
   axios.create({
     baseURL: API_BASE_URL,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -37,10 +37,10 @@ export interface ListUsersParams {
 }
 
 export const listUsers = async (
-  idToken: string,
+  accessToken: string,
   params: ListUsersParams = {},
 ): Promise<AdminUsersListResponse> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   const queryParams = new URLSearchParams();
 
   if (params.page) queryParams.append('page', params.page.toString());
@@ -64,10 +64,10 @@ export const listUsers = async (
  * Admin: Get a specific user by ID
  */
 export const getUserById = async (
-  idToken: string,
+  accessToken: string,
   userId: string,
 ): Promise<User> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   const response = await client.get<UserResponse>(`/api/admin/users/${userId}`);
   return response.data.user;
 };
@@ -76,11 +76,11 @@ export const getUserById = async (
  * Admin: Update user roles
  */
 export const updateUserRoles = async (
-  idToken: string,
+  accessToken: string,
   userId: string,
   roles: UserRole[],
 ): Promise<User> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   const data: AdminUpdateUserRolesRequest = { roles };
   const response = await client.patch<UserResponse>(
     `/api/admin/users/${userId}/roles`,
@@ -93,11 +93,11 @@ export const updateUserRoles = async (
  * Admin: Update user blocked status
  */
 export const updateUserBlocked = async (
-  idToken: string,
+  accessToken: string,
   userId: string,
   isBlocked: boolean,
 ): Promise<User> => {
-  const client = createApiClient(idToken);
+  const client = createApiClient(accessToken);
   const data: AdminUpdateUserBlockedRequest = { isBlocked };
   const response = await client.patch<UserResponse>(
     `/api/admin/users/${userId}/blocked`,

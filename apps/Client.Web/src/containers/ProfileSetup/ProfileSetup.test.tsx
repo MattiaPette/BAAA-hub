@@ -114,6 +114,7 @@ describe('ProfileSetup', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
         idToken: 'test-id-token',
+        accessToken: 'test-access-token',
         idTokenPayload: {
           email: 'test@example.com',
           name: 'John Doe',
@@ -166,7 +167,7 @@ describe('ProfileSetup', () => {
     fireEvent.click(screen.getByTestId('submit-button'));
 
     await waitFor(() => {
-      expect(createUserProfile).toHaveBeenCalledWith('test-id-token', {
+      expect(createUserProfile).toHaveBeenCalledWith('test-access-token', {
         name: 'John',
         surname: 'Doe',
         nickname: 'johndoe',
@@ -264,6 +265,7 @@ describe('ProfileSetup', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
         idToken: 'test-id-token',
+        accessToken: 'test-access-token',
         idTokenPayload: {
           email: 'test@example.com',
         },
@@ -289,6 +291,7 @@ describe('ProfileSetup', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
         idToken: 'test-id-token',
+        accessToken: 'test-access-token',
         idTokenPayload: {
           email: 'test@example.com',
           name: 'John Doe',

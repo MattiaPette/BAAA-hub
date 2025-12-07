@@ -85,6 +85,7 @@ describe('Profile', () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       token: {
         idToken: 'test-id-token',
+        accessToken: 'test-access-token',
         idTokenPayload: { email: 'test@example.com' },
       },
       isAuthenticated: true,
@@ -278,7 +279,7 @@ describe('Profile', () => {
     await waitFor(() => {
       // updateUserProfile is called with token, not userId
       expect(userService.updateUserProfile).toHaveBeenCalledWith(
-        'test-id-token',
+        'test-access-token',
         expect.objectContaining({
           name: 'Johnny',
         }),
@@ -342,7 +343,7 @@ describe('Profile', () => {
 
     await waitFor(() => {
       expect(userService.updateUserProfile).toHaveBeenCalledWith(
-        'test-id-token',
+        'test-access-token',
         expect.objectContaining({
           name: 'Johnny',
         }),
