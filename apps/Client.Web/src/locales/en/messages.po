@@ -189,7 +189,7 @@ msgstr "Click to upload banner"
 
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:49
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:92
-#: src/components/login/LoginDialog/LoginDialog.tsx:128
+#: src/components/login/LoginDialog/LoginDialog.tsx:146
 #: src/components/login/SignupDialog/SignupDialog.tsx:137
 msgid "Close"
 msgstr "Close"
@@ -284,7 +284,7 @@ msgstr "Date of Birth Privacy"
 msgid "Disabled"
 msgstr "Disabled"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:225
+#: src/components/login/LoginDialog/LoginDialog.tsx:254
 msgid "Don't have an account?"
 msgstr "Don't have an account?"
 
@@ -311,8 +311,8 @@ msgstr "Edit Profile"
 msgid "Edit Roles for {0} {1}"
 msgstr "Edit Roles for {0} {1}"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:154
-#: src/components/login/LoginDialog/LoginDialog.tsx:155
+#: src/components/login/LoginDialog/LoginDialog.tsx:172
+#: src/components/login/LoginDialog/LoginDialog.tsx:173
 #: src/components/login/LoginForm/LoginForm.tsx:136
 #: src/components/login/LoginForm/LoginForm.tsx:137
 #: src/components/login/SignupDialog/SignupDialog.tsx:163
@@ -326,7 +326,7 @@ msgstr "Edit Roles for {0} {1}"
 msgid "Email"
 msgstr "Email"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:170
+#: src/components/login/LoginDialog/LoginDialog.tsx:188
 #: src/components/login/LoginForm/LoginForm.tsx:152
 #: src/components/login/SignupDialog/SignupDialog.tsx:179
 #: src/components/login/SignupForm/SignupForm.tsx:154
@@ -500,7 +500,7 @@ msgstr "Invalid configuration"
 msgid "Invalid credentials or session expired"
 msgstr "Invalid credentials or session expired"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:174
+#: src/components/login/LoginDialog/LoginDialog.tsx:192
 #: src/components/login/LoginForm/LoginForm.tsx:156
 #: src/components/login/SignupDialog/SignupDialog.tsx:183
 #: src/components/login/SignupForm/SignupForm.tsx:158
@@ -573,8 +573,8 @@ msgstr "Last name must be 50 characters or less"
 msgid "Light Mode"
 msgstr "Light Mode"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:125
-#: src/components/login/LoginDialog/LoginDialog.tsx:218
+#: src/components/login/LoginDialog/LoginDialog.tsx:143
+#: src/components/login/LoginDialog/LoginDialog.tsx:247
 #: src/components/login/LoginForm/LoginForm.tsx:113
 #: src/components/login/LoginForm/LoginForm.tsx:199
 #: src/components/login/SignupDialog/SignupDialog.tsx:259
@@ -583,7 +583,7 @@ msgstr "Light Mode"
 msgid "Login"
 msgstr "Login"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:75
+#: src/components/login/LoginDialog/LoginDialog.tsx:93
 msgid "Login successful! Welcome back."
 msgstr "Login successful! Welcome back."
 
@@ -721,14 +721,14 @@ msgstr "Organization committee member"
 msgid "Other"
 msgstr "Other"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:183
+#: src/components/login/LoginDialog/LoginDialog.tsx:201
 #: src/components/login/LoginForm/LoginForm.tsx:165
 #: src/components/login/SignupDialog/SignupDialog.tsx:192
 #: src/components/login/SignupForm/SignupForm.tsx:167
 msgid "Password"
 msgstr "Password"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:196
+#: src/components/login/LoginDialog/LoginDialog.tsx:214
 #: src/components/login/LoginForm/LoginForm.tsx:178
 #: src/components/login/SignupDialog/SignupDialog.tsx:205
 #: src/components/login/SignupForm/SignupForm.tsx:180
@@ -861,6 +861,10 @@ msgstr "Recovery"
 msgid "Recovery Code"
 msgstr "Recovery Code"
 
+#: src/components/login/LoginDialog/LoginDialog.tsx:228
+msgid "Remember me"
+msgstr "Remember me"
+
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:429
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:653
 msgid "Remove banner"
@@ -952,7 +956,7 @@ msgstr "Settings"
 msgid "Settings tabs"
 msgstr "Settings tabs"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:244
+#: src/components/login/LoginDialog/LoginDialog.tsx:273
 #: src/components/login/SignupDialog/SignupDialog.tsx:134
 #: src/components/login/SignupForm/SignupForm.tsx:115
 #: src/containers/PublicContainer/PublicContainer.tsx:306
@@ -1094,7 +1098,7 @@ msgstr "Time-based one-time password via authenticator app (Google Authenticator
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Too many attempts. Please try again in a few minutes"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:166
+#: src/components/login/LoginDialog/LoginDialog.tsx:184
 #: src/components/login/LoginForm/LoginForm.tsx:148
 #: src/components/login/SignupDialog/SignupDialog.tsx:175
 #: src/components/login/SignupForm/SignupForm.tsx:150

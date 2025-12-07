@@ -81,6 +81,7 @@ describe('useCurrentUser', () => {
       keycloak: null,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     vi.spyOn(userService, 'getCurrentUser').mockResolvedValue(mockUser);
@@ -113,6 +114,7 @@ describe('useCurrentUser', () => {
       keycloak: null,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });
@@ -138,6 +140,7 @@ describe('useCurrentUser', () => {
       keycloak: null,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });
@@ -166,6 +169,7 @@ describe('useCurrentUser', () => {
       keycloak: null,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     const mockError = new Error('Failed to fetch user');
@@ -200,6 +204,7 @@ describe('useCurrentUser', () => {
       keycloak: null,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     const { result } = renderHook(useCurrentUser, { wrapper });

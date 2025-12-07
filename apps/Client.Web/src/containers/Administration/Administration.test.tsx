@@ -126,6 +126,7 @@ describe('Administration', () => {
       keycloak: null,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     // Mock the useUser hook
@@ -725,6 +726,7 @@ describe('Administration', () => {
       keycloak: null,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     renderAdministration();

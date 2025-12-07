@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,8 @@ import {
   Alert,
   CircularProgress,
   Typography,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -44,17 +46,31 @@ export const LoginDialog: FC<LoginDialogProps> = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { login, authErrorMessages, clearAuthErrors } = useAuth();
+  const { login, authErrorMessages, clearAuthErrors, getRememberedEmail } =
+    useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const {
     register,
     handleSubmit: handleSubmitForm,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<IFormInput>({ mode: 'onSubmit' });
+
+  // Pre-populate email from localStorage if available
+  useEffect(() => {
+    if (open) {
+      const rememberedEmail = getRememberedEmail();
+      if (rememberedEmail) {
+        setValue('user', rememberedEmail);
+        setRememberMe(true);
+      }
+    }
+  }, [open, getRememberedEmail, setValue]);
 
   const handleClose = useCallback(() => {
     if (isLoading) {
@@ -63,6 +79,7 @@ export const LoginDialog: FC<LoginDialogProps> = ({
     clearAuthErrors();
     reset();
     setIsLoading(false);
+    setRememberMe(false);
     onClose();
   }, [isLoading, clearAuthErrors, reset, onClose]);
 
@@ -73,6 +90,7 @@ export const LoginDialog: FC<LoginDialogProps> = ({
       await login({
         email: loginFormValue.user,
         password: loginFormValue.password,
+        rememberMe,
         onSuccessCallback: () => {
           setIsLoading(false);
           enqueueSnackbar(t`Login successful! Welcome back.`, {
@@ -85,7 +103,7 @@ export const LoginDialog: FC<LoginDialogProps> = ({
         },
       });
     },
-    [clearAuthErrors, login, enqueueSnackbar, handleClose],
+    [clearAuthErrors, login, enqueueSnackbar, handleClose, rememberMe],
   );
 
   const handleSubmit: SubmitHandler<IFormInput> = data => {
@@ -203,6 +221,17 @@ export const LoginDialog: FC<LoginDialogProps> = ({
               })}
             />
           </FormControl>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={rememberMe}
+                onChange={e => setRememberMe(e.target.checked)}
+                disabled={isLoading}
+                color="primary"
+              />
+            }
+            label={<Trans>Remember me</Trans>}
+          />
           {authErrorMessages && authErrorMessages.length > 0 && (
             <Alert severity="error" sx={{ mt: 1 }}>
               {authErrorMessages.map((msg, index) => (

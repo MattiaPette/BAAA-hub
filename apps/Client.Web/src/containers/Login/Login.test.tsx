@@ -24,6 +24,7 @@ describe('Login', () => {
       userPermissions: [],
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
   });

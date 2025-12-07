@@ -41,6 +41,7 @@ describe('LoginCallback', () => {
       },
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
   });
 
@@ -189,6 +190,7 @@ describe('LoginCallback', () => {
       },
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
     });
 
     render(
