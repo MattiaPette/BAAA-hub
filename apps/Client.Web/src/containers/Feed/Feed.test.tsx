@@ -1,18 +1,18 @@
 import '@testing-library/jest-dom';
 import { describe, it, expect } from 'vitest';
-import { Dashboard } from './Dashboard';
+import { Feed } from './Feed';
 import { renderWithProviders as render } from '../../test-utils';
 
 import { BreadcrumProvider } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 
-describe('Dashboard', () => {
-  it('should render Dashboard component', () => {
+describe('Feed', () => {
+  it('should render Feed component', () => {
     const { getByText } = render(
       <BreadcrumProvider>
-        <Dashboard />
+        <Feed />
       </BreadcrumProvider>,
     );
 
-    expect(getByText(/dashboard/i)).toBeInTheDocument();
+    expect(getByText(/feed/i)).toBeInTheDocument();
   });
 });

@@ -25,7 +25,7 @@ msgstr "Informazioni"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Accesso negato. Nome utente e/o password non corretti"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:79
+#: src/components/login/SignupDialog/SignupDialog.tsx:82
 msgid "Account created successfully! You can now log in."
 msgstr "Account creato con successo! Ora puoi accedere."
 
@@ -82,7 +82,7 @@ msgstr "Tutti"
 msgid "All Roles"
 msgstr "Tutti i ruoli"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:240
+#: src/components/login/SignupDialog/SignupDialog.tsx:245
 msgid "Already have an account?"
 msgstr "Hai già un account?"
 
@@ -189,8 +189,8 @@ msgstr "Clicca per caricare il banner"
 
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:49
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:92
-#: src/components/login/LoginDialog/LoginDialog.tsx:146
-#: src/components/login/SignupDialog/SignupDialog.tsx:137
+#: src/components/login/LoginDialog/LoginDialog.tsx:150
+#: src/components/login/SignupDialog/SignupDialog.tsx:141
 msgid "Close"
 msgstr "Chiudi"
 
@@ -226,7 +226,7 @@ msgstr "È richiesto il consenso"
 msgid "Contact & Social"
 msgstr "Contatti e Social"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:233
+#: src/components/login/SignupDialog/SignupDialog.tsx:238
 #: src/components/login/SignupForm/SignupForm.tsx:207
 msgid "Create Account"
 msgstr "Crea Account"
@@ -262,8 +262,8 @@ msgstr "Modalità scura"
 #: src/containers/MainContainer/MainContainer.tsx:44
 #: src/containers/PublicContainer/PublicContainer.tsx:142
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
-msgid "Dashboard"
-msgstr "Dashboard"
+#~ msgid "Dashboard"
+#~ msgstr "Dashboard"
 
 #: src/containers/Profile/Profile.tsx:454
 #: src/containers/Profile/ProfileEditForm.tsx:237
@@ -284,7 +284,7 @@ msgstr "Privacy Data di Nascita"
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:254
+#: src/components/login/LoginDialog/LoginDialog.tsx:259
 msgid "Don't have an account?"
 msgstr "Non hai un account?"
 
@@ -311,12 +311,12 @@ msgstr "Modifica Profilo"
 msgid "Edit Roles for {0} {1}"
 msgstr "Modifica ruoli per {0} {1}"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:172
-#: src/components/login/LoginDialog/LoginDialog.tsx:173
+#: src/components/login/LoginDialog/LoginDialog.tsx:177
+#: src/components/login/LoginDialog/LoginDialog.tsx:178
 #: src/components/login/LoginForm/LoginForm.tsx:136
 #: src/components/login/LoginForm/LoginForm.tsx:137
-#: src/components/login/SignupDialog/SignupDialog.tsx:163
-#: src/components/login/SignupDialog/SignupDialog.tsx:164
+#: src/components/login/SignupDialog/SignupDialog.tsx:168
+#: src/components/login/SignupDialog/SignupDialog.tsx:169
 #: src/components/login/SignupForm/SignupForm.tsx:138
 #: src/components/login/SignupForm/SignupForm.tsx:139
 #: src/containers/Administration/Administration.tsx:354
@@ -326,9 +326,9 @@ msgstr "Modifica ruoli per {0} {1}"
 msgid "Email"
 msgstr "Email"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:188
+#: src/components/login/LoginDialog/LoginDialog.tsx:193
 #: src/components/login/LoginForm/LoginForm.tsx:152
-#: src/components/login/SignupDialog/SignupDialog.tsx:179
+#: src/components/login/SignupDialog/SignupDialog.tsx:184
 #: src/components/login/SignupForm/SignupForm.tsx:154
 msgid "Email is required"
 msgstr "L'email è obbligatoria"
@@ -402,6 +402,14 @@ msgstr "Impossibile aggiornare lo stato utente"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:763
 msgid "Favorite Sports"
 msgstr "Sport Preferiti"
+
+#: src/containers/Feed/Feed.tsx:21
+#: src/containers/Feed/Feed.tsx:27
+#: src/containers/MainContainer/MainContainer.tsx:44
+#: src/containers/PublicContainer/PublicContainer.tsx:142
+#: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
+msgid "Feed"
+msgstr "Feed"
 
 #: src/components/commons/inputs/ImageUpload/ImageUpload.utils.ts:30
 msgid "File is too large. Maximum size is 5MB."
@@ -500,9 +508,9 @@ msgstr "Configurazione non valida"
 msgid "Invalid credentials or session expired"
 msgstr "Credenziali non valide o sessione scaduta"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:192
+#: src/components/login/LoginDialog/LoginDialog.tsx:197
 #: src/components/login/LoginForm/LoginForm.tsx:156
-#: src/components/login/SignupDialog/SignupDialog.tsx:183
+#: src/components/login/SignupDialog/SignupDialog.tsx:188
 #: src/components/login/SignupForm/SignupForm.tsx:158
 msgid "Invalid email address"
 msgstr "Indirizzo email non valido"
@@ -573,17 +581,17 @@ msgstr "Il cognome deve essere di 50 caratteri o meno"
 msgid "Light Mode"
 msgstr "Modalità chiara"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:143
-#: src/components/login/LoginDialog/LoginDialog.tsx:247
+#: src/components/login/LoginDialog/LoginDialog.tsx:147
+#: src/components/login/LoginDialog/LoginDialog.tsx:252
 #: src/components/login/LoginForm/LoginForm.tsx:113
 #: src/components/login/LoginForm/LoginForm.tsx:199
-#: src/components/login/SignupDialog/SignupDialog.tsx:259
+#: src/components/login/SignupDialog/SignupDialog.tsx:264
 #: src/containers/PublicContainer/PublicContainer.tsx:291
 #: src/containers/PublicContainer/PublicContainer.tsx:315
 msgid "Login"
 msgstr "Accedi"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:93
+#: src/components/login/LoginDialog/LoginDialog.tsx:96
 msgid "Login successful! Welcome back."
 msgstr "Accesso effettuato con successo! Bentornato."
 
@@ -721,21 +729,21 @@ msgstr "Membro del comitato organizzativo"
 msgid "Other"
 msgstr "Altro"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:201
+#: src/components/login/LoginDialog/LoginDialog.tsx:206
 #: src/components/login/LoginForm/LoginForm.tsx:165
-#: src/components/login/SignupDialog/SignupDialog.tsx:192
+#: src/components/login/SignupDialog/SignupDialog.tsx:197
 #: src/components/login/SignupForm/SignupForm.tsx:167
 msgid "Password"
 msgstr "Password"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:214
+#: src/components/login/LoginDialog/LoginDialog.tsx:219
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/components/login/SignupDialog/SignupDialog.tsx:205
+#: src/components/login/SignupDialog/SignupDialog.tsx:210
 #: src/components/login/SignupForm/SignupForm.tsx:180
 msgid "Password is required"
 msgstr "Password necessaria"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:209
+#: src/components/login/SignupDialog/SignupDialog.tsx:214
 #: src/components/login/SignupForm/SignupForm.tsx:184
 msgid "Password must be at least 8 characters"
 msgstr "La password deve essere di almeno 8 caratteri"
@@ -861,7 +869,7 @@ msgstr "Recupero"
 msgid "Recovery Code"
 msgstr "Codice di Recupero"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:228
+#: src/components/login/LoginDialog/LoginDialog.tsx:233
 msgid "Remember me"
 msgstr "Ricordami"
 
@@ -956,8 +964,8 @@ msgstr "Impostazioni"
 msgid "Settings tabs"
 msgstr "Schede impostazioni"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:273
-#: src/components/login/SignupDialog/SignupDialog.tsx:134
+#: src/components/login/LoginDialog/LoginDialog.tsx:278
+#: src/components/login/SignupDialog/SignupDialog.tsx:138
 #: src/components/login/SignupForm/SignupForm.tsx:115
 #: src/containers/PublicContainer/PublicContainer.tsx:306
 #: src/containers/PublicContainer/PublicContainer.tsx:330
@@ -1098,9 +1106,9 @@ msgstr "Password monouso basata sul tempo tramite app di autenticazione (Google 
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Troppi tentativi. Riprova tra qualche minuto"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:184
+#: src/components/login/LoginDialog/LoginDialog.tsx:189
 #: src/components/login/LoginForm/LoginForm.tsx:148
-#: src/components/login/SignupDialog/SignupDialog.tsx:175
+#: src/components/login/SignupDialog/SignupDialog.tsx:180
 #: src/components/login/SignupForm/SignupForm.tsx:150
 msgid "Too many characters"
 msgstr "Troppi caratteri"

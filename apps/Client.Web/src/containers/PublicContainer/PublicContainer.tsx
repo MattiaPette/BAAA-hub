@@ -139,7 +139,7 @@ export const PublicContainer: FC = () => {
       id: 'dashboard',
       path: 'dashboard',
       icon: DashboardIcon,
-      label: t`Dashboard`,
+      label: t`Feed`,
       linkTo: { to: '/dashboard' },
       order: 1,
       permission: 'public' as RoutePermission,

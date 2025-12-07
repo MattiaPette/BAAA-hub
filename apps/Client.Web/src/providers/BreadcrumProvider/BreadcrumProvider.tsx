@@ -13,7 +13,7 @@ export const BreadcrumContext = createContext<
 
 /**
  * Provider component that manages breadcrumb/page title state.
- * Initializes with a default "Dashboard" title and provides context to child components.
+ * Initializes with a default "Feed" title and provides context to child components.
  *
  * @param {BreadcrumProviderProps} props - Component props
  * @param {ReactNode} props.children - Child components that will have access to breadcrumb context
@@ -26,7 +26,7 @@ export const BreadcrumContext = createContext<
  * </BreadcrumProvider>
  */
 export const BreadcrumProvider: FC<BreadcrumProviderProps> = ({ children }) => {
-  const [title, setTitle] = useState<string>(t`Dashboard`);
+  const [title, setTitle] = useState<string>(t`Feed`);
 
   const value = useMemo(
     () => ({

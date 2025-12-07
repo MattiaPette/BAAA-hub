@@ -6,25 +6,25 @@ import { Box, Typography } from '@mui/material';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 
 /**
- * Dashboard page component that serves as the main landing page.
+ * Feed page component that serves as the main landing page.
  *
- * @returns {JSX.Element} The dashboard page.
+ * @returns {JSX.Element} The feed page.
  *
  * @example
- * <Dashboard />
+ * <Feed />
  */
-export const Dashboard: FC = () => {
+export const Feed: FC = () => {
   const { setTitle } = useBreadcrum();
   const { i18n } = useLingui();
 
   useEffect(() => {
-    setTitle(t`Dashboard`);
+    setTitle(t`Feed`);
   }, [setTitle, i18n.locale]);
 
   return (
     <Box sx={{ padding: 3 }}>
       <Typography variant="h4" gutterBottom>
-        {t`Dashboard`}
+        {t`Feed`}
       </Typography>
     </Box>
   );

@@ -8,7 +8,7 @@ import { useUser } from '../../../providers/UserProvider/UserProvider';
 
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
-import { Dashboard } from '../../Dashboard/Dashboard';
+import { Feed } from '../../Feed/Feed';
 import { Profile } from '../../Profile/Profile';
 import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
 import { Administration } from '../../Administration/Administration';
@@ -108,7 +108,7 @@ const PublicFirstRoutes: FC = () => {
             children: [
               {
                 path: '/dashboard/*',
-                element: <Dashboard />,
+                element: <Feed />,
               },
               {
                 path: '/profile',
@@ -142,7 +142,7 @@ const PublicFirstRoutes: FC = () => {
             children: [
               {
                 path: '/dashboard/*',
-                element: <Dashboard />,
+                element: <Feed />,
               },
               {
                 path: '/settings',
