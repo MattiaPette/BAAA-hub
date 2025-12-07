@@ -90,7 +90,7 @@ msgstr "Already have an account?"
 msgid "An error occurred during authentication. Please try again"
 msgstr "An error occurred during authentication. Please try again"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:286
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:283
 msgid "App is already installed"
 msgstr "App is already installed"
 
@@ -365,8 +365,8 @@ msgstr "Enter your first name"
 msgid "Enter your last name"
 msgstr "Enter your last name"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:147
 #: src/containers/ProfileSetup/ProfileSetup.tsx:151
+#: src/containers/ProfileSetup/ProfileSetup.tsx:155
 msgid "Failed to create profile. Please try again."
 msgstr "Failed to create profile. Please try again."
 
@@ -752,7 +752,7 @@ msgstr "Photo Privacy"
 msgid "Physical security key (FIDO2/WebAuthn)"
 msgstr "Physical security key (FIDO2/WebAuthn)"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:141
+#: src/containers/ProfileSetup/ProfileSetup.tsx:145
 msgid "Please check your input and try again."
 msgstr "Please check your input and try again."
 
@@ -793,15 +793,15 @@ msgstr "Processing..."
 msgid "Profile"
 msgstr "Profile"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:76
+#: src/containers/ProfileSetup/ProfileSetup.tsx:81
 msgid "Profile created but failed to upload banner. You can add it later."
 msgstr "Profile created but failed to upload banner. You can add it later."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:64
+#: src/containers/ProfileSetup/ProfileSetup.tsx:67
 msgid "Profile created but failed to upload profile picture. You can add it later."
 msgstr "Profile created but failed to upload profile picture. You can add it later."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:86
+#: src/containers/ProfileSetup/ProfileSetup.tsx:90
 msgid "Profile created successfully!"
 msgstr "Profile created successfully!"
 
@@ -1057,7 +1057,7 @@ msgstr "Theme"
 msgid "There is already a user with this email address"
 msgstr "There is already a user with this email address"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:121
+#: src/containers/ProfileSetup/ProfileSetup.tsx:125
 msgid "This email is already registered."
 msgstr "This email is already registered."
 
@@ -1066,7 +1066,7 @@ msgstr "This email is already registered."
 msgid "This nickname is already taken"
 msgstr "This nickname is already taken"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:117
+#: src/containers/ProfileSetup/ProfileSetup.tsx:121
 msgid "This nickname is already taken. Please choose another."
 msgstr "This nickname is already taken. Please choose another."
 
@@ -1171,7 +1171,7 @@ msgstr "Uploading image"
 msgid "User blocked successfully"
 msgstr "User blocked successfully"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:309
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:306
 msgid "User installed the app"
 msgstr "User installed the app"
 
@@ -1179,7 +1179,7 @@ msgstr "User installed the app"
 msgid "User menu"
 msgstr "User menu"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:311
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:308
 msgid "User rejected app installation"
 msgstr "User rejected app installation"
 
@@ -1222,7 +1222,7 @@ msgstr "WebAuthn"
 msgid "Who can see your information?"
 msgstr "Who can see your information?"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:125
+#: src/containers/ProfileSetup/ProfileSetup.tsx:129
 msgid "You already have a profile. Redirecting to dashboard..."
 msgstr "You already have a profile. Redirecting to dashboard..."
 
@@ -1240,7 +1240,7 @@ msgstr "You can skip this step and add photos later."
 msgid "You must be at least 13 years old"
 msgstr "You must be at least 13 years old"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:130
+#: src/containers/ProfileSetup/ProfileSetup.tsx:134
 msgid "You must be at least 13 years old to sign up."
 msgstr "You must be at least 13 years old to sign up."
 

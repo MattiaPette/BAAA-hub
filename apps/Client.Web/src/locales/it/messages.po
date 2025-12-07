@@ -90,7 +90,7 @@ msgstr "Hai già un account?"
 msgid "An error occurred during authentication. Please try again"
 msgstr "Si è verificato un errore durante l'autenticazione. Riprova"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:286
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:283
 msgid "App is already installed"
 msgstr "Applicazione già installata"
 
@@ -365,8 +365,8 @@ msgstr "Inserisci il tuo nome"
 msgid "Enter your last name"
 msgstr "Inserisci il tuo cognome"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:147
 #: src/containers/ProfileSetup/ProfileSetup.tsx:151
+#: src/containers/ProfileSetup/ProfileSetup.tsx:155
 msgid "Failed to create profile. Please try again."
 msgstr "Impossibile creare il profilo. Riprova."
 
@@ -752,7 +752,7 @@ msgstr "Privacy Foto"
 msgid "Physical security key (FIDO2/WebAuthn)"
 msgstr "Chiave di sicurezza fisica (FIDO2/WebAuthn)"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:141
+#: src/containers/ProfileSetup/ProfileSetup.tsx:145
 msgid "Please check your input and try again."
 msgstr "Per favore, controlla i dati inseriti e riprova."
 
@@ -793,15 +793,15 @@ msgstr "Elaborazione..."
 msgid "Profile"
 msgstr "Profilo"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:76
+#: src/containers/ProfileSetup/ProfileSetup.tsx:81
 msgid "Profile created but failed to upload banner. You can add it later."
 msgstr "Profilo creato ma caricamento banner fallito. Puoi aggiungerlo dopo."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:64
+#: src/containers/ProfileSetup/ProfileSetup.tsx:67
 msgid "Profile created but failed to upload profile picture. You can add it later."
 msgstr "Profilo creato ma caricamento foto profilo fallito. Puoi aggiungerla dopo."
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:86
+#: src/containers/ProfileSetup/ProfileSetup.tsx:90
 msgid "Profile created successfully!"
 msgstr "Profilo creato con successo!"
 
@@ -1057,7 +1057,7 @@ msgstr "Tema"
 msgid "There is already a user with this email address"
 msgstr "Esiste già un utente con questo indirizzo email"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:121
+#: src/containers/ProfileSetup/ProfileSetup.tsx:125
 msgid "This email is already registered."
 msgstr "Questa email è già registrata."
 
@@ -1066,7 +1066,7 @@ msgstr "Questa email è già registrata."
 msgid "This nickname is already taken"
 msgstr "Questo nickname è già in uso"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:117
+#: src/containers/ProfileSetup/ProfileSetup.tsx:121
 msgid "This nickname is already taken. Please choose another."
 msgstr "Questo nickname è già in uso. Per favore, scegline un altro."
 
@@ -1171,7 +1171,7 @@ msgstr "Caricamento immagine"
 msgid "User blocked successfully"
 msgstr "Utente bloccato con successo"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:309
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:306
 msgid "User installed the app"
 msgstr "L'utente ha installato l'applicazione"
 
@@ -1179,7 +1179,7 @@ msgstr "L'utente ha installato l'applicazione"
 msgid "User menu"
 msgstr "Menu utente"
 
-#: src/components/commons/navigation/Sidebar/Sidebar.tsx:311
+#: src/components/commons/navigation/Sidebar/Sidebar.tsx:308
 msgid "User rejected app installation"
 msgstr "L'utente ha respinto l'installazione dell'app"
 
@@ -1222,7 +1222,7 @@ msgstr "WebAuthn"
 msgid "Who can see your information?"
 msgstr "Chi può vedere le tue informazioni?"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:125
+#: src/containers/ProfileSetup/ProfileSetup.tsx:129
 msgid "You already have a profile. Redirecting to dashboard..."
 msgstr "Hai già un profilo. Reindirizzamento alla dashboard..."
 
@@ -1240,7 +1240,7 @@ msgstr "Puoi saltare questo passaggio e aggiungere le foto in seguito."
 msgid "You must be at least 13 years old"
 msgstr "Devi avere almeno 13 anni"
 
-#: src/containers/ProfileSetup/ProfileSetup.tsx:130
+#: src/containers/ProfileSetup/ProfileSetup.tsx:134
 msgid "You must be at least 13 years old to sign up."
 msgstr "Devi avere almeno 13 anni per registrarti."
 
