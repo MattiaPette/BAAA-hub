@@ -200,12 +200,14 @@ export type AuthLoginData = Readonly<{
  *
  * @property {string} email - User's email address
  * @property {string} password - User's password
+ * @property {boolean} [rememberMe] - Optional flag to remember the email for future logins
  * @property {function} [onSuccessCallback] - Optional callback invoked when login succeeds
  * @property {function} [onErrorCallback] - Optional callback invoked when login fails
  */
 export type AuthLoginFunctionParameters = Readonly<{
   email: string;
   password: string;
+  rememberMe?: boolean;
   onSuccessCallback?: () => void;
   onErrorCallback?: (error: AuthErrorCode | undefined) => void;
 }>;
@@ -283,6 +285,7 @@ export type AuthenticateFunction = (
  * @property {boolean} localStorageAvailable - Whether localStorage is available in the current environment
  * @property {string[]} authErrorMessages - Array of authentication error messages to display
  * @property {DispatchWithoutAction} clearAuthErrors - Function to clear authentication error messages
+ * @property {() => string | null} getRememberedEmail - Function to get the remembered email from localStorage
  */
 export type AuthContextValue = Readonly<{
   authClientData: AuthClient;
@@ -299,4 +302,5 @@ export type AuthContextValue = Readonly<{
   localStorageAvailable: boolean;
   authErrorMessages: string[];
   clearAuthErrors: DispatchWithoutAction;
+  getRememberedEmail: () => string | null;
 }>;

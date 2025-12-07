@@ -21,6 +21,7 @@ import {
 } from './AuthProvider.model';
 
 const AUTH_TOKEN_FIELD = 'auth_token';
+const REMEMBERED_EMAIL_FIELD = 'remembered_email';
 const REFRESH_TOKEN_INTERVAL = 60 * 1000; // Refresh every 60 seconds (Keycloak handles timing)
 const CHECK_TOKEN_EXPIRATION_INTERVAL = 30 * 1000;
 
@@ -325,7 +326,39 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
         if (authenticated) {
           updateTokenFromKeycloak(kc);
         } else {
-          setLoading(false);
+          // Check if we have tokens in localStorage from a previous password grant login
+          const storedToken = token;
+          if (
+            storedToken &&
+            storedToken.accessToken &&
+            storedToken.idToken &&
+            storedToken.refreshToken
+          ) {
+            // Check if token is still valid
+            const isValid =
+              !!storedToken.idTokenPayload?.exp &&
+              storedToken.idTokenPayload.exp * 1000 > new Date().getTime();
+
+            if (isValid) {
+              // Sync tokens with Keycloak instance for token refresh to work
+              // eslint-disable-next-line functional/immutable-data
+              kc.token = storedToken.accessToken;
+              // eslint-disable-next-line functional/immutable-data
+              kc.idToken = storedToken.idToken;
+              // eslint-disable-next-line functional/immutable-data
+              kc.refreshToken = storedToken.refreshToken;
+              // eslint-disable-next-line functional/immutable-data
+              kc.authenticated = true;
+              // Token is already set, just finish loading
+              setLoading(false);
+            } else {
+              // Token expired, clear it
+              saveAuthToken(null);
+              setLoading(false);
+            }
+          } else {
+            setLoading(false);
+          }
         }
       })
       .catch(error => {
@@ -406,7 +439,13 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
    * providing an embedded login experience without redirecting to Keycloak's login page.
    */
   const login = useCallback<AuthContextValue['login']>(
-    async ({ email, password, onSuccessCallback, onErrorCallback }) => {
+    async ({
+      email,
+      password,
+      rememberMe,
+      onSuccessCallback,
+      onErrorCallback,
+    }) => {
       if (!url || !realm || !clientId) {
         onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
         return;
@@ -465,6 +504,27 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
           idTokenPayload: idTokenPayload || undefined,
         };
 
+        // Handle "Remember Me" functionality
+        if (localStorageAvailable) {
+          if (rememberMe) {
+            window.localStorage.setItem(REMEMBERED_EMAIL_FIELD, email);
+          } else {
+            window.localStorage.removeItem(REMEMBERED_EMAIL_FIELD);
+          }
+        }
+
+        // Sync tokens with Keycloak instance for token refresh to work
+        if (keycloak) {
+          // eslint-disable-next-line functional/immutable-data
+          keycloak.token = tokenResponse.access_token;
+          // eslint-disable-next-line functional/immutable-data
+          keycloak.idToken = tokenResponse.id_token;
+          // eslint-disable-next-line functional/immutable-data
+          keycloak.refreshToken = tokenResponse.refresh_token;
+          // eslint-disable-next-line functional/immutable-data
+          keycloak.authenticated = true;
+        }
+
         setAuthErrorMessages([]); // Clear errors on successful login
         saveAuthToken(authToken);
         setLoading(false);
@@ -482,7 +542,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
         }
       }
     },
-    [url, realm, clientId, saveAuthToken],
+    [url, realm, clientId, saveAuthToken, localStorageAvailable, keycloak],
   );
 
   /**
@@ -671,6 +731,20 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     [url, realm, clientId],
   );
 
+  /**
+   * Get the remembered email from localStorage
+   */
+  const getRememberedEmail = useCallback(() => {
+    if (!localStorageAvailable) {
+      return null;
+    }
+    try {
+      return window.localStorage.getItem(REMEMBERED_EMAIL_FIELD);
+    } catch {
+      return null;
+    }
+  }, [localStorageAvailable]);
+
   const value = useMemo(
     () => ({
       authClientData,
@@ -687,6 +761,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       localStorageAvailable,
       authErrorMessages,
       clearAuthErrors,
+      getRememberedEmail,
     }),
     [
       authClientData,
@@ -702,6 +777,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       userPermissions,
       authErrorMessages,
       clearAuthErrors,
+      getRememberedEmail,
     ],
   );
 
