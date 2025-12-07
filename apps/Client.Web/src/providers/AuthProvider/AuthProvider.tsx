@@ -327,6 +327,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
           updateTokenFromKeycloak(kc);
         } else {
           // Check if we have tokens in localStorage from a previous password grant login
+          // Using a local variable to satisfy type narrowing for the following checks
           const storedToken = token;
           if (
             storedToken &&
@@ -374,7 +375,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     initialized,
     updateTokenFromKeycloak,
     saveAuthToken,
-    token,
+    token, // Need token in deps to restore it from localStorage on mount
   ]);
 
   /**
