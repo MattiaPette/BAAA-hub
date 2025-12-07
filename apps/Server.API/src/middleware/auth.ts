@@ -92,7 +92,9 @@ const validateToken = (decoded: DecodedToken): boolean => {
 
   // Check issuer matches Keycloak realm if configured
   if (config.keycloak.url && config.keycloak.realm) {
-    const expectedIssuer = `${config.keycloak.url}/realms/${config.keycloak.realm}`;
+    // Normalize Keycloak URL by removing trailing slashes to avoid double slashes
+    const normalizedUrl = config.keycloak.url.replace(/\/+$/, '');
+    const expectedIssuer = `${normalizedUrl}/realms/${config.keycloak.realm}`;
     if (decoded.iss !== expectedIssuer) {
       return false;
     }

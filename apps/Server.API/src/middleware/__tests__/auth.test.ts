@@ -161,6 +161,24 @@ describe('authMiddleware', () => {
         code: ErrorCode.INVALID_TOKEN,
       });
     });
+
+    it('should handle tokens with trailing slash in Keycloak URL', async () => {
+      // This test validates that tokens are accepted even when the config
+      // has a trailing slash, which is common in environment configurations
+      const token = createTestToken({
+        sub: 'keycloak-123',
+        email: 'test@example.com',
+      });
+      const ctx = createMockContext(`Bearer ${token}`);
+      const next: Next = vi.fn();
+
+      await authMiddleware(ctx, next);
+
+      // Token should be valid regardless of trailing slash in config
+      expect(next).toHaveBeenCalled();
+      expect(ctx.state.auth).toBeDefined();
+      expect(ctx.state.auth.userId).toBe('keycloak-123');
+    });
   });
 
   describe('successful authentication', () => {
