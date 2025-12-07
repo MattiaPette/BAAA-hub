@@ -7,6 +7,7 @@ import config from './config/index.js';
 import { openApiSpec } from './config/openapi.js';
 import { connectDatabase } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { requestLogger } from './middleware/logger.js';
 import { userRouter } from './routes/user.routes.js';
 import { imageRouter } from './routes/image.routes.js';
 import { adminRouter } from './routes/admin.routes.js';
@@ -24,6 +25,7 @@ const app = new Koa();
  * Apply global middleware
  */
 app.use(errorHandler);
+app.use(requestLogger);
 app.use(
   cors({
     origin: config.cors.origin,
