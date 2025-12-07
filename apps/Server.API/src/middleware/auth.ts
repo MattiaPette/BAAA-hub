@@ -2,6 +2,7 @@ import type { Context, Next } from 'koa';
 import { ErrorCode } from '@baaa-hub/shared-types';
 import config from '../config/index.js';
 import { normalizeUrl } from '../utils/url.js';
+import { info, warn, debug, tokenFingerprint } from '../utils/logger.js';
 
 /**
  * Decoded JWT payload structure from Keycloak
@@ -112,7 +113,14 @@ export const authMiddleware = async (
 ): Promise<void> => {
   const authHeader = ctx.headers.authorization;
 
+  info('auth: incoming request', { path: ctx.path, method: ctx.method });
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    warn('auth: missing or invalid Authorization header', {
+      path: ctx.path,
+      method: ctx.method,
+    });
+
     ctx.status = 401;
     ctx.body = {
       error: 'Authorization header missing or invalid',
@@ -122,10 +130,18 @@ export const authMiddleware = async (
   }
 
   const token = authHeader.substring(7); // Remove "Bearer " prefix
+  const fp = tokenFingerprint(token);
+
+  debug('auth: token received', { tokenFingerprint: fp, path: ctx.path });
 
   const decoded = decodeToken(token);
 
   if (!decoded) {
+    warn('auth: invalid token format', {
+      tokenFingerprint: fp,
+      path: ctx.path,
+    });
+
     ctx.status = 401;
     ctx.body = {
       error: 'Invalid token format',
@@ -135,6 +151,12 @@ export const authMiddleware = async (
   }
 
   if (!validateToken(decoded)) {
+    warn('auth: token validation failed', {
+      tokenFingerprint: fp,
+      userId: decoded.sub,
+      path: ctx.path,
+    });
+
     ctx.status = 401;
     ctx.body = {
       error: 'Token expired or invalid',
@@ -154,6 +176,12 @@ export const authMiddleware = async (
     picture: undefined, // Keycloak doesn't include picture in standard claims
   };
 
+  info('auth: authenticated', {
+    userId: decoded.sub,
+    tokenFingerprint: fp,
+    path: ctx.path,
+  });
+
   await next();
 };
 
@@ -169,6 +197,12 @@ export const optionalAuthMiddleware = async (
 
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.substring(7);
+    const fp = tokenFingerprint(token);
+    debug('optionalAuth: token received', {
+      tokenFingerprint: fp,
+      path: ctx.path,
+    });
+
     const decoded = decodeToken(token);
 
     if (decoded && validateToken(decoded)) {
@@ -180,6 +214,17 @@ export const optionalAuthMiddleware = async (
         nickname: decoded.preferred_username,
         picture: undefined,
       };
+
+      info('optionalAuth: token valid, auth set', {
+        userId: decoded.sub,
+        tokenFingerprint: fp,
+        path: ctx.path,
+      });
+    } else {
+      debug('optionalAuth: token invalid or expired', {
+        tokenFingerprint: fp,
+        path: ctx.path,
+      });
     }
   }
 
