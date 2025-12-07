@@ -13,6 +13,8 @@ import { imageRouter } from './routes/image.routes.js';
 import { adminRouter } from './routes/admin.routes.js';
 import { webhookRouter } from './routes/webhook.routes.js';
 import { authRouter } from './routes/auth.routes.js';
+import { followRouter } from './routes/follow.routes.js';
+import { notificationRouter } from './routes/notification.routes.js';
 import { initializeStorage } from './services/storage.service.js';
 import path from 'path';
 
@@ -105,6 +107,8 @@ app.use(userRouter.routes()).use(userRouter.allowedMethods());
 app.use(imageRouter.routes()).use(imageRouter.allowedMethods());
 app.use(adminRouter.routes()).use(adminRouter.allowedMethods());
 app.use(webhookRouter.routes()).use(webhookRouter.allowedMethods());
+app.use(followRouter.routes()).use(followRouter.allowedMethods());
+app.use(notificationRouter.routes()).use(notificationRouter.allowedMethods());
 
 /**
  * Start server

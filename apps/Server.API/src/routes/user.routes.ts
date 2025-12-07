@@ -1,17 +1,27 @@
 import Router from '@koa/router';
-import { authMiddleware, AuthContext } from '../middleware/auth.js';
+import {
+  authMiddleware,
+  AuthContext,
+  optionalAuthMiddleware,
+} from '../middleware/auth.js';
 import {
   checkProfileStatus,
   createUser,
   getCurrentUser,
   updateCurrentUser,
   checkNicknameAvailability,
+  searchUsers,
+  getPublicUserProfile,
 } from '../controllers/user.controller.js';
 
 const userRouter = new Router({ prefix: '/api/users' });
 
 // Public routes
 userRouter.get('/nickname/:nickname/available', checkNicknameAvailability);
+userRouter.get('/search', searchUsers);
+
+// Public user profile - supports optional authentication
+userRouter.get('/:userId', optionalAuthMiddleware, getPublicUserProfile);
 
 // Protected routes - require authentication
 userRouter.use(authMiddleware);
