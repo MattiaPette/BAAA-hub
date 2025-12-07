@@ -101,8 +101,9 @@ const validateToken = (decoded: DecodedToken): boolean => {
 
   // Check issuer matches Keycloak realm if configured
   if (config.keycloak.url && config.keycloak.realm) {
-    const expectedIssuer = `${normalizeUrl(config.keycloak.url)}/realms/${config.keycloak.realm}`;
-    debug('auth: expected issuer', { expectedIssuer });
+    const expectedIssuer =
+      config.keycloak.issuer ||
+      `${normalizeUrl(config.keycloak.url)}/realms/${config.keycloak.realm}`;
     if (decoded.iss !== expectedIssuer) {
       return false;
     }
