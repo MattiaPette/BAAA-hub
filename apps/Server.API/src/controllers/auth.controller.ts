@@ -45,7 +45,9 @@ const getAdminToken = async (): Promise<string> => {
     );
   }
 
-  const tokenEndpoint = `${url}/realms/${realm}/protocol/openid-connect/token`;
+  // Normalize URL by removing trailing slashes to avoid double slashes
+  const normalizedUrl = url.replace(/\/+$/, '');
+  const tokenEndpoint = `${normalizedUrl}/realms/${realm}/protocol/openid-connect/token`;
 
   const formData = new URLSearchParams();
   formData.append('grant_type', 'client_credentials');
@@ -139,7 +141,9 @@ export const register = async (ctx: Context): Promise<void> => {
     const adminToken = await getAdminToken();
 
     // Create user in Keycloak
-    const usersEndpoint = `${url}/admin/realms/${realm}/users`;
+    // Normalize URL by removing trailing slashes to avoid double slashes
+    const normalizedUrl = url.replace(/\/+$/, '');
+    const usersEndpoint = `${normalizedUrl}/admin/realms/${realm}/users`;
 
     const userPayload = {
       username: body.username || body.email,
