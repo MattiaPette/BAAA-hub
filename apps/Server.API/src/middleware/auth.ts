@@ -100,7 +100,7 @@ const validateToken = (decoded: DecodedToken): boolean => {
   }
 
   // Check issuer matches Keycloak realm if configured
-  if (config.keycloak.url && config.keycloak.realm) {
+  if (config.keycloak.url && config.keycloak.realm && config.keycloak.issuer) {
     const expectedIssuer =
       config.keycloak.issuer ||
       `${normalizeUrl(config.keycloak.url)}/realms/${config.keycloak.realm}`;
