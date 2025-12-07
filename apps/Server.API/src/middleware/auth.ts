@@ -87,6 +87,13 @@ const decodeToken = (token: string): DecodedToken | null => {
 const validateToken = (decoded: DecodedToken): boolean => {
   const now = Math.floor(Date.now() / 1000);
 
+  debug('auth: validating token', {
+    userId: decoded.sub,
+    now,
+    exp: decoded.exp,
+    iss: decoded.iss,
+  });
+
   // Check expiration
   if (decoded.exp && decoded.exp < now) {
     return false;
