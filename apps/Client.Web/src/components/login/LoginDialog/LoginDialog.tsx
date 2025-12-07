@@ -57,11 +57,14 @@ export const LoginDialog: FC<LoginDialogProps> = ({
   } = useForm<IFormInput>({ mode: 'onSubmit' });
 
   const handleClose = useCallback(() => {
+    if (isLoading) {
+      return; // Prevent closing during authentication
+    }
     clearAuthErrors();
     reset();
     setIsLoading(false);
     onClose();
-  }, [clearAuthErrors, reset, onClose]);
+  }, [isLoading, clearAuthErrors, reset, onClose]);
 
   const onSubmit = useCallback(
     async (loginFormValue: LoginFormValue) => {
@@ -118,7 +121,7 @@ export const LoginDialog: FC<LoginDialogProps> = ({
         }}
       >
         <Typography
-          component="h2"
+          component="div"
           variant="h5"
           sx={{ fontWeight: 600, fontSize: 'clamp(1.5rem, 5vw, 1.75rem)' }}
         >
@@ -127,6 +130,7 @@ export const LoginDialog: FC<LoginDialogProps> = ({
         <IconButton
           aria-label={t`Close`}
           onClick={handleClose}
+          disabled={isLoading}
           sx={{
             color: theme.palette.grey[500],
           }}
