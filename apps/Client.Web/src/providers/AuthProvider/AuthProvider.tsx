@@ -374,6 +374,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     initialized,
     updateTokenFromKeycloak,
     saveAuthToken,
+    token,
   ]);
 
   /**

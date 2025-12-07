@@ -89,6 +89,7 @@ describe('Settings', () => {
       userPermissions: [],
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
   });
@@ -354,6 +355,7 @@ describe('Settings', () => {
       userPermissions: [],
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 

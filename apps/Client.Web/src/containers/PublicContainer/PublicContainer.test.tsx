@@ -22,6 +22,7 @@ describe('PublicContainer', () => {
       isLoading: false,
       authErrorMessages: [],
       clearAuthErrors: vi.fn(),
+      getRememberedEmail: vi.fn(() => null),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
