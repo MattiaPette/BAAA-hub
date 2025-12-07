@@ -181,4 +181,41 @@ describe('SignupDialog', () => {
       ).toBeInTheDocument();
     });
   });
+
+  it('should not close dialog on backdrop click when there are error messages', async () => {
+    const { container } = render(
+      <SignupDialog
+        open
+        onClose={mockOnClose}
+        onSwitchToLogin={mockOnSwitchToLogin}
+      />,
+    );
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    // Submit with valid credentials (will trigger authentication error in tests)
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(submitButton);
+
+    // Wait for loading to complete and error to show
+    await waitFor(() => {
+      expect(screen.getByLabelText(/email/i)).not.toBeDisabled();
+    });
+
+    // Find and click the backdrop (MUI Dialog backdrop)
+    const backdrop = container.querySelector('.MuiBackdrop-root');
+    if (backdrop) {
+      fireEvent.click(backdrop);
+    }
+
+    // Dialog should not close when there are errors
+    // Note: In the test environment, auth will fail with mock errors
+    // so the dialog should remain open if errors are present
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
 });

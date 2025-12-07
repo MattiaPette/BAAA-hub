@@ -72,16 +72,27 @@ export const LoginDialog: FC<LoginDialogProps> = ({
     }
   }, [open, getRememberedEmail, setValue]);
 
-  const handleClose = useCallback(() => {
-    if (isLoading) {
-      return; // Prevent closing during authentication
-    }
-    clearAuthErrors();
-    reset();
-    setIsLoading(false);
-    setRememberMe(false);
-    onClose();
-  }, [isLoading, clearAuthErrors, reset, onClose]);
+  const handleClose = useCallback(
+    (_event?: unknown, reason?: 'backdropClick' | 'escapeKeyDown') => {
+      if (isLoading) {
+        return; // Prevent closing during authentication
+      }
+      // Prevent closing via backdrop click when there are error messages
+      if (
+        reason === 'backdropClick' &&
+        authErrorMessages &&
+        authErrorMessages.length > 0
+      ) {
+        return;
+      }
+      clearAuthErrors();
+      reset();
+      setIsLoading(false);
+      setRememberMe(false);
+      onClose();
+    },
+    [isLoading, authErrorMessages, clearAuthErrors, reset, onClose],
+  );
 
   const onSubmit = useCallback(
     async (loginFormValue: LoginFormValue) => {
