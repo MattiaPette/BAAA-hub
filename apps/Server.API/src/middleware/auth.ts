@@ -1,6 +1,7 @@
 import type { Context, Next } from 'koa';
 import { ErrorCode } from '@baaa-hub/shared-types';
 import config from '../config/index.js';
+import { normalizeUrl } from '../utils/url.js';
 
 /**
  * Decoded JWT payload structure from Keycloak
@@ -92,7 +93,7 @@ const validateToken = (decoded: DecodedToken): boolean => {
 
   // Check issuer matches Keycloak realm if configured
   if (config.keycloak.url && config.keycloak.realm) {
-    const expectedIssuer = `${config.keycloak.url}/realms/${config.keycloak.realm}`;
+    const expectedIssuer = `${normalizeUrl(config.keycloak.url)}/realms/${config.keycloak.realm}`;
     if (decoded.iss !== expectedIssuer) {
       return false;
     }
