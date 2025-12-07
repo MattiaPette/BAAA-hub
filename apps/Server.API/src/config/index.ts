@@ -17,6 +17,8 @@ interface Config {
   keycloak: {
     /** Keycloak server URL (e.g., https://keycloak.example.com) */
     url: string;
+    /** Optional explicit issuer URL for tokens (overrides constructed issuer) */
+    issuer?: string;
     /** Keycloak realm name */
     realm: string;
     /** Expected audience (client ID) for token validation */
@@ -53,6 +55,7 @@ const config: Config = {
   },
   keycloak: {
     url: process.env.KEYCLOAK_URL || '',
+    issuer: process.env.KEYCLOAK_ISSUER || undefined,
     realm: process.env.KEYCLOAK_REALM || '',
     clientId: process.env.KEYCLOAK_CLIENT_ID || '',
     adminClientId: process.env.KEYCLOAK_ADMIN_CLIENT_ID || '',
