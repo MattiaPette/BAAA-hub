@@ -157,8 +157,25 @@ When working on any issue or feature:
 - **Package Manager:** pnpm v10.20.0
 - **Node Version:** 20.x LTS
 - **Framework:** React 19.2.0 with TypeScript 5.9.3
-- **Test Framework:** Vitest 3.0.1
-- **Build Tool:** Vite 7.2.2
+- **Test Framework:** Vitest 4.0.14
+- **Build Tool:** Vite 7.2.4
+
+### Code Examples and Patterns
+
+The repository includes comprehensive examples in the `examples/` directory:
+
+- **Basic Initialization** (`examples/01-basic-initialization.md`) - Application
+  structure and providers setup
+- **Authentication** (`examples/02-authentication.md`) - Keycloak integration
+  patterns
+- **Theme and Styling** (`examples/03-theme-and-styling.md`) - Material-UI
+  theming
+- **Data Fetching** (`examples/04-data-fetching.md`) - TanStack Query patterns
+- **Navigation and Routing** (`examples/05-navigation-and-routing.md`) - React
+  Router patterns
+
+When implementing new features, refer to these examples for consistent patterns
+and best practices.
 
 ## Pre-existing Issues
 

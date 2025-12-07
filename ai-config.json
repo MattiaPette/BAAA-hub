@@ -8,7 +8,7 @@
     "buildTool": "Vite",
     "language": "TypeScript"
   },
-  "packageManager": "yarn",
+  "packageManager": "pnpm",
   "workspaces": ["apps/*"],
   "entrypoints": {
     "main": "apps/Client.Web/src/index.tsx",
@@ -17,16 +17,16 @@
     "router": "apps/Client.Web/src/containers/core/Router/Router.tsx"
   },
   "commands": {
-    "install": "yarn install",
-    "dev": "yarn fe:dev",
-    "build": "yarn fe:build",
-    "test": "yarn fe:test",
-    "test:coverage": "yarn workspace frontend test:coverage",
-    "lint": "yarn fe:lint",
-    "format": "yarn fe:format",
-    "extract": "yarn fe:extract",
-    "compile": "yarn fe:compile",
-    "type-check": "yarn fe:type-check"
+    "install": "pnpm install",
+    "dev": "pnpm fe:dev",
+    "build": "pnpm fe:build",
+    "test": "pnpm fe:test",
+    "test:coverage": "pnpm fe:test:coverage",
+    "lint": "pnpm fe:lint",
+    "format": "pnpm fe:format",
+    "extract": "pnpm fe:extract",
+    "compile": "pnpm fe:compile",
+    "type-check": "pnpm fe:type-check"
   },
   "sourceDirectories": {
     "root": "apps/Client.Web",
@@ -55,8 +55,8 @@
     "typescript": "apps/Client.Web/tsconfig.json",
     "vite": "apps/Client.Web/vite.config.ts",
     "vitest": "apps/Client.Web/vitest.config.ts",
-    "eslint": "apps/Client.Web/.eslintrc.cjs",
-    "prettier": "apps/Client.Web/.prettierrc",
+    "eslint": "apps/Client.Web/eslint.config.js",
+    "prettier": ".prettierrc.json",
     "babel": "apps/Client.Web/.babelrc",
     "lingui": "apps/Client.Web/lingui.config.ts",
     "packageJson": "apps/Client.Web/package.json",
@@ -83,8 +83,8 @@
     "assets": "apps/Client.Web/build/assets"
   },
   "devServer": {
-    "port": 4000,
-    "command": "yarn fe:dev"
+    "port": 5173,
+    "command": "pnpm fe:dev"
   },
   "testing": {
     "framework": "vitest",
@@ -112,7 +112,7 @@
   },
   "requirements": {
     "node": "20.x LTS",
-    "yarn": "latest",
+    "pnpm": ">=9.0.0",
     "git": "latest"
   },
   "environments": {

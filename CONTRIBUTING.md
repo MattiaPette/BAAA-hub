@@ -64,7 +64,7 @@ All commands must complete successfully. For detailed guidelines, see
 ### Requirements
 
 - **Git**
-- **Node 22.x LTS**
+- **Node 20.x LTS**
 - **pnpm** (package manager v9.0+)
 
 ### Installation
