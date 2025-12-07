@@ -87,6 +87,13 @@ const decodeToken = (token: string): DecodedToken | null => {
 const validateToken = (decoded: DecodedToken): boolean => {
   const now = Math.floor(Date.now() / 1000);
 
+  debug('auth: validating token', {
+    userId: decoded.sub,
+    now,
+    exp: decoded.exp,
+    iss: decoded.iss,
+  });
+
   // Check expiration
   if (decoded.exp && decoded.exp < now) {
     return false;
@@ -95,6 +102,7 @@ const validateToken = (decoded: DecodedToken): boolean => {
   // Check issuer matches Keycloak realm if configured
   if (config.keycloak.url && config.keycloak.realm) {
     const expectedIssuer = `${normalizeUrl(config.keycloak.url)}/realms/${config.keycloak.realm}`;
+    debug('auth: expected issuer', { expectedIssuer });
     if (decoded.iss !== expectedIssuer) {
       return false;
     }
