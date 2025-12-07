@@ -45,11 +45,11 @@ Fixes #
 <!-- Mark completed items with an "x" -->
 
 - [ ] My code follows the project's coding standards
-- [ ] I have run `yarn fe:lint` and fixed all linting issues
-- [ ] I have run `yarn fe:format` to format my code and commited the changes
-- [ ] I have run `yarn fe:type-check` to check for types error
-- [ ] I have run `yarn fe:test` to check that every test is passing
-- [ ] I have run `yarn fe:build` to check for errors in the build phase
+- [ ] I have run `pnpm fe:lint` and fixed all linting issues
+- [ ] I have run `pnpm fe:format` to format my code and commited the changes
+- [ ] I have run `pnpm fe:type-check` to check for types error
+- [ ] I have run `pnpm fe:test` to check that every test is passing
+- [ ] I have run `pnpm fe:build` to check for errors in the build phase
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
