@@ -59,15 +59,26 @@ export const SignupDialog: FC<SignupDialogProps> = ({
     reset,
   } = useForm<IFormInput>({ mode: 'onSubmit' });
 
-  const handleClose = useCallback(() => {
-    if (isLoading) {
-      return; // Prevent closing during authentication
-    }
-    setErrorMessages([]);
-    reset();
-    setIsLoading(false);
-    onClose();
-  }, [isLoading, reset, onClose]);
+  const handleClose = useCallback(
+    (_event?: unknown, reason?: 'backdropClick' | 'escapeKeyDown') => {
+      if (isLoading) {
+        return; // Prevent closing during authentication
+      }
+      // Prevent closing via backdrop click when there are error messages
+      if (
+        reason === 'backdropClick' &&
+        errorMessages &&
+        errorMessages.length > 0
+      ) {
+        return;
+      }
+      setErrorMessages([]);
+      reset();
+      setIsLoading(false);
+      onClose();
+    },
+    [isLoading, errorMessages, reset, onClose],
+  );
 
   const onSubmit = useCallback(
     (signupFormValue: LoginFormValue) => {
