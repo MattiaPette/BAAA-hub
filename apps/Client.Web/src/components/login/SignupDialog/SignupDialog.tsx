@@ -60,11 +60,14 @@ export const SignupDialog: FC<SignupDialogProps> = ({
   } = useForm<IFormInput>({ mode: 'onSubmit' });
 
   const handleClose = useCallback(() => {
+    if (isLoading) {
+      return; // Prevent closing during authentication
+    }
     setErrorMessages([]);
     reset();
     setIsLoading(false);
     onClose();
-  }, [reset, onClose]);
+  }, [isLoading, reset, onClose]);
 
   const onSubmit = useCallback(
     (signupFormValue: LoginFormValue) => {
@@ -107,6 +110,7 @@ export const SignupDialog: FC<SignupDialogProps> = ({
     <Dialog
       open={open}
       onClose={handleClose}
+      disableEscapeKeyDown={isLoading}
       fullScreen={isMobile}
       maxWidth="xs"
       fullWidth
@@ -127,7 +131,7 @@ export const SignupDialog: FC<SignupDialogProps> = ({
         }}
       >
         <Typography
-          component="h2"
+          component="div"
           variant="h5"
           sx={{ fontWeight: 600, fontSize: 'clamp(1.5rem, 5vw, 1.75rem)' }}
         >
@@ -136,6 +140,7 @@ export const SignupDialog: FC<SignupDialogProps> = ({
         <IconButton
           aria-label={t`Close`}
           onClick={handleClose}
+          disabled={isLoading}
           sx={{
             color: theme.palette.grey[500],
           }}
