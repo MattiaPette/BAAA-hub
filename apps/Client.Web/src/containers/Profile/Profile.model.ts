@@ -1,4 +1,9 @@
-import { SportType, UserPrivacySettings } from '@baaa-hub/shared-types';
+import {
+  SportType,
+  UserPrivacySettings,
+  PersonalStats,
+  PersonalAchievements,
+} from '@baaa-hub/shared-types';
 
 /**
  * Form input for profile editing
@@ -10,6 +15,15 @@ export interface ProfileEditFormInput {
   sportTypes: SportType[];
   stravaLink: string;
   instagramLink: string;
+  youtubeLink?: string;
+  garminLink?: string;
+  tiktokLink?: string;
+  personalWebsiteLink?: string;
+  country?: string;
+  description?: string;
+  cityRegion?: string;
+  personalStats?: PersonalStats;
+  personalAchievements?: PersonalAchievements;
   privacySettings: UserPrivacySettings;
 }
 
