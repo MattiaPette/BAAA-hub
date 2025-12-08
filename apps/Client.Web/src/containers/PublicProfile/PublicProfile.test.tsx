@@ -50,14 +50,15 @@ vi.mock('../../providers/AuthProvider/AuthProvider', async () => {
 });
 
 // Mock current user hook
+const mockCurrentUser = {
+  data: {
+    id: 'current-user-id',
+    name: 'Current',
+    surname: 'User',
+  },
+};
 vi.mock('../../hooks/useCurrentUser', () => ({
-  useCurrentUser: () => ({
-    data: {
-      id: 'current-user-id',
-      name: 'Current',
-      surname: 'User',
-    },
-  }),
+  useCurrentUser: () => mockCurrentUser,
 }));
 
 // Mock lingui
@@ -126,7 +127,9 @@ describe('PublicProfile', () => {
 
     renderComponent();
 
-    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    // Should show skeleton loading placeholders (MuiSkeleton class)
+    const skeletons = document.querySelectorAll('.MuiSkeleton-root');
+    expect(skeletons.length).toBeGreaterThan(0);
   });
 
   it('should render user profile data when loaded', async () => {
@@ -272,19 +275,12 @@ describe('PublicProfile', () => {
   });
 
   it('should not show follow button when viewing own profile', async () => {
-    // Mock current user to match the profile being viewed
-    const useCurrentUserMock = vi.hoisted(() => vi.fn());
-    vi.doMock('../../hooks/useCurrentUser', () => ({
-      useCurrentUser: useCurrentUserMock,
-    }));
-
-    useCurrentUserMock.mockReturnValue({
-      data: {
-        id: 'user-123', // Same as the profile being viewed
-        name: 'John',
-        surname: 'Doe',
-      },
-    });
+    // Update mock current user to match the profile being viewed
+    mockCurrentUser.data = {
+      id: 'user-123', // Same as the profile being viewed
+      name: 'John',
+      surname: 'Doe',
+    };
 
     vi.spyOn(socialService, 'getPublicUserProfile').mockResolvedValue(
       mockProfile,
@@ -299,5 +295,12 @@ describe('PublicProfile', () => {
     // Follow button should not be present
     const followButton = screen.queryByRole('button', { name: /follow/i });
     expect(followButton).not.toBeInTheDocument();
+
+    // Reset mock current user for other tests
+    mockCurrentUser.data = {
+      id: 'current-user-id',
+      name: 'Current',
+      surname: 'User',
+    };
   });
 });
