@@ -153,7 +153,7 @@ export const PublicProfile: FC = () => {
     try {
       await followUser(userId, token.accessToken);
       setIsFollowing(true);
-      setProfileData(prev =>
+      setProfileData((prev: PublicUserProfileResponse | null) =>
         prev
           ? {
               ...prev,
@@ -180,7 +180,7 @@ export const PublicProfile: FC = () => {
     try {
       await unfollowUser(userId, token.accessToken);
       setIsFollowing(false);
-      setProfileData(prev =>
+      setProfileData((prev: PublicUserProfileResponse | null) =>
         prev
           ? {
               ...prev,

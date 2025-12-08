@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { NotificationType } from '@baaa-hub/shared-types';
-import { renderWithProviders as render } from '../../../../test-utils';
+import { renderWithProviders as render } from '../../../test-utils';
 import { NotificationBell } from './NotificationBell';
 import * as socialService from '../../../services/socialService';
 
@@ -167,7 +167,12 @@ describe('NotificationBell', () => {
         userId: 'user-1',
         type: NotificationType.NEW_FOLLOWER,
         isRead: true,
-        data: {},
+        data: {
+          followerId: 'user-2',
+          followerNickname: 'john_doe',
+          followerName: 'John',
+          followerSurname: 'Doe',
+        },
         createdAt: '2024-01-01T00:00:00.000Z',
       },
     });

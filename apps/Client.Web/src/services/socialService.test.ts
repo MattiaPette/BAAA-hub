@@ -8,7 +8,7 @@ import {
   UnfollowResponse,
   FollowStatsResponse,
   FollowStatusResponse,
-  NotificationsResponse,
+  NotificationsListResponse,
   NotificationType,
   UserRole,
   PrivacyLevel,
@@ -20,7 +20,7 @@ import {
   followUser,
   unfollowUser,
   getFollowStats,
-  getFollowStatus,
+  checkFollowStatus,
   getNotifications,
   markNotificationAsRead,
 } from './socialService';
@@ -194,7 +194,7 @@ describe('socialService', () => {
   describe('unfollowUser', () => {
     it('should unfollow a user successfully', async () => {
       const mockResponse: UnfollowResponse = {
-        message: 'Successfully unfollowed user',
+        success: true,
       };
 
       server.use(
@@ -228,8 +228,8 @@ describe('socialService', () => {
     });
   });
 
-  describe('getFollowStatus', () => {
-    it('should get follow status successfully', async () => {
+  describe('checkFollowStatus', () => {
+    it('should check follow status successfully', async () => {
       const mockStatus: FollowStatusResponse = {
         isFollowing: true,
       };
@@ -240,14 +240,14 @@ describe('socialService', () => {
         ),
       );
 
-      const result = await getFollowStatus('user-1', 'mock-token');
+      const result = await checkFollowStatus('user-1', 'mock-token');
       expect(result).toEqual(mockStatus);
     });
   });
 
   describe('getNotifications', () => {
     it('should get notifications successfully', async () => {
-      const mockNotifications: NotificationsResponse = {
+      const mockNotifications: NotificationsListResponse = {
         notifications: [
           {
             id: 'notif-1',

@@ -222,7 +222,7 @@ describe('PublicProfile', () => {
       isFollowing: true,
     });
     vi.spyOn(socialService, 'unfollowUser').mockResolvedValue({
-      message: 'Successfully unfollowed user',
+      success: true,
     });
 
     renderComponent();
