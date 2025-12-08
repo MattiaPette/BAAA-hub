@@ -1,9 +1,11 @@
 import { FC, useEffect } from 'react';
 import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Container, Paper } from '@mui/material';
 
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
+import { UserSearch } from '../../components/social/UserSearch/UserSearch';
 
 /**
  * Feed page component that serves as the main landing page.
@@ -22,10 +24,46 @@ export const Feed: FC = () => {
   }, [setTitle, i18n.locale]);
 
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        {t`Feed`}
-      </Typography>
-    </Box>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h4" gutterBottom fontWeight={700}>
+          {t`Feed`}
+        </Typography>
+        <Typography variant="body1" color="text.secondary" gutterBottom>
+          <Trans>Discover and connect with other users</Trans>
+        </Typography>
+      </Box>
+
+      {/* User Search */}
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+          mb: 4,
+          borderRadius: 3,
+          border: theme => `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <Typography variant="h6" gutterBottom fontWeight={600}>
+          <Trans>Find Users</Trans>
+        </Typography>
+        <UserSearch />
+      </Paper>
+
+      {/* Placeholder for future feed content */}
+      <Paper
+        elevation={0}
+        sx={{
+          p: 4,
+          borderRadius: 3,
+          border: theme => `1px solid ${theme.palette.divider}`,
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="body1" color="text.secondary">
+          <Trans>Feed content coming soon...</Trans>
+        </Typography>
+      </Paper>
+    </Container>
   );
 };

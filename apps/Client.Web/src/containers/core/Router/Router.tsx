@@ -12,6 +12,7 @@ import { Feed } from '../../Feed/Feed';
 import { Profile } from '../../Profile/Profile';
 import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
 import { Administration } from '../../Administration/Administration';
+import { PublicProfile } from '../../PublicProfile/PublicProfile';
 
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
@@ -111,6 +112,10 @@ const PublicFirstRoutes: FC = () => {
                 element: <Feed />,
               },
               {
+                path: '/user/:userId',
+                element: <PublicProfile />,
+              },
+              {
                 path: '/profile',
                 element: (
                   <AuthenticatedRoute>
@@ -143,6 +148,10 @@ const PublicFirstRoutes: FC = () => {
               {
                 path: '/dashboard/*',
                 element: <Feed />,
+              },
+              {
+                path: '/user/:userId',
+                element: <PublicProfile />,
               },
               {
                 path: '/settings',
