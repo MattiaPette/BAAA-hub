@@ -188,6 +188,22 @@ export const updateCurrentUser = async (ctx: AuthContext): Promise<void> => {
     user.stravaLink = data.stravaLink || undefined;
   if (data.instagramLink !== undefined)
     user.instagramLink = data.instagramLink || undefined;
+  if (data.youtubeLink !== undefined)
+    user.youtubeLink = data.youtubeLink || undefined;
+  if (data.garminLink !== undefined)
+    user.garminLink = data.garminLink || undefined;
+  if (data.tiktokLink !== undefined)
+    user.tiktokLink = data.tiktokLink || undefined;
+  if (data.personalWebsiteLink !== undefined)
+    user.personalWebsiteLink = data.personalWebsiteLink || undefined;
+  if (data.country !== undefined) user.country = data.country || undefined;
+  if (data.description !== undefined)
+    user.description = data.description || undefined;
+  if (data.cityRegion !== undefined)
+    user.cityRegion = data.cityRegion || undefined;
+  if (data.personalStats !== undefined) user.personalStats = data.personalStats;
+  if (data.personalAchievements !== undefined)
+    user.personalAchievements = data.personalAchievements;
   if (data.privacySettings !== undefined)
     user.privacySettings = data.privacySettings;
 

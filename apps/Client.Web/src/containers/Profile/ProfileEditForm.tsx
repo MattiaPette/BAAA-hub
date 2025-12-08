@@ -665,10 +665,14 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
                 error={!!errors.personalStats?.height}
                 helperText={errors.personalStats?.height?.message}
                 {...register('personalStats.height', {
-                  valueAsNumber: true,
-                  min: {
-                    value: 0,
-                    message: t`Height must be positive`,
+                  setValueAs: v =>
+                    v === '' || v === null ? undefined : Number(v),
+                  validate: value => {
+                    if (value === undefined || value === null) return true;
+                    const num = Number(value);
+                    if (Number.isNaN(num)) return t`Height must be a number`;
+                    if (num < 0) return t`Height must be positive`;
+                    return true;
                   },
                 })}
               />
@@ -683,10 +687,14 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
                 error={!!errors.personalStats?.weight}
                 helperText={errors.personalStats?.weight?.message}
                 {...register('personalStats.weight', {
-                  valueAsNumber: true,
-                  min: {
-                    value: 0,
-                    message: t`Weight must be positive`,
+                  setValueAs: v =>
+                    v === '' || v === null ? undefined : Number(v),
+                  validate: value => {
+                    if (value === undefined || value === null) return true;
+                    const num = Number(value);
+                    if (Number.isNaN(num)) return t`Weight must be a number`;
+                    if (num < 0) return t`Weight must be positive`;
+                    return true;
                   },
                 })}
               />
@@ -716,7 +724,7 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
               <TextField
                 id="time5k"
                 label={t`5K Time`}
-                placeholder="MM:SS"
+                placeholder="MM:SS or HH:MM:SS"
                 fullWidth
                 variant="outlined"
                 error={!!errors.personalAchievements?.time5k}
@@ -725,9 +733,13 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
                   t`Format: MM:SS or HH:MM:SS`
                 }
                 {...register('personalAchievements.time5k', {
-                  pattern: {
-                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
-                    message: t`Invalid time format (use MM:SS or HH:MM:SS)`,
+                  validate: value => {
+                    if (!value || value.trim() === '') return true;
+                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                    return (
+                      pattern.test(value) ||
+                      t`Invalid time format (use MM:SS or HH:MM:SS)`
+                    );
                   },
                 })}
               />
@@ -745,9 +757,13 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
                   t`Format: MM:SS or HH:MM:SS`
                 }
                 {...register('personalAchievements.time10k', {
-                  pattern: {
-                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
-                    message: t`Invalid time format (use MM:SS or HH:MM:SS)`,
+                  validate: value => {
+                    if (!value || value.trim() === '') return true;
+                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                    return (
+                      pattern.test(value) ||
+                      t`Invalid time format (use MM:SS or HH:MM:SS)`
+                    );
                   },
                 })}
               />
@@ -767,9 +783,13 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
                   t`Format: HH:MM:SS or MM:SS`
                 }
                 {...register('personalAchievements.timeHalfMarathon', {
-                  pattern: {
-                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
-                    message: t`Invalid time format (use HH:MM:SS or MM:SS)`,
+                  validate: value => {
+                    if (!value || value.trim() === '') return true;
+                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                    return (
+                      pattern.test(value) ||
+                      t`Invalid time format (use HH:MM:SS or MM:SS)`
+                    );
                   },
                 })}
               />
@@ -787,9 +807,13 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
                   t`Format: HH:MM:SS or MM:SS`
                 }
                 {...register('personalAchievements.timeMarathon', {
-                  pattern: {
-                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
-                    message: t`Invalid time format (use HH:MM:SS or MM:SS)`,
+                  validate: value => {
+                    if (!value || value.trim() === '') return true;
+                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                    return (
+                      pattern.test(value) ||
+                      t`Invalid time format (use HH:MM:SS or MM:SS)`
+                    );
                   },
                 })}
               />
