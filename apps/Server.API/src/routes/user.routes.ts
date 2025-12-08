@@ -18,7 +18,8 @@ const userRouter = new Router({ prefix: '/api/users' });
 
 // Public routes
 userRouter.get('/nickname/:nickname/available', checkNicknameAvailability);
-userRouter.get('/search', searchUsers);
+// Search with optional auth to exclude current user from results
+userRouter.get('/search', optionalAuthMiddleware, searchUsers);
 
 // Protected routes - require authentication
 // These must come BEFORE the /:userId route to avoid conflicts

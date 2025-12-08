@@ -34,6 +34,7 @@ import {
 } from '@baaa-hub/shared-types';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 import {
   getPublicUserProfile,
   followUser,
@@ -102,6 +103,7 @@ export const PublicProfile: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const { i18n } = useLingui();
+  const { data: currentUser } = useCurrentUser();
 
   const [profileData, setProfileData] =
     useState<PublicUserProfileResponse | null>(null);
@@ -112,6 +114,9 @@ export const PublicProfile: FC = () => {
   const [bannerViewOpen, setBannerViewOpen] = useState(false);
 
   const roleLabels = getRoleLabels();
+
+  // Check if viewing own profile
+  const isOwnProfile = currentUser?.id === userId;
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -378,7 +383,7 @@ export const PublicProfile: FC = () => {
           </Box>
 
           {/* Follow/Unfollow Button */}
-          {isAuthenticated && (
+          {isAuthenticated && !isOwnProfile && (
             <Button
               variant={isFollowing ? 'outlined' : 'contained'}
               startIcon={isFollowing ? <PersonRemoveIcon /> : <PersonAddIcon />}

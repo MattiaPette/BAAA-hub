@@ -229,6 +229,7 @@ export const checkNicknameAvailability = async (
 
 /**
  * Search for users by nickname or name (fuzzy search)
+ * Excludes the current user from results if authenticated
  */
 export const searchUsers = async (ctx: Context): Promise<void> => {
   const query = ctx.query.q as string;
@@ -239,18 +240,37 @@ export const searchUsers = async (ctx: Context): Promise<void> => {
     return;
   }
 
+  // Get current user ID if authenticated (from optional auth middleware)
+  const currentUserId = (ctx.state.auth as any)?.userId;
+  let currentUserMongoId: string | null = null;
+
+  if (currentUserId) {
+    const currentUser = await UserMongooseModel.findByAuthId(currentUserId);
+    if (currentUser) {
+      currentUserMongoId = String(currentUser._id);
+    }
+  }
+
   // Create case-insensitive regex for fuzzy search
   const searchRegex = new RegExp(query.split('').join('.*'), 'i');
 
-  // Search in nickname, name, and surname
-  const users = await UserMongooseModel.find({
+  // Build query to exclude current user
+  const searchQuery: any = {
     $or: [
       { nickname: searchRegex },
       { name: searchRegex },
       { surname: searchRegex },
     ],
     isBlocked: false,
-  })
+  };
+
+  // Exclude current user from results
+  if (currentUserMongoId) {
+    searchQuery._id = { $ne: currentUserMongoId };
+  }
+
+  // Search in nickname, name, and surname
+  const users = await UserMongooseModel.find(searchQuery)
     .limit(10)
     .select('nickname name surname avatarThumbKey profilePicture');
 
