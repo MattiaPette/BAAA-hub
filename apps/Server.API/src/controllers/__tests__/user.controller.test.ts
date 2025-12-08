@@ -13,6 +13,7 @@ import {
   getCurrentUser,
   updateCurrentUser,
   checkNicknameAvailability,
+  getPublicUserProfile,
 } from '../user.controller';
 import { User as UserMongooseModel } from '../../models/user.model.js';
 import { ApiError } from '../../middleware/errorHandler';
@@ -36,7 +37,19 @@ vi.mock('../../models/user.model.js', () => {
   MockUserModel.findByAuthId = vi.fn();
   MockUserModel.findByEmail = vi.fn();
   MockUserModel.findByNickname = vi.fn();
+  MockUserModel.findById = vi.fn();
   return { User: MockUserModel };
+});
+
+// Mock the Follow model
+vi.mock('../../models/follow.model.js', () => {
+  return {
+    Follow: {
+      countFollowers: vi.fn(),
+      countFollowing: vi.fn(),
+      findFollow: vi.fn(),
+    },
+  };
 });
 
 // Helper function to create mock user document
@@ -508,6 +521,355 @@ describe('user.controller', () => {
       expect(ctx.body).toEqual({
         error: 'Invalid nickname',
         code: ErrorCode.VALIDATION_ERROR,
+      });
+    });
+  });
+
+  describe('getPublicUserProfile', () => {
+    const createMockUserWithPrivacy = (
+      privacySettings: any,
+      overrides = {},
+    ) => {
+      return {
+        _id: 'target-user-123',
+        id: 'target-user-123',
+        name: 'Jane',
+        surname: 'Smith',
+        nickname: 'janesmith',
+        email: 'jane@example.com',
+        dateOfBirth: '1995-05-15',
+        sportTypes: [SportType.CYCLING],
+        avatarKey: 'avatar-key',
+        avatarThumbKey: 'avatar-thumb-key',
+        bannerKey: 'banner-key',
+        stravaLink: 'https://strava.com/jane',
+        instagramLink: 'https://instagram.com/jane',
+        createdAt: new Date().toISOString(),
+        isBlocked: false,
+        roles: [UserRole.MEMBER],
+        privacySettings,
+        ...overrides,
+      };
+    };
+
+    beforeEach(async () => {
+      // Import Follow to get the mocked version
+      const { Follow } = await import('../../models/follow.model.js');
+      vi.mocked(Follow.countFollowers).mockResolvedValue(10);
+      vi.mocked(Follow.countFollowing).mockResolvedValue(5);
+    });
+
+    it('should return public user profile with only PUBLIC fields when not authenticated', async () => {
+      const mockUser = createMockUserWithPrivacy({
+        email: PrivacyLevel.FOLLOWERS,
+        dateOfBirth: PrivacyLevel.FOLLOWERS,
+        sportTypes: PrivacyLevel.FOLLOWERS,
+        socialLinks: PrivacyLevel.FOLLOWERS,
+        avatar: PrivacyLevel.FOLLOWERS,
+        banner: PrivacyLevel.FOLLOWERS,
+      });
+
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(mockUser as any);
+
+      const ctx = {
+        params: { userId: 'target-user-123' },
+        state: {}, // No auth
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await getPublicUserProfile(ctx);
+
+      expect(ctx.status).toBe(200);
+      expect(ctx.body).toEqual({
+        user: {
+          id: 'target-user-123',
+          name: 'Jane',
+          surname: 'Smith',
+          nickname: 'janesmith',
+          createdAt: mockUser.createdAt,
+          roles: [UserRole.MEMBER],
+          // FOLLOWERS-only fields should NOT be included
+        },
+        followStats: {
+          followersCount: 10,
+          followingCount: 5,
+        },
+        isFollowing: undefined,
+      });
+
+      expect(ctx.body.user).not.toHaveProperty('email');
+      expect(ctx.body.user).not.toHaveProperty('dateOfBirth');
+      expect(ctx.body.user).not.toHaveProperty('sportTypes');
+      expect(ctx.body.user).not.toHaveProperty('stravaLink');
+      expect(ctx.body.user).not.toHaveProperty('instagramLink');
+      expect(ctx.body.user).not.toHaveProperty('avatarKey');
+      expect(ctx.body.user).not.toHaveProperty('bannerKey');
+    });
+
+    it('should return public user profile with only PUBLIC fields when authenticated but not following', async () => {
+      const mockTargetUser = createMockUserWithPrivacy({
+        email: PrivacyLevel.FOLLOWERS,
+        dateOfBirth: PrivacyLevel.FOLLOWERS,
+        sportTypes: PrivacyLevel.FOLLOWERS,
+        socialLinks: PrivacyLevel.FOLLOWERS,
+        avatar: PrivacyLevel.FOLLOWERS,
+        banner: PrivacyLevel.FOLLOWERS,
+      });
+
+      const mockRequestingUser = createMockUserDocument({
+        _id: 'requesting-user-123',
+      });
+
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(
+        mockTargetUser as any,
+      );
+      vi.mocked(UserMongooseModel.findByAuthId).mockResolvedValue(
+        mockRequestingUser as any,
+      );
+
+      const { Follow } = await import('../../models/follow.model.js');
+      vi.mocked(Follow.findFollow).mockResolvedValue(null); // Not following
+
+      const ctx = {
+        params: { userId: 'target-user-123' },
+        state: { auth: { userId: 'auth0|requesting-user' } },
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await getPublicUserProfile(ctx);
+
+      expect(ctx.status).toBe(200);
+      expect(ctx.body.isFollowing).toBe(false);
+      expect(ctx.body.user).not.toHaveProperty('email');
+      expect(ctx.body.user).not.toHaveProperty('dateOfBirth');
+      expect(ctx.body.user).not.toHaveProperty('sportTypes');
+      expect(ctx.body.user).not.toHaveProperty('stravaLink');
+      expect(ctx.body.user).not.toHaveProperty('instagramLink');
+      expect(ctx.body.user).not.toHaveProperty('avatarKey');
+      expect(ctx.body.user).not.toHaveProperty('bannerKey');
+    });
+
+    it('should return public user profile with FOLLOWERS fields when authenticated and following', async () => {
+      const mockTargetUser = createMockUserWithPrivacy({
+        email: PrivacyLevel.FOLLOWERS,
+        dateOfBirth: PrivacyLevel.FOLLOWERS,
+        sportTypes: PrivacyLevel.FOLLOWERS,
+        socialLinks: PrivacyLevel.FOLLOWERS,
+        avatar: PrivacyLevel.FOLLOWERS,
+        banner: PrivacyLevel.FOLLOWERS,
+      });
+
+      const mockRequestingUser = createMockUserDocument({
+        _id: 'requesting-user-123',
+      });
+
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(
+        mockTargetUser as any,
+      );
+      vi.mocked(UserMongooseModel.findByAuthId).mockResolvedValue(
+        mockRequestingUser as any,
+      );
+
+      const { Follow } = await import('../../models/follow.model.js');
+      vi.mocked(Follow.findFollow).mockResolvedValue({
+        followerId: 'requesting-user-123',
+        followingId: 'target-user-123',
+      } as any); // Is following
+
+      const ctx = {
+        params: { userId: 'target-user-123' },
+        state: { auth: { userId: 'auth0|requesting-user' } },
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await getPublicUserProfile(ctx);
+
+      expect(ctx.status).toBe(200);
+      expect(ctx.body.isFollowing).toBe(true);
+      // FOLLOWERS-only fields SHOULD be included
+      expect(ctx.body.user.email).toBe('jane@example.com');
+      expect(ctx.body.user.dateOfBirth).toBe('1995-05-15');
+      expect(ctx.body.user.sportTypes).toEqual([SportType.CYCLING]);
+      expect(ctx.body.user.stravaLink).toBe('https://strava.com/jane');
+      expect(ctx.body.user.instagramLink).toBe('https://instagram.com/jane');
+      expect(ctx.body.user.avatarKey).toBe('avatar-key');
+      expect(ctx.body.user.bannerKey).toBe('banner-key');
+    });
+
+    it('should return public user profile with PUBLIC fields visible to all users', async () => {
+      const mockTargetUser = createMockUserWithPrivacy({
+        email: PrivacyLevel.PUBLIC,
+        dateOfBirth: PrivacyLevel.PUBLIC,
+        sportTypes: PrivacyLevel.PUBLIC,
+        socialLinks: PrivacyLevel.PUBLIC,
+        avatar: PrivacyLevel.PUBLIC,
+        banner: PrivacyLevel.PUBLIC,
+      });
+
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(
+        mockTargetUser as any,
+      );
+
+      const ctx = {
+        params: { userId: 'target-user-123' },
+        state: {}, // Not authenticated
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await getPublicUserProfile(ctx);
+
+      expect(ctx.status).toBe(200);
+      // PUBLIC fields should be visible to unauthenticated users
+      expect(ctx.body.user.email).toBe('jane@example.com');
+      expect(ctx.body.user.dateOfBirth).toBe('1995-05-15');
+      expect(ctx.body.user.sportTypes).toEqual([SportType.CYCLING]);
+      expect(ctx.body.user.stravaLink).toBe('https://strava.com/jane');
+      expect(ctx.body.user.instagramLink).toBe('https://instagram.com/jane');
+      expect(ctx.body.user.avatarKey).toBe('avatar-key');
+      expect(ctx.body.user.bannerKey).toBe('banner-key');
+    });
+
+    it('should not return PRIVATE fields to anyone', async () => {
+      const mockTargetUser = createMockUserWithPrivacy({
+        email: PrivacyLevel.PRIVATE,
+        dateOfBirth: PrivacyLevel.PRIVATE,
+        sportTypes: PrivacyLevel.PRIVATE,
+        socialLinks: PrivacyLevel.PRIVATE,
+        avatar: PrivacyLevel.PRIVATE,
+        banner: PrivacyLevel.PRIVATE,
+      });
+
+      const mockRequestingUser = createMockUserDocument({
+        _id: 'requesting-user-123',
+      });
+
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(
+        mockTargetUser as any,
+      );
+      vi.mocked(UserMongooseModel.findByAuthId).mockResolvedValue(
+        mockRequestingUser as any,
+      );
+
+      const { Follow } = await import('../../models/follow.model.js');
+      vi.mocked(Follow.findFollow).mockResolvedValue({
+        followerId: 'requesting-user-123',
+        followingId: 'target-user-123',
+      } as any); // Is following
+
+      const ctx = {
+        params: { userId: 'target-user-123' },
+        state: { auth: { userId: 'auth0|requesting-user' } },
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await getPublicUserProfile(ctx);
+
+      expect(ctx.status).toBe(200);
+      // PRIVATE fields should NOT be visible even to followers
+      expect(ctx.body.user).not.toHaveProperty('email');
+      expect(ctx.body.user).not.toHaveProperty('dateOfBirth');
+      expect(ctx.body.user).not.toHaveProperty('sportTypes');
+      expect(ctx.body.user).not.toHaveProperty('stravaLink');
+      expect(ctx.body.user).not.toHaveProperty('instagramLink');
+      expect(ctx.body.user).not.toHaveProperty('avatarKey');
+      expect(ctx.body.user).not.toHaveProperty('bannerKey');
+    });
+
+    it('should return mixed privacy fields correctly', async () => {
+      const mockTargetUser = createMockUserWithPrivacy({
+        email: PrivacyLevel.PUBLIC,
+        dateOfBirth: PrivacyLevel.FOLLOWERS,
+        sportTypes: PrivacyLevel.PRIVATE,
+        socialLinks: PrivacyLevel.FOLLOWERS,
+        avatar: PrivacyLevel.PUBLIC,
+        banner: PrivacyLevel.PRIVATE,
+      });
+
+      const mockRequestingUser = createMockUserDocument({
+        _id: 'requesting-user-123',
+      });
+
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(
+        mockTargetUser as any,
+      );
+      vi.mocked(UserMongooseModel.findByAuthId).mockResolvedValue(
+        mockRequestingUser as any,
+      );
+
+      const { Follow } = await import('../../models/follow.model.js');
+      vi.mocked(Follow.findFollow).mockResolvedValue({
+        followerId: 'requesting-user-123',
+        followingId: 'target-user-123',
+      } as any); // Is following
+
+      const ctx = {
+        params: { userId: 'target-user-123' },
+        state: { auth: { userId: 'auth0|requesting-user' } },
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await getPublicUserProfile(ctx);
+
+      expect(ctx.status).toBe(200);
+      // PUBLIC fields should be visible
+      expect(ctx.body.user.email).toBe('jane@example.com');
+      expect(ctx.body.user.avatarKey).toBe('avatar-key');
+      // FOLLOWERS fields should be visible when following
+      expect(ctx.body.user.dateOfBirth).toBe('1995-05-15');
+      expect(ctx.body.user.stravaLink).toBe('https://strava.com/jane');
+      expect(ctx.body.user.instagramLink).toBe('https://instagram.com/jane');
+      // PRIVATE fields should NOT be visible
+      expect(ctx.body.user).not.toHaveProperty('sportTypes');
+      expect(ctx.body.user).not.toHaveProperty('bannerKey');
+    });
+
+    it('should throw 404 when user not found', async () => {
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(null);
+
+      const ctx = {
+        params: { userId: 'non-existent' },
+        state: {},
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await expect(getPublicUserProfile(ctx)).rejects.toThrow(ApiError);
+      await expect(getPublicUserProfile(ctx)).rejects.toMatchObject({
+        statusCode: 404,
+        code: ErrorCode.USER_NOT_FOUND,
+      });
+    });
+
+    it('should throw 404 when user is blocked', async () => {
+      const mockUser = createMockUserWithPrivacy(
+        {
+          email: PrivacyLevel.PUBLIC,
+          dateOfBirth: PrivacyLevel.PUBLIC,
+          sportTypes: PrivacyLevel.PUBLIC,
+          socialLinks: PrivacyLevel.PUBLIC,
+        },
+        { isBlocked: true },
+      );
+
+      vi.mocked(UserMongooseModel.findById).mockResolvedValue(mockUser as any);
+
+      const ctx = {
+        params: { userId: 'blocked-user' },
+        state: {},
+        status: 200,
+        body: undefined,
+      } as unknown as Context;
+
+      await expect(getPublicUserProfile(ctx)).rejects.toThrow(ApiError);
+      await expect(getPublicUserProfile(ctx)).rejects.toMatchObject({
+        statusCode: 404,
+        code: ErrorCode.USER_NOT_FOUND,
       });
     });
   });

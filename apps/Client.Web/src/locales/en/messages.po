@@ -57,7 +57,7 @@ msgstr "About Me"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Access denied. Incorrect username and/or password"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:93
+#: src/components/login/SignupDialog/SignupDialog.tsx:74
 msgid "Account created successfully! You can now log in."
 msgstr "Account created successfully! You can now log in."
 
@@ -118,7 +118,7 @@ msgstr "All"
 msgid "All Roles"
 msgstr "All Roles"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:256
+#: src/components/login/SignupDialog/SignupDialog.tsx:205
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
@@ -233,8 +233,7 @@ msgstr "Click to upload banner"
 
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:49
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:92
-#: src/components/login/LoginDialog/LoginDialog.tsx:161
-#: src/components/login/SignupDialog/SignupDialog.tsx:152
+#: src/components/login/AuthDialog/AuthDialog.tsx:104
 msgid "Close"
 msgstr "Close"
 
@@ -274,7 +273,7 @@ msgstr "Contact & Social"
 msgid "Country"
 msgstr "Country"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:249
+#: src/components/login/SignupDialog/SignupDialog.tsx:198
 #: src/components/login/SignupForm/SignupForm.tsx:207
 msgid "Create Account"
 msgstr "Create Account"
@@ -305,14 +304,6 @@ msgstr "Cycling"
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
-#: src/containers/Dashboard/Dashboard.tsx:21
-#: src/containers/Dashboard/Dashboard.tsx:27
-#: src/containers/MainContainer/MainContainer.tsx:44
-#: src/containers/PublicContainer/PublicContainer.tsx:142
-#: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
-#~ msgid "Dashboard"
-#~ msgstr "Dashboard"
-
 #: src/containers/Profile/Profile.tsx:454
 #: src/containers/Profile/ProfileEditForm.tsx:276
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
@@ -337,11 +328,7 @@ msgstr "Description must be 500 characters or less"
 msgid "Disabled"
 msgstr "Disabled"
 
-#: src/containers/Feed/Feed.tsx:33
-#~ msgid "Discover and connect with other users"
-#~ msgstr "Discover and connect with other users"
-
-#: src/components/login/LoginDialog/LoginDialog.tsx:270
+#: src/components/login/LoginDialog/LoginDialog.tsx:237
 msgid "Don't have an account?"
 msgstr "Don't have an account?"
 
@@ -362,22 +349,18 @@ msgstr "Edit banner"
 msgid "Edit Profile"
 msgstr "Edit Profile"
 
-#: src/containers/Administration/Administration.tsx:413
-#~ msgid "Edit Roles"
-#~ msgstr "Edit Roles"
-
 #. placeholder {0}: user.name
 #. placeholder {1}: user.surname
 #: src/containers/Administration/EditRolesDialog.tsx:121
 msgid "Edit Roles for {0} {1}"
 msgstr "Edit Roles for {0} {1}"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:188
-#: src/components/login/LoginDialog/LoginDialog.tsx:189
+#: src/components/login/LoginDialog/LoginDialog.tsx:155
+#: src/components/login/LoginDialog/LoginDialog.tsx:156
 #: src/components/login/LoginForm/LoginForm.tsx:136
 #: src/components/login/LoginForm/LoginForm.tsx:137
-#: src/components/login/SignupDialog/SignupDialog.tsx:179
-#: src/components/login/SignupDialog/SignupDialog.tsx:180
+#: src/components/login/SignupDialog/SignupDialog.tsx:128
+#: src/components/login/SignupDialog/SignupDialog.tsx:129
 #: src/components/login/SignupForm/SignupForm.tsx:138
 #: src/components/login/SignupForm/SignupForm.tsx:139
 #: src/containers/Administration/Administration.tsx:354
@@ -388,9 +371,9 @@ msgstr "Edit Roles for {0} {1}"
 msgid "Email"
 msgstr "Email"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:204
+#: src/components/login/LoginDialog/LoginDialog.tsx:171
 #: src/components/login/LoginForm/LoginForm.tsx:152
-#: src/components/login/SignupDialog/SignupDialog.tsx:195
+#: src/components/login/SignupDialog/SignupDialog.tsx:144
 #: src/components/login/SignupForm/SignupForm.tsx:154
 msgid "Email is required"
 msgstr "Email is required"
@@ -479,7 +462,7 @@ msgstr "Favorite Sports"
 
 #: src/containers/Feed/Feed.tsx:23
 #: src/containers/MainContainer/MainContainer.tsx:45
-#: src/containers/PublicContainer/PublicContainer.tsx:142
+#: src/containers/PublicContainer/PublicContainer.tsx:151
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
 msgid "Feed"
 msgstr "Feed"
@@ -534,18 +517,8 @@ msgstr "Following"
 
 #: src/containers/Profile/ProfileEditForm.tsx:767
 #: src/containers/Profile/ProfileEditForm.tsx:787
-#~ msgid "Format: HH:MM:SS"
-#~ msgstr "Format: HH:MM:SS"
-
-#: src/containers/Profile/ProfileEditForm.tsx:767
-#: src/containers/Profile/ProfileEditForm.tsx:787
 msgid "Format: HH:MM:SS or MM:SS"
 msgstr "Format: HH:MM:SS or MM:SS"
-
-#: src/containers/Profile/ProfileEditForm.tsx:725
-#: src/containers/Profile/ProfileEditForm.tsx:745
-#~ msgid "Format: MM:SS"
-#~ msgstr "Format: MM:SS"
 
 #: src/containers/Profile/ProfileEditForm.tsx:725
 #: src/containers/Profile/ProfileEditForm.tsx:745
@@ -588,10 +561,6 @@ msgstr "Half Marathon"
 #: src/containers/Profile/ProfileEditForm.tsx:760
 msgid "Half Marathon Time"
 msgstr "Half Marathon Time"
-
-#: src/components/login/LoginForm/LoginForm.tsx:319
-#~ msgid "Having trouble signing in?"
-#~ msgstr "Having trouble signing in?"
 
 #: src/containers/PublicProfile/PublicProfile.tsx:625
 msgid "Height"
@@ -642,9 +611,9 @@ msgstr "Invalid configuration"
 msgid "Invalid credentials or session expired"
 msgstr "Invalid credentials or session expired"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:208
+#: src/components/login/LoginDialog/LoginDialog.tsx:175
 #: src/components/login/LoginForm/LoginForm.tsx:156
-#: src/components/login/SignupDialog/SignupDialog.tsx:199
+#: src/components/login/SignupDialog/SignupDialog.tsx:148
 #: src/components/login/SignupForm/SignupForm.tsx:158
 msgid "Invalid email address"
 msgstr "Invalid email address"
@@ -689,20 +658,10 @@ msgstr "Invalid TikTok profile URL"
 msgid "Invalid time format (use HH:MM:SS or MM:SS)"
 msgstr "Invalid time format (use HH:MM:SS or MM:SS)"
 
-#: src/containers/Profile/ProfileEditForm.tsx:772
-#: src/containers/Profile/ProfileEditForm.tsx:792
-#~ msgid "Invalid time format (use HH:MM:SS)"
-#~ msgstr "Invalid time format (use HH:MM:SS)"
-
 #: src/containers/Profile/ProfileEditForm.tsx:730
 #: src/containers/Profile/ProfileEditForm.tsx:750
 msgid "Invalid time format (use MM:SS or HH:MM:SS)"
 msgstr "Invalid time format (use MM:SS or HH:MM:SS)"
-
-#: src/containers/Profile/ProfileEditForm.tsx:730
-#: src/containers/Profile/ProfileEditForm.tsx:750
-#~ msgid "Invalid time format (use MM:SS)"
-#~ msgstr "Invalid time format (use MM:SS)"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:116
 msgid "Invalid token"
@@ -756,17 +715,21 @@ msgstr "Last name must be 50 characters or less"
 msgid "Light Mode"
 msgstr "Light Mode"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:158
-#: src/components/login/LoginDialog/LoginDialog.tsx:263
+#: src/components/login/LoginDialog/LoginDialog.tsx:135
+#: src/components/login/LoginDialog/LoginDialog.tsx:230
 #: src/components/login/LoginForm/LoginForm.tsx:113
 #: src/components/login/LoginForm/LoginForm.tsx:199
-#: src/components/login/SignupDialog/SignupDialog.tsx:275
-#: src/containers/PublicContainer/PublicContainer.tsx:291
-#: src/containers/PublicContainer/PublicContainer.tsx:315
+#: src/components/login/SignupDialog/SignupDialog.tsx:224
+#: src/containers/PublicContainer/PublicContainer.tsx:300
+#: src/containers/PublicContainer/PublicContainer.tsx:324
 msgid "Login"
 msgstr "Login"
 
 #: src/components/login/LoginDialog/LoginDialog.tsx:107
+msgid "Login failed"
+msgstr "Login failed"
+
+#: src/components/login/LoginDialog/LoginDialog.tsx:98
 msgid "Login successful! Welcome back."
 msgstr "Login successful! Welcome back."
 
@@ -909,13 +872,9 @@ msgstr "One-time codes sent via SMS to your phone number"
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Only letters, numbers, and underscores allowed"
 
-#: src/containers/PublicContainer/PublicContainer.tsx:225
+#: src/containers/PublicContainer/PublicContainer.tsx:234
 msgid "Open menu"
 msgstr "Open menu"
-
-#: src/components/login/LoginForm/LoginForm.tsx:309
-#~ msgid "or"
-#~ msgstr "or"
 
 #: src/helpers/roleLabels/roleLabels.ts:11
 msgid "Organization Committee"
@@ -930,21 +889,21 @@ msgstr "Organization committee member"
 msgid "Other"
 msgstr "Other"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:217
+#: src/components/login/LoginDialog/LoginDialog.tsx:184
 #: src/components/login/LoginForm/LoginForm.tsx:165
-#: src/components/login/SignupDialog/SignupDialog.tsx:208
+#: src/components/login/SignupDialog/SignupDialog.tsx:157
 #: src/components/login/SignupForm/SignupForm.tsx:167
 msgid "Password"
 msgstr "Password"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:230
+#: src/components/login/LoginDialog/LoginDialog.tsx:197
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/components/login/SignupDialog/SignupDialog.tsx:221
+#: src/components/login/SignupDialog/SignupDialog.tsx:170
 #: src/components/login/SignupForm/SignupForm.tsx:180
 msgid "Password is required"
 msgstr "Password is required"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:225
+#: src/components/login/SignupDialog/SignupDialog.tsx:174
 #: src/components/login/SignupForm/SignupForm.tsx:184
 msgid "Password must be at least 8 characters"
 msgstr "Password must be at least 8 characters"
@@ -1088,7 +1047,7 @@ msgstr "Recovery"
 msgid "Recovery Code"
 msgstr "Recovery Code"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:244
+#: src/components/login/LoginDialog/LoginDialog.tsx:211
 msgid "Remember me"
 msgstr "Remember me"
 
@@ -1177,7 +1136,7 @@ msgstr "Select the roles to assign to this user."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:231
 #: src/containers/MainContainer/MainContainer.tsx:87
-#: src/containers/PublicContainer/PublicContainer.tsx:158
+#: src/containers/PublicContainer/PublicContainer.tsx:167
 #: src/containers/Settings/Settings.tsx:87
 #: src/containers/Settings/Settings.tsx:119
 msgid "Settings"
@@ -1187,11 +1146,11 @@ msgstr "Settings"
 msgid "Settings tabs"
 msgstr "Settings tabs"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:289
-#: src/components/login/SignupDialog/SignupDialog.tsx:149
+#: src/components/login/LoginDialog/LoginDialog.tsx:256
+#: src/components/login/SignupDialog/SignupDialog.tsx:108
 #: src/components/login/SignupForm/SignupForm.tsx:115
-#: src/containers/PublicContainer/PublicContainer.tsx:306
-#: src/containers/PublicContainer/PublicContainer.tsx:330
+#: src/containers/PublicContainer/PublicContainer.tsx:315
+#: src/containers/PublicContainer/PublicContainer.tsx:339
 msgid "Sign Up"
 msgstr "Sign Up"
 
@@ -1347,9 +1306,9 @@ msgstr "Time-based one-time password via authenticator app (Google Authenticator
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Too many attempts. Please try again in a few minutes"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:200
+#: src/components/login/LoginDialog/LoginDialog.tsx:167
 #: src/components/login/LoginForm/LoginForm.tsx:148
-#: src/components/login/SignupDialog/SignupDialog.tsx:191
+#: src/components/login/SignupDialog/SignupDialog.tsx:140
 #: src/components/login/SignupForm/SignupForm.tsx:150
 msgid "Too many characters"
 msgstr "Too many characters"
@@ -1368,17 +1327,9 @@ msgstr "Trail Running"
 msgid "Triathlon"
 msgstr "Triathlon"
 
-#: src/components/login/LoginForm/LoginForm.tsx:337
-#~ msgid "Try alternative login"
-#~ msgstr "Try alternative login"
-
 #: src/containers/Settings/Settings.tsx:228
 msgid "Two-Factor Authentication (2FA)"
 msgstr "Two-Factor Authentication (2FA)"
-
-#: src/containers/Settings/Settings.tsx:145
-#~ msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
-#~ msgstr "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, please visit your <0>Auth0 account settings</0>."
 
 #: src/containers/Settings/Settings.tsx:266
 msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, you will be prompted during your next login, or you can contact an administrator for assistance."
