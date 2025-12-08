@@ -534,13 +534,23 @@ msgstr "Following"
 
 #: src/containers/Profile/ProfileEditForm.tsx:767
 #: src/containers/Profile/ProfileEditForm.tsx:787
-msgid "Format: HH:MM:SS"
-msgstr "Format: HH:MM:SS"
+#~ msgid "Format: HH:MM:SS"
+#~ msgstr "Format: HH:MM:SS"
+
+#: src/containers/Profile/ProfileEditForm.tsx:767
+#: src/containers/Profile/ProfileEditForm.tsx:787
+msgid "Format: HH:MM:SS or MM:SS"
+msgstr "Format: HH:MM:SS or MM:SS"
 
 #: src/containers/Profile/ProfileEditForm.tsx:725
 #: src/containers/Profile/ProfileEditForm.tsx:745
-msgid "Format: MM:SS"
-msgstr "Format: MM:SS"
+#~ msgid "Format: MM:SS"
+#~ msgstr "Format: MM:SS"
+
+#: src/containers/Profile/ProfileEditForm.tsx:725
+#: src/containers/Profile/ProfileEditForm.tsx:745
+msgid "Format: MM:SS or HH:MM:SS"
+msgstr "Format: MM:SS or HH:MM:SS"
 
 #: src/helpers/roleLabels/roleLabels.ts:22
 msgid "Full administrative access"
@@ -676,13 +686,23 @@ msgstr "Invalid TikTok profile URL"
 
 #: src/containers/Profile/ProfileEditForm.tsx:772
 #: src/containers/Profile/ProfileEditForm.tsx:792
-msgid "Invalid time format (use HH:MM:SS)"
-msgstr "Invalid time format (use HH:MM:SS)"
+msgid "Invalid time format (use HH:MM:SS or MM:SS)"
+msgstr "Invalid time format (use HH:MM:SS or MM:SS)"
+
+#: src/containers/Profile/ProfileEditForm.tsx:772
+#: src/containers/Profile/ProfileEditForm.tsx:792
+#~ msgid "Invalid time format (use HH:MM:SS)"
+#~ msgstr "Invalid time format (use HH:MM:SS)"
 
 #: src/containers/Profile/ProfileEditForm.tsx:730
 #: src/containers/Profile/ProfileEditForm.tsx:750
-msgid "Invalid time format (use MM:SS)"
-msgstr "Invalid time format (use MM:SS)"
+msgid "Invalid time format (use MM:SS or HH:MM:SS)"
+msgstr "Invalid time format (use MM:SS or HH:MM:SS)"
+
+#: src/containers/Profile/ProfileEditForm.tsx:730
+#: src/containers/Profile/ProfileEditForm.tsx:750
+#~ msgid "Invalid time format (use MM:SS)"
+#~ msgstr "Invalid time format (use MM:SS)"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:116
 msgid "Invalid token"

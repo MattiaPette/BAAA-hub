@@ -60,9 +60,9 @@ const countryCodeRegex = /^[A-Z]{2}$/;
 
 /**
  * Time format validation for running achievements
- * Supports MM:SS or HH:MM:SS format
+ * Supports MM:SS or HH:MM:SS format with two-digit components
  */
-const timeFormatRegex = /^(\d{1,2}:\d{2}:\d{2}|\d{1,2}:\d{2})$/;
+const timeFormatRegex = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
 
 /**
  * Personal stats schema

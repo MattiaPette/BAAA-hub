@@ -207,13 +207,13 @@ export interface PersonalStats {
  * Personal running achievements
  */
 export interface PersonalAchievements {
-  /** 5K time in format "MM:SS" */
+  /** 5K time in format "MM:SS" or "HH:MM:SS" */
   time5k?: string;
-  /** 10K time in format "MM:SS" */
+  /** 10K time in format "MM:SS" or "HH:MM:SS" */
   time10k?: string;
-  /** Half marathon time in format "HH:MM:SS" */
+  /** Half marathon time in format "HH:MM:SS" or "MM:SS" */
   timeHalfMarathon?: string;
-  /** Marathon time in format "HH:MM:SS" */
+  /** Marathon time in format "HH:MM:SS" or "MM:SS" */
   timeMarathon?: string;
 }
 

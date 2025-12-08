@@ -722,12 +722,12 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
                 error={!!errors.personalAchievements?.time5k}
                 helperText={
                   errors.personalAchievements?.time5k?.message ||
-                  t`Format: MM:SS`
+                  t`Format: MM:SS or HH:MM:SS`
                 }
                 {...register('personalAchievements.time5k', {
                   pattern: {
-                    value: /^(\d{1,2}:\d{2}:\d{2}|\d{1,2}:\d{2})$/,
-                    message: t`Invalid time format (use MM:SS)`,
+                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
+                    message: t`Invalid time format (use MM:SS or HH:MM:SS)`,
                   },
                 })}
               />
@@ -736,18 +736,18 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
               <TextField
                 id="time10k"
                 label={t`10K Time`}
-                placeholder="MM:SS"
+                placeholder="MM:SS or HH:MM:SS"
                 fullWidth
                 variant="outlined"
                 error={!!errors.personalAchievements?.time10k}
                 helperText={
                   errors.personalAchievements?.time10k?.message ||
-                  t`Format: MM:SS`
+                  t`Format: MM:SS or HH:MM:SS`
                 }
                 {...register('personalAchievements.time10k', {
                   pattern: {
-                    value: /^(\d{1,2}:\d{2}:\d{2}|\d{1,2}:\d{2})$/,
-                    message: t`Invalid time format (use MM:SS)`,
+                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
+                    message: t`Invalid time format (use MM:SS or HH:MM:SS)`,
                   },
                 })}
               />
@@ -758,18 +758,18 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
               <TextField
                 id="timeHalfMarathon"
                 label={t`Half Marathon Time`}
-                placeholder="HH:MM:SS"
+                placeholder="HH:MM:SS or MM:SS"
                 fullWidth
                 variant="outlined"
                 error={!!errors.personalAchievements?.timeHalfMarathon}
                 helperText={
                   errors.personalAchievements?.timeHalfMarathon?.message ||
-                  t`Format: HH:MM:SS`
+                  t`Format: HH:MM:SS or MM:SS`
                 }
                 {...register('personalAchievements.timeHalfMarathon', {
                   pattern: {
-                    value: /^(\d{1,2}:\d{2}:\d{2}|\d{1,2}:\d{2})$/,
-                    message: t`Invalid time format (use HH:MM:SS)`,
+                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
+                    message: t`Invalid time format (use HH:MM:SS or MM:SS)`,
                   },
                 })}
               />
@@ -778,18 +778,18 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
               <TextField
                 id="timeMarathon"
                 label={t`Marathon Time`}
-                placeholder="HH:MM:SS"
+                placeholder="HH:MM:SS or MM:SS"
                 fullWidth
                 variant="outlined"
                 error={!!errors.personalAchievements?.timeMarathon}
                 helperText={
                   errors.personalAchievements?.timeMarathon?.message ||
-                  t`Format: HH:MM:SS`
+                  t`Format: HH:MM:SS or MM:SS`
                 }
                 {...register('personalAchievements.timeMarathon', {
                   pattern: {
-                    value: /^(\d{1,2}:\d{2}:\d{2}|\d{1,2}:\d{2})$/,
-                    message: t`Invalid time format (use HH:MM:SS)`,
+                    value: /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/,
+                    message: t`Invalid time format (use HH:MM:SS or MM:SS)`,
                   },
                 })}
               />
