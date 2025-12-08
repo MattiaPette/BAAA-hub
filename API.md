@@ -99,19 +99,20 @@ Authorization: Bearer <jwt-token>
 
 ### User Endpoints
 
-| Method | Endpoint                                  | Auth     | Description                     |
-| ------ | ----------------------------------------- | -------- | ------------------------------- |
-| GET    | `/api/users/nickname/:nickname/available` | Public   | Check nickname availability     |
-| GET    | `/api/users/profile/status`               | Required | Check if user has a profile     |
-| POST   | `/api/users`                              | Required | Create a new user profile       |
-| GET    | `/api/users/me`                           | Required | Get current user's profile      |
-| PATCH  | `/api/users/me`                           | Required | Update current user's profile   |
-| GET    | `/api/users/search`                       | Optional | Search users by nickname/name   |
-| GET    | `/api/users/:userId`                      | Optional | Get public user profile by ID   |
+| Method | Endpoint                                  | Auth     | Description                   |
+| ------ | ----------------------------------------- | -------- | ----------------------------- |
+| GET    | `/api/users/nickname/:nickname/available` | Public   | Check nickname availability   |
+| GET    | `/api/users/profile/status`               | Required | Check if user has a profile   |
+| POST   | `/api/users`                              | Required | Create a new user profile     |
+| GET    | `/api/users/me`                           | Required | Get current user's profile    |
+| PATCH  | `/api/users/me`                           | Required | Update current user's profile |
+| GET    | `/api/users/search`                       | Optional | Search users by nickname/name |
+| GET    | `/api/users/:userId`                      | Optional | Get public user profile by ID |
 
 **User Search:**
 
-Search for users by nickname or full name with fuzzy matching. Authenticated users are automatically excluded from their own search results.
+Search for users by nickname or full name with fuzzy matching. Authenticated
+users are automatically excluded from their own search results.
 
 ```bash
 # Search for users (public - no auth required)
@@ -140,7 +141,9 @@ curl -H "Authorization: Bearer <token>" \
 
 **Public User Profile:**
 
-Get a user's public profile with privacy-filtered data. The response varies based on privacy settings and viewer relationship:
+Get a user's public profile with privacy-filtered data. The response varies
+based on privacy settings and viewer relationship:
+
 - **Unauthenticated:** Only PUBLIC fields visible
 - **Authenticated (non-follower):** PUBLIC + some FOLLOWERS fields visible
 - **Authenticated (follower):** PUBLIC + FOLLOWERS fields visible
@@ -165,8 +168,25 @@ curl -H "Authorization: Bearer <token>" \
     "surname": "Doe",
     "nickname": "john_doe",
     "sportTypes": ["RUNNING", "CYCLING"],
+    "country": "IT",
+    "cityRegion": "Milan, Lombardy",
+    "description": "Passionate runner and cyclist from Milan",
+    "personalStats": {
+      "height": 180,
+      "weight": 75
+    },
+    "personalAchievements": {
+      "time5k": "18:30",
+      "time10k": "38:45",
+      "timeHalfMarathon": "01:25:30",
+      "timeMarathon": "03:15:20"
+    },
     "stravaLink": "https://strava.com/athletes/123",
     "instagramLink": "https://instagram.com/john_doe",
+    "youtubeLink": "https://youtube.com/@john_doe",
+    "garminLink": "https://connect.garmin.com/modern/profile/john_doe",
+    "tiktokLink": "https://tiktok.com/@john_doe",
+    "personalWebsiteLink": "https://johndoe.com",
     "roles": ["USER"]
   },
   "followStats": {
@@ -177,20 +197,141 @@ curl -H "Authorization: Bearer <token>" \
 }
 ```
 
+**Update User Profile:**
+
+Update the current user's profile. Email and nickname cannot be changed after
+creation.
+
+```bash
+curl -X PATCH \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John",
+    "surname": "Smith",
+    "country": "IT",
+    "cityRegion": "Milan, Lombardy",
+    "description": "Passionate runner and cyclist",
+    "personalStats": {
+      "height": 180,
+      "weight": 75
+    },
+    "personalAchievements": {
+      "time5k": "18:30",
+      "time10k": "38:45"
+    },
+    "stravaLink": "https://strava.com/athletes/123",
+    "youtubeLink": "https://youtube.com/@john_doe",
+    "privacySettings": {
+      "description": "PUBLIC",
+      "personalStats": "FOLLOWERS",
+      "personalAchievements": "PRIVATE"
+    }
+  }' \
+  "http://localhost:3000/api/users/me"
+```
+
+**Request Body:**
+
+All fields are optional except those specified:
+
+| Field                                   | Type     | Required | Validation                | Description                     |
+| --------------------------------------- | -------- | -------- | ------------------------- | ------------------------------- |
+| `name`                                  | string   | No       | Max 50 chars              | User's first name               |
+| `surname`                               | string   | No       | Max 50 chars              | User's last name                |
+| `dateOfBirth`                           | string   | No       | ISO date, min age 13      | Date of birth                   |
+| `sportTypes`                            | string[] | No       | 1-5 values from enum      | Sports/activities               |
+| `country`                               | string   | No       | ISO 3166-1 alpha-2        | Country code (e.g., "IT", "US") |
+| `cityRegion`                            | string   | No       | Max 100 chars             | City or region                  |
+| `description`                           | string   | No       | Max 500 chars             | User bio/description            |
+| `personalStats`                         | object   | No       | See below                 | Height and weight               |
+| `personalStats.height`                  | number   | No       | Positive number           | Height in cm                    |
+| `personalStats.weight`                  | number   | No       | Positive number           | Weight in kg                    |
+| `personalAchievements`                  | object   | No       | See below                 | Running achievement times       |
+| `personalAchievements.time5k`           | string   | No       | Format: MM:SS or HH:MM:SS | 5K personal best                |
+| `personalAchievements.time10k`          | string   | No       | Format: MM:SS or HH:MM:SS | 10K personal best               |
+| `personalAchievements.timeHalfMarathon` | string   | No       | Format: HH:MM:SS or MM:SS | Half marathon PB                |
+| `personalAchievements.timeMarathon`     | string   | No       | Format: HH:MM:SS or MM:SS | Marathon PB                     |
+| `stravaLink`                            | string   | No       | Valid Strava URL          | Strava profile                  |
+| `instagramLink`                         | string   | No       | Valid Instagram URL       | Instagram profile               |
+| `youtubeLink`                           | string   | No       | Valid YouTube URL         | YouTube channel                 |
+| `garminLink`                            | string   | No       | Valid Garmin Connect URL  | Garmin profile                  |
+| `tiktokLink`                            | string   | No       | Valid TikTok URL          | TikTok profile                  |
+| `personalWebsiteLink`                   | string   | No       | Valid URL                 | Personal website                |
+| `privacySettings`                       | object   | No       | See below                 | Privacy controls                |
+| `privacySettings.*`                     | string   | No       | PUBLIC/FOLLOWERS/PRIVATE  | Privacy level per field group   |
+
+**Privacy Settings:**
+
+The following fields support privacy controls (default: PUBLIC):
+
+- `email` - Email address visibility
+- `dateOfBirth` - Date of birth visibility
+- `sportTypes` - Sports/activities visibility
+- `socialLinks` - All social links visibility
+- `avatar` - Profile picture visibility
+- `banner` - Banner image visibility
+- `description` - Description/bio visibility
+- `cityRegion` - City/region visibility
+- `personalStats` - Height/weight visibility
+- `personalAchievements` - Running times visibility
+
+**Note:** Country is always public and cannot have privacy settings.
+
+**Response (200 OK):**
+
+```json
+{
+  "user": {
+    "id": "507f1f77bcf86cd799439011",
+    "name": "John",
+    "surname": "Smith",
+    "nickname": "john_doe",
+    "email": "john@example.com",
+    "dateOfBirth": "1990-01-01",
+    "country": "IT",
+    "cityRegion": "Milan, Lombardy",
+    "description": "Passionate runner and cyclist",
+    "personalStats": {
+      "height": 180,
+      "weight": 75
+    },
+    "personalAchievements": {
+      "time5k": "18:30",
+      "time10k": "38:45"
+    },
+    "privacySettings": {
+      "email": "PUBLIC",
+      "dateOfBirth": "PUBLIC",
+      "sportTypes": "PUBLIC",
+      "socialLinks": "PUBLIC",
+      "avatar": "PUBLIC",
+      "banner": "PUBLIC",
+      "description": "PUBLIC",
+      "cityRegion": "PUBLIC",
+      "personalStats": "FOLLOWERS",
+      "personalAchievements": "PRIVATE"
+    }
+  }
+}
+```
+
 ### Follow/Social Endpoints
 
-Social interaction features including follow/unfollow, follower stats, and follow status checking.
+Social interaction features including follow/unfollow, follower stats, and
+follow status checking.
 
-| Method | Endpoint                       | Auth     | Description                                |
-| ------ | ------------------------------ | -------- | ------------------------------------------ |
-| POST   | `/api/follow/:userId`          | Required | Follow a user                              |
-| DELETE | `/api/follow/:userId`          | Required | Unfollow a user                            |
-| GET    | `/api/follow/stats/:userId`    | Public   | Get follower/following counts for a user   |
-| GET    | `/api/follow/status/:userId`   | Required | Check if current user follows target user  |
+| Method | Endpoint                     | Auth     | Description                               |
+| ------ | ---------------------------- | -------- | ----------------------------------------- |
+| POST   | `/api/follow/:userId`        | Required | Follow a user                             |
+| DELETE | `/api/follow/:userId`        | Required | Unfollow a user                           |
+| GET    | `/api/follow/stats/:userId`  | Public   | Get follower/following counts for a user  |
+| GET    | `/api/follow/status/:userId` | Required | Check if current user follows target user |
 
 **Follow a User:**
 
-Creates a follow relationship and sends a notification to the followed user. Cannot follow yourself.
+Creates a follow relationship and sends a notification to the followed user.
+Cannot follow yourself.
 
 ```bash
 curl -X POST \
@@ -269,10 +410,10 @@ curl -H "Authorization: Bearer <token>" \
 
 Real-time notification system for social interactions.
 
-| Method | Endpoint                            | Auth     | Description                    |
-| ------ | ----------------------------------- | -------- | ------------------------------ |
-| GET    | `/api/notifications`                | Required | Get all notifications for user |
-| PATCH  | `/api/notifications/:id/read`       | Required | Mark notification as read      |
+| Method | Endpoint                      | Auth     | Description                    |
+| ------ | ----------------------------- | -------- | ------------------------------ |
+| GET    | `/api/notifications`          | Required | Get all notifications for user |
+| PATCH  | `/api/notifications/:id/read` | Required | Mark notification as read      |
 
 **Get Notifications:**
 
@@ -307,6 +448,7 @@ curl -H "Authorization: Bearer <token>" \
 ```
 
 **Notification Types:**
+
 - `NEW_FOLLOWER` - Someone followed you
 
 **Mark Notification as Read:**
