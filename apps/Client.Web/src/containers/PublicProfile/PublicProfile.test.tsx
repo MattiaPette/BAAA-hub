@@ -34,14 +34,20 @@ vi.mock('react-router', async () => {
 });
 
 // Mock auth provider
-vi.mock('../../providers/AuthProvider/AuthProvider', () => ({
-  useAuth: () => ({
-    token: {
-      accessToken: 'mock-token',
-    },
-    isAuthenticated: true,
-  }),
-}));
+vi.mock('../../providers/AuthProvider/AuthProvider', async () => {
+  const actual = await vi.importActual<
+    typeof import('../../providers/AuthProvider/AuthProvider')
+  >('../../providers/AuthProvider/AuthProvider');
+  return {
+    ...actual,
+    useAuth: () => ({
+      token: {
+        accessToken: 'mock-token',
+      },
+      isAuthenticated: true,
+    }),
+  };
+});
 
 // Mock current user hook
 vi.mock('../../hooks/useCurrentUser', () => ({

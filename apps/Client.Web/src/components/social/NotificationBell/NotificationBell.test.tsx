@@ -24,14 +24,20 @@ vi.mock('react-router', async () => {
 });
 
 // Mock auth provider
-vi.mock('../../../providers/AuthProvider/AuthProvider', () => ({
-  useAuth: () => ({
-    token: {
-      accessToken: 'mock-token',
-    },
-    isAuthenticated: true,
-  }),
-}));
+vi.mock('../../../providers/AuthProvider/AuthProvider', async () => {
+  const actual = await vi.importActual<
+    typeof import('../../../providers/AuthProvider/AuthProvider')
+  >('../../../providers/AuthProvider/AuthProvider');
+  return {
+    ...actual,
+    useAuth: () => ({
+      token: {
+        accessToken: 'mock-token',
+      },
+      isAuthenticated: true,
+    }),
+  };
+});
 
 describe('NotificationBell', () => {
   beforeEach(() => {
@@ -134,7 +140,7 @@ describe('NotificationBell', () => {
     // Dropdown should be visible
     await waitFor(() => {
       expect(
-        screen.getByText(/jane_doe is now following you/i),
+        screen.getByText(/@jane_doe.*is now following you/i),
       ).toBeInTheDocument();
     });
   });
@@ -188,12 +194,12 @@ describe('NotificationBell', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/jane_doe is now following you/i),
+        screen.getByText(/@jane_doe.*is now following you/i),
       ).toBeInTheDocument();
     });
 
     const notificationItem = screen
-      .getByText(/jane_doe is now following you/i)
+      .getByText(/@jane_doe.*is now following you/i)
       .closest('li');
     if (notificationItem) {
       await user.click(notificationItem);
@@ -269,7 +275,7 @@ describe('NotificationBell', () => {
 
     await waitFor(() => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Failed to load notifications:',
+        'Failed to fetch notifications:',
         expect.any(Error),
       );
     });

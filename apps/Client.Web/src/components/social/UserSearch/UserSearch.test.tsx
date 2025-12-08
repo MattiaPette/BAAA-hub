@@ -34,7 +34,7 @@ describe('UserSearch', () => {
 
   it('should render search input', () => {
     render(<UserSearch />);
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     expect(searchInput).toBeInTheDocument();
   });
 
@@ -42,7 +42,7 @@ describe('UserSearch', () => {
     const user = userEvent.setup();
     render(<UserSearch />);
 
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     await user.type(searchInput, 'a');
 
     // Wait for debounce
@@ -74,7 +74,7 @@ describe('UserSearch', () => {
 
     render(<UserSearch />);
 
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     await user.type(searchInput, 'john');
 
     // Wait for debounce and API call
@@ -106,7 +106,7 @@ describe('UserSearch', () => {
 
     render(<UserSearch />);
 
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     await user.type(searchInput, 'john');
 
     await waitFor(() => {
@@ -138,7 +138,7 @@ describe('UserSearch', () => {
 
     render(<UserSearch />);
 
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     await user.type(searchInput, 'john');
 
     // Wait for debounce
@@ -167,7 +167,7 @@ describe('UserSearch', () => {
 
     render(<UserSearch />);
 
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     await user.type(searchInput, 'john');
 
     await waitFor(() => {
@@ -207,7 +207,7 @@ describe('UserSearch', () => {
       </div>,
     );
 
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     await user.type(searchInput, 'john');
 
     await waitFor(() => {
@@ -241,7 +241,7 @@ describe('UserSearch', () => {
 
     render(<UserSearch />);
 
-    const searchInput = screen.getByPlaceholderText(/search users/i);
+    const searchInput = screen.getByPlaceholderText(/search for users/i);
     await user.type(searchInput, 'john');
 
     await waitFor(() => {

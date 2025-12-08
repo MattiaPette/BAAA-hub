@@ -26,8 +26,8 @@ describe('BreadcrumProvider', () => {
       </BreadcrumProvider>,
     );
 
-    // Default title is "Dashboard" (from lingui macro)
-    expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
+    // Default title is "Feed" (from lingui macro)
+    expect(screen.getByText(/feed/i)).toBeInTheDocument();
   });
 
   it('should allow updating title through context', async () => {
