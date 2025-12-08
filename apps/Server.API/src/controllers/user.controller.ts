@@ -253,8 +253,10 @@ export const searchUsers = async (ctx: Context): Promise<void> => {
 
   // Sanitize query to prevent ReDoS attacks
   // Escape special regex characters and limit length
-  const sanitizedQuery = query.substring(0, 50).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  
+  const sanitizedQuery = query
+    .substring(0, 50)
+    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
   // Create case-insensitive regex for fuzzy search (simple prefix match)
   const searchRegex = new RegExp(`^${sanitizedQuery}`, 'i');
 
@@ -332,8 +334,8 @@ export const getPublicUserProfile = async (ctx: Context): Promise<void> => {
   }
 
   // Determine what data to include based on privacy settings
-  // For now, we'll use a simple approach: PUBLIC = everyone, FOLLOWERS = authenticated users
-  const canViewFollowersOnly = !!requestingUserId; // Simplified: any authenticated user can view FOLLOWERS content
+  // PUBLIC = everyone, FOLLOWERS = only users who are following the target user
+  const canViewFollowersOnly = isFollowing === true;
 
   // Start with basic public info
   const userResponse: Record<string, unknown> = {
