@@ -2,10 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+import type { UserSearchResult } from '@baaa-hub/shared-types';
 import { renderWithProviders as render } from '../../../test-utils';
 import { UserSearch } from './UserSearch';
 import * as socialService from '../../../services/socialService';
-import type { UserSearchResult } from '@baaa-hub/shared-types';
 
 // Mock the social service
 vi.mock('../../../services/socialService', () => ({

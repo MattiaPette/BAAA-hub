@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useState, useCallback, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
@@ -20,6 +20,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { FlexContainer } from '../../components/commons/layouts/FlexContainer/FlexContainer';
+import { useAuth } from '../../providers/AuthProvider/AuthProvider';
 import { Sidebar } from '../../components/commons/navigation/Sidebar/Sidebar';
 import {
   SidebarProps,
@@ -127,9 +128,17 @@ export const PublicContainer: FC = () => {
   const { pathname } = useLocation();
   const { title } = useBreadcrum();
   const { i18n } = useLingui();
+  const { authErrorMessages } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
   const [signupDialogOpen, setSignupDialogOpen] = useState(false);
+
+  // Auto-reopen login dialog if there are auth errors
+  useEffect(() => {
+    if (authErrorMessages && authErrorMessages.length > 0 && !loginDialogOpen) {
+      setLoginDialogOpen(true);
+    }
+  }, [authErrorMessages, loginDialogOpen]);
 
   const currentPath = pathname.split('/').filter(Boolean).join('/');
 

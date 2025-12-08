@@ -448,9 +448,10 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
       onSuccessCallback,
       onErrorCallback,
     }) => {
+      // Return a result object so callers can await success/failure deterministically
       if (!url || !realm || !clientId) {
         onErrorCallback?.(AuthErrorCode.INVALID_CONFIGURATION);
-        return;
+        return { success: false, error: AuthErrorCode.INVALID_CONFIGURATION };
       }
 
       setLoading(true);
@@ -486,7 +487,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
           setAuthErrorMessages([errorMessage]);
           setLoading(false);
           onErrorCallback?.(errorCode);
-          return;
+          return { success: false, error: errorCode };
         }
 
         const tokenResponse = (await response.json()) as {
@@ -531,17 +532,21 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
         saveAuthToken(authToken);
         setLoading(false);
         onSuccessCallback?.();
+        return { success: true };
       } catch (error) {
         setLoading(false);
         // Distinguish between network errors and other errors
         if (error instanceof TypeError && error.message.includes('fetch')) {
           onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
-        } else if (error instanceof SyntaxError) {
+          return { success: false, error: AuthErrorCode.NETWORK_ERROR };
+        }
+        if (error instanceof SyntaxError) {
           // JSON parsing error from unexpected response format
           onErrorCallback?.(AuthErrorCode.SERVER_ERROR);
-        } else {
-          onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+          return { success: false, error: AuthErrorCode.SERVER_ERROR };
         }
+        onErrorCallback?.(AuthErrorCode.NETWORK_ERROR);
+        return { success: false, error: AuthErrorCode.NETWORK_ERROR };
       }
     },
     [url, realm, clientId, saveAuthToken, localStorageAvailable, keycloak],

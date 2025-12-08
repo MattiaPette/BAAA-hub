@@ -1,22 +1,15 @@
 import { FC, useCallback, useState, useEffect } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  useTheme,
-  useMediaQuery,
   Box,
   FormControl,
   TextField,
   Button,
   Alert,
   CircularProgress,
-  Typography,
   FormControlLabel,
   Checkbox,
+  Typography,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -25,6 +18,7 @@ import { useSnackbar } from 'notistack';
 import { useAuth } from '../../../providers/AuthProvider/AuthProvider';
 import { IFormInput, LoginFormValue } from '../LoginForm/LoginForm.model';
 import { LoginDialogProps } from './LoginDialog.model';
+import { AuthDialog } from '../AuthDialog';
 
 /**
  * LoginDialog — A dialog component for user login.
@@ -44,8 +38,6 @@ export const LoginDialog: FC<LoginDialogProps> = ({
   onClose,
   onSwitchToSignup,
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { login, authErrorMessages, clearAuthErrors, getRememberedEmail } =
     useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -72,225 +64,199 @@ export const LoginDialog: FC<LoginDialogProps> = ({
     }
   }, [open, getRememberedEmail, setValue]);
 
-  const handleClose = useCallback(
-    (_event?: unknown, reason?: 'backdropClick' | 'escapeKeyDown') => {
-      if (isLoading) {
-        return; // Prevent closing during authentication
-      }
-      // Prevent closing via backdrop click when there are error messages
-      if (
-        reason === 'backdropClick' &&
-        authErrorMessages &&
-        authErrorMessages.length > 0
-      ) {
-        return;
-      }
-      clearAuthErrors();
-      reset();
-      setIsLoading(false);
-      setRememberMe(false);
-      onClose();
-    },
-    [isLoading, authErrorMessages, clearAuthErrors, reset, onClose],
-  );
+  // Auto-reopen dialog if there are auth errors (e.g., after a failed login attempt)
+  useEffect(() => {
+    if (authErrorMessages && authErrorMessages.length > 0 && !open) {
+      // onClose is the parent's setter, so we need to access open from parent
+      // This effect will trigger but we can't reopen from here without prop drilling
+      // Instead, rely on parent to handle reopen based on authErrorMessages
+    }
+  }, [authErrorMessages, open]);
+
+  /**
+   * Cleanup function called when dialog is being closed by the user.
+   * This resets the form and clears error messages.
+   */
+  const handleDialogClose = useCallback(() => {
+    clearAuthErrors();
+    reset();
+    setIsLoading(false);
+    setRememberMe(false);
+  }, [clearAuthErrors, reset]);
 
   const onSubmit = useCallback(
     async (loginFormValue: LoginFormValue) => {
       clearAuthErrors();
       setIsLoading(true);
-      await login({
+      const result = await login({
         email: loginFormValue.user,
         password: loginFormValue.password,
         rememberMe,
-        onSuccessCallback: () => {
-          setIsLoading(false);
-          enqueueSnackbar(t`Login successful! Welcome back.`, {
-            variant: 'success',
-          });
-          handleClose();
-        },
-        onErrorCallback: () => {
-          setIsLoading(false);
-        },
       });
+
+      if (result?.success) {
+        enqueueSnackbar(t`Login successful! Welcome back.`, {
+          variant: 'success',
+        });
+        // Clean up and close dialog on success
+        handleDialogClose();
+        // Forward close directly to parent to avoid race where isLoading
+        // still reads true due to async state updates. We already ran cleanup.
+        onClose?.();
+      } else {
+        enqueueSnackbar(t`Login failed`, {
+          variant: 'error',
+        });
+      }
     },
-    [clearAuthErrors, login, enqueueSnackbar, handleClose, rememberMe],
+    [
+      clearAuthErrors,
+      login,
+      enqueueSnackbar,
+      handleDialogClose,
+      rememberMe,
+      onClose,
+    ],
   );
 
-  const handleSubmit: SubmitHandler<IFormInput> = data => {
-    onSubmit({ user: data.user, password: data.password });
+  const handleSubmit: SubmitHandler<IFormInput> = async data => {
+    await onSubmit({ user: data.user, password: data.password });
   };
 
   const handleSwitchToSignup = useCallback(() => {
-    handleClose();
+    handleDialogClose();
     onSwitchToSignup?.();
-  }, [handleClose, onSwitchToSignup]);
+  }, [handleDialogClose, onSwitchToSignup]);
 
   return (
-    <Dialog
+    <AuthDialog
       open={open}
-      onClose={handleClose}
-      disableEscapeKeyDown={isLoading}
-      fullScreen={isMobile}
-      maxWidth="xs"
-      fullWidth
-      slotProps={{
-        paper: {
-          sx: {
-            borderRadius: isMobile ? 0 : 2,
-          },
-        },
-      }}
+      onClose={onClose}
+      title={t`Login`}
+      isLoading={isLoading}
+      errorMessages={authErrorMessages}
+      onDialogClose={handleDialogClose}
     >
-      <DialogTitle
+      <Box
+        component="form"
+        onSubmit={handleSubmitForm(handleSubmit)}
+        noValidate
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          pb: 1,
+          flexDirection: 'column',
+          width: '100%',
+          gap: 2,
+          mt: 1,
         }}
       >
-        <Typography
-          component="div"
-          variant="h5"
-          sx={{ fontWeight: 600, fontSize: 'clamp(1.5rem, 5vw, 1.75rem)' }}
+        <FormControl fullWidth>
+          <TextField
+            id="login-user"
+            label={t({ message: 'Email' })}
+            placeholder={t({ message: 'Email' })}
+            autoComplete="email"
+            autoFocus
+            fullWidth
+            variant="outlined"
+            disabled={isLoading}
+            error={!!errors?.user}
+            helperText={errors?.user?.message ?? errors?.user?.types?.error}
+            {...register('user', {
+              maxLength: {
+                value: 100,
+                message: t({ message: 'Too many characters' }),
+              },
+              required: {
+                value: true,
+                message: t({ message: 'Email is required' }),
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: t({ message: 'Invalid email address' }),
+              },
+            })}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <TextField
+            id="login-password"
+            type="password"
+            label={t({ message: 'Password' })}
+            placeholder="••••••"
+            autoComplete="current-password"
+            fullWidth
+            variant="outlined"
+            disabled={isLoading}
+            error={!!errors?.password}
+            helperText={
+              errors?.password?.message ?? errors?.password?.types?.error
+            }
+            {...register('password', {
+              required: {
+                value: true,
+                message: t({ message: 'Password is required' }),
+              },
+            })}
+          />
+        </FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={rememberMe}
+              onChange={e => setRememberMe(e.target.checked)}
+              disabled={isLoading}
+              color="primary"
+            />
+          }
+          label={<Trans>Remember me</Trans>}
+        />
+        {authErrorMessages && authErrorMessages.length > 0 && (
+          <Alert severity="error" sx={{ mt: 1 }}>
+            {authErrorMessages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </Alert>
+        )}
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          disabled={isLoading}
+          startIcon={
+            isLoading ? <CircularProgress size={20} color="inherit" /> : null
+          }
+          sx={{ mt: 1, py: 1.25 }}
         >
           <Trans>Login</Trans>
-        </Typography>
-        <IconButton
-          aria-label={t`Close`}
-          onClick={handleClose}
-          disabled={isLoading}
-          sx={{
-            color: theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+        </Button>
+      </Box>
 
-      <DialogContent>
-        <Box
-          component="form"
-          onSubmit={handleSubmitForm(handleSubmit)}
-          noValidate
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: 2,
-            mt: 1,
-          }}
-        >
-          <FormControl fullWidth>
-            <TextField
-              id="login-user"
-              label={t({ message: 'Email' })}
-              placeholder={t({ message: 'Email' })}
-              autoComplete="email"
-              autoFocus
-              fullWidth
-              variant="outlined"
-              disabled={isLoading}
-              error={!!errors?.user}
-              helperText={errors?.user?.message ?? errors?.user?.types?.error}
-              {...register('user', {
-                maxLength: {
-                  value: 100,
-                  message: t({ message: 'Too many characters' }),
-                },
-                required: {
-                  value: true,
-                  message: t({ message: 'Email is required' }),
-                },
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: t({ message: 'Invalid email address' }),
-                },
-              })}
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <TextField
-              id="login-password"
-              type="password"
-              label={t({ message: 'Password' })}
-              placeholder="••••••"
-              autoComplete="current-password"
-              fullWidth
-              variant="outlined"
-              disabled={isLoading}
-              error={!!errors?.password}
-              helperText={
-                errors?.password?.message ?? errors?.password?.types?.error
-              }
-              {...register('password', {
-                required: {
-                  value: true,
-                  message: t({ message: 'Password is required' }),
-                },
-              })}
-            />
-          </FormControl>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={rememberMe}
-                onChange={e => setRememberMe(e.target.checked)}
-                disabled={isLoading}
-                color="primary"
-              />
-            }
-            label={<Trans>Remember me</Trans>}
-          />
-          {authErrorMessages && authErrorMessages.length > 0 && (
-            <Alert severity="error" sx={{ mt: 1 }}>
-              {authErrorMessages.map((msg, index) => (
-                <div key={index}>{msg}</div>
-              ))}
-            </Alert>
-          )}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            disabled={isLoading}
-            startIcon={
-              isLoading ? <CircularProgress size={20} color="inherit" /> : null
-            }
-            sx={{ mt: 1, py: 1.25 }}
+      {onSwitchToSignup && (
+        <Box sx={{ textAlign: 'center', mt: 3 }}>
+          <Typography variant="body2" color="text.secondary" component="span">
+            <Trans>Don&apos;t have an account?</Trans>{' '}
+          </Typography>
+          <Typography
+            component="button"
+            variant="body2"
+            onClick={handleSwitchToSignup}
+            sx={{
+              fontWeight: 600,
+              textDecoration: 'none',
+              color: 'primary.main',
+              cursor: 'pointer',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
           >
-            <Trans>Login</Trans>
-          </Button>
+            <Trans>Sign Up</Trans>
+          </Typography>
         </Box>
-
-        {onSwitchToSignup && (
-          <Box sx={{ textAlign: 'center', mt: 3 }}>
-            <Typography variant="body2" color="text.secondary" component="span">
-              <Trans>Don&apos;t have an account?</Trans>{' '}
-            </Typography>
-            <Typography
-              component="button"
-              variant="body2"
-              onClick={handleSwitchToSignup}
-              sx={{
-                fontWeight: 600,
-                textDecoration: 'none',
-                color: 'primary.main',
-                cursor: 'pointer',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                '&:hover': {
-                  textDecoration: 'underline',
-                },
-              }}
-            >
-              <Trans>Sign Up</Trans>
-            </Typography>
-          </Box>
-        )}
-      </DialogContent>
-    </Dialog>
+      )}
+    </AuthDialog>
   );
 };
