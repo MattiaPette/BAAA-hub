@@ -38,6 +38,15 @@ const toUserResponse = (doc: UserDocument): User => {
     bannerKey: obj.bannerKey,
     stravaLink: obj.stravaLink,
     instagramLink: obj.instagramLink,
+    youtubeLink: obj.youtubeLink,
+    garminLink: obj.garminLink,
+    tiktokLink: obj.tiktokLink,
+    personalWebsiteLink: obj.personalWebsiteLink,
+    country: obj.country,
+    description: obj.description,
+    cityRegion: obj.cityRegion,
+    personalStats: obj.personalStats,
+    personalAchievements: obj.personalAchievements,
     authId: obj.authId,
     createdAt: obj.createdAt,
     updatedAt: obj.updatedAt,
@@ -393,6 +402,45 @@ export const getPublicUserProfile = async (ctx: Context): Promise<void> => {
   ) {
     userResponse.stravaLink = targetUser.stravaLink;
     userResponse.instagramLink = targetUser.instagramLink;
+    userResponse.youtubeLink = targetUser.youtubeLink;
+    userResponse.garminLink = targetUser.garminLink;
+    userResponse.tiktokLink = targetUser.tiktokLink;
+    userResponse.personalWebsiteLink = targetUser.personalWebsiteLink;
+  }
+
+  // Country is always public
+  userResponse.country = targetUser.country;
+
+  // Description with privacy
+  if (
+    privacy.description === 'PUBLIC' ||
+    (privacy.description === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.description = targetUser.description;
+  }
+
+  // City/Region with privacy
+  if (
+    privacy.cityRegion === 'PUBLIC' ||
+    (privacy.cityRegion === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.cityRegion = targetUser.cityRegion;
+  }
+
+  // Personal stats with privacy
+  if (
+    privacy.personalStats === 'PUBLIC' ||
+    (privacy.personalStats === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.personalStats = targetUser.personalStats;
+  }
+
+  // Personal achievements with privacy
+  if (
+    privacy.personalAchievements === 'PUBLIC' ||
+    (privacy.personalAchievements === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.personalAchievements = targetUser.personalAchievements;
   }
 
   if (

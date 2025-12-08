@@ -197,6 +197,74 @@ curl -H "Authorization: Bearer <token>" \
 }
 ```
 
+**Get Current User Profile:**
+
+Retrieves the complete profile of the authenticated user, including all fields
+regardless of privacy settings.
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/users/me"
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "user": {
+    "id": "507f1f77bcf86cd799439011",
+    "name": "John",
+    "surname": "Doe",
+    "nickname": "john_doe",
+    "email": "john@example.com",
+    "dateOfBirth": "1990-01-01",
+    "sportTypes": ["RUNNING", "CYCLING"],
+    "country": "IT",
+    "cityRegion": "Milan, Lombardy",
+    "description": "Passionate runner and cyclist from Milan",
+    "personalStats": {
+      "height": 180,
+      "weight": 75
+    },
+    "personalAchievements": {
+      "time5k": "18:30",
+      "time10k": "38:45",
+      "timeHalfMarathon": "01:25:30",
+      "timeMarathon": "03:15:20"
+    },
+    "stravaLink": "https://strava.com/athletes/123",
+    "instagramLink": "https://instagram.com/john_doe",
+    "youtubeLink": "https://youtube.com/@john_doe",
+    "garminLink": "https://connect.garmin.com/modern/profile/john_doe",
+    "tiktokLink": "https://tiktok.com/@john_doe",
+    "personalWebsiteLink": "https://johndoe.com",
+    "profilePicture": "https://...",
+    "avatarKey": "avatars/user123/avatar.png",
+    "avatarThumbKey": "avatars/user123/avatar_thumb.png",
+    "bannerKey": "banners/user123/banner.png",
+    "authId": "auth0|123456",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-12-08T00:00:00.000Z",
+    "isBlocked": false,
+    "isEmailVerified": true,
+    "mfaEnabled": false,
+    "roles": ["USER"],
+    "privacySettings": {
+      "email": "PUBLIC",
+      "dateOfBirth": "PUBLIC",
+      "sportTypes": "PUBLIC",
+      "socialLinks": "PUBLIC",
+      "avatar": "PUBLIC",
+      "banner": "PUBLIC",
+      "description": "PUBLIC",
+      "cityRegion": "PUBLIC",
+      "personalStats": "FOLLOWERS",
+      "personalAchievements": "PRIVATE"
+    }
+  }
+}
+```
+
 **Update User Profile:**
 
 Update the current user's profile. Email and nickname cannot be changed after
