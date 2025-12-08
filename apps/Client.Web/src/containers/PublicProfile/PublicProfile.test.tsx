@@ -154,9 +154,15 @@ describe('PublicProfile', () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText(/10/)).toBeInTheDocument(); // followers
-      expect(screen.getByText(/5/)).toBeInTheDocument(); // following
+      expect(screen.getByText('Followers')).toBeInTheDocument();
+      expect(screen.getByText('Following')).toBeInTheDocument();
     });
+
+    // Check that the follower and following counts are displayed
+    const followersCount = screen.getByText('Followers').previousSibling;
+    const followingCount = screen.getByText('Following').previousSibling;
+    expect(followersCount).toHaveTextContent('10');
+    expect(followingCount).toHaveTextContent('5');
   });
 
   it('should show follow button when not following', async () => {

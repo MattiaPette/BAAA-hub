@@ -64,12 +64,7 @@ describe('AuthDialog', () => {
 
   it('should not close dialog when close button is clicked during loading', () => {
     render(
-      <AuthDialog
-        open
-        onClose={mockOnClose}
-        title="Test Dialog"
-        isLoading={true}
-      >
+      <AuthDialog open onClose={mockOnClose} title="Test Dialog" isLoading>
         <div>Test Content</div>
       </AuthDialog>,
     );
@@ -158,12 +153,7 @@ describe('AuthDialog', () => {
 
   it('should disable escape key when loading', () => {
     render(
-      <AuthDialog
-        open
-        onClose={mockOnClose}
-        title="Test Dialog"
-        isLoading={true}
-      >
+      <AuthDialog open onClose={mockOnClose} title="Test Dialog" isLoading>
         <div>Test Content</div>
       </AuthDialog>,
     );

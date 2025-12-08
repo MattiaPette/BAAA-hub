@@ -35,6 +35,14 @@ export interface UserPrivacySettings {
   avatar?: PrivacyLevel;
   /** Privacy setting for banner image */
   banner?: PrivacyLevel;
+  /** Privacy setting for user description */
+  description?: PrivacyLevel;
+  /** Privacy setting for city/region */
+  cityRegion?: PrivacyLevel;
+  /** Privacy setting for personal stats (height, weight, age) */
+  personalStats?: PrivacyLevel;
+  /** Privacy setting for personal achievements */
+  personalAchievements?: PrivacyLevel;
 }
 
 /**
@@ -186,6 +194,30 @@ export const hasAllRoles = (userRoles: UserRole[], roles: UserRole[]): boolean =
 };
 
 /**
+ * Personal stats for the user
+ */
+export interface PersonalStats {
+  /** Height in centimeters */
+  height?: number;
+  /** Weight in kilograms */
+  weight?: number;
+}
+
+/**
+ * Personal running achievements
+ */
+export interface PersonalAchievements {
+  /** 5K time in format "MM:SS" or "HH:MM:SS" */
+  time5k?: string;
+  /** 10K time in format "MM:SS" or "HH:MM:SS" */
+  time10k?: string;
+  /** Half marathon time in format "HH:MM:SS" or "MM:SS" */
+  timeHalfMarathon?: string;
+  /** Marathon time in format "HH:MM:SS" or "MM:SS" */
+  timeMarathon?: string;
+}
+
+/**
  * Base user data that can be set by the user
  */
 export interface UserProfileData {
@@ -203,8 +235,26 @@ export interface UserProfileData {
   avatarThumbKey?: string;
   /** Object storage key for banner image (stored in MinIO) */
   bannerKey?: string;
+  /** ISO 3166-1 alpha-2 country code (e.g., "IT", "US") - always public */
+  country?: string;
+  /** User description/bio - max 500 characters */
+  description?: string;
+  /** City or region - max 100 characters */
+  cityRegion?: string;
+  /** Personal stats (height, weight) */
+  personalStats?: PersonalStats;
+  /** Personal running achievements */
+  personalAchievements?: PersonalAchievements;
   stravaLink?: string;
   instagramLink?: string;
+  /** YouTube channel or profile link */
+  youtubeLink?: string;
+  /** Garmin Connect profile link */
+  garminLink?: string;
+  /** TikTok profile link */
+  tiktokLink?: string;
+  /** Personal website URL */
+  personalWebsiteLink?: string;
   privacySettings: UserPrivacySettings;
 }
 
