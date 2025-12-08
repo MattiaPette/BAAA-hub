@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography, Container, Paper } from '@mui/material';
+import { Typography, Container, Paper } from '@mui/material';
 
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { UserSearch } from '../../components/social/UserSearch/UserSearch';
@@ -25,15 +25,6 @@ export const Feed: FC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" gutterBottom fontWeight={700}>
-          {t`Feed`}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" gutterBottom>
-          <Trans>Discover and connect with other users</Trans>
-        </Typography>
-      </Box>
-
       {/* User Search */}
       <Paper
         elevation={0}
