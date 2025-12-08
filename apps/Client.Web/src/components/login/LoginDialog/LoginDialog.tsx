@@ -64,9 +64,18 @@ export const LoginDialog: FC<LoginDialogProps> = ({
     }
   }, [open, getRememberedEmail, setValue]);
 
+  // Auto-reopen dialog if there are auth errors (e.g., after a failed login attempt)
+  useEffect(() => {
+    if (authErrorMessages && authErrorMessages.length > 0 && !open) {
+      // onClose is the parent's setter, so we need to access open from parent
+      // This effect will trigger but we can't reopen from here without prop drilling
+      // Instead, rely on parent to handle reopen based on authErrorMessages
+    }
+  }, [authErrorMessages, open]);
+
   /**
-   * Cleanup function called when dialog is closed.
-   * Resets form state and clears any errors.
+   * Cleanup function called when dialog is being closed by the user.
+   * This resets the form and clears error messages.
    */
   const handleDialogClose = useCallback(() => {
     clearAuthErrors();
@@ -79,43 +88,45 @@ export const LoginDialog: FC<LoginDialogProps> = ({
     async (loginFormValue: LoginFormValue) => {
       clearAuthErrors();
       setIsLoading(true);
-      await login({
+      const result = await login({
         email: loginFormValue.user,
         password: loginFormValue.password,
         rememberMe,
-        onSuccessCallback: () => {
-          setIsLoading(false);
-          enqueueSnackbar(t`Login successful! Welcome back.`, {
-            variant: 'success',
-          });
-          // Clean up and close dialog on success
-          handleDialogClose();
-          onClose();
-        },
-        onErrorCallback: () => {
-          setIsLoading(false);
-        },
       });
+
+      if (result?.success) {
+        enqueueSnackbar(t`Login successful! Welcome back.`, {
+          variant: 'success',
+        });
+        // Clean up and close dialog on success
+        handleDialogClose();
+        // Forward close directly to parent to avoid race where isLoading
+        // still reads true due to async state updates. We already ran cleanup.
+        onClose?.();
+      } else {
+        enqueueSnackbar(t`Login failed`, {
+          variant: 'error',
+        });
+      }
     },
     [
       clearAuthErrors,
       login,
       enqueueSnackbar,
       handleDialogClose,
-      onClose,
       rememberMe,
+      onClose,
     ],
   );
 
-  const handleSubmit: SubmitHandler<IFormInput> = data => {
-    onSubmit({ user: data.user, password: data.password });
+  const handleSubmit: SubmitHandler<IFormInput> = async data => {
+    await onSubmit({ user: data.user, password: data.password });
   };
 
   const handleSwitchToSignup = useCallback(() => {
     handleDialogClose();
-    onClose();
     onSwitchToSignup?.();
-  }, [handleDialogClose, onClose, onSwitchToSignup]);
+  }, [handleDialogClose, onSwitchToSignup]);
 
   return (
     <AuthDialog

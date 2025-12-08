@@ -221,7 +221,7 @@ export type AuthLoginFunctionParameters = Readonly<{
  */
 export type AuthLoginFunction = (
   parameters: AuthLoginFunctionParameters,
-) => Promise<void>;
+) => Promise<{ success: true } | { success: false; error?: AuthErrorCode }>;
 
 /**
  * Parameters for the signup function.
