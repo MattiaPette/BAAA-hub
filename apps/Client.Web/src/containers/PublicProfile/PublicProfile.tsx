@@ -580,11 +580,11 @@ export const PublicProfile: FC = () => {
                           variant="caption"
                           color="text.secondary"
                           display="block"
-                          sx={{ mb: 1.5 }}
+                          sx={{ mb: 0.5 }}
                         >
                           <Trans>Age</Trans>
                         </Typography>
-                        <Typography variant="h5" fontWeight={600}>
+                        <Typography variant="body2" fontWeight={600}>
                           {calculateAge(user.dateOfBirth)}{' '}
                           <Trans>years old</Trans>
                         </Typography>

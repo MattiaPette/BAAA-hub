@@ -572,7 +572,7 @@ export const Profile: FC = () => {
                     >
                       <Trans>Age</Trans>
                     </Typography>
-                    <Typography variant="body1" fontWeight={600}>
+                    <Typography variant="body2" fontWeight={600}>
                       {calculateAge(user.dateOfBirth)} <Trans>years old</Trans>
                     </Typography>
                   </Box>
