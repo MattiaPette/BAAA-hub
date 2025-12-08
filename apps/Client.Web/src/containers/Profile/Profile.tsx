@@ -30,6 +30,12 @@ import CakeIcon from '@mui/icons-material/Cake';
 import SportsIcon from '@mui/icons-material/Sports';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import LanguageIcon from '@mui/icons-material/Language';
+import HeightIcon from '@mui/icons-material/Height';
+import ScaleIcon from '@mui/icons-material/Scale';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 import { SportType, UserRole } from '@baaa-hub/shared-types';
 import { useAuth } from '../../providers/AuthProvider/AuthProvider';
@@ -43,6 +49,7 @@ import {
 } from '../../services/userService';
 import { getSportTypeLabel } from '../../helpers/sportTypes';
 import { getRoleLabels } from '../../helpers/roleLabels';
+import { getCountryFlag } from '../../helpers/countries';
 import { ProfileEditForm } from './ProfileEditForm';
 import { ProfileEditFormInput } from './Profile.model';
 import {
@@ -72,6 +79,18 @@ const StravaIcon = (props: SvgIconProps) => (
   </SvgIcon>
 );
 
+const GarminIcon = (props: SvgIconProps) => (
+  <SvgIcon {...props} viewBox="0 0 24 24">
+    <path d="M12.9 2.6c-.5-.6-1.3-.6-1.9 0L2.6 11.1c-.6.6-.6 1.3 0 1.9l8.5 8.4c.5.6 1.3.6 1.9 0l8.4-8.4c.6-.6.6-1.3 0-1.9L12.9 2.6zM12 17.2l-5.2-5.2L12 6.8l5.2 5.2-5.2 5.2z" />
+  </SvgIcon>
+);
+
+const TikTokIcon = (props: SvgIconProps) => (
+  <SvgIcon {...props} viewBox="0 0 24 24">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+  </SvgIcon>
+);
+
 /**
  * Generate initials from name
  */
@@ -95,6 +114,19 @@ const formatDate = (dateString: string, locale: string): string => {
   } catch {
     return dateString;
   }
+};
+
+/**
+ * Calculate age from date of birth
+ */
+const calculateAge = (dateOfBirth: string): number => {
+  const today = new Date();
+  const birthDate = new Date(dateOfBirth);
+  const baseAge = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  const needsAdjustment =
+    monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate());
+  return needsAdjustment ? baseAge - 1 : baseAge;
 };
 
 /**
@@ -245,6 +277,15 @@ export const Profile: FC = () => {
           sportTypes: data.sportTypes,
           stravaLink: data.stravaLink?.trim() || undefined,
           instagramLink: data.instagramLink?.trim() || undefined,
+          youtubeLink: data.youtubeLink?.trim() || undefined,
+          garminLink: data.garminLink?.trim() || undefined,
+          tiktokLink: data.tiktokLink?.trim() || undefined,
+          personalWebsiteLink: data.personalWebsiteLink?.trim() || undefined,
+          country: data.country?.trim() || undefined,
+          description: data.description?.trim() || undefined,
+          cityRegion: data.cityRegion?.trim() || undefined,
+          personalStats: data.personalStats,
+          personalAchievements: data.personalAchievements,
           privacySettings: data.privacySettings,
         });
 
@@ -351,9 +392,35 @@ export const Profile: FC = () => {
           sx={{ mb: 5, ml: { md: 22 } }}
         >
           <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-            <Typography variant="h4" fontWeight={700} gutterBottom>
-              {user.name} {user.surname}
-            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent={{ xs: 'center', md: 'flex-start' }}
+            >
+              {user.country && (
+                <Typography variant="h4" fontWeight={700}>
+                  {getCountryFlag(user.country)}
+                </Typography>
+              )}
+              <Typography variant="h4" fontWeight={700} gutterBottom>
+                {user.name} {user.surname}
+              </Typography>
+            </Stack>
+            {user.cityRegion && (
+              <Stack
+                direction="row"
+                spacing={0.5}
+                alignItems="center"
+                justifyContent={{ xs: 'center', md: 'flex-start' }}
+                sx={{ mb: 1 }}
+              >
+                <LocationOnIcon fontSize="small" color="action" />
+                <Typography variant="body2" color="text.secondary">
+                  {user.cityRegion}
+                </Typography>
+              </Stack>
+            )}
             <Stack
               direction="row"
               spacing={1}
@@ -396,6 +463,18 @@ export const Profile: FC = () => {
             <Trans>Edit Profile</Trans>
           </Button>
         </Stack>
+
+        {/* Description Box */}
+        {user.description && (
+          <Paper
+            variant="outlined"
+            sx={{ p: 3, borderRadius: 3, mb: 4, ml: { md: 22 } }}
+          >
+            <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+              {user.description}
+            </Typography>
+          </Paper>
+        )}
 
         {/* Content Grid */}
         <Grid container spacing={4}>
@@ -481,11 +560,109 @@ export const Profile: FC = () => {
                       </Typography>
                     </Box>
                   </Box>
+
+                  {/* Age */}
+                  <Box>
+                    <Divider sx={{ my: 2 }} />
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      display="block"
+                      sx={{ mb: 0.5 }}
+                    >
+                      <Trans>Age</Trans>
+                    </Typography>
+                    <Typography variant="body2" fontWeight={600}>
+                      {calculateAge(user.dateOfBirth)} <Trans>years old</Trans>
+                    </Typography>
+                  </Box>
+
+                  {/* Personal Stats */}
+                  {user.personalStats &&
+                    (user.personalStats.height ||
+                      user.personalStats.weight) && (
+                      <Box>
+                        <Divider sx={{ my: 2 }} />
+                        <Stack spacing={2}>
+                          {user.personalStats.height && (
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 2,
+                              }}
+                            >
+                              <Avatar
+                                sx={{
+                                  bgcolor: alpha(
+                                    theme.palette.primary.main,
+                                    0.1,
+                                  ),
+                                  color: 'primary.main',
+                                }}
+                              >
+                                <HeightIcon fontSize="small" />
+                              </Avatar>
+                              <Box>
+                                <Typography
+                                  variant="caption"
+                                  color="text.secondary"
+                                  display="block"
+                                >
+                                  <Trans>Height</Trans>
+                                </Typography>
+                                <Typography variant="body2" fontWeight={500}>
+                                  {user.personalStats.height} cm
+                                </Typography>
+                              </Box>
+                            </Box>
+                          )}
+                          {user.personalStats.weight && (
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 2,
+                              }}
+                            >
+                              <Avatar
+                                sx={{
+                                  bgcolor: alpha(
+                                    theme.palette.primary.main,
+                                    0.1,
+                                  ),
+                                  color: 'primary.main',
+                                }}
+                              >
+                                <ScaleIcon fontSize="small" />
+                              </Avatar>
+                              <Box>
+                                <Typography
+                                  variant="caption"
+                                  color="text.secondary"
+                                  display="block"
+                                >
+                                  <Trans>Weight</Trans>
+                                </Typography>
+                                <Typography variant="body2" fontWeight={500}>
+                                  {user.personalStats.weight} kg
+                                </Typography>
+                              </Box>
+                            </Box>
+                          )}
+                        </Stack>
+                      </Box>
+                    )}
                 </Stack>
               </Paper>
 
               {/* Social Links */}
-              {(user.stravaLink || user.instagramLink) && (
+              {(user.stravaLink ||
+                user.instagramLink ||
+                user.youtubeLink ||
+                user.garminLink ||
+                user.tiktokLink ||
+                user.personalWebsiteLink) && (
                 <Paper variant="outlined" sx={{ p: 3, borderRadius: 3 }}>
                   <Typography
                     variant="h6"
@@ -542,77 +719,264 @@ export const Profile: FC = () => {
                         Instagram
                       </Button>
                     )}
+                    {user.youtubeLink && (
+                      <Button
+                        component="a"
+                        href={user.youtubeLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        startIcon={<YouTubeIcon />}
+                        fullWidth
+                        variant="outlined"
+                        color="inherit"
+                        sx={{
+                          justifyContent: 'flex-start',
+                          color: '#FF0000',
+                          borderColor: alpha('#FF0000', 0.5),
+                          '&:hover': {
+                            borderColor: '#FF0000',
+                            bgcolor: alpha('#FF0000', 0.05),
+                          },
+                        }}
+                      >
+                        YouTube
+                      </Button>
+                    )}
+                    {user.garminLink && (
+                      <Button
+                        component="a"
+                        href={user.garminLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        startIcon={<GarminIcon />}
+                        fullWidth
+                        variant="outlined"
+                        color="inherit"
+                        sx={{
+                          justifyContent: 'flex-start',
+                          color: '#007CC3',
+                          borderColor: alpha('#007CC3', 0.5),
+                          '&:hover': {
+                            borderColor: '#007CC3',
+                            bgcolor: alpha('#007CC3', 0.05),
+                          },
+                        }}
+                      >
+                        Garmin Connect
+                      </Button>
+                    )}
+                    {user.tiktokLink && (
+                      <Button
+                        component="a"
+                        href={user.tiktokLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        startIcon={<TikTokIcon />}
+                        fullWidth
+                        variant="outlined"
+                        color="inherit"
+                        sx={{
+                          justifyContent: 'flex-start',
+                          borderColor: alpha(theme.palette.text.primary, 0.3),
+                          '&:hover': {
+                            borderColor: theme.palette.text.primary,
+                            bgcolor: alpha(theme.palette.text.primary, 0.05),
+                          },
+                        }}
+                      >
+                        TikTok
+                      </Button>
+                    )}
+                    {user.personalWebsiteLink && (
+                      <Button
+                        component="a"
+                        href={user.personalWebsiteLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        startIcon={<LanguageIcon />}
+                        fullWidth
+                        variant="outlined"
+                        color="inherit"
+                        sx={{
+                          justifyContent: 'flex-start',
+                          color: theme.palette.primary.main,
+                          borderColor: alpha(theme.palette.primary.main, 0.5),
+                          '&:hover': {
+                            borderColor: theme.palette.primary.main,
+                            bgcolor: alpha(theme.palette.primary.main, 0.05),
+                          },
+                        }}
+                      >
+                        <Trans>Personal Website</Trans>
+                      </Button>
+                    )}
                   </Stack>
                 </Paper>
               )}
             </Stack>
           </Grid>
 
-          {/* Right Column - Sports & Stats */}
+          {/* Right Column - Sports & Achievements */}
           <Grid size={{ xs: 12, md: 8 }}>
-            <Paper
-              variant="outlined"
-              sx={{ p: 3, borderRadius: 3, height: '100%' }}
-            >
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={1}
-                sx={{ mb: 3 }}
-              >
-                <SportsIcon color="primary" />
-                <Typography variant="h6" fontWeight={600}>
-                  <Trans>Sports & Activities</Trans>
-                </Typography>
-              </Stack>
-
-              {user.sportTypes.length > 0 ? (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
-                  {user.sportTypes.map(sport => (
-                    <Chip
-                      key={sport}
-                      label={getSportTypeLabel(sport as SportType)}
-                      color="primary"
-                      variant="filled"
-                      sx={{
-                        borderRadius: 2,
-                        px: 1,
-                        py: 2.5,
-                        fontWeight: 500,
-                        fontSize: '0.95rem',
-                      }}
-                    />
-                  ))}
-                </Box>
-              ) : (
-                <Typography color="text.secondary" fontStyle="italic">
-                  <Trans>No sports selected yet.</Trans>
-                </Typography>
-              )}
-
-              <Divider sx={{ my: 4 }} />
-
-              {/* Placeholder for future stats */}
-              <Box
-                sx={{
-                  textAlign: 'center',
-                  py: 4,
-                  bgcolor: alpha(theme.palette.background.default, 0.5),
-                  borderRadius: 2,
-                }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  color="text.secondary"
-                  gutterBottom
+            <Stack spacing={3}>
+              <Paper variant="outlined" sx={{ p: 3, borderRadius: 3 }}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  sx={{ mb: 3 }}
                 >
-                  <Trans>Activity Statistics</Trans>
-                </Typography>
-                <Typography variant="body2" color="text.disabled">
-                  <Trans>Coming soon...</Trans>
-                </Typography>
-              </Box>
-            </Paper>
+                  <SportsIcon color="primary" />
+                  <Typography variant="h6" fontWeight={600}>
+                    <Trans>Sports & Activities</Trans>
+                  </Typography>
+                </Stack>
+
+                {user.sportTypes.length > 0 ? (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+                    {user.sportTypes.map(sport => (
+                      <Chip
+                        key={sport}
+                        label={getSportTypeLabel(sport as SportType)}
+                        color="primary"
+                        variant="filled"
+                        sx={{
+                          borderRadius: 2,
+                          px: 1,
+                          py: 2.5,
+                          fontWeight: 500,
+                          fontSize: '0.95rem',
+                        }}
+                      />
+                    ))}
+                  </Box>
+                ) : (
+                  <Typography color="text.secondary" fontStyle="italic">
+                    <Trans>No sports selected yet.</Trans>
+                  </Typography>
+                )}
+              </Paper>
+
+              {/* Personal Achievements */}
+              {user.personalAchievements &&
+                (user.personalAchievements.time5k ||
+                  user.personalAchievements.time10k ||
+                  user.personalAchievements.timeHalfMarathon ||
+                  user.personalAchievements.timeMarathon) && (
+                  <Paper variant="outlined" sx={{ p: 3, borderRadius: 3 }}>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                      sx={{ mb: 3 }}
+                    >
+                      <EmojiEventsIcon color="primary" />
+                      <Typography variant="h6" fontWeight={600}>
+                        <Trans>Personal Achievements</Trans>
+                      </Typography>
+                    </Stack>
+
+                    <Grid container spacing={2}>
+                      {user.personalAchievements.time5k && (
+                        <Grid size={{ xs: 6, sm: 3 }}>
+                          <Box
+                            sx={{
+                              p: 2,
+                              bgcolor: alpha(theme.palette.primary.main, 0.05),
+                              borderRadius: 2,
+                              textAlign: 'center',
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              display="block"
+                              sx={{ mb: 0.5 }}
+                            >
+                              5K
+                            </Typography>
+                            <Typography variant="h6" fontWeight={700}>
+                              {user.personalAchievements.time5k}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      )}
+                      {user.personalAchievements.time10k && (
+                        <Grid size={{ xs: 6, sm: 3 }}>
+                          <Box
+                            sx={{
+                              p: 2,
+                              bgcolor: alpha(theme.palette.primary.main, 0.05),
+                              borderRadius: 2,
+                              textAlign: 'center',
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              display="block"
+                              sx={{ mb: 0.5 }}
+                            >
+                              10K
+                            </Typography>
+                            <Typography variant="h6" fontWeight={700}>
+                              {user.personalAchievements.time10k}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      )}
+                      {user.personalAchievements.timeHalfMarathon && (
+                        <Grid size={{ xs: 6, sm: 3 }}>
+                          <Box
+                            sx={{
+                              p: 2,
+                              bgcolor: alpha(theme.palette.primary.main, 0.05),
+                              borderRadius: 2,
+                              textAlign: 'center',
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              display="block"
+                              sx={{ mb: 0.5 }}
+                            >
+                              <Trans>Half Marathon</Trans>
+                            </Typography>
+                            <Typography variant="h6" fontWeight={700}>
+                              {user.personalAchievements.timeHalfMarathon}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      )}
+                      {user.personalAchievements.timeMarathon && (
+                        <Grid size={{ xs: 6, sm: 3 }}>
+                          <Box
+                            sx={{
+                              p: 2,
+                              bgcolor: alpha(theme.palette.primary.main, 0.05),
+                              borderRadius: 2,
+                              textAlign: 'center',
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              display="block"
+                              sx={{ mb: 0.5 }}
+                            >
+                              <Trans>Marathon</Trans>
+                            </Typography>
+                            <Typography variant="h6" fontWeight={700}>
+                              {user.personalAchievements.timeMarathon}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Paper>
+                )}
+            </Stack>
           </Grid>
         </Grid>
       </Box>
