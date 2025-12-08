@@ -366,14 +366,14 @@ export const PublicProfile: FC = () => {
               alignItems="center"
               justifyContent={{ xs: 'center', md: 'flex-start' }}
             >
+              <Typography variant="h4" fontWeight={700} gutterBottom>
+                {user.name} {user.surname}
+              </Typography>
               {user.country && (
                 <Typography variant="h4" fontWeight={700}>
                   {getCountryFlag(user.country)}
                 </Typography>
               )}
-              <Typography variant="h4" fontWeight={700} gutterBottom>
-                {user.name} {user.surname}
-              </Typography>
             </Stack>
             {user.cityRegion && (
               <Stack
