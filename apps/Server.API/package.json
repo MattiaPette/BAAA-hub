@@ -19,7 +19,7 @@
     "@aws-sdk/client-s3": "3.940.0",
     "@baaa-hub/shared-types": "workspace:*",
     "@koa/cors": "^5.0.0",
-    "@koa/router": "^14.0.0",
+    "@koa/router": "^15.0.0",
     "dotenv": "^17.2.3",
     "koa": "^3.1.1",
     "koa-bodyparser": "^4.4.1",
