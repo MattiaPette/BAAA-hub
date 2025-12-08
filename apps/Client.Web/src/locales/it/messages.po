@@ -13,11 +13,31 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: data.followerName
+#. placeholder {1}: data.followerSurname
+#. placeholder {2}: data.followerNickname
+#: src/components/social/NotificationBell/NotificationBell.tsx:126
+msgid "{0} {1} (@{2}) is now following you"
+msgstr "{0} {1} (@{2}) ti sta seguendo"
+
+#: src/components/social/NotificationBell/NotificationBell.tsx:142
+msgid "{diffDays}d ago"
+msgstr "{diffDays}g fa"
+
+#: src/components/social/NotificationBell/NotificationBell.tsx:141
+msgid "{diffHours}h ago"
+msgstr "{diffHours}h fa"
+
+#: src/components/social/NotificationBell/NotificationBell.tsx:140
+msgid "{diffMins}m ago"
+msgstr "{diffMins}m fa"
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:56
 msgid "A server error has occurred. Please try again later"
 msgstr "Si è verificato un errore del server. Riprova più tardi"
 
 #: src/containers/Profile/Profile.tsx:412
+#: src/containers/PublicProfile/PublicProfile.tsx:410
 msgid "About"
 msgstr "Informazioni"
 
@@ -25,7 +45,7 @@ msgstr "Informazioni"
 msgid "Access denied. Incorrect username and/or password"
 msgstr "Accesso negato. Nome utente e/o password non corretti"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:79
+#: src/components/login/SignupDialog/SignupDialog.tsx:82
 msgid "Account created successfully! You can now log in."
 msgstr "Account creato con successo! Ora puoi accedere."
 
@@ -68,7 +88,7 @@ msgstr "Admin"
 
 #: src/containers/Administration/Administration.tsx:106
 #: src/containers/Administration/Administration.tsx:261
-#: src/containers/MainContainer/MainContainer.tsx:70
+#: src/containers/MainContainer/MainContainer.tsx:71
 msgid "Administration"
 msgstr "Amministrazione"
 
@@ -82,7 +102,7 @@ msgstr "Tutti"
 msgid "All Roles"
 msgstr "Tutti i ruoli"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:240
+#: src/components/login/SignupDialog/SignupDialog.tsx:245
 msgid "Already have an account?"
 msgstr "Hai già un account?"
 
@@ -189,8 +209,8 @@ msgstr "Clicca per caricare il banner"
 
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:49
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:92
-#: src/components/login/LoginDialog/LoginDialog.tsx:146
-#: src/components/login/SignupDialog/SignupDialog.tsx:137
+#: src/components/login/LoginDialog/LoginDialog.tsx:150
+#: src/components/login/SignupDialog/SignupDialog.tsx:141
 msgid "Close"
 msgstr "Chiudi"
 
@@ -226,7 +246,7 @@ msgstr "È richiesto il consenso"
 msgid "Contact & Social"
 msgstr "Contatti e Social"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:233
+#: src/components/login/SignupDialog/SignupDialog.tsx:238
 #: src/components/login/SignupForm/SignupForm.tsx:207
 msgid "Create Account"
 msgstr "Crea Account"
@@ -262,12 +282,13 @@ msgstr "Modalità scura"
 #: src/containers/MainContainer/MainContainer.tsx:44
 #: src/containers/PublicContainer/PublicContainer.tsx:142
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
-msgid "Dashboard"
-msgstr "Dashboard"
+#~ msgid "Dashboard"
+#~ msgstr "Dashboard"
 
 #: src/containers/Profile/Profile.tsx:454
 #: src/containers/Profile/ProfileEditForm.tsx:237
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
+#: src/containers/PublicProfile/PublicProfile.tsx:455
 msgid "Date of Birth"
 msgstr "Data di Nascita"
 
@@ -284,7 +305,11 @@ msgstr "Privacy Data di Nascita"
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:254
+#: src/containers/Feed/Feed.tsx:33
+msgid "Discover and connect with other users"
+msgstr "Scopri e connettiti con altri utenti"
+
+#: src/components/login/LoginDialog/LoginDialog.tsx:259
 msgid "Don't have an account?"
 msgstr "Non hai un account?"
 
@@ -311,24 +336,25 @@ msgstr "Modifica Profilo"
 msgid "Edit Roles for {0} {1}"
 msgstr "Modifica ruoli per {0} {1}"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:172
-#: src/components/login/LoginDialog/LoginDialog.tsx:173
+#: src/components/login/LoginDialog/LoginDialog.tsx:177
+#: src/components/login/LoginDialog/LoginDialog.tsx:178
 #: src/components/login/LoginForm/LoginForm.tsx:136
 #: src/components/login/LoginForm/LoginForm.tsx:137
-#: src/components/login/SignupDialog/SignupDialog.tsx:163
-#: src/components/login/SignupDialog/SignupDialog.tsx:164
+#: src/components/login/SignupDialog/SignupDialog.tsx:168
+#: src/components/login/SignupDialog/SignupDialog.tsx:169
 #: src/components/login/SignupForm/SignupForm.tsx:138
 #: src/components/login/SignupForm/SignupForm.tsx:139
 #: src/containers/Administration/Administration.tsx:354
 #: src/containers/Profile/Profile.tsx:431
+#: src/containers/PublicProfile/PublicProfile.tsx:430
 #: src/helpers/mfaLabels/mfaLabels.ts:11
 #: src/helpers/mfaLabels/mfaLabels.ts:24
 msgid "Email"
 msgstr "Email"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:188
+#: src/components/login/LoginDialog/LoginDialog.tsx:193
 #: src/components/login/LoginForm/LoginForm.tsx:152
-#: src/components/login/SignupDialog/SignupDialog.tsx:179
+#: src/components/login/SignupDialog/SignupDialog.tsx:184
 #: src/components/login/SignupForm/SignupForm.tsx:154
 msgid "Email is required"
 msgstr "L'email è obbligatoria"
@@ -370,6 +396,14 @@ msgstr "Inserisci il tuo cognome"
 msgid "Failed to create profile. Please try again."
 msgstr "Impossibile creare il profilo. Riprova."
 
+#: src/containers/PublicProfile/PublicProfile.tsx:165
+msgid "Failed to follow user"
+msgstr "Impossibile seguire l'utente"
+
+#: src/containers/PublicProfile/PublicProfile.tsx:135
+msgid "Failed to load user profile"
+msgstr "Impossibile caricare il profilo utente"
+
 #: src/containers/Administration/Administration.tsx:156
 msgid "Failed to load users. Please try again."
 msgstr "Impossibile caricare gli utenti. Riprova."
@@ -377,6 +411,10 @@ msgstr "Impossibile caricare gli utenti. Riprova."
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:148
 msgid "Failed to remove image. Please try again."
 msgstr "Impossibile rimuovere l'immagine. Riprova."
+
+#: src/containers/PublicProfile/PublicProfile.tsx:188
+msgid "Failed to unfollow user"
+msgstr "Impossibile smettere di seguire l'utente"
 
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:116
 msgid "Failed to update banner. Please try again."
@@ -403,6 +441,18 @@ msgstr "Impossibile aggiornare lo stato utente"
 msgid "Favorite Sports"
 msgstr "Sport Preferiti"
 
+#: src/containers/Feed/Feed.tsx:23
+#: src/containers/Feed/Feed.tsx:30
+#: src/containers/MainContainer/MainContainer.tsx:45
+#: src/containers/PublicContainer/PublicContainer.tsx:142
+#: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
+msgid "Feed"
+msgstr "Feed"
+
+#: src/containers/Feed/Feed.tsx:64
+msgid "Feed content coming soon..."
+msgstr "Contenuto del feed in arrivo..."
+
 #: src/components/commons/inputs/ImageUpload/ImageUpload.utils.ts:30
 msgid "File is too large. Maximum size is 5MB."
 msgstr "Il file è troppo grande. Dimensione massima 5MB."
@@ -410,6 +460,10 @@ msgstr "Il file è troppo grande. Dimensione massima 5MB."
 #: src/components/commons/inputs/ImageUpload/ImageUpload.utils.ts:22
 msgid "File type not supported. Please use JPG, PNG, WEBP, or HEIC."
 msgstr "Tipo di file non supportato. Usa JPG, PNG, WEBP o HEIC."
+
+#: src/containers/Feed/Feed.tsx:48
+msgid "Find Users"
+msgstr "Trova Utenti"
 
 #: src/containers/Profile/ProfileEditForm.tsx:198
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:456
@@ -426,13 +480,22 @@ msgstr "Il nome è obbligatorio"
 msgid "First name must be 50 characters or less"
 msgstr "Il nome deve essere di 50 caratteri o meno"
 
+#: src/containers/PublicProfile/PublicProfile.tsx:392
+msgid "Follow"
+msgstr "Segui"
+
 #: src/containers/Profile/ProfileEditForm.tsx:99
+#: src/containers/PublicProfile/PublicProfile.tsx:362
 msgid "Followers"
 msgstr "Follower"
 
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:60
 msgid "Followers Only"
 msgstr "Solo Follower"
+
+#: src/containers/PublicProfile/PublicProfile.tsx:370
+msgid "Following"
+msgstr "Seguendo"
 
 #: src/helpers/roleLabels/roleLabels.ts:22
 msgid "Full administrative access"
@@ -500,9 +563,9 @@ msgstr "Configurazione non valida"
 msgid "Invalid credentials or session expired"
 msgstr "Credenziali non valide o sessione scaduta"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:192
+#: src/components/login/LoginDialog/LoginDialog.tsx:197
 #: src/components/login/LoginForm/LoginForm.tsx:156
-#: src/components/login/SignupDialog/SignupDialog.tsx:183
+#: src/components/login/SignupDialog/SignupDialog.tsx:188
 #: src/components/login/SignupForm/SignupForm.tsx:158
 msgid "Invalid email address"
 msgstr "Indirizzo email non valido"
@@ -539,8 +602,13 @@ msgid "Invalid token"
 msgstr "Token non valido"
 
 #: src/containers/Profile/Profile.tsx:477
+#: src/containers/PublicProfile/PublicProfile.tsx:480
 msgid "Joined"
 msgstr "Iscritto"
+
+#: src/components/social/NotificationBell/NotificationBell.tsx:139
+msgid "Just now"
+msgstr "Proprio ora"
 
 #: src/containers/Settings/Settings.tsx:177
 msgid "Language"
@@ -573,22 +641,22 @@ msgstr "Il cognome deve essere di 50 caratteri o meno"
 msgid "Light Mode"
 msgstr "Modalità chiara"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:143
-#: src/components/login/LoginDialog/LoginDialog.tsx:247
+#: src/components/login/LoginDialog/LoginDialog.tsx:147
+#: src/components/login/LoginDialog/LoginDialog.tsx:252
 #: src/components/login/LoginForm/LoginForm.tsx:113
 #: src/components/login/LoginForm/LoginForm.tsx:199
-#: src/components/login/SignupDialog/SignupDialog.tsx:259
+#: src/components/login/SignupDialog/SignupDialog.tsx:264
 #: src/containers/PublicContainer/PublicContainer.tsx:291
 #: src/containers/PublicContainer/PublicContainer.tsx:315
 msgid "Login"
 msgstr "Accedi"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:93
+#: src/components/login/LoginDialog/LoginDialog.tsx:96
 msgid "Login successful! Welcome back."
 msgstr "Accesso effettuato con successo! Bentornato."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:250
-#: src/containers/MainContainer/MainContainer.tsx:95
+#: src/containers/MainContainer/MainContainer.tsx:96
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:999
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1005
 msgid "Logout"
@@ -637,6 +705,10 @@ msgstr "Nome"
 msgid "Network error. Check your internet connection"
 msgstr "Errore di rete. Verifica la connessione internet"
 
+#: src/components/social/NotificationBell/NotificationBell.tsx:128
+msgid "New notification"
+msgstr "Nuova notifica"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1092
 msgid "Next"
 msgstr "Avanti"
@@ -658,6 +730,10 @@ msgstr "Il nickname deve essere di 30 caratteri o meno"
 msgid "Nickname must be at least 3 characters"
 msgstr "Il nickname deve essere di almeno 3 caratteri"
 
+#: src/components/social/NotificationBell/NotificationBell.tsx:197
+msgid "No notifications yet"
+msgstr "Nessuna notifica ancora"
+
 #: src/containers/Profile/Profile.tsx:589
 msgid "No sports selected yet."
 msgstr "Nessuno sport selezionato."
@@ -666,6 +742,7 @@ msgstr "Nessuno sport selezionato."
 msgid "No two-factor authentication enabled"
 msgstr "Autenticazione a due fattori non abilitata"
 
+#: src/components/social/UserSearch/UserSearch.tsx:205
 #: src/containers/Administration/Administration.tsx:376
 msgid "No users found"
 msgstr "Nessun utente trovato"
@@ -683,6 +760,11 @@ msgstr "Non Abilitato"
 #: src/containers/Settings/Settings.tsx:327
 msgid "Not Verified"
 msgstr "Non verificato"
+
+#: src/components/social/NotificationBell/NotificationBell.tsx:153
+#: src/components/social/NotificationBell/NotificationBell.tsx:183
+msgid "Notifications"
+msgstr "Notifiche"
 
 #: src/components/commons/errors/RootErrorFallback/RootErrorFallback.tsx:97
 msgid "Oh no! Something went wrong..."
@@ -721,21 +803,21 @@ msgstr "Membro del comitato organizzativo"
 msgid "Other"
 msgstr "Altro"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:201
+#: src/components/login/LoginDialog/LoginDialog.tsx:206
 #: src/components/login/LoginForm/LoginForm.tsx:165
-#: src/components/login/SignupDialog/SignupDialog.tsx:192
+#: src/components/login/SignupDialog/SignupDialog.tsx:197
 #: src/components/login/SignupForm/SignupForm.tsx:167
 msgid "Password"
 msgstr "Password"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:214
+#: src/components/login/LoginDialog/LoginDialog.tsx:219
 #: src/components/login/LoginForm/LoginForm.tsx:178
-#: src/components/login/SignupDialog/SignupDialog.tsx:205
+#: src/components/login/SignupDialog/SignupDialog.tsx:210
 #: src/components/login/SignupForm/SignupForm.tsx:180
 msgid "Password is required"
 msgstr "Password necessaria"
 
-#: src/components/login/SignupDialog/SignupDialog.tsx:209
+#: src/components/login/SignupDialog/SignupDialog.tsx:214
 #: src/components/login/SignupForm/SignupForm.tsx:184
 msgid "Password must be at least 8 characters"
 msgstr "La password deve essere di almeno 8 caratteri"
@@ -759,6 +841,10 @@ msgstr "Per favore, controlla i dati inseriti e riprova."
 #: src/containers/Settings/Settings.tsx:204
 msgid "Please log in to access account security settings."
 msgstr "Effettua l'accesso per visualizzare le impostazioni di sicurezza dell'account."
+
+#: src/containers/PublicProfile/PublicProfile.tsx:147
+msgid "Please log in to follow users"
+msgstr "Effettua il login per seguire gli utenti"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:752
 msgid "Please select at least one sport"
@@ -788,7 +874,7 @@ msgid "Processing..."
 msgstr "Elaborazione..."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:218
-#: src/containers/MainContainer/MainContainer.tsx:53
+#: src/containers/MainContainer/MainContainer.tsx:54
 #: src/containers/Profile/Profile.tsx:127
 msgid "Profile"
 msgstr "Profilo"
@@ -861,7 +947,7 @@ msgstr "Recupero"
 msgid "Recovery Code"
 msgstr "Codice di Recupero"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:228
+#: src/components/login/LoginDialog/LoginDialog.tsx:233
 msgid "Remember me"
 msgstr "Ricordami"
 
@@ -922,6 +1008,10 @@ msgstr "Salvataggio..."
 msgid "Search by name, email, or nickname..."
 msgstr "Cerca per nome, email o nickname..."
 
+#: src/components/social/UserSearch/UserSearch.tsx:96
+msgid "Search for users..."
+msgstr "Cerca utenti..."
+
 #: src/containers/Settings/Settings.tsx:218
 msgid "Security"
 msgstr "Sicurezza"
@@ -945,7 +1035,7 @@ msgid "Select the roles to assign to this user."
 msgstr "Seleziona i ruoli da assegnare a questo utente."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:231
-#: src/containers/MainContainer/MainContainer.tsx:86
+#: src/containers/MainContainer/MainContainer.tsx:87
 #: src/containers/PublicContainer/PublicContainer.tsx:158
 #: src/containers/Settings/Settings.tsx:87
 #: src/containers/Settings/Settings.tsx:119
@@ -956,8 +1046,8 @@ msgstr "Impostazioni"
 msgid "Settings tabs"
 msgstr "Schede impostazioni"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:273
-#: src/components/login/SignupDialog/SignupDialog.tsx:134
+#: src/components/login/LoginDialog/LoginDialog.tsx:278
+#: src/components/login/SignupDialog/SignupDialog.tsx:138
 #: src/components/login/SignupForm/SignupForm.tsx:115
 #: src/containers/PublicContainer/PublicContainer.tsx:306
 #: src/containers/PublicContainer/PublicContainer.tsx:330
@@ -970,6 +1060,7 @@ msgid "SMS"
 msgstr "SMS"
 
 #: src/containers/Profile/Profile.tsx:496
+#: src/containers/PublicProfile/PublicProfile.tsx:501
 msgid "Social"
 msgstr "Social"
 
@@ -987,6 +1078,7 @@ msgid "Sports"
 msgstr "Sport"
 
 #: src/containers/Profile/Profile.tsx:565
+#: src/containers/PublicProfile/PublicProfile.tsx:571
 msgid "Sports & Activities"
 msgstr "Sport e Attività"
 
@@ -1007,6 +1099,14 @@ msgstr "Profilo Strava"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:800
 msgid "Strava Profile URL"
 msgstr "URL Profilo Strava"
+
+#: src/containers/PublicProfile/PublicProfile.tsx:162
+msgid "Successfully followed user"
+msgstr "Utente seguito con successo"
+
+#: src/containers/PublicProfile/PublicProfile.tsx:185
+msgid "Successfully unfollowed user"
+msgstr "Non segui più questo utente"
 
 #: src/helpers/roleLabels/roleLabels.ts:10
 msgid "Super Admin"
@@ -1098,9 +1198,9 @@ msgstr "Password monouso basata sul tempo tramite app di autenticazione (Google 
 msgid "Too many attempts. Please try again in a few minutes"
 msgstr "Troppi tentativi. Riprova tra qualche minuto"
 
-#: src/components/login/LoginDialog/LoginDialog.tsx:184
+#: src/components/login/LoginDialog/LoginDialog.tsx:189
 #: src/components/login/LoginForm/LoginForm.tsx:148
-#: src/components/login/SignupDialog/SignupDialog.tsx:175
+#: src/components/login/SignupDialog/SignupDialog.tsx:180
 #: src/components/login/SignupForm/SignupForm.tsx:150
 msgid "Too many characters"
 msgstr "Troppi caratteri"
@@ -1146,6 +1246,10 @@ msgstr "Non autorizzato. Verifica le tue credenziali"
 #: src/containers/Administration/Administration.tsx:472
 msgid "Unblock User"
 msgstr "Sblocca utente"
+
+#: src/containers/PublicProfile/PublicProfile.tsx:392
+msgid "Unfollow"
+msgstr "Non seguire più"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:22
 msgid "Unknown Sport"

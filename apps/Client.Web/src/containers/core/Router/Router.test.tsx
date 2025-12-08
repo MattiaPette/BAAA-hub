@@ -72,19 +72,19 @@ describe('Router', () => {
 
     const { container } = render(
       <BreadcrumProvider>
-        <MemoryRouter initialEntries={['/dashboard']}>
+        <MemoryRouter initialEntries={['/feed']}>
           <Router />
         </MemoryRouter>
       </BreadcrumProvider>,
     );
 
-    // Should show dashboard (public-first approach)
+    // Should show feed (public-first approach)
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 
-  it('should redirect to dashboard for unknown routes when not authenticated', async () => {
+  it('should redirect to feed for unknown routes when not authenticated', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: false,
       localStorageAvailable: true,
@@ -106,9 +106,9 @@ describe('Router', () => {
       </BreadcrumProvider>,
     );
 
-    // Should redirect to dashboard (public-first)
+    // Should redirect to feed (public-first)
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 
@@ -142,7 +142,7 @@ describe('Router', () => {
 
     const { container } = render(
       <BreadcrumProvider>
-        <MemoryRouter initialEntries={['/dashboard']}>
+        <MemoryRouter initialEntries={['/feed']}>
           <Router />
         </MemoryRouter>
       </BreadcrumProvider>,
@@ -150,11 +150,11 @@ describe('Router', () => {
 
     // Should render authenticated content
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 
-  it('should redirect to dashboard for unknown routes when authenticated', async () => {
+  it('should redirect to feed for unknown routes when authenticated', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
@@ -190,9 +190,9 @@ describe('Router', () => {
       </BreadcrumProvider>,
     );
 
-    // Should redirect to dashboard
+    // Should redirect to feed
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 
@@ -266,7 +266,7 @@ describe('Router', () => {
     });
 
     const { container } = render(
-      <MemoryRouter initialEntries={['/dashboard']}>
+      <MemoryRouter initialEntries={['/feed']}>
         <Router />
       </MemoryRouter>,
     );
@@ -293,7 +293,7 @@ describe('Router', () => {
 
     render(
       <BreadcrumProvider>
-        <MemoryRouter initialEntries={['/dashboard']}>
+        <MemoryRouter initialEntries={['/feed']}>
           <Router />
         </MemoryRouter>
       </BreadcrumProvider>,
@@ -417,7 +417,7 @@ describe('Router', () => {
     });
   });
 
-  it('should redirect to dashboard for profile route when not authenticated', async () => {
+  it('should redirect to feed for profile route when not authenticated', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: false,
       localStorageAvailable: true,
@@ -442,13 +442,13 @@ describe('Router', () => {
       </BreadcrumProvider>,
     );
 
-    // Should redirect to dashboard since user is not authenticated
+    // Should redirect to feed since user is not authenticated
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 
-  it('should redirect to dashboard for unknown routes when not authenticated', async () => {
+  it('should redirect to feed for unknown routes when not authenticated', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: false,
       localStorageAvailable: true,
@@ -473,13 +473,13 @@ describe('Router', () => {
       </BreadcrumProvider>,
     );
 
-    // Should redirect to dashboard
+    // Should redirect to feed
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 
-  it('should redirect authenticated user from unknown routes to dashboard', async () => {
+  it('should redirect authenticated user from unknown routes to feed', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
@@ -515,13 +515,13 @@ describe('Router', () => {
       </BreadcrumProvider>,
     );
 
-    // Should redirect to dashboard since user is authenticated
+    // Should redirect to feed since user is authenticated
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 
-  it('should redirect non-admin from administration to dashboard', async () => {
+  it('should redirect non-admin from administration to feed', async () => {
     vi.spyOn(AuthProviderModule, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       localStorageAvailable: true,
@@ -579,9 +579,9 @@ describe('Router', () => {
       </BreadcrumProvider>,
     );
 
-    // Should redirect to dashboard since user is not admin
+    // Should redirect to feed since user is not admin
     await waitFor(() => {
-      expect(container.textContent).toMatch(/dashboard/i);
+      expect(container.textContent).toMatch(/feed/i);
     });
   });
 });

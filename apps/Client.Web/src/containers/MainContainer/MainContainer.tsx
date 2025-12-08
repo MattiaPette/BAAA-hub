@@ -17,6 +17,7 @@ import {
   RoutePermission,
 } from '../../components/commons/navigation/Sidebar/Sidebar.model';
 import { BaseContainer } from '../BaseContainer/BaseContainer';
+import { NotificationBell } from '../../components/social/NotificationBell/NotificationBell';
 
 /**
  * MainContainer — wraps the main entry sections of the app (Hub, Factory, Licenses, CAT, etc.)
@@ -41,7 +42,7 @@ export const MainContainer: FC = () => {
         id: 'dashboard',
         path: 'dashboard',
         icon: DashboardIcon,
-        label: t`Dashboard`,
+        label: t`Feed`,
         linkTo: { to: '/dashboard' },
         order: 1,
         permission: 'user',
@@ -106,7 +107,7 @@ export const MainContainer: FC = () => {
     <BaseContainer
       title={title}
       routes={routes}
-      endAdornment={null}
+      endAdornment={<NotificationBell />}
       providers={[]}
       userPermission={userPermission}
     />

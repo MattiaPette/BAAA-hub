@@ -8,10 +8,11 @@ import { useUser } from '../../../providers/UserProvider/UserProvider';
 
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
-import { Dashboard } from '../../Dashboard/Dashboard';
+import { Feed } from '../../Feed/Feed';
 import { Profile } from '../../Profile/Profile';
 import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
 import { Administration } from '../../Administration/Administration';
+import { PublicProfile } from '../../PublicProfile/PublicProfile';
 
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
@@ -108,7 +109,11 @@ const PublicFirstRoutes: FC = () => {
             children: [
               {
                 path: '/dashboard/*',
-                element: <Dashboard />,
+                element: <Feed />,
+              },
+              {
+                path: '/user/:userId',
+                element: <PublicProfile />,
               },
               {
                 path: '/profile',
@@ -142,7 +147,11 @@ const PublicFirstRoutes: FC = () => {
             children: [
               {
                 path: '/dashboard/*',
-                element: <Dashboard />,
+                element: <Feed />,
+              },
+              {
+                path: '/user/:userId',
+                element: <PublicProfile />,
               },
               {
                 path: '/settings',

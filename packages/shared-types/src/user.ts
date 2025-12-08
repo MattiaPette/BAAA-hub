@@ -273,6 +273,18 @@ export interface UserProfileStatusResponse {
 }
 
 /**
+ * Public user profile response (with privacy filtering applied)
+ */
+export interface PublicUserProfileResponse {
+  user: Partial<User>;
+  followStats: {
+    followersCount: number;
+    followingCount: number;
+  };
+  isFollowing?: boolean;
+}
+
+/**
  * Admin API: Request body for updating user roles
  */
 export interface AdminUpdateUserRolesRequest {

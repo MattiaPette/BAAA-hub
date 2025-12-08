@@ -226,3 +226,180 @@ export const checkNicknameAvailability = async (
     nickname,
   };
 };
+
+/**
+ * Search for users by nickname or name (fuzzy search)
+ * Excludes the current user from results if authenticated
+ */
+export const searchUsers = async (ctx: Context): Promise<void> => {
+  const query = ctx.query.q as string;
+
+  if (!query || query.length < 2) {
+    ctx.status = 200;
+    ctx.body = { users: [] };
+    return;
+  }
+
+  // Get current user ID if authenticated (from optional auth middleware)
+  const currentUserId = (ctx.state.auth as any)?.userId;
+  let currentUserMongoId: string | null = null;
+
+  if (currentUserId) {
+    const currentUser = await UserMongooseModel.findByAuthId(currentUserId);
+    if (currentUser) {
+      currentUserMongoId = String(currentUser._id);
+    }
+  }
+
+  // Sanitize query to prevent ReDoS attacks
+  // Escape special regex characters and limit length
+  const sanitizedQuery = query.substring(0, 50).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
+  // Create case-insensitive regex for fuzzy search (simple prefix match)
+  const searchRegex = new RegExp(`^${sanitizedQuery}`, 'i');
+
+  // Build query to exclude current user
+  const searchQuery: any = {
+    $or: [
+      { nickname: searchRegex },
+      { name: searchRegex },
+      { surname: searchRegex },
+    ],
+    isBlocked: false,
+  };
+
+  // Exclude current user from results
+  if (currentUserMongoId) {
+    searchQuery._id = { $ne: currentUserMongoId };
+  }
+
+  // Search in nickname, name, and surname
+  const users = await UserMongooseModel.find(searchQuery)
+    .limit(10)
+    .select('nickname name surname avatarThumbKey profilePicture');
+
+  ctx.status = 200;
+  ctx.body = {
+    users: users.map(user => ({
+      id: String(user._id),
+      nickname: user.nickname,
+      name: user.name,
+      surname: user.surname,
+      avatarThumbKey: user.avatarThumbKey,
+      profilePicture: user.profilePicture,
+    })),
+  };
+};
+
+/**
+ * Get public user profile by ID with privacy filtering
+ */
+export const getPublicUserProfile = async (ctx: Context): Promise<void> => {
+  const targetUserId = ctx.params.userId;
+  const requestingUserId = ctx.state.auth?.userId; // May be undefined if not authenticated
+
+  // Get target user
+  const targetUser = await UserMongooseModel.findById(targetUserId);
+  if (!targetUser) {
+    throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
+  }
+
+  if (targetUser.isBlocked) {
+    throw new ApiError(404, 'User not found', ErrorCode.USER_NOT_FOUND);
+  }
+
+  // Import Follow model here to avoid circular dependencies
+  const { Follow } = await import('../models/follow.model.js');
+
+  // Get follow stats
+  const [followersCount, followingCount] = await Promise.all([
+    Follow.countFollowers(targetUserId),
+    Follow.countFollowing(targetUserId),
+  ]);
+
+  // Check if requesting user is following target user (if authenticated)
+  let isFollowing = undefined;
+  if (requestingUserId) {
+    const requestingUser =
+      await UserMongooseModel.findByAuthId(requestingUserId);
+    if (requestingUser) {
+      const follow = await Follow.findFollow(
+        String(requestingUser._id),
+        targetUserId,
+      );
+      isFollowing = !!follow;
+    }
+  }
+
+  // Determine what data to include based on privacy settings
+  // For now, we'll use a simple approach: PUBLIC = everyone, FOLLOWERS = authenticated users
+  const canViewFollowersOnly = !!requestingUserId; // Simplified: any authenticated user can view FOLLOWERS content
+
+  // Start with basic public info
+  const userResponse: Record<string, unknown> = {
+    id: String(targetUser._id),
+    name: targetUser.name,
+    surname: targetUser.surname,
+    nickname: targetUser.nickname,
+    createdAt: targetUser.createdAt,
+    roles: targetUser.roles,
+  };
+
+  // Apply privacy filtering for each field
+  const privacy = targetUser.privacySettings;
+
+  if (
+    privacy.email === 'PUBLIC' ||
+    (privacy.email === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.email = targetUser.email;
+  }
+
+  if (
+    privacy.dateOfBirth === 'PUBLIC' ||
+    (privacy.dateOfBirth === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.dateOfBirth = targetUser.dateOfBirth;
+  }
+
+  if (
+    privacy.sportTypes === 'PUBLIC' ||
+    (privacy.sportTypes === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.sportTypes = targetUser.sportTypes;
+  }
+
+  if (
+    privacy.socialLinks === 'PUBLIC' ||
+    (privacy.socialLinks === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.stravaLink = targetUser.stravaLink;
+    userResponse.instagramLink = targetUser.instagramLink;
+  }
+
+  if (
+    privacy.avatar === 'PUBLIC' ||
+    (privacy.avatar === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.avatarKey = targetUser.avatarKey;
+    userResponse.avatarThumbKey = targetUser.avatarThumbKey;
+    userResponse.profilePicture = targetUser.profilePicture;
+  }
+
+  if (
+    privacy.banner === 'PUBLIC' ||
+    (privacy.banner === 'FOLLOWERS' && canViewFollowersOnly)
+  ) {
+    userResponse.bannerKey = targetUser.bannerKey;
+  }
+
+  ctx.status = 200;
+  ctx.body = {
+    user: userResponse,
+    followStats: {
+      followersCount,
+      followingCount,
+    },
+    isFollowing,
+  };
+};

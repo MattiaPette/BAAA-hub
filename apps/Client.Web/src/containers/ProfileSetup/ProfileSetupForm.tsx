@@ -775,7 +775,7 @@ export const ProfileSetupForm: FC<ProfileSetupFormProps> = ({
                         </Box>
                       )}
                     >
-                      {Object.values(SportType).map(sport => (
+                      {(Object.values(SportType) as SportType[]).map(sport => (
                         <MenuItem key={sport} value={sport}>
                           <Checkbox checked={field.value.indexOf(sport) > -1} />
                           <Typography>{getSportTypeLabel(sport)}</Typography>
