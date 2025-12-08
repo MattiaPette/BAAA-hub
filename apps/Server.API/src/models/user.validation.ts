@@ -32,6 +32,73 @@ const instagramUrlRegex =
   /^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?$/;
 
 /**
+ * YouTube URL validation regex (channel or user)
+ */
+const youtubeUrlRegex =
+  /^https:\/\/(www\.)?youtube\.com\/(channel\/UC[\w-]{22}|c\/[\w-]+|user\/[\w-]+|@[\w-]+)\/?$/;
+
+/**
+ * Garmin Connect profile URL validation regex
+ */
+const garminUrlRegex =
+  /^https:\/\/connect\.garmin\.com\/modern\/profile\/[\w-]+$/;
+
+/**
+ * TikTok profile URL validation regex
+ */
+const tiktokUrlRegex = /^https:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/?$/;
+
+/**
+ * Generic URL validation regex
+ */
+const urlRegex = /^https?:\/\/.+\..+$/;
+
+/**
+ * ISO 3166-1 alpha-2 country code regex
+ */
+const countryCodeRegex = /^[A-Z]{2}$/;
+
+/**
+ * Time format validation for running achievements
+ * Supports MM:SS or HH:MM:SS format
+ */
+const timeFormatRegex = /^(\d{1,2}:\d{2}:\d{2}|\d{1,2}:\d{2})$/;
+
+/**
+ * Personal stats schema
+ */
+const personalStatsSchema = z
+  .object({
+    height: z.number().min(0, 'Height must be positive').optional(),
+    weight: z.number().min(0, 'Weight must be positive').optional(),
+  })
+  .optional();
+
+/**
+ * Personal achievements schema
+ */
+const personalAchievementsSchema = z
+  .object({
+    time5k: z
+      .string()
+      .regex(timeFormatRegex, 'Invalid time format (use MM:SS)')
+      .optional(),
+    time10k: z
+      .string()
+      .regex(timeFormatRegex, 'Invalid time format (use MM:SS)')
+      .optional(),
+    timeHalfMarathon: z
+      .string()
+      .regex(timeFormatRegex, 'Invalid time format (use HH:MM:SS or MM:SS)')
+      .optional(),
+    timeMarathon: z
+      .string()
+      .regex(timeFormatRegex, 'Invalid time format (use HH:MM:SS or MM:SS)')
+      .optional(),
+  })
+  .optional();
+
+/**
  * Privacy settings schema
  * Note: avatar and banner are optional for backward compatibility with existing users.
  * Mongoose schema provides defaults for these fields.
@@ -43,6 +110,22 @@ const privacySettingsSchema = z.object({
   socialLinks: z.nativeEnum(PrivacyLevel),
   avatar: z.nativeEnum(PrivacyLevel).optional().default(PrivacyLevel.PUBLIC),
   banner: z.nativeEnum(PrivacyLevel).optional().default(PrivacyLevel.PUBLIC),
+  description: z
+    .nativeEnum(PrivacyLevel)
+    .optional()
+    .default(PrivacyLevel.PUBLIC),
+  cityRegion: z
+    .nativeEnum(PrivacyLevel)
+    .optional()
+    .default(PrivacyLevel.PUBLIC),
+  personalStats: z
+    .nativeEnum(PrivacyLevel)
+    .optional()
+    .default(PrivacyLevel.PUBLIC),
+  personalAchievements: z
+    .nativeEnum(PrivacyLevel)
+    .optional()
+    .default(PrivacyLevel.PUBLIC),
 });
 
 /**
@@ -93,6 +176,43 @@ export const createUserSchema = z.object({
     .regex(instagramUrlRegex, 'Invalid Instagram profile URL')
     .optional()
     .or(z.literal('')),
+  youtubeLink: z
+    .string()
+    .regex(youtubeUrlRegex, 'Invalid YouTube profile URL')
+    .optional()
+    .or(z.literal('')),
+  garminLink: z
+    .string()
+    .regex(garminUrlRegex, 'Invalid Garmin Connect profile URL')
+    .optional()
+    .or(z.literal('')),
+  tiktokLink: z
+    .string()
+    .regex(tiktokUrlRegex, 'Invalid TikTok profile URL')
+    .optional()
+    .or(z.literal('')),
+  personalWebsiteLink: z
+    .string()
+    .regex(urlRegex, 'Invalid website URL')
+    .optional()
+    .or(z.literal('')),
+  country: z
+    .string()
+    .regex(countryCodeRegex, 'Invalid country code (use 2-letter ISO code)')
+    .optional()
+    .or(z.literal('')),
+  description: z
+    .string()
+    .max(500, 'Description must be 500 characters or less')
+    .optional()
+    .or(z.literal('')),
+  cityRegion: z
+    .string()
+    .max(100, 'City/Region must be 100 characters or less')
+    .optional()
+    .or(z.literal('')),
+  personalStats: personalStatsSchema,
+  personalAchievements: personalAchievementsSchema,
   privacySettings: privacySettingsSchema,
 });
 
@@ -143,6 +263,50 @@ export const updateUserSchema = z.object({
     .optional()
     .or(z.literal(''))
     .nullable(),
+  youtubeLink: z
+    .string()
+    .regex(youtubeUrlRegex, 'Invalid YouTube profile URL')
+    .optional()
+    .or(z.literal(''))
+    .nullable(),
+  garminLink: z
+    .string()
+    .regex(garminUrlRegex, 'Invalid Garmin Connect profile URL')
+    .optional()
+    .or(z.literal(''))
+    .nullable(),
+  tiktokLink: z
+    .string()
+    .regex(tiktokUrlRegex, 'Invalid TikTok profile URL')
+    .optional()
+    .or(z.literal(''))
+    .nullable(),
+  personalWebsiteLink: z
+    .string()
+    .regex(urlRegex, 'Invalid website URL')
+    .optional()
+    .or(z.literal(''))
+    .nullable(),
+  country: z
+    .string()
+    .regex(countryCodeRegex, 'Invalid country code (use 2-letter ISO code)')
+    .optional()
+    .or(z.literal(''))
+    .nullable(),
+  description: z
+    .string()
+    .max(500, 'Description must be 500 characters or less')
+    .optional()
+    .or(z.literal(''))
+    .nullable(),
+  cityRegion: z
+    .string()
+    .max(100, 'City/Region must be 100 characters or less')
+    .optional()
+    .or(z.literal(''))
+    .nullable(),
+  personalStats: personalStatsSchema.nullable(),
+  personalAchievements: personalAchievementsSchema.nullable(),
   privacySettings: privacySettingsSchema.optional(),
 });
 

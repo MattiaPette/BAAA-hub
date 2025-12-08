@@ -99,6 +99,66 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       trim: true,
     },
+    youtubeLink: {
+      type: String,
+      trim: true,
+    },
+    garminLink: {
+      type: String,
+      trim: true,
+    },
+    tiktokLink: {
+      type: String,
+      trim: true,
+    },
+    personalWebsiteLink: {
+      type: String,
+      trim: true,
+    },
+    country: {
+      type: String,
+      trim: true,
+      uppercase: true,
+      maxlength: [2, 'Country code must be 2 characters'],
+    },
+    description: {
+      type: String,
+      trim: true,
+      maxlength: [500, 'Description must be 500 characters or less'],
+    },
+    cityRegion: {
+      type: String,
+      trim: true,
+      maxlength: [100, 'City/Region must be 100 characters or less'],
+    },
+    personalStats: {
+      height: {
+        type: Number,
+        min: [0, 'Height must be positive'],
+      },
+      weight: {
+        type: Number,
+        min: [0, 'Weight must be positive'],
+      },
+    },
+    personalAchievements: {
+      time5k: {
+        type: String,
+        trim: true,
+      },
+      time10k: {
+        type: String,
+        trim: true,
+      },
+      timeHalfMarathon: {
+        type: String,
+        trim: true,
+      },
+      timeMarathon: {
+        type: String,
+        trim: true,
+      },
+    },
     privacySettings: {
       email: {
         type: String,
@@ -126,6 +186,26 @@ const userSchema = new Schema<UserDocument>(
         default: PrivacyLevel.PUBLIC,
       },
       banner: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      description: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      cityRegion: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      personalStats: {
+        type: String,
+        enum: Object.values(PrivacyLevel),
+        default: PrivacyLevel.PUBLIC,
+      },
+      personalAchievements: {
         type: String,
         enum: Object.values(PrivacyLevel),
         default: PrivacyLevel.PUBLIC,
