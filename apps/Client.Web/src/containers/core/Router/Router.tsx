@@ -9,6 +9,7 @@ import { useUser } from '../../../providers/UserProvider/UserProvider';
 import { Logout } from '../../Logout/Logout';
 import { Settings } from '../../Settings/Settings';
 import { Feed } from '../../Feed/Feed';
+import { Profile } from '../../Profile/Profile';
 import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
 import { Administration } from '../../Administration/Administration';
 import { PublicProfile } from '../../PublicProfile/PublicProfile';
@@ -113,6 +114,14 @@ const PublicFirstRoutes: FC = () => {
               {
                 path: '/user/:userId',
                 element: <PublicProfile />,
+              },
+              {
+                path: '/profile',
+                element: (
+                  <AuthenticatedRoute>
+                    <Profile />
+                  </AuthenticatedRoute>
+                ),
               },
               {
                 path: '/settings',

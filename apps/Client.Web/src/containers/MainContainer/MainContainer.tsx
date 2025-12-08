@@ -52,7 +52,7 @@ export const MainContainer: FC = () => {
         path: 'profile',
         icon: PersonIcon,
         label: t`Profile`,
-        linkTo: { to: user ? `/user/${user.id}` : '/dashboard' },
+        linkTo: { to: '/profile' },
         order: 2,
         permission: 'user',
       },
@@ -99,8 +99,8 @@ export const MainContainer: FC = () => {
         permission: 'user',
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- i18n.locale and user.id trigger re-computation
-    [i18n.locale, user?.id],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- i18n.locale triggers re-translation when language changes
+    [i18n.locale],
   );
 
   return (
