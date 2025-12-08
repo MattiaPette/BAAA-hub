@@ -20,30 +20,26 @@ const userRouter = new Router({ prefix: '/api/users' });
 userRouter.get('/nickname/:nickname/available', checkNicknameAvailability);
 userRouter.get('/search', searchUsers);
 
-// Public user profile - supports optional authentication
-userRouter.get('/:userId', optionalAuthMiddleware, getPublicUserProfile);
-
 // Protected routes - require authentication
-userRouter.use(authMiddleware);
-
-// Check profile status (for onboarding flow)
-userRouter.get('/profile/status', async ctx => {
+// These must come BEFORE the /:userId route to avoid conflicts
+userRouter.get('/profile/status', authMiddleware, async ctx => {
   await checkProfileStatus(ctx as AuthContext);
 });
 
-// Create user profile
-userRouter.post('/', async ctx => {
-  await createUser(ctx as AuthContext);
-});
-
-// Get current user profile
-userRouter.get('/me', async ctx => {
+userRouter.get('/me', authMiddleware, async ctx => {
   await getCurrentUser(ctx as AuthContext);
 });
 
-// Update current user profile
-userRouter.patch('/me', async ctx => {
+userRouter.patch('/me', authMiddleware, async ctx => {
   await updateCurrentUser(ctx as AuthContext);
 });
+
+userRouter.post('/', authMiddleware, async ctx => {
+  await createUser(ctx as AuthContext);
+});
+
+// Public user profile - supports optional authentication
+// This MUST come after /me and /profile/status to avoid route conflicts
+userRouter.get('/:userId', optionalAuthMiddleware, getPublicUserProfile);
 
 export { userRouter };
