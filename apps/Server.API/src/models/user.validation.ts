@@ -79,22 +79,34 @@ const personalStatsSchema = z
  */
 const personalAchievementsSchema = z
   .object({
-    time5k: z
-      .string()
-      .regex(timeFormatRegex, 'Invalid time format (use MM:SS)')
-      .optional(),
-    time10k: z
-      .string()
-      .regex(timeFormatRegex, 'Invalid time format (use MM:SS)')
-      .optional(),
-    timeHalfMarathon: z
-      .string()
-      .regex(timeFormatRegex, 'Invalid time format (use HH:MM:SS or MM:SS)')
-      .optional(),
-    timeMarathon: z
-      .string()
-      .regex(timeFormatRegex, 'Invalid time format (use HH:MM:SS or MM:SS)')
-      .optional(),
+    time5k: z.preprocess(
+      val => (val === '' ? undefined : val),
+      z
+        .string()
+        .regex(timeFormatRegex, 'Invalid time format (use MM:SS)')
+        .optional(),
+    ),
+    time10k: z.preprocess(
+      val => (val === '' ? undefined : val),
+      z
+        .string()
+        .regex(timeFormatRegex, 'Invalid time format (use MM:SS)')
+        .optional(),
+    ),
+    timeHalfMarathon: z.preprocess(
+      val => (val === '' ? undefined : val),
+      z
+        .string()
+        .regex(timeFormatRegex, 'Invalid time format (use HH:MM:SS or MM:SS)')
+        .optional(),
+    ),
+    timeMarathon: z.preprocess(
+      val => (val === '' ? undefined : val),
+      z
+        .string()
+        .regex(timeFormatRegex, 'Invalid time format (use HH:MM:SS or MM:SS)')
+        .optional(),
+    ),
   })
   .optional();
 
