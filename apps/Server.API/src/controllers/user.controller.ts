@@ -251,8 +251,12 @@ export const searchUsers = async (ctx: Context): Promise<void> => {
     }
   }
 
-  // Create case-insensitive regex for fuzzy search
-  const searchRegex = new RegExp(query.split('').join('.*'), 'i');
+  // Sanitize query to prevent ReDoS attacks
+  // Escape special regex characters and limit length
+  const sanitizedQuery = query.substring(0, 50).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
+  // Create case-insensitive regex for fuzzy search (simple prefix match)
+  const searchRegex = new RegExp(`^${sanitizedQuery}`, 'i');
 
   // Build query to exclude current user
   const searchQuery: any = {
