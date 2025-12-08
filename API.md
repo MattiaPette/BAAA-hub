@@ -99,13 +99,240 @@ Authorization: Bearer <jwt-token>
 
 ### User Endpoints
 
-| Method | Endpoint                                  | Auth     | Description                   |
-| ------ | ----------------------------------------- | -------- | ----------------------------- |
-| GET    | `/api/users/nickname/:nickname/available` | Public   | Check nickname availability   |
-| GET    | `/api/users/profile/status`               | Required | Check if user has a profile   |
-| POST   | `/api/users`                              | Required | Create a new user profile     |
-| GET    | `/api/users/me`                           | Required | Get current user's profile    |
-| PATCH  | `/api/users/me`                           | Required | Update current user's profile |
+| Method | Endpoint                                  | Auth     | Description                     |
+| ------ | ----------------------------------------- | -------- | ------------------------------- |
+| GET    | `/api/users/nickname/:nickname/available` | Public   | Check nickname availability     |
+| GET    | `/api/users/profile/status`               | Required | Check if user has a profile     |
+| POST   | `/api/users`                              | Required | Create a new user profile       |
+| GET    | `/api/users/me`                           | Required | Get current user's profile      |
+| PATCH  | `/api/users/me`                           | Required | Update current user's profile   |
+| GET    | `/api/users/search`                       | Optional | Search users by nickname/name   |
+| GET    | `/api/users/:userId`                      | Optional | Get public user profile by ID   |
+
+**User Search:**
+
+Search for users by nickname or full name with fuzzy matching. Authenticated users are automatically excluded from their own search results.
+
+```bash
+# Search for users (public - no auth required)
+curl "http://localhost:3000/api/users/search?q=john"
+
+# Search with authentication (excludes self from results)
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/users/search?q=john"
+```
+
+**Response:**
+
+```json
+{
+  "users": [
+    {
+      "id": "507f1f77bcf86cd799439011",
+      "nickname": "john_doe",
+      "name": "John",
+      "surname": "Doe",
+      "avatarKey": "avatars/user123/avatar.png"
+    }
+  ]
+}
+```
+
+**Public User Profile:**
+
+Get a user's public profile with privacy-filtered data. The response varies based on privacy settings and viewer relationship:
+- **Unauthenticated:** Only PUBLIC fields visible
+- **Authenticated (non-follower):** PUBLIC + some FOLLOWERS fields visible
+- **Authenticated (follower):** PUBLIC + FOLLOWERS fields visible
+- **Owner:** All fields visible (use `/api/users/me` instead)
+
+```bash
+# Get public profile (unauthenticated)
+curl "http://localhost:3000/api/users/507f1f77bcf86cd799439011"
+
+# Get public profile (authenticated - includes follow status)
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/users/507f1f77bcf86cd799439011"
+```
+
+**Response:**
+
+```json
+{
+  "user": {
+    "id": "507f1f77bcf86cd799439011",
+    "name": "John",
+    "surname": "Doe",
+    "nickname": "john_doe",
+    "sportTypes": ["RUNNING", "CYCLING"],
+    "stravaLink": "https://strava.com/athletes/123",
+    "instagramLink": "https://instagram.com/john_doe",
+    "roles": ["USER"]
+  },
+  "followStats": {
+    "followersCount": 42,
+    "followingCount": 18
+  },
+  "isFollowing": false
+}
+```
+
+### Follow/Social Endpoints
+
+Social interaction features including follow/unfollow, follower stats, and follow status checking.
+
+| Method | Endpoint                       | Auth     | Description                                |
+| ------ | ------------------------------ | -------- | ------------------------------------------ |
+| POST   | `/api/follow/:userId`          | Required | Follow a user                              |
+| DELETE | `/api/follow/:userId`          | Required | Unfollow a user                            |
+| GET    | `/api/follow/stats/:userId`    | Public   | Get follower/following counts for a user   |
+| GET    | `/api/follow/status/:userId`   | Required | Check if current user follows target user  |
+
+**Follow a User:**
+
+Creates a follow relationship and sends a notification to the followed user. Cannot follow yourself.
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/follow/507f1f77bcf86cd799439011"
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "follow": {
+    "id": "...",
+    "followerId": "...",
+    "followingId": "507f1f77bcf86cd799439011",
+    "createdAt": "2025-12-08T00:00:00.000Z"
+  }
+}
+```
+
+**Unfollow a User:**
+
+Removes the follow relationship.
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/follow/507f1f77bcf86cd799439011"
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true
+}
+```
+
+**Get Follow Statistics:**
+
+Returns follower and following counts for any user. Public endpoint.
+
+```bash
+curl "http://localhost:3000/api/follow/stats/507f1f77bcf86cd799439011"
+```
+
+**Response:**
+
+```json
+{
+  "stats": {
+    "followersCount": 42,
+    "followingCount": 18
+  }
+}
+```
+
+**Check Follow Status:**
+
+Check if the authenticated user is following a specific user.
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/follow/status/507f1f77bcf86cd799439011"
+```
+
+**Response:**
+
+```json
+{
+  "isFollowing": true
+}
+```
+
+### Notification Endpoints
+
+Real-time notification system for social interactions.
+
+| Method | Endpoint                            | Auth     | Description                    |
+| ------ | ----------------------------------- | -------- | ------------------------------ |
+| GET    | `/api/notifications`                | Required | Get all notifications for user |
+| PATCH  | `/api/notifications/:id/read`       | Required | Mark notification as read      |
+
+**Get Notifications:**
+
+Returns all notifications for the authenticated user, including unread count.
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/notifications"
+```
+
+**Response:**
+
+```json
+{
+  "notifications": [
+    {
+      "id": "...",
+      "userId": "...",
+      "type": "NEW_FOLLOWER",
+      "isRead": false,
+      "createdAt": "2025-12-08T00:00:00.000Z",
+      "data": {
+        "followerId": "507f1f77bcf86cd799439011",
+        "followerNickname": "john_doe",
+        "followerName": "John",
+        "followerSurname": "Doe"
+      }
+    }
+  ],
+  "unreadCount": 1
+}
+```
+
+**Notification Types:**
+- `NEW_FOLLOWER` - Someone followed you
+
+**Mark Notification as Read:**
+
+Marks a specific notification as read.
+
+```bash
+curl -X PATCH \
+  -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/notifications/507f1f77bcf86cd799439011/read"
+```
+
+**Response:**
+
+```json
+{
+  "notification": {
+    "id": "507f1f77bcf86cd799439011",
+    "userId": "...",
+    "type": "NEW_FOLLOWER",
+    "isRead": true,
+    "createdAt": "2025-12-08T00:00:00.000Z",
+    "data": { ... }
+  }
+}
+```
 
 ### Image Endpoints
 
