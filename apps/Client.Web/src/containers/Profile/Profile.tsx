@@ -985,10 +985,15 @@ export const Profile: FC = () => {
       <Dialog
         open={isEditOpen}
         onClose={handleEditClose}
-        maxWidth="sm"
+        maxWidth="md"
         fullWidth
+        fullScreen={isMobile}
         PaperProps={{
-          sx: { borderRadius: 3 },
+          sx: {
+            borderRadius: isMobile ? 0 : 3,
+            height: isMobile ? '100%' : '90vh',
+            maxHeight: isMobile ? '100%' : '90vh',
+          },
         }}
       >
         <DialogTitle sx={{ pb: 1 }}>
@@ -996,8 +1001,16 @@ export const Profile: FC = () => {
             <Trans>Edit Profile</Trans>
           </Typography>
         </DialogTitle>
-        <DialogContent>
-          <Box sx={{ mt: 1 }}>
+        <DialogContent sx={{ p: 0, display: 'flex', flexDirection: 'column' }}>
+          <Box
+            sx={{
+              px: 3,
+              flexGrow: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 0,
+            }}
+          >
             <ProfileEditForm
               user={user}
               onUpdate={handleUpdate}

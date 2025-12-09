@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo, useState, SyntheticEvent } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -26,6 +26,8 @@ import {
   ListItemText,
   Typography,
   Autocomplete,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -33,6 +35,11 @@ import LanguageIcon from '@mui/icons-material/Language';
 import PublicIcon from '@mui/icons-material/Public';
 import GroupIcon from '@mui/icons-material/Group';
 import LockIcon from '@mui/icons-material/Lock';
+import PersonIcon from '@mui/icons-material/Person';
+import SportsIcon from '@mui/icons-material/Sports';
+import ShareIcon from '@mui/icons-material/Share';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import SecurityIcon from '@mui/icons-material/Security';
 import { SportType, PrivacyLevel } from '@baaa-hub/shared-types';
 import { getSportTypeLabels } from '../../helpers/sportTypes';
 import { countries, getCountryFlag } from '../../helpers/countries';
@@ -54,6 +61,27 @@ const TikTokIcon = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 24 24">
     <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
   </SvgIcon>
+);
+
+/**
+ * TabPanel component for rendering tab content
+ */
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const TabPanel: FC<TabPanelProps> = ({ children, value, index, ...other }) => (
+  <div
+    role="tabpanel"
+    hidden={value !== index}
+    id={`profile-edit-tabpanel-${index}`}
+    aria-labelledby={`profile-edit-tab-${index}`}
+    {...other}
+  >
+    {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
+  </div>
 );
 
 /**
@@ -162,6 +190,8 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
   onCancel,
   isSubmitting,
 }) => {
+  const [tabValue, setTabValue] = useState(0);
+
   const {
     register,
     handleSubmit,
@@ -213,6 +243,10 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
   // Memoize translated sport type labels to avoid re-computation on every render
   const sportTypeLabels = useMemo(getSportTypeLabels, []);
 
+  const handleTabChange = (_event: SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
   const handleFormSubmit: SubmitHandler<ProfileEditFormInput> = data => {
     onUpdate(data);
   };
@@ -225,680 +259,800 @@ export const ProfileEditForm: FC<ProfileEditProps> = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 2,
-        mt: 2,
+        height: '100%',
       }}
     >
-      {/* Name Fields */}
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <FormControl fullWidth>
-          <TextField
-            id="name"
-            label={t`First Name`}
-            fullWidth
-            variant="outlined"
-            error={!!errors.name}
-            helperText={errors.name?.message}
-            {...register('name', {
-              required: t`First name is required`,
-              maxLength: {
-                value: 50,
-                message: t`First name must be 50 characters or less`,
-              },
-            })}
+      {/* Tabs Navigation */}
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          aria-label={t`Profile edit tabs`}
+          variant="scrollable"
+          scrollButtons="auto"
+        >
+          <Tab
+            icon={<PersonIcon />}
+            iconPosition="start"
+            label={t`Basic Info`}
+            id="profile-edit-tab-0"
+            aria-controls="profile-edit-tabpanel-0"
           />
-        </FormControl>
-        <FormControl fullWidth>
-          <TextField
-            id="surname"
-            label={t`Last Name`}
-            fullWidth
-            variant="outlined"
-            error={!!errors.surname}
-            helperText={errors.surname?.message}
-            {...register('surname', {
-              required: t`Last name is required`,
-              maxLength: {
-                value: 50,
-                message: t`Last name must be 50 characters or less`,
-              },
-            })}
+          <Tab
+            icon={<SportsIcon />}
+            iconPosition="start"
+            label={t`Sports`}
+            id="profile-edit-tab-1"
+            aria-controls="profile-edit-tabpanel-1"
           />
-        </FormControl>
-      </Stack>
-
-      {/* Date of Birth */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <FormControl fullWidth>
-          <TextField
-            id="dateOfBirth"
-            type="date"
-            label={t`Date of Birth`}
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            inputProps={{ max: getMaxDateOfBirth() }}
-            error={!!errors.dateOfBirth}
-            helperText={errors.dateOfBirth?.message}
-            {...register('dateOfBirth', {
-              required: t`Date of birth is required`,
-              validate: value => {
-                const dob = new Date(value);
-                const maxDate = new Date(getMaxDateOfBirth());
-                if (dob > maxDate) {
-                  return t`You must be at least 13 years old`;
-                }
-                return true;
-              },
-            })}
+          <Tab
+            icon={<ShareIcon />}
+            iconPosition="start"
+            label={t`Social Links`}
+            id="profile-edit-tab-2"
+            aria-controls="profile-edit-tabpanel-2"
           />
-        </FormControl>
-        <Controller
-          name="privacySettings.dateOfBirth"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector value={field.value} onChange={field.onChange} />
-          )}
-        />
+          <Tab
+            icon={<EmojiEventsIcon />}
+            iconPosition="start"
+            label={t`Stats & Achievements`}
+            id="profile-edit-tab-3"
+            aria-controls="profile-edit-tabpanel-3"
+          />
+          <Tab
+            icon={<SecurityIcon />}
+            iconPosition="start"
+            label={t`Privacy`}
+            id="profile-edit-tab-4"
+            aria-controls="profile-edit-tabpanel-4"
+          />
+        </Tabs>
       </Box>
 
-      {/* Sport Types */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <FormControl fullWidth error={!!errors.sportTypes}>
-          <InputLabel id="sport-types-label">
-            <Trans>Sport Types</Trans>
-          </InputLabel>
-          <Controller
-            name="sportTypes"
-            control={control}
-            rules={{
-              validate: value =>
-                (value && value.length > 0) ||
-                t`Select at least one sport type`,
-            }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                labelId="sport-types-label"
-                id="sportTypes"
-                multiple
-                input={<OutlinedInput label={t`Sport Types`} />}
-                renderValue={selected => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {(selected as SportType[]).map(value => (
-                      <Chip
-                        key={value}
-                        label={sportTypeLabels[value]}
-                        size="small"
-                      />
-                    ))}
-                  </Box>
-                )}
-              >
-                {Object.values(SportType).map(sport => (
-                  <MenuItem key={sport} value={sport}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox checked={field.value?.includes(sport)} />
-                      }
-                      label={sportTypeLabels[sport]}
-                      sx={{ m: 0 }}
-                    />
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-          <FormHelperText>{errors.sportTypes?.message}</FormHelperText>
-        </FormControl>
-        <Controller
-          name="privacySettings.sportTypes"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector value={field.value} onChange={field.onChange} />
-          )}
-        />
-      </Box>
-
-      {/* Social Links */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <Stack spacing={2} sx={{ width: '100%' }}>
-          <FormControl fullWidth>
-            <TextField
-              id="stravaLink"
-              label={t`Strava Profile`}
-              placeholder="https://www.strava.com/athletes/12345"
-              fullWidth
-              variant="outlined"
-              error={!!errors.stravaLink}
-              helperText={errors.stravaLink?.message}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <StravaIcon sx={{ color: '#FC4C02' }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('stravaLink', {
-                pattern: {
-                  value: /^(https:\/\/(www\.)?strava\.com\/athletes\/\d+)?$/,
-                  message: t`Invalid Strava profile URL`,
-                },
-              })}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <TextField
-              id="instagramLink"
-              label={t`Instagram Profile`}
-              placeholder="https://www.instagram.com/username"
-              fullWidth
-              variant="outlined"
-              error={!!errors.instagramLink}
-              helperText={errors.instagramLink?.message}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <InstagramIcon sx={{ color: '#E1306C' }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('instagramLink', {
-                pattern: {
-                  value:
-                    /^(https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?)?$/,
-                  message: t`Invalid Instagram profile URL`,
-                },
-              })}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <TextField
-              id="youtubeLink"
-              label={t`YouTube Channel`}
-              placeholder="https://www.youtube.com/@username"
-              fullWidth
-              variant="outlined"
-              error={!!errors.youtubeLink}
-              helperText={errors.youtubeLink?.message}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <YouTubeIcon sx={{ color: '#FF0000' }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('youtubeLink', {
-                pattern: {
-                  value:
-                    /^(https:\/\/(www\.)?youtube\.com\/(channel\/UC[\w-]{22}|c\/[\w-]+|user\/[\w-]+|@[\w-]+)\/?)?$/,
-                  message: t`Invalid YouTube profile URL`,
-                },
-              })}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <TextField
-              id="garminLink"
-              label={t`Garmin Connect Profile`}
-              placeholder="https://connect.garmin.com/modern/profile/username"
-              fullWidth
-              variant="outlined"
-              error={!!errors.garminLink}
-              helperText={errors.garminLink?.message}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <GarminIcon sx={{ color: '#007CC3' }} />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('garminLink', {
-                pattern: {
-                  value:
-                    /^(https:\/\/connect\.garmin\.com\/modern\/profile\/[\w-]+)?$/,
-                  message: t`Invalid Garmin Connect profile URL`,
-                },
-              })}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <TextField
-              id="tiktokLink"
-              label={t`TikTok Profile`}
-              placeholder="https://www.tiktok.com/@username"
-              fullWidth
-              variant="outlined"
-              error={!!errors.tiktokLink}
-              helperText={errors.tiktokLink?.message}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <TikTokIcon />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('tiktokLink', {
-                pattern: {
-                  value: /^(https:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/?)?$/,
-                  message: t`Invalid TikTok profile URL`,
-                },
-              })}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
-            <TextField
-              id="personalWebsiteLink"
-              label={t`Personal Website`}
-              placeholder="https://www.example.com"
-              fullWidth
-              variant="outlined"
-              error={!!errors.personalWebsiteLink}
-              helperText={errors.personalWebsiteLink?.message}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LanguageIcon />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              {...register('personalWebsiteLink', {
-                pattern: {
-                  value: /^(https?:\/\/.+\..+)?$/,
-                  message: t`Invalid website URL`,
-                },
-              })}
-            />
-          </FormControl>
-        </Stack>
-        <Controller
-          name="privacySettings.socialLinks"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector value={field.value} onChange={field.onChange} />
-          )}
-        />
-      </Box>
-
-      {/* Country */}
-      <FormControl fullWidth>
-        <Controller
-          name="country"
-          control={control}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              options={countries}
-              getOptionLabel={option =>
-                typeof option === 'string'
-                  ? countries.find(c => c.code === option)?.name || option
-                  : option.name
-              }
-              value={countries.find(c => c.code === field.value) || null}
-              onChange={(_event, newValue) => {
-                field.onChange(newValue?.code || '');
-              }}
-              renderOption={(props, option) => (
-                <Box component="li" {...props}>
-                  <span style={{ marginRight: 8 }}>
-                    {getCountryFlag(option.code)}
-                  </span>
-                  {option.name}
-                </Box>
-              )}
-              renderInput={params => (
+      {/* Tab Content Container - scrollable */}
+      <Box sx={{ flexGrow: 1, overflow: 'auto', minHeight: 0 }}>
+        {/* Basic Info Tab */}
+        <TabPanel value={tabValue} index={0}>
+          <Stack spacing={3}>
+            {/* Name Fields */}
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <FormControl fullWidth>
                 <TextField
-                  {...params}
-                  label={t`Country`}
-                  slotProps={{
-                    input: {
-                      ...params.InputProps,
-                      startAdornment: field.value ? (
-                        <InputAdornment position="start">
-                          {getCountryFlag(field.value)}
-                        </InputAdornment>
-                      ) : null,
+                  id="name"
+                  label={t`First Name`}
+                  fullWidth
+                  variant="outlined"
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  {...register('name', {
+                    required: t`First name is required`,
+                    maxLength: {
+                      value: 50,
+                      message: t`First name must be 50 characters or less`,
                     },
-                  }}
+                  })}
                 />
-              )}
-            />
-          )}
-        />
-      </FormControl>
+              </FormControl>
+              <FormControl fullWidth>
+                <TextField
+                  id="surname"
+                  label={t`Last Name`}
+                  fullWidth
+                  variant="outlined"
+                  error={!!errors.surname}
+                  helperText={errors.surname?.message}
+                  {...register('surname', {
+                    required: t`Last name is required`,
+                    maxLength: {
+                      value: 50,
+                      message: t`Last name must be 50 characters or less`,
+                    },
+                  })}
+                />
+              </FormControl>
+            </Stack>
 
-      {/* Description */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <FormControl fullWidth>
-          <TextField
-            id="description"
-            label={t`About Me`}
-            placeholder={t`Tell us about yourself...`}
-            fullWidth
-            multiline
-            rows={4}
-            variant="outlined"
-            error={!!errors.description}
-            helperText={errors.description?.message || t`Max 500 characters`}
-            {...register('description', {
-              maxLength: {
-                value: 500,
-                message: t`Description must be 500 characters or less`,
-              },
-            })}
-          />
-        </FormControl>
-        <Controller
-          name="privacySettings.description"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector
-              value={field.value || PrivacyLevel.PUBLIC}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </Box>
+            {/* Date of Birth */}
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <FormControl fullWidth>
+                <TextField
+                  id="dateOfBirth"
+                  type="date"
+                  label={t`Date of Birth`}
+                  fullWidth
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  inputProps={{ max: getMaxDateOfBirth() }}
+                  error={!!errors.dateOfBirth}
+                  helperText={errors.dateOfBirth?.message}
+                  {...register('dateOfBirth', {
+                    required: t`Date of birth is required`,
+                    validate: value => {
+                      const dob = new Date(value);
+                      const maxDate = new Date(getMaxDateOfBirth());
+                      if (dob > maxDate) {
+                        return t`You must be at least 13 years old`;
+                      }
+                      return true;
+                    },
+                  })}
+                />
+              </FormControl>
+              <Controller
+                name="privacySettings.dateOfBirth"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </Box>
 
-      {/* City/Region */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <FormControl fullWidth>
-          <TextField
-            id="cityRegion"
-            label={t`City / Region`}
-            placeholder={t`e.g., Milan, Lombardy`}
-            fullWidth
-            variant="outlined"
-            error={!!errors.cityRegion}
-            helperText={errors.cityRegion?.message}
-            {...register('cityRegion', {
-              maxLength: {
-                value: 100,
-                message: t`City/Region must be 100 characters or less`,
-              },
-            })}
-          />
-        </FormControl>
-        <Controller
-          name="privacySettings.cityRegion"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector
-              value={field.value || PrivacyLevel.PUBLIC}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </Box>
-
-      {/* Personal Stats */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <Stack spacing={2} sx={{ width: '100%' }}>
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            <Trans>Personal Stats</Trans>
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            {/* Country */}
             <FormControl fullWidth>
-              <TextField
-                id="height"
-                label={t`Height (cm)`}
-                type="number"
-                fullWidth
-                variant="outlined"
-                error={!!errors.personalStats?.height}
-                helperText={errors.personalStats?.height?.message}
-                {...register('personalStats.height', {
-                  setValueAs: v =>
-                    v === '' || v === null ? undefined : Number(v),
-                  validate: value => {
-                    if (value === undefined || value === null) return true;
-                    const num = Number(value);
-                    if (Number.isNaN(num)) return t`Height must be a number`;
-                    if (num < 0) return t`Height must be positive`;
-                    return true;
-                  },
-                })}
+              <Controller
+                name="country"
+                control={control}
+                render={({ field }) => (
+                  <Autocomplete
+                    {...field}
+                    options={countries}
+                    getOptionLabel={option =>
+                      typeof option === 'string'
+                        ? countries.find(c => c.code === option)?.name || option
+                        : option.name
+                    }
+                    value={countries.find(c => c.code === field.value) || null}
+                    onChange={(_event, newValue) => {
+                      field.onChange(newValue?.code || '');
+                    }}
+                    renderOption={(props, option) => (
+                      <Box component="li" {...props}>
+                        <span style={{ marginRight: 8 }}>
+                          {getCountryFlag(option.code)}
+                        </span>
+                        {option.name}
+                      </Box>
+                    )}
+                    renderInput={params => (
+                      <TextField
+                        {...params}
+                        label={t`Country`}
+                        slotProps={{
+                          input: {
+                            ...params.InputProps,
+                            startAdornment: field.value ? (
+                              <InputAdornment position="start">
+                                {getCountryFlag(field.value)}
+                              </InputAdornment>
+                            ) : null,
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                )}
               />
             </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                id="weight"
-                label={t`Weight (kg)`}
-                type="number"
-                fullWidth
-                variant="outlined"
-                error={!!errors.personalStats?.weight}
-                helperText={errors.personalStats?.weight?.message}
-                {...register('personalStats.weight', {
-                  setValueAs: v =>
-                    v === '' || v === null ? undefined : Number(v),
-                  validate: value => {
-                    if (value === undefined || value === null) return true;
-                    const num = Number(value);
-                    if (Number.isNaN(num)) return t`Weight must be a number`;
-                    if (num < 0) return t`Weight must be positive`;
-                    return true;
-                  },
-                })}
+
+            {/* City/Region */}
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <FormControl fullWidth>
+                <TextField
+                  id="cityRegion"
+                  label={t`City / Region`}
+                  placeholder={t`e.g., Milan, Lombardy`}
+                  fullWidth
+                  variant="outlined"
+                  error={!!errors.cityRegion}
+                  helperText={errors.cityRegion?.message}
+                  {...register('cityRegion', {
+                    maxLength: {
+                      value: 100,
+                      message: t`City/Region must be 100 characters or less`,
+                    },
+                  })}
+                />
+              </FormControl>
+              <Controller
+                name="privacySettings.cityRegion"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value || PrivacyLevel.PUBLIC}
+                    onChange={field.onChange}
+                  />
+                )}
               />
-            </FormControl>
+            </Box>
+
+            {/* Description */}
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <FormControl fullWidth>
+                <TextField
+                  id="description"
+                  label={t`About Me`}
+                  placeholder={t`Tell us about yourself...`}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                  error={!!errors.description}
+                  helperText={
+                    errors.description?.message || t`Max 500 characters`
+                  }
+                  {...register('description', {
+                    maxLength: {
+                      value: 500,
+                      message: t`Description must be 500 characters or less`,
+                    },
+                  })}
+                />
+              </FormControl>
+              <Controller
+                name="privacySettings.description"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value || PrivacyLevel.PUBLIC}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </Box>
           </Stack>
-        </Stack>
-        <Controller
-          name="privacySettings.personalStats"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector
-              value={field.value || PrivacyLevel.PUBLIC}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </Box>
+        </TabPanel>
 
-      {/* Personal Achievements */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-        <Stack spacing={2} sx={{ width: '100%' }}>
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            <Trans>Personal Achievements</Trans>
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="time5k"
-                label={t`5K Time`}
-                placeholder="MM:SS or HH:MM:SS"
-                fullWidth
-                variant="outlined"
-                error={!!errors.personalAchievements?.time5k}
-                helperText={
-                  errors.personalAchievements?.time5k?.message ||
-                  t`Format: MM:SS or HH:MM:SS`
-                }
-                {...register('personalAchievements.time5k', {
-                  validate: value => {
-                    if (!value || value.trim() === '') return true;
-                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
-                    return (
-                      pattern.test(value) ||
-                      t`Invalid time format (use MM:SS or HH:MM:SS)`
-                    );
-                  },
-                })}
+        {/* Sports & Activities Tab */}
+        <TabPanel value={tabValue} index={1}>
+          <Stack spacing={3}>
+            {/* Sport Types */}
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <FormControl fullWidth error={!!errors.sportTypes}>
+                <InputLabel id="sport-types-label">
+                  <Trans>Sport Types</Trans>
+                </InputLabel>
+                <Controller
+                  name="sportTypes"
+                  control={control}
+                  rules={{
+                    validate: value =>
+                      (value && value.length > 0) ||
+                      t`Select at least one sport type`,
+                  }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      labelId="sport-types-label"
+                      id="sportTypes"
+                      multiple
+                      input={<OutlinedInput label={t`Sport Types`} />}
+                      renderValue={selected => (
+                        <Box
+                          sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
+                        >
+                          {(selected as SportType[]).map(value => (
+                            <Chip
+                              key={value}
+                              label={sportTypeLabels[value]}
+                              size="small"
+                            />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      {Object.values(SportType).map(sport => (
+                        <MenuItem key={sport} value={sport}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={field.value?.includes(sport)}
+                              />
+                            }
+                            label={sportTypeLabels[sport as SportType]}
+                            sx={{ m: 0 }}
+                          />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+                <FormHelperText>{errors.sportTypes?.message}</FormHelperText>
+              </FormControl>
+              <Controller
+                name="privacySettings.sportTypes"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
               />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                id="time10k"
-                label={t`10K Time`}
-                placeholder="MM:SS or HH:MM:SS"
-                fullWidth
-                variant="outlined"
-                error={!!errors.personalAchievements?.time10k}
-                helperText={
-                  errors.personalAchievements?.time10k?.message ||
-                  t`Format: MM:SS or HH:MM:SS`
-                }
-                {...register('personalAchievements.time10k', {
-                  validate: value => {
-                    if (!value || value.trim() === '') return true;
-                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
-                    return (
-                      pattern.test(value) ||
-                      t`Invalid time format (use MM:SS or HH:MM:SS)`
-                    );
-                  },
-                })}
-              />
-            </FormControl>
+            </Box>
           </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="timeHalfMarathon"
-                label={t`Half Marathon Time`}
-                placeholder="HH:MM:SS or MM:SS"
-                fullWidth
-                variant="outlined"
-                error={!!errors.personalAchievements?.timeHalfMarathon}
-                helperText={
-                  errors.personalAchievements?.timeHalfMarathon?.message ||
-                  t`Format: HH:MM:SS or MM:SS`
-                }
-                {...register('personalAchievements.timeHalfMarathon', {
-                  validate: value => {
-                    if (!value || value.trim() === '') return true;
-                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
-                    return (
-                      pattern.test(value) ||
-                      t`Invalid time format (use HH:MM:SS or MM:SS)`
-                    );
-                  },
-                })}
+        </TabPanel>
+
+        {/* Social Links Tab */}
+        <TabPanel value={tabValue} index={2}>
+          <Stack spacing={3}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <Stack spacing={3} sx={{ width: '100%' }}>
+                <FormControl fullWidth>
+                  <TextField
+                    id="stravaLink"
+                    label={t`Strava Profile`}
+                    placeholder="https://www.strava.com/athletes/12345"
+                    fullWidth
+                    variant="outlined"
+                    error={!!errors.stravaLink}
+                    helperText={errors.stravaLink?.message}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <StravaIcon sx={{ color: '#FC4C02' }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    {...register('stravaLink', {
+                      pattern: {
+                        value:
+                          /^(https:\/\/(www\.)?strava\.com\/athletes\/\d+)?$/,
+                        message: t`Invalid Strava profile URL`,
+                      },
+                    })}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth>
+                  <TextField
+                    id="instagramLink"
+                    label={t`Instagram Profile`}
+                    placeholder="https://www.instagram.com/username"
+                    fullWidth
+                    variant="outlined"
+                    error={!!errors.instagramLink}
+                    helperText={errors.instagramLink?.message}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <InstagramIcon sx={{ color: '#E1306C' }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    {...register('instagramLink', {
+                      pattern: {
+                        value:
+                          /^(https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?)?$/,
+                        message: t`Invalid Instagram profile URL`,
+                      },
+                    })}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth>
+                  <TextField
+                    id="youtubeLink"
+                    label={t`YouTube Channel`}
+                    placeholder="https://www.youtube.com/@username"
+                    fullWidth
+                    variant="outlined"
+                    error={!!errors.youtubeLink}
+                    helperText={errors.youtubeLink?.message}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <YouTubeIcon sx={{ color: '#FF0000' }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    {...register('youtubeLink', {
+                      pattern: {
+                        value:
+                          /^(https:\/\/(www\.)?youtube\.com\/(channel\/UC[\w-]{22}|c\/[\w-]+|user\/[\w-]+|@[\w-]+)\/?)?$/,
+                        message: t`Invalid YouTube profile URL`,
+                      },
+                    })}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth>
+                  <TextField
+                    id="garminLink"
+                    label={t`Garmin Connect Profile`}
+                    placeholder="https://connect.garmin.com/modern/profile/username"
+                    fullWidth
+                    variant="outlined"
+                    error={!!errors.garminLink}
+                    helperText={errors.garminLink?.message}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <GarminIcon sx={{ color: '#007CC3' }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    {...register('garminLink', {
+                      pattern: {
+                        value:
+                          /^(https:\/\/connect\.garmin\.com\/modern\/profile\/[\w-]+)?$/,
+                        message: t`Invalid Garmin Connect profile URL`,
+                      },
+                    })}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth>
+                  <TextField
+                    id="tiktokLink"
+                    label={t`TikTok Profile`}
+                    placeholder="https://www.tiktok.com/@username"
+                    fullWidth
+                    variant="outlined"
+                    error={!!errors.tiktokLink}
+                    helperText={errors.tiktokLink?.message}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <TikTokIcon />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    {...register('tiktokLink', {
+                      pattern: {
+                        value:
+                          /^(https:\/\/(www\.)?tiktok\.com\/@[\w.-]+\/?)?$/,
+                        message: t`Invalid TikTok profile URL`,
+                      },
+                    })}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth>
+                  <TextField
+                    id="personalWebsiteLink"
+                    label={t`Personal Website`}
+                    placeholder="https://www.example.com"
+                    fullWidth
+                    variant="outlined"
+                    error={!!errors.personalWebsiteLink}
+                    helperText={errors.personalWebsiteLink?.message}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LanguageIcon />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    {...register('personalWebsiteLink', {
+                      pattern: {
+                        value: /^(https?:\/\/.+\..+)?$/,
+                        message: t`Invalid website URL`,
+                      },
+                    })}
+                  />
+                </FormControl>
+              </Stack>
+              <Controller
+                name="privacySettings.socialLinks"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
               />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextField
-                id="timeMarathon"
-                label={t`Marathon Time`}
-                placeholder="HH:MM:SS or MM:SS"
-                fullWidth
-                variant="outlined"
-                error={!!errors.personalAchievements?.timeMarathon}
-                helperText={
-                  errors.personalAchievements?.timeMarathon?.message ||
-                  t`Format: HH:MM:SS or MM:SS`
-                }
-                {...register('personalAchievements.timeMarathon', {
-                  validate: value => {
-                    if (!value || value.trim() === '') return true;
-                    const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
-                    return (
-                      pattern.test(value) ||
-                      t`Invalid time format (use HH:MM:SS or MM:SS)`
-                    );
-                  },
-                })}
-              />
-            </FormControl>
+            </Box>
           </Stack>
-        </Stack>
-        <Controller
-          name="privacySettings.personalAchievements"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector
-              value={field.value || PrivacyLevel.PUBLIC}
-              onChange={field.onChange}
-            />
-          )}
-        />
+        </TabPanel>
+
+        {/* Stats & Achievements Tab */}
+        <TabPanel value={tabValue} index={3}>
+          <Stack spacing={4}>
+            {/* Personal Stats */}
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <Stack spacing={3} sx={{ width: '100%' }}>
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                  <Trans>Personal Stats</Trans>
+                </Typography>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <FormControl fullWidth>
+                    <TextField
+                      id="height"
+                      label={t`Height (cm)`}
+                      type="number"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.personalStats?.height}
+                      helperText={errors.personalStats?.height?.message}
+                      {...register('personalStats.height', {
+                        setValueAs: v =>
+                          v === '' || v === null ? undefined : Number(v),
+                        validate: value => {
+                          if (value === undefined || value === null)
+                            return true;
+                          const num = Number(value);
+                          if (Number.isNaN(num))
+                            return t`Height must be a number`;
+                          if (num < 0) return t`Height must be positive`;
+                          return true;
+                        },
+                      })}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <TextField
+                      id="weight"
+                      label={t`Weight (kg)`}
+                      type="number"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.personalStats?.weight}
+                      helperText={errors.personalStats?.weight?.message}
+                      {...register('personalStats.weight', {
+                        setValueAs: v =>
+                          v === '' || v === null ? undefined : Number(v),
+                        validate: value => {
+                          if (value === undefined || value === null)
+                            return true;
+                          const num = Number(value);
+                          if (Number.isNaN(num))
+                            return t`Weight must be a number`;
+                          if (num < 0) return t`Weight must be positive`;
+                          return true;
+                        },
+                      })}
+                    />
+                  </FormControl>
+                </Stack>
+              </Stack>
+              <Controller
+                name="privacySettings.personalStats"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value || PrivacyLevel.PUBLIC}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </Box>
+
+            {/* Personal Achievements */}
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+              <Stack spacing={3} sx={{ width: '100%' }}>
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                  <Trans>Personal Achievements</Trans>
+                </Typography>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <FormControl fullWidth>
+                    <TextField
+                      id="time5k"
+                      label={t`5K Time`}
+                      placeholder="MM:SS or HH:MM:SS"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.personalAchievements?.time5k}
+                      helperText={
+                        errors.personalAchievements?.time5k?.message ||
+                        t`Format: MM:SS or HH:MM:SS`
+                      }
+                      {...register('personalAchievements.time5k', {
+                        validate: (value: string | undefined) => {
+                          if (!value || value.trim() === '') return true;
+                          const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                          return (
+                            pattern.test(value) ||
+                            t`Invalid time format (use MM:SS or HH:MM:SS)`
+                          );
+                        },
+                      })}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <TextField
+                      id="time10k"
+                      label={t`10K Time`}
+                      placeholder="MM:SS or HH:MM:SS"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.personalAchievements?.time10k}
+                      helperText={
+                        errors.personalAchievements?.time10k?.message ||
+                        t`Format: MM:SS or HH:MM:SS`
+                      }
+                      {...register('personalAchievements.time10k', {
+                        validate: (value: string | undefined) => {
+                          if (!value || value.trim() === '') return true;
+                          const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                          return (
+                            pattern.test(value) ||
+                            t`Invalid time format (use MM:SS or HH:MM:SS)`
+                          );
+                        },
+                      })}
+                    />
+                  </FormControl>
+                </Stack>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <FormControl fullWidth>
+                    <TextField
+                      id="timeHalfMarathon"
+                      label={t`Half Marathon Time`}
+                      placeholder="HH:MM:SS or MM:SS"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.personalAchievements?.timeHalfMarathon}
+                      helperText={
+                        errors.personalAchievements?.timeHalfMarathon
+                          ?.message || t`Format: HH:MM:SS or MM:SS`
+                      }
+                      {...register('personalAchievements.timeHalfMarathon', {
+                        validate: (value: string | undefined) => {
+                          if (!value || value.trim() === '') return true;
+                          const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                          return (
+                            pattern.test(value) ||
+                            t`Invalid time format (use HH:MM:SS or MM:SS)`
+                          );
+                        },
+                      })}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <TextField
+                      id="timeMarathon"
+                      label={t`Marathon Time`}
+                      placeholder="HH:MM:SS or MM:SS"
+                      fullWidth
+                      variant="outlined"
+                      error={!!errors.personalAchievements?.timeMarathon}
+                      helperText={
+                        errors.personalAchievements?.timeMarathon?.message ||
+                        t`Format: HH:MM:SS or MM:SS`
+                      }
+                      {...register('personalAchievements.timeMarathon', {
+                        validate: (value: string | undefined) => {
+                          if (!value || value.trim() === '') return true;
+                          const pattern = /^(\d{2}:\d{2}:\d{2}|\d{2}:\d{2})$/;
+                          return (
+                            pattern.test(value) ||
+                            t`Invalid time format (use HH:MM:SS or MM:SS)`
+                          );
+                        },
+                      })}
+                    />
+                  </FormControl>
+                </Stack>
+              </Stack>
+              <Controller
+                name="privacySettings.personalAchievements"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value || PrivacyLevel.PUBLIC}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </Box>
+          </Stack>
+        </TabPanel>
+
+        {/* Privacy Settings Tab */}
+        <TabPanel value={tabValue} index={4}>
+          <Stack spacing={3}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              <Trans>
+                Control who can see your profile information. You can set
+                different privacy levels for each section.
+              </Trans>
+            </Typography>
+
+            {/* Email Privacy */}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                p: 2,
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 1,
+              }}
+            >
+              <Typography variant="body1">{t`Email Privacy`}</Typography>
+              <Controller
+                name="privacySettings.email"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </Box>
+
+            {/* Profile Picture Privacy */}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                p: 2,
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 1,
+              }}
+            >
+              <Typography variant="body1">{t`Profile Picture Privacy`}</Typography>
+              <Controller
+                name="privacySettings.avatar"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value || PrivacyLevel.PUBLIC}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </Box>
+
+            {/* Banner Privacy */}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                p: 2,
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 1,
+              }}
+            >
+              <Typography variant="body1">{t`Banner Privacy`}</Typography>
+              <Controller
+                name="privacySettings.banner"
+                control={control}
+                render={({ field }) => (
+                  <PrivacySelector
+                    value={field.value || PrivacyLevel.PUBLIC}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+            </Box>
+          </Stack>
+        </TabPanel>
       </Box>
 
-      {/* Email Privacy */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mt: 1,
-        }}
-      >
-        <Typography variant="body1">{t`Email Privacy`}</Typography>
-        <Controller
-          name="privacySettings.email"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector value={field.value} onChange={field.onChange} />
-          )}
-        />
-      </Box>
-
-      {/* Profile Picture Privacy */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant="body1">{t`Profile Picture Privacy`}</Typography>
-        <Controller
-          name="privacySettings.avatar"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector
-              value={field.value || PrivacyLevel.PUBLIC}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </Box>
-
-      {/* Banner Privacy */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant="body1">{t`Banner Privacy`}</Typography>
-        <Controller
-          name="privacySettings.banner"
-          control={control}
-          render={({ field }) => (
-            <PrivacySelector
-              value={field.value || PrivacyLevel.PUBLIC}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </Box>
-
-      {/* Action Buttons */}
+      {/* Action Buttons - fixed at bottom */}
       <Stack
         direction="row"
         spacing={2}
         justifyContent="flex-end"
-        sx={{ mt: 2 }}
+        sx={{
+          pt: 2,
+          borderTop: 1,
+          borderColor: 'divider',
+          mt: 'auto',
+        }}
       >
         <Button onClick={onCancel} disabled={isSubmitting}>
           <Trans>Cancel</Trans>

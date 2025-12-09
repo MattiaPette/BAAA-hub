@@ -54,29 +54,44 @@ describe('ProfileEditForm', () => {
       </MemoryRouter>,
     );
 
-  it('should render form with user data pre-filled', () => {
+  it('should render form with user data pre-filled', async () => {
     renderForm();
 
+    // First name and last name are in the Basic Info tab (default tab)
     expect(screen.getByLabelText('First Name')).toHaveValue('John');
     expect(screen.getByLabelText('Last Name')).toHaveValue('Doe');
-    expect(screen.getByLabelText('Strava Profile')).toHaveValue(
-      'https://www.strava.com/athletes/12345',
-    );
-    expect(screen.getByLabelText('Instagram Profile')).toHaveValue(
-      'https://www.instagram.com/johndoe',
-    );
+
+    // Navigate to Social Links tab for social media fields
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Strava Profile')).toHaveValue(
+        'https://www.strava.com/athletes/12345',
+      );
+      expect(screen.getByLabelText('Instagram Profile')).toHaveValue(
+        'https://www.instagram.com/johndoe',
+      );
+    });
   });
 
   it('should render date of birth field', () => {
     renderForm();
 
+    // Date of Birth is in the Basic Info tab (default tab)
     expect(screen.getByLabelText('Date of Birth')).toBeInTheDocument();
   });
 
-  it('should render sport types selector', () => {
+  it('should render sport types selector', async () => {
     renderForm();
 
-    expect(screen.getByLabelText('Sport Types')).toBeInTheDocument();
+    // Navigate to Sports tab
+    const sportsTab = screen.getByRole('tab', { name: /sports/i });
+    fireEvent.click(sportsTab);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Sport Types')).toBeInTheDocument();
+    });
   });
 
   it('should call onCancel when cancel button is clicked', () => {
@@ -169,9 +184,15 @@ describe('ProfileEditForm', () => {
   it('should validate Strava profile URL format', async () => {
     renderForm();
 
-    const stravaInput = screen.getByLabelText('Strava Profile');
-    fireEvent.change(stravaInput, { target: { value: 'invalid-url' } });
-    fireEvent.blur(stravaInput);
+    // Navigate to Social Links tab
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      const stravaInput = screen.getByLabelText('Strava Profile');
+      fireEvent.change(stravaInput, { target: { value: 'invalid-url' } });
+      fireEvent.blur(stravaInput);
+    });
 
     await waitFor(() => {
       expect(
@@ -183,9 +204,15 @@ describe('ProfileEditForm', () => {
   it('should validate Instagram profile URL format', async () => {
     renderForm();
 
-    const instagramInput = screen.getByLabelText('Instagram Profile');
-    fireEvent.change(instagramInput, { target: { value: 'invalid-url' } });
-    fireEvent.blur(instagramInput);
+    // Navigate to Social Links tab
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      const instagramInput = screen.getByLabelText('Instagram Profile');
+      fireEvent.change(instagramInput, { target: { value: 'invalid-url' } });
+      fireEvent.blur(instagramInput);
+    });
 
     await waitFor(() => {
       expect(
@@ -197,11 +224,17 @@ describe('ProfileEditForm', () => {
   it('should accept valid Strava URL', async () => {
     renderForm();
 
-    const stravaInput = screen.getByLabelText('Strava Profile');
-    fireEvent.change(stravaInput, {
-      target: { value: 'https://www.strava.com/athletes/67890' },
+    // Navigate to Social Links tab
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      const stravaInput = screen.getByLabelText('Strava Profile');
+      fireEvent.change(stravaInput, {
+        target: { value: 'https://www.strava.com/athletes/67890' },
+      });
+      fireEvent.blur(stravaInput);
     });
-    fireEvent.blur(stravaInput);
 
     await waitFor(() => {
       expect(
@@ -213,11 +246,17 @@ describe('ProfileEditForm', () => {
   it('should accept valid Instagram URL', async () => {
     renderForm();
 
-    const instagramInput = screen.getByLabelText('Instagram Profile');
-    fireEvent.change(instagramInput, {
-      target: { value: 'https://www.instagram.com/user_name123' },
+    // Navigate to Social Links tab
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      const instagramInput = screen.getByLabelText('Instagram Profile');
+      fireEvent.change(instagramInput, {
+        target: { value: 'https://www.instagram.com/user_name123' },
+      });
+      fireEvent.blur(instagramInput);
     });
-    fireEvent.blur(instagramInput);
 
     await waitFor(() => {
       expect(
@@ -229,9 +268,15 @@ describe('ProfileEditForm', () => {
   it('should accept empty Strava URL (optional field)', async () => {
     renderForm();
 
-    const stravaInput = screen.getByLabelText('Strava Profile');
-    fireEvent.change(stravaInput, { target: { value: '' } });
-    fireEvent.blur(stravaInput);
+    // Navigate to Social Links tab
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      const stravaInput = screen.getByLabelText('Strava Profile');
+      fireEvent.change(stravaInput, { target: { value: '' } });
+      fireEvent.blur(stravaInput);
+    });
 
     await waitFor(() => {
       expect(
@@ -243,9 +288,15 @@ describe('ProfileEditForm', () => {
   it('should accept empty Instagram URL (optional field)', async () => {
     renderForm();
 
-    const instagramInput = screen.getByLabelText('Instagram Profile');
-    fireEvent.change(instagramInput, { target: { value: '' } });
-    fireEvent.blur(instagramInput);
+    // Navigate to Social Links tab
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      const instagramInput = screen.getByLabelText('Instagram Profile');
+      fireEvent.change(instagramInput, { target: { value: '' } });
+      fireEvent.blur(instagramInput);
+    });
 
     await waitFor(() => {
       expect(
@@ -276,7 +327,7 @@ describe('ProfileEditForm', () => {
     });
   });
 
-  it('should render with user that has no social links', () => {
+  it('should render with user that has no social links', async () => {
     const userWithoutSocialLinks = {
       ...mockUser,
       stravaLink: undefined,
@@ -294,23 +345,41 @@ describe('ProfileEditForm', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByLabelText('Strava Profile')).toHaveValue('');
-    expect(screen.getByLabelText('Instagram Profile')).toHaveValue('');
+    // Navigate to Social Links tab
+    const socialLinksTab = screen.getByRole('tab', { name: /social links/i });
+    fireEvent.click(socialLinksTab);
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Strava Profile')).toHaveValue('');
+      expect(screen.getByLabelText('Instagram Profile')).toHaveValue('');
+    });
   });
 
-  it('should display selected sport types', () => {
+  it('should display selected sport types', async () => {
     renderForm();
 
-    // Sport types chips should be visible in the select
-    expect(screen.getByText('Running')).toBeInTheDocument();
-    expect(screen.getByText('Cycling')).toBeInTheDocument();
+    // Navigate to Sports tab
+    const sportsTab = screen.getByRole('tab', { name: /sports/i });
+    fireEvent.click(sportsTab);
+
+    await waitFor(() => {
+      // Sport types chips should be visible in the select
+      expect(screen.getByText('Running')).toBeInTheDocument();
+      expect(screen.getByText('Cycling')).toBeInTheDocument();
+    });
   });
 
   it('should open sport types dropdown when clicked', async () => {
     renderForm();
 
-    const sportTypesSelect = screen.getByLabelText('Sport Types');
-    fireEvent.mouseDown(sportTypesSelect);
+    // Navigate to Sports tab
+    const sportsTab = screen.getByRole('tab', { name: /sports/i });
+    fireEvent.click(sportsTab);
+
+    await waitFor(() => {
+      const sportTypesSelect = screen.getByLabelText('Sport Types');
+      fireEvent.mouseDown(sportTypesSelect);
+    });
 
     await waitFor(() => {
       // All sport type options should be visible
@@ -318,8 +387,15 @@ describe('ProfileEditForm', () => {
     });
   });
 
-  it('should render privacy selectors', () => {
+  it('should render privacy selectors', async () => {
     renderForm();
-    expect(screen.getByText('Email Privacy')).toBeInTheDocument();
+
+    // Navigate to Privacy tab (last tab)
+    const privacyTab = screen.getByRole('tab', { name: /privacy/i });
+    fireEvent.click(privacyTab);
+
+    await waitFor(() => {
+      expect(screen.getByText('Email Privacy')).toBeInTheDocument();
+    });
   });
 });

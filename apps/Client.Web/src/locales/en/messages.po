@@ -32,11 +32,11 @@ msgstr "{diffHours}h ago"
 msgid "{diffMins}m ago"
 msgstr "{diffMins}m ago"
 
-#: src/containers/Profile/ProfileEditForm.tsx:738
+#: src/containers/Profile/ProfileEditForm.tsx:870
 msgid "10K Time"
 msgstr "10K Time"
 
-#: src/containers/Profile/ProfileEditForm.tsx:718
+#: src/containers/Profile/ProfileEditForm.tsx:846
 msgid "5K Time"
 msgstr "5K Time"
 
@@ -44,12 +44,12 @@ msgstr "5K Time"
 msgid "A server error has occurred. Please try again later"
 msgstr "A server error has occurred. Please try again later"
 
-#: src/containers/Profile/Profile.tsx:412
+#: src/containers/Profile/Profile.tsx:491
 #: src/containers/PublicProfile/PublicProfile.tsx:491
 msgid "About"
 msgstr "About"
 
-#: src/containers/Profile/ProfileEditForm.tsx:592
+#: src/containers/Profile/ProfileEditForm.tsx:476
 msgid "About Me"
 msgstr "About Me"
 
@@ -75,8 +75,8 @@ msgid "Active"
 msgstr "Active"
 
 #: src/containers/Profile/Profile.tsx:609
-msgid "Activity Statistics"
-msgstr "Activity Statistics"
+#~ msgid "Activity Statistics"
+#~ msgstr "Activity Statistics"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:586
 msgid "Add a profile picture and banner to personalize your profile"
@@ -104,6 +104,7 @@ msgstr "Admin"
 msgid "Administration"
 msgstr "Administration"
 
+#: src/containers/Profile/Profile.tsx:573
 #: src/containers/PublicProfile/PublicProfile.tsx:585
 msgid "Age"
 msgstr "Age"
@@ -163,7 +164,7 @@ msgid "Banner Image"
 msgstr "Banner Image"
 
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:476
-#: src/containers/Profile/ProfileEditForm.tsx:859
+#: src/containers/Profile/ProfileEditForm.tsx:1029
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:922
 msgid "Banner Privacy"
 msgstr "Banner Privacy"
@@ -175,6 +176,10 @@ msgstr "Banner removed successfully!"
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:105
 msgid "Banner updated successfully!"
 msgstr "Banner updated successfully!"
+
+#: src/containers/Profile/ProfileEditForm.tsx:277
+msgid "Basic Info"
+msgstr "Basic Info"
 
 #: src/helpers/roleLabels/roleLabels.ts:21
 msgid "Basic member role (required)"
@@ -191,7 +196,7 @@ msgstr "Blocked"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
 #: src/containers/Administration/EditRolesDialog.tsx:158
-#: src/containers/Profile/ProfileEditForm.tsx:880
+#: src/containers/Profile/ProfileEditForm.tsx:1058
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -219,11 +224,11 @@ msgstr "Choose a unique nickname"
 msgid "Choose your preferred language"
 msgstr "Choose your preferred language"
 
-#: src/containers/Profile/ProfileEditForm.tsx:625
+#: src/containers/Profile/ProfileEditForm.tsx:445
 msgid "City / Region"
 msgstr "City / Region"
 
-#: src/containers/Profile/ProfileEditForm.tsx:634
+#: src/containers/Profile/ProfileEditForm.tsx:454
 msgid "City/Region must be 100 characters or less"
 msgstr "City/Region must be 100 characters or less"
 
@@ -238,8 +243,8 @@ msgid "Close"
 msgstr "Close"
 
 #: src/containers/Profile/Profile.tsx:612
-msgid "Coming soon..."
-msgstr "Coming soon..."
+#~ msgid "Coming soon..."
+#~ msgstr "Coming soon..."
 
 #: src/helpers/roleLabels/roleLabels.ts:12
 msgid "Community Leader"
@@ -269,7 +274,11 @@ msgstr "Consent is required"
 msgid "Contact & Social"
 msgstr "Contact & Social"
 
-#: src/containers/Profile/ProfileEditForm.tsx:569
+#: src/containers/Profile/ProfileEditForm.tsx:961
+msgid "Control who can see your profile information. You can set different privacy levels for each section."
+msgstr "Control who can see your profile information. You can set different privacy levels for each section."
+
+#: src/containers/Profile/ProfileEditForm.tsx:422
 msgid "Country"
 msgstr "Country"
 
@@ -304,14 +313,14 @@ msgstr "Cycling"
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
-#: src/containers/Profile/Profile.tsx:454
-#: src/containers/Profile/ProfileEditForm.tsx:276
+#: src/containers/Profile/Profile.tsx:533
+#: src/containers/Profile/ProfileEditForm.tsx:361
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
 #: src/containers/PublicProfile/PublicProfile.tsx:540
 msgid "Date of Birth"
 msgstr "Date of Birth"
 
-#: src/containers/Profile/ProfileEditForm.tsx:284
+#: src/containers/Profile/ProfileEditForm.tsx:369
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:564
 msgid "Date of birth is required"
 msgstr "Date of birth is required"
@@ -320,7 +329,7 @@ msgstr "Date of birth is required"
 msgid "Date of Birth Privacy"
 msgstr "Date of Birth Privacy"
 
-#: src/containers/Profile/ProfileEditForm.tsx:603
+#: src/containers/Profile/ProfileEditForm.tsx:489
 msgid "Description must be 500 characters or less"
 msgstr "Description must be 500 characters or less"
 
@@ -336,7 +345,7 @@ msgstr "Don't have an account?"
 msgid "Drag to reposition, scroll or use slider to zoom"
 msgstr "Drag to reposition, scroll or use slider to zoom"
 
-#: src/containers/Profile/ProfileEditForm.tsx:626
+#: src/containers/Profile/ProfileEditForm.tsx:446
 msgid "e.g., Milan, Lombardy"
 msgstr "e.g., Milan, Lombardy"
 
@@ -344,8 +353,8 @@ msgstr "e.g., Milan, Lombardy"
 msgid "Edit banner"
 msgstr "Edit banner"
 
-#: src/containers/Profile/Profile.tsx:396
-#: src/containers/Profile/Profile.tsx:632
+#: src/containers/Profile/Profile.tsx:463
+#: src/containers/Profile/Profile.tsx:1001
 msgid "Edit Profile"
 msgstr "Edit Profile"
 
@@ -364,7 +373,7 @@ msgstr "Edit Roles for {0} {1}"
 #: src/components/login/SignupForm/SignupForm.tsx:138
 #: src/components/login/SignupForm/SignupForm.tsx:139
 #: src/containers/Administration/Administration.tsx:354
-#: src/containers/Profile/Profile.tsx:431
+#: src/containers/Profile/Profile.tsx:510
 #: src/containers/PublicProfile/PublicProfile.tsx:513
 #: src/helpers/mfaLabels/mfaLabels.ts:11
 #: src/helpers/mfaLabels/mfaLabels.ts:24
@@ -382,7 +391,7 @@ msgstr "Email is required"
 msgid "Email Not Verified"
 msgstr "Email Not Verified"
 
-#: src/containers/Profile/ProfileEditForm.tsx:820
+#: src/containers/Profile/ProfileEditForm.tsx:979
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:862
 msgid "Email Privacy"
 msgstr "Email Privacy"
@@ -443,7 +452,7 @@ msgstr "Failed to update banner. Please try again."
 msgid "Failed to update profile picture. Please try again."
 msgstr "Failed to update profile picture. Please try again."
 
-#: src/containers/Profile/Profile.tsx:259
+#: src/containers/Profile/Profile.tsx:300
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
 
@@ -483,17 +492,17 @@ msgstr "File type not supported. Please use JPG, PNG, WEBP, or HEIC."
 msgid "Find Users"
 msgstr "Find Users"
 
-#: src/containers/Profile/ProfileEditForm.tsx:237
+#: src/containers/Profile/ProfileEditForm.tsx:322
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:456
 msgid "First Name"
 msgstr "First Name"
 
-#: src/containers/Profile/ProfileEditForm.tsx:243
+#: src/containers/Profile/ProfileEditForm.tsx:328
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:464
 msgid "First name is required"
 msgstr "First name is required"
 
-#: src/containers/Profile/ProfileEditForm.tsx:246
+#: src/containers/Profile/ProfileEditForm.tsx:331
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:467
 msgid "First name must be 50 characters or less"
 msgstr "First name must be 50 characters or less"
@@ -502,7 +511,7 @@ msgstr "First name must be 50 characters or less"
 msgid "Follow"
 msgstr "Follow"
 
-#: src/containers/Profile/ProfileEditForm.tsx:115
+#: src/containers/Profile/ProfileEditForm.tsx:143
 #: src/containers/PublicProfile/PublicProfile.tsx:430
 msgid "Followers"
 msgstr "Followers"
@@ -515,13 +524,13 @@ msgstr "Followers Only"
 msgid "Following"
 msgstr "Following"
 
-#: src/containers/Profile/ProfileEditForm.tsx:767
-#: src/containers/Profile/ProfileEditForm.tsx:787
+#: src/containers/Profile/ProfileEditForm.tsx:903
+#: src/containers/Profile/ProfileEditForm.tsx:927
 msgid "Format: HH:MM:SS or MM:SS"
 msgstr "Format: HH:MM:SS or MM:SS"
 
-#: src/containers/Profile/ProfileEditForm.tsx:725
-#: src/containers/Profile/ProfileEditForm.tsx:745
+#: src/containers/Profile/ProfileEditForm.tsx:853
+#: src/containers/Profile/ProfileEditForm.tsx:877
 msgid "Format: MM:SS or HH:MM:SS"
 msgstr "Format: MM:SS or HH:MM:SS"
 
@@ -545,7 +554,7 @@ msgstr "Gamer"
 msgid "Gaming features access"
 msgstr "Gaming features access"
 
-#: src/containers/Profile/ProfileEditForm.tsx:452
+#: src/containers/Profile/ProfileEditForm.tsx:670
 msgid "Garmin Connect Profile"
 msgstr "Garmin Connect Profile"
 
@@ -554,23 +563,29 @@ msgstr "Garmin Connect Profile"
 msgid "Gym"
 msgstr "Gym"
 
+#: src/containers/Profile/Profile.tsx:944
 #: src/containers/PublicProfile/PublicProfile.tsx:954
 msgid "Half Marathon"
 msgstr "Half Marathon"
 
-#: src/containers/Profile/ProfileEditForm.tsx:760
+#: src/containers/Profile/ProfileEditForm.tsx:896
 msgid "Half Marathon Time"
 msgstr "Half Marathon Time"
 
+#: src/containers/Profile/Profile.tsx:612
 #: src/containers/PublicProfile/PublicProfile.tsx:625
 msgid "Height"
 msgstr "Height"
 
-#: src/containers/Profile/ProfileEditForm.tsx:661
+#: src/containers/Profile/ProfileEditForm.tsx:777
 msgid "Height (cm)"
 msgstr "Height (cm)"
 
-#: src/containers/Profile/ProfileEditForm.tsx:671
+#: src/containers/Profile/ProfileEditForm.tsx:791
+msgid "Height must be a number"
+msgstr "Height must be a number"
+
+#: src/containers/Profile/ProfileEditForm.tsx:792
 msgid "Height must be positive"
 msgstr "Height must be positive"
 
@@ -587,7 +602,7 @@ msgstr "Hiking"
 msgid "Incorrect username or password"
 msgstr "Incorrect username or password"
 
-#: src/containers/Profile/ProfileEditForm.tsx:396
+#: src/containers/Profile/ProfileEditForm.tsx:614
 msgid "Instagram Profile"
 msgstr "Instagram Profile"
 
@@ -623,11 +638,11 @@ msgstr "Invalid email address"
 msgid "Invalid file"
 msgstr "Invalid file"
 
-#: src/containers/Profile/ProfileEditForm.tsx:471
+#: src/containers/Profile/ProfileEditForm.tsx:689
 msgid "Invalid Garmin Connect profile URL"
 msgstr "Invalid Garmin Connect profile URL"
 
-#: src/containers/Profile/ProfileEditForm.tsx:415
+#: src/containers/Profile/ProfileEditForm.tsx:633
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:841
 msgid "Invalid Instagram profile URL"
 msgstr "Invalid Instagram profile URL"
@@ -644,22 +659,22 @@ msgstr "Invalid request"
 msgid "Invalid scope"
 msgstr "Invalid scope"
 
-#: src/containers/Profile/ProfileEditForm.tsx:387
+#: src/containers/Profile/ProfileEditForm.tsx:605
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:816
 msgid "Invalid Strava profile URL"
 msgstr "Invalid Strava profile URL"
 
-#: src/containers/Profile/ProfileEditForm.tsx:498
+#: src/containers/Profile/ProfileEditForm.tsx:717
 msgid "Invalid TikTok profile URL"
 msgstr "Invalid TikTok profile URL"
 
-#: src/containers/Profile/ProfileEditForm.tsx:772
-#: src/containers/Profile/ProfileEditForm.tsx:792
+#: src/containers/Profile/ProfileEditForm.tsx:911
+#: src/containers/Profile/ProfileEditForm.tsx:935
 msgid "Invalid time format (use HH:MM:SS or MM:SS)"
 msgstr "Invalid time format (use HH:MM:SS or MM:SS)"
 
-#: src/containers/Profile/ProfileEditForm.tsx:730
-#: src/containers/Profile/ProfileEditForm.tsx:750
+#: src/containers/Profile/ProfileEditForm.tsx:861
+#: src/containers/Profile/ProfileEditForm.tsx:885
 msgid "Invalid time format (use MM:SS or HH:MM:SS)"
 msgstr "Invalid time format (use MM:SS or HH:MM:SS)"
 
@@ -667,15 +682,15 @@ msgstr "Invalid time format (use MM:SS or HH:MM:SS)"
 msgid "Invalid token"
 msgstr "Invalid token"
 
-#: src/containers/Profile/ProfileEditForm.tsx:525
+#: src/containers/Profile/ProfileEditForm.tsx:744
 msgid "Invalid website URL"
 msgstr "Invalid website URL"
 
-#: src/containers/Profile/ProfileEditForm.tsx:443
+#: src/containers/Profile/ProfileEditForm.tsx:661
 msgid "Invalid YouTube profile URL"
 msgstr "Invalid YouTube profile URL"
 
-#: src/containers/Profile/Profile.tsx:477
+#: src/containers/Profile/Profile.tsx:556
 #: src/containers/PublicProfile/PublicProfile.tsx:567
 msgid "Joined"
 msgstr "Joined"
@@ -696,17 +711,17 @@ msgstr "Language changed to English"
 msgid "Language changed to Italian"
 msgstr "Language changed to Italian"
 
-#: src/containers/Profile/ProfileEditForm.tsx:254
+#: src/containers/Profile/ProfileEditForm.tsx:339
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:475
 msgid "Last Name"
 msgstr "Last Name"
 
-#: src/containers/Profile/ProfileEditForm.tsx:260
+#: src/containers/Profile/ProfileEditForm.tsx:345
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:482
 msgid "Last name is required"
 msgstr "Last name is required"
 
-#: src/containers/Profile/ProfileEditForm.tsx:263
+#: src/containers/Profile/ProfileEditForm.tsx:348
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:485
 msgid "Last name must be 50 characters or less"
 msgstr "Last name must be 50 characters or less"
@@ -752,15 +767,16 @@ msgstr "Manage User Roles"
 msgid "Manage users, roles, and account status."
 msgstr "Manage users, roles, and account status."
 
+#: src/containers/Profile/Profile.tsx:968
 #: src/containers/PublicProfile/PublicProfile.tsx:978
 msgid "Marathon"
 msgstr "Marathon"
 
-#: src/containers/Profile/ProfileEditForm.tsx:780
+#: src/containers/Profile/ProfileEditForm.tsx:920
 msgid "Marathon Time"
 msgstr "Marathon Time"
 
-#: src/containers/Profile/ProfileEditForm.tsx:599
+#: src/containers/Profile/ProfileEditForm.tsx:484
 msgid "Max 500 characters"
 msgstr "Max 500 characters"
 
@@ -824,7 +840,7 @@ msgstr "Nickname must be at least 3 characters"
 msgid "No notifications yet"
 msgstr "No notifications yet"
 
-#: src/containers/Profile/Profile.tsx:589
+#: src/containers/Profile/Profile.tsx:855
 msgid "No sports selected yet."
 msgstr "No sports selected yet."
 
@@ -908,7 +924,8 @@ msgstr "Password is required"
 msgid "Password must be at least 8 characters"
 msgstr "Password must be at least 8 characters"
 
-#: src/containers/Profile/ProfileEditForm.tsx:712
+#: src/containers/Profile/Profile.tsx:875
+#: src/containers/Profile/ProfileEditForm.tsx:840
 #: src/containers/PublicProfile/PublicProfile.tsx:885
 msgid "Personal Achievements"
 msgstr "Personal Achievements"
@@ -917,11 +934,12 @@ msgstr "Personal Achievements"
 msgid "Personal Details"
 msgstr "Personal Details"
 
-#: src/containers/Profile/ProfileEditForm.tsx:655
+#: src/containers/Profile/ProfileEditForm.tsx:771
 msgid "Personal Stats"
 msgstr "Personal Stats"
 
-#: src/containers/Profile/ProfileEditForm.tsx:507
+#: src/containers/Profile/Profile.tsx:810
+#: src/containers/Profile/ProfileEditForm.tsx:726
 #: src/containers/PublicProfile/PublicProfile.tsx:824
 msgid "Personal Website"
 msgstr "Personal Website"
@@ -955,17 +973,18 @@ msgid "Please verify your email address for enhanced security."
 msgstr "Please verify your email address for enhanced security."
 
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:30
+#: src/containers/Profile/ProfileEditForm.tsx:305
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:381
 msgid "Privacy"
 msgstr "Privacy"
 
 #. placeholder {0}: getLabel(value)
-#: src/containers/Profile/ProfileEditForm.tsx:125
+#: src/containers/Profile/ProfileEditForm.tsx:153
 msgid "Privacy: {0}"
 msgstr "Privacy: {0}"
 
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:62
-#: src/containers/Profile/ProfileEditForm.tsx:117
+#: src/containers/Profile/ProfileEditForm.tsx:145
 msgid "Private"
 msgstr "Private"
 
@@ -975,7 +994,7 @@ msgstr "Processing..."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:218
 #: src/containers/MainContainer/MainContainer.tsx:54
-#: src/containers/Profile/Profile.tsx:127
+#: src/containers/Profile/Profile.tsx:159
 msgid "Profile"
 msgstr "Profile"
 
@@ -991,7 +1010,11 @@ msgstr "Profile created but failed to upload profile picture. You can add it lat
 msgid "Profile created successfully!"
 msgstr "Profile created successfully!"
 
-#: src/containers/Profile/Profile.tsx:292
+#: src/containers/Profile/ProfileEditForm.tsx:270
+msgid "Profile edit tabs"
+msgstr "Profile edit tabs"
+
+#: src/containers/Profile/Profile.tsx:333
 msgid "Profile not found"
 msgstr "Profile not found"
 
@@ -1000,7 +1023,7 @@ msgstr "Profile not found"
 msgid "Profile Picture"
 msgstr "Profile Picture"
 
-#: src/containers/Profile/ProfileEditForm.tsx:838
+#: src/containers/Profile/ProfileEditForm.tsx:1004
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:910
 msgid "Profile Picture Privacy"
 msgstr "Profile Picture Privacy"
@@ -1013,13 +1036,13 @@ msgstr "Profile picture removed successfully!"
 msgid "Profile picture updated successfully!"
 msgstr "Profile picture updated successfully!"
 
-#: src/containers/Profile/Profile.tsx:254
+#: src/containers/Profile/Profile.tsx:295
 msgid "Profile updated successfully!"
 msgstr "Profile updated successfully!"
 
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:58
-#: src/containers/Profile/ProfileEditForm.tsx:113
-#: src/containers/Profile/ProfileEditForm.tsx:119
+#: src/containers/Profile/ProfileEditForm.tsx:141
+#: src/containers/Profile/ProfileEditForm.tsx:147
 msgid "Public"
 msgstr "Public"
 
@@ -1095,12 +1118,12 @@ msgstr "Running"
 msgid "Save"
 msgstr "Save"
 
-#: src/containers/Profile/ProfileEditForm.tsx:883
+#: src/containers/Profile/ProfileEditForm.tsx:1061
 msgid "Save Changes"
 msgstr "Save Changes"
 
 #: src/containers/Administration/EditRolesDialog.tsx:165
-#: src/containers/Profile/ProfileEditForm.tsx:883
+#: src/containers/Profile/ProfileEditForm.tsx:1061
 msgid "Saving..."
 msgstr "Saving..."
 
@@ -1120,7 +1143,7 @@ msgstr "Security"
 msgid "Security Key"
 msgstr "Security Key"
 
-#: src/containers/Profile/ProfileEditForm.tsx:317
+#: src/containers/Profile/ProfileEditForm.tsx:523
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
@@ -1159,25 +1182,30 @@ msgstr "Sign Up"
 msgid "SMS"
 msgstr "SMS"
 
-#: src/containers/Profile/Profile.tsx:496
+#: src/containers/Profile/Profile.tsx:673
 #: src/containers/PublicProfile/PublicProfile.tsx:687
 msgid "Social"
 msgstr "Social"
+
+#: src/containers/Profile/ProfileEditForm.tsx:291
+msgid "Social Links"
+msgstr "Social Links"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:898
 msgid "Social Links Privacy"
 msgstr "Social Links Privacy"
 
-#: src/containers/Profile/ProfileEditForm.tsx:309
-#: src/containers/Profile/ProfileEditForm.tsx:325
+#: src/containers/Profile/ProfileEditForm.tsx:515
+#: src/containers/Profile/ProfileEditForm.tsx:531
 msgid "Sport Types"
 msgstr "Sport Types"
 
+#: src/containers/Profile/ProfileEditForm.tsx:284
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:379
 msgid "Sports"
 msgstr "Sports"
 
-#: src/containers/Profile/Profile.tsx:565
+#: src/containers/Profile/Profile.tsx:831
 #: src/containers/PublicProfile/PublicProfile.tsx:846
 msgid "Sports & Activities"
 msgstr "Sports & Activities"
@@ -1186,13 +1214,17 @@ msgstr "Sports & Activities"
 msgid "Sports Privacy"
 msgstr "Sports Privacy"
 
+#: src/containers/Profile/ProfileEditForm.tsx:298
+msgid "Stats & Achievements"
+msgstr "Stats & Achievements"
+
 #: src/containers/Administration/Administration.tsx:302
 #: src/containers/Administration/Administration.tsx:305
 #: src/containers/Administration/Administration.tsx:359
 msgid "Status"
 msgstr "Status"
 
-#: src/containers/Profile/ProfileEditForm.tsx:369
+#: src/containers/Profile/ProfileEditForm.tsx:586
 msgid "Strava Profile"
 msgstr "Strava Profile"
 
@@ -1237,7 +1269,7 @@ msgstr "Switched to dark theme"
 msgid "Switched to light theme"
 msgstr "Switched to light theme"
 
-#: src/containers/Profile/ProfileEditForm.tsx:593
+#: src/containers/Profile/ProfileEditForm.tsx:477
 msgid "Tell us about yourself..."
 msgstr "Tell us about yourself..."
 
@@ -1294,7 +1326,7 @@ msgstr "This username is already in use"
 msgid "This will be your public username"
 msgstr "This will be your public username"
 
-#: src/containers/Profile/ProfileEditForm.tsx:480
+#: src/containers/Profile/ProfileEditForm.tsx:698
 msgid "TikTok Profile"
 msgstr "TikTok Profile"
 
@@ -1426,15 +1458,20 @@ msgstr "Walking"
 msgid "WebAuthn"
 msgstr "WebAuthn"
 
+#: src/containers/Profile/Profile.tsx:645
 #: src/containers/PublicProfile/PublicProfile.tsx:658
 msgid "Weight"
 msgstr "Weight"
 
-#: src/containers/Profile/ProfileEditForm.tsx:679
+#: src/containers/Profile/ProfileEditForm.tsx:801
 msgid "Weight (kg)"
 msgstr "Weight (kg)"
 
-#: src/containers/Profile/ProfileEditForm.tsx:689
+#: src/containers/Profile/ProfileEditForm.tsx:815
+msgid "Weight must be a number"
+msgstr "Weight must be a number"
+
+#: src/containers/Profile/ProfileEditForm.tsx:816
 msgid "Weight must be positive"
 msgstr "Weight must be positive"
 
@@ -1442,6 +1479,7 @@ msgstr "Weight must be positive"
 msgid "Who can see your information?"
 msgstr "Who can see your information?"
 
+#: src/containers/Profile/Profile.tsx:576
 #: src/containers/PublicProfile/PublicProfile.tsx:589
 msgid "years old"
 msgstr "years old"
@@ -1458,7 +1496,7 @@ msgstr "You can select up to 5 sports"
 msgid "You can skip this step and add photos later."
 msgstr "You can skip this step and add photos later."
 
-#: src/containers/Profile/ProfileEditForm.tsx:289
+#: src/containers/Profile/ProfileEditForm.tsx:374
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:561
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:569
 msgid "You must be at least 13 years old"
@@ -1516,7 +1554,7 @@ msgstr "Your password is too common. Choose a more secure one"
 msgid "Your session has expired. Please log in again"
 msgstr "Your session has expired. Please log in again"
 
-#: src/containers/Profile/ProfileEditForm.tsx:424
+#: src/containers/Profile/ProfileEditForm.tsx:642
 msgid "YouTube Channel"
 msgstr "YouTube Channel"
 
