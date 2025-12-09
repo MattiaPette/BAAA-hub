@@ -210,9 +210,10 @@ export const updateCurrentUser = async (ctx: AuthContext): Promise<void> => {
     user.description = data.description || undefined;
   if (data.cityRegion !== undefined)
     user.cityRegion = data.cityRegion || undefined;
-  if (data.personalStats !== undefined) user.personalStats = data.personalStats;
+  if (data.personalStats !== undefined)
+    user.personalStats = data.personalStats ?? undefined;
   if (data.personalAchievements !== undefined)
-    user.personalAchievements = data.personalAchievements;
+    user.personalAchievements = data.personalAchievements ?? undefined;
   if (data.privacySettings !== undefined)
     user.privacySettings = data.privacySettings;
 
