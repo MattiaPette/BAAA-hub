@@ -13,6 +13,7 @@ import { Profile } from '../../Profile/Profile';
 import { ProfileSetup } from '../../ProfileSetup/ProfileSetup';
 import { Administration } from '../../Administration/Administration';
 import { PublicProfile } from '../../PublicProfile/PublicProfile';
+import { Tracker } from '../../Tracker/Tracker';
 
 import { Loader } from '../../../components/commons/feedbacks/Loader/Loader';
 
@@ -120,6 +121,14 @@ const PublicFirstRoutes: FC = () => {
                 element: (
                   <AuthenticatedRoute>
                     <Profile />
+                  </AuthenticatedRoute>
+                ),
+              },
+              {
+                path: '/tracker',
+                element: (
+                  <AuthenticatedRoute>
+                    <Tracker />
                   </AuthenticatedRoute>
                 ),
               },
