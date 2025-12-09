@@ -10,13 +10,11 @@ import { CalendarView } from '../../components/tracker/CalendarView/CalendarView
 import { AgendaView } from '../../components/tracker/AgendaView/AgendaView';
 import { AddWorkoutDialog } from '../../components/tracker/AddWorkoutDialog/AddWorkoutDialog';
 import { WorkoutDetailsDialog } from '../../components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog';
-import { GoalsProgress } from '../../components/tracker/GoalsProgress/GoalsProgress';
 import {
   mockCalendars,
   mockWorkouts as initialMockWorkouts,
 } from '../../data/mockTrackerData';
 import { WorkoutType, Workout } from '../../types/tracker';
-import { useUser } from '../../providers/UserProvider/UserProvider';
 
 /**
  * Tracker container component
@@ -31,7 +29,6 @@ export const Tracker: FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { setTitle } = useBreadcrum();
   const { i18n } = useLingui();
-  const { user } = useUser();
 
   // Set breadcrumb title
   useEffect(() => {
@@ -145,19 +142,6 @@ export const Tracker: FC = () => {
           overflow: 'auto',
         }}
       >
-        {/* Goals Progress - shown if user has goals set */}
-        {user?.workoutGoals && (
-          <GoalsProgress
-            goals={user.workoutGoals}
-            currentWeekKm={0}
-            currentMonthKm={0}
-            currentYearKm={0}
-            currentWeekActivities={0}
-            currentMonthActivities={0}
-            currentYearActivities={0}
-          />
-        )}
-
         <CalendarHeader
           currentMonth={currentMonth}
           onPreviousMonth={handlePreviousMonth}
