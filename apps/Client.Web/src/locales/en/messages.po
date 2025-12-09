@@ -74,6 +74,12 @@ msgstr "Actions"
 msgid "Active"
 msgstr "Active"
 
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:132
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:157
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:182
+msgid "Activities"
+msgstr "Activities"
+
 #: src/components/settings/TrainingGoals/TrainingGoals.tsx:239
 msgid "Activity Count Goals"
 msgstr "Activity Count Goals"
@@ -297,6 +303,10 @@ msgstr "Community recognition"
 msgid "Community Star"
 msgstr "Community Star"
 
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:91
+msgid "Complete"
+msgstr "Complete"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:969
 msgid "Complete Your Profile"
 msgstr "Complete Your Profile"
@@ -384,6 +394,12 @@ msgstr "Description must be 500 characters or less"
 #: src/containers/Administration/Administration.tsx:334
 msgid "Disabled"
 msgstr "Disabled"
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:126
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:151
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:176
+msgid "Distance"
+msgstr "Distance"
 
 #: src/components/settings/TrainingGoals/TrainingGoals.tsx:191
 msgid "Distance Goals"
@@ -645,6 +661,10 @@ msgstr "Gaming features access"
 #: src/containers/Profile/ProfileEditForm.tsx:670
 msgid "Garmin Connect Profile"
 msgstr "Garmin Connect Profile"
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:112
+msgid "Goals Progress"
+msgstr "Goals Progress"
 
 #: src/components/tracker/AgendaView/AgendaView.tsx:43
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
@@ -955,6 +975,10 @@ msgstr "Nickname must be 30 characters or less"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:536
 msgid "Nickname must be at least 3 characters"
 msgstr "Nickname must be at least 3 characters"
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:52
+msgid "No goals set yet. Visit Settings → Training Goals to set your workout goals."
+msgstr "No goals set yet. Visit Settings → Training Goals to set your workout goals."
 
 #: src/components/settings/TrainingGoals/TrainingGoals.tsx:408
 msgid "No monthly activity type goals set. Click \"Add Goal\" to create one."
@@ -1506,6 +1530,10 @@ msgstr "There is already a user with this email address"
 msgid "This email is already registered."
 msgstr "This email is already registered."
 
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:148
+msgid "This Month"
+msgstr "This Month"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:245
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:411
 msgid "This nickname is already taken"
@@ -1527,6 +1555,10 @@ msgstr "This password has been compromised in a data breach. Please choose a dif
 msgid "This username is already in use"
 msgstr "This username is already in use"
 
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:123
+msgid "This Week"
+msgstr "This Week"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:503
 msgid "This will be your public username"
 msgstr "This will be your public username"
@@ -1534,6 +1566,10 @@ msgstr "This will be your public username"
 #: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:115
 msgid "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
 msgstr "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:173
+msgid "This Year"
+msgstr "This Year"
 
 #: src/components/tracker/CalendarView/CalendarView.tsx:40
 msgid "Thu"
@@ -1567,7 +1603,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:35
+#: src/containers/Tracker/Tracker.tsx:38
 msgid "Tracker"
 msgstr "Tracker"
 
