@@ -17,6 +17,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { format } from 'date-fns';
+import { enUS, it } from 'date-fns/locale';
+import { useLingui } from '@lingui/react';
 
 import { getWorkoutTypeLabel } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { WorkoutDetailsDialogProps } from './WorkoutDetailsDialog.model';
@@ -32,6 +34,8 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const { i18n } = useLingui();
+
   if (!workout) {
     return null;
   }
@@ -48,6 +52,9 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
 
   const startTime = `${String(workout.startHour).padStart(2, '0')}:${String(workout.startMinute).padStart(2, '0')}`;
   const endTime = `${String(workout.endHour).padStart(2, '0')}:${String(workout.endMinute).padStart(2, '0')}`;
+
+  // Map lingui locale to date-fns locale
+  const dateFnsLocale = i18n.locale === 'it' ? it : enUS;
 
   return (
     <Dialog
@@ -85,7 +92,7 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
               <Trans>Date</Trans>
             </Typography>
             <Typography variant="body1">
-              {format(workout.date, 'PPP')}
+              {format(workout.date, 'PPP', { locale: dateFnsLocale })}
             </Typography>
           </Box>
 
@@ -120,9 +127,12 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
           onClick={handleDelete}
           startIcon={<DeleteIcon />}
           color="error"
+          variant="text"
           sx={{
+            color: theme => theme.palette.error.main,
             '&:hover': {
-              backgroundColor: theme => theme.palette.error.dark,
+              backgroundColor: theme => theme.palette.error.main,
+              color: theme => theme.palette.error.contrastText,
             },
           }}
         >
@@ -132,15 +142,13 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
         <Button
           onClick={handleEdit}
           startIcon={<EditIcon />}
+          color="primary"
+          variant="text"
           sx={{
-            '& .MuiSvgIcon-root': {
-              color: theme => theme.palette.accent.main,
-            },
-            '&:hover .MuiSvgIcon-root': {
-              color: theme => theme.palette.text.primary,
-            },
+            color: theme => theme.palette.primary.main,
             '&:hover': {
-              backgroundColor: theme => theme.palette.action.hover,
+              backgroundColor: theme => theme.palette.primary.main,
+              color: theme => theme.palette.primary.contrastText,
             },
           }}
         >

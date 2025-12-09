@@ -172,9 +172,13 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
           <Button
             onClick={onClose}
             startIcon={<CloseIcon />}
+            color="error"
+            variant="text"
             sx={{
+              color: theme => theme.palette.error.main,
               '&:hover': {
-                backgroundColor: theme => theme.palette.error.dark,
+                backgroundColor: theme => theme.palette.error.main,
+                color: theme => theme.palette.error.contrastText,
               },
             }}
           >
@@ -183,13 +187,11 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
           <Button
             onClick={handleSubmit}
             startIcon={<CheckIcon />}
+            color="success"
+            variant="contained"
             sx={{
-              '& .MuiSvgIcon-root': {
-                color: theme => theme.palette.accent.main,
-              },
-              '&:hover .MuiSvgIcon-root': {
-                color: theme => theme.palette.text.primary,
-              },
+              backgroundColor: theme => theme.palette.success.main,
+              color: theme => theme.palette.success.contrastText,
               '&:hover': {
                 backgroundColor: theme => theme.palette.success.dark,
               },
