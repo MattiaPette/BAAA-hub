@@ -14,6 +14,7 @@ import { useLingui } from '@lingui/react';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { CalendarHeader } from '../../components/tracker/CalendarHeader/CalendarHeader';
 import { CalendarView } from '../../components/tracker/CalendarView/CalendarView';
+import { AgendaView } from '../../components/tracker/AgendaView/AgendaView';
 import { CalendarSidebar } from '../../components/tracker/CalendarSidebar/CalendarSidebar';
 import { AddWorkoutDialog } from '../../components/tracker/AddWorkoutDialog/AddWorkoutDialog';
 import { WorkoutDetailsDialog } from '../../components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog';
@@ -205,12 +206,22 @@ export const Tracker: FC = () => {
           onNextMonth={handleNextMonth}
         />
 
-        <CalendarView
-          currentMonth={currentMonth}
-          workouts={filteredWorkouts}
-          onDayClick={handleDayClick}
-          onWorkoutClick={handleWorkoutClick}
-        />
+        {/* Conditionally render CalendarView or AgendaView based on viewport */}
+        {isMobile ? (
+          <AgendaView
+            currentMonth={currentMonth}
+            workouts={filteredWorkouts}
+            onDayClick={handleDayClick}
+            onWorkoutClick={handleWorkoutClick}
+          />
+        ) : (
+          <CalendarView
+            currentMonth={currentMonth}
+            workouts={filteredWorkouts}
+            onDayClick={handleDayClick}
+            onWorkoutClick={handleWorkoutClick}
+          />
+        )}
       </Box>
 
       {/* Add/Edit Workout Dialog */}

@@ -613,6 +613,7 @@ msgstr "Gaming features access"
 msgid "Garmin Connect Profile"
 msgstr "Garmin Connect Profile"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:43
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
 #: src/helpers/sportTypes/sportTypeLabels.ts:37
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:13
@@ -670,6 +671,7 @@ msgstr "Instagram Profile URL"
 msgid "Install app"
 msgstr "Install app"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:49
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:19
 msgid "Interval Training"
 msgstr "Interval Training"
@@ -819,6 +821,7 @@ msgstr "Logout"
 msgid "Logout page"
 msgstr "Logout page"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:45
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:15
 msgid "Long Run"
 msgstr "Long Run"
@@ -925,6 +928,10 @@ msgstr "No two-factor authentication enabled"
 msgid "No users found"
 msgstr "No users found"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:118
+msgid "No workouts scheduled this month"
+msgstr "No workouts scheduled this month"
+
 #: src/helpers/mfaLabels/mfaLabels.ts:8
 #: src/helpers/mfaLabels/mfaLabels.ts:21
 msgid "None"
@@ -960,7 +967,7 @@ msgstr "One-time codes sent via SMS to your phone number"
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Only letters, numbers, and underscores allowed"
 
-#: src/containers/Tracker/Tracker.tsx:160
+#: src/containers/Tracker/Tracker.tsx:161
 msgid "Open calendar list"
 msgstr "Open calendar list"
 
@@ -1142,6 +1149,7 @@ msgstr "Push notifications via Guardian app"
 msgid "Recommended"
 msgstr "Recommended"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:47
 #: src/helpers/mfaLabels/mfaLabels.ts:27
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:17
 msgid "Recovery"
@@ -1190,6 +1198,7 @@ msgstr "Roles"
 msgid "Rows per page:"
 msgstr "Rows per page:"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:41
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:11
 msgid "Run"
 msgstr "Run"
@@ -1471,7 +1480,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:42
+#: src/containers/Tracker/Tracker.tsx:43
 msgid "Tracker"
 msgstr "Tracker"
 
@@ -1621,6 +1630,10 @@ msgstr "Weight must be positive"
 msgid "Who can see your information?"
 msgstr "Who can see your information?"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:144
+msgid "workout"
+msgstr "workout"
+
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:84
 msgid "Workout Details"
 msgstr "Workout Details"
@@ -1630,6 +1643,10 @@ msgstr "Workout Details"
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:104
 msgid "Workout Type"
 msgstr "Workout Type"
+
+#: src/components/tracker/AgendaView/AgendaView.tsx:144
+msgid "workouts"
+msgstr "workouts"
 
 #: src/containers/Profile/Profile.tsx:576
 #: src/containers/PublicProfile/PublicProfile.tsx:589
