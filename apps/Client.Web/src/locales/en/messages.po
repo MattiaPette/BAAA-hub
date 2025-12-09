@@ -82,8 +82,8 @@ msgstr "Active"
 msgid "Add a profile picture and banner to personalize your profile"
 msgstr "Add a profile picture and banner to personalize your profile"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:101
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:201
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:160
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:269
 msgid "Add Workout"
 msgstr "Add Workout"
 
@@ -204,7 +204,7 @@ msgid "Blocked"
 msgstr "Blocked"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:181
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:251
 #: src/containers/Administration/EditRolesDialog.tsx:158
 #: src/containers/Profile/ProfileEditForm.tsx:1058
 msgid "Cancel"
@@ -252,8 +252,8 @@ msgstr "Click to upload banner"
 msgid "Close"
 msgstr "Close"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:92
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:71
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:151
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:78
 msgid "Close dialog"
 msgstr "Close dialog"
 
@@ -328,7 +328,7 @@ msgstr "Cycling"
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:85
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:92
 msgid "Date"
 msgstr "Date"
 
@@ -348,7 +348,7 @@ msgstr "Date of birth is required"
 msgid "Date of Birth Privacy"
 msgstr "Date of Birth Privacy"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:129
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:139
 msgid "Delete"
 msgstr "Delete"
 
@@ -372,7 +372,7 @@ msgstr "Drag to reposition, scroll or use slider to zoom"
 msgid "e.g., Milan, Lombardy"
 msgstr "e.g., Milan, Lombardy"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:147
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:155
 msgid "Edit"
 msgstr "Edit"
 
@@ -391,7 +391,7 @@ msgstr "Edit Profile"
 msgid "Edit Roles for {0} {1}"
 msgstr "Edit Roles for {0} {1}"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:99
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:158
 msgid "Edit Workout"
 msgstr "Edit Workout"
 
@@ -442,21 +442,25 @@ msgstr "Email Verified"
 msgid "Enabled"
 msgstr "Enabled"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:155
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:221
 msgid "End hour"
 msgstr "End hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:151
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:217
 msgid "End Hour"
 msgstr "End Hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:163
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:229
 msgid "End minute"
 msgstr "End minute"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:159
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:225
 msgid "End Minute"
 msgstr "End Minute"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:108
+msgid "End time must be after start time"
+msgstr "End time must be after start time"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:457
 msgid "Enter your first name"
@@ -1299,19 +1303,19 @@ msgstr "Sports & Activities"
 msgid "Sports Privacy"
 msgstr "Sports Privacy"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:135
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:201
 msgid "Start hour"
 msgstr "Start hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:131
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:197
 msgid "Start Hour"
 msgstr "Start Hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:143
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:209
 msgid "Start minute"
 msgstr "Start minute"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:139
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:205
 msgid "Start Minute"
 msgstr "Start Minute"
 
@@ -1431,6 +1435,10 @@ msgstr "This username is already in use"
 msgid "This will be your public username"
 msgstr "This will be your public username"
 
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:115
+msgid "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
+msgstr "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
+
 #: src/components/tracker/CalendarView/CalendarView.tsx:40
 msgid "Thu"
 msgstr "Thu"
@@ -1439,7 +1447,7 @@ msgstr "Thu"
 msgid "TikTok Profile"
 msgstr "TikTok Profile"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:109
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:116
 msgid "Time"
 msgstr "Time"
 
@@ -1513,7 +1521,7 @@ msgstr "Unknown"
 msgid "Unknown Sport"
 msgstr "Unknown Sport"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:199
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:267
 msgid "Update Workout"
 msgstr "Update Workout"
 
@@ -1613,13 +1621,13 @@ msgstr "Weight must be positive"
 msgid "Who can see your information?"
 msgstr "Who can see your information?"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:77
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:84
 msgid "Workout Details"
 msgstr "Workout Details"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:111
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:117
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:97
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:177
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:183
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:104
 msgid "Workout Type"
 msgstr "Workout Type"
 

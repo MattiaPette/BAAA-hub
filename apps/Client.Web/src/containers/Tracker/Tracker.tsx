@@ -223,6 +223,7 @@ export const Tracker: FC = () => {
         onSubmit={handleAddWorkout}
         selectedDate={selectedDate}
         editingWorkout={editingWorkout}
+        existingWorkouts={workouts}
       />
 
       {/* Workout Details Dialog */}

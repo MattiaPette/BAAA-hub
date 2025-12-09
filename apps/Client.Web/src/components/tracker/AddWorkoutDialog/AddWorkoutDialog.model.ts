@@ -14,4 +14,5 @@ export interface AddWorkoutDialogProps {
   ) => void;
   selectedDate: Date | null;
   editingWorkout?: Workout | null;
+  existingWorkouts: Workout[];
 }

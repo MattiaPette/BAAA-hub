@@ -12,11 +12,13 @@ import {
   TextField,
   Stack,
   IconButton,
+  Alert,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
+import { isSameDay } from 'date-fns';
 
 import { WorkoutType } from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
@@ -25,6 +27,7 @@ import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 /**
  * AddWorkoutDialog component for adding or editing workouts
  * Allows users to specify start time, end time, and workout type
+ * Validates that workouts don't overlap with existing workouts on the same day
  */
 export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   open,
@@ -32,12 +35,14 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   onSubmit,
   selectedDate,
   editingWorkout,
+  existingWorkouts,
 }) => {
   const [startHour, setStartHour] = useState<number>(6);
   const [startMinute, setStartMinute] = useState<number>(0);
   const [endHour, setEndHour] = useState<number>(7);
   const [endMinute, setEndMinute] = useState<number>(0);
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.RUN);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
   useEffect(() => {
@@ -47,6 +52,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndHour(editingWorkout.endHour);
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
+      setValidationError(null);
     } else if (!editingWorkout && open) {
       // Reset to defaults when adding new
       setStartHour(6);
@@ -54,10 +60,63 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndHour(7);
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
+      setValidationError(null);
     }
   }, [editingWorkout, open]);
 
+  /**
+   * Checks if the new workout time overlaps with existing workouts
+   * Returns true if there's an overlap, false otherwise
+   */
+  const checkTimeOverlap = (): boolean => {
+    if (!selectedDate) return false;
+
+    // Convert times to minutes for easier comparison
+    const newStartMinutes = startHour * 60 + startMinute;
+    const newEndMinutes = endHour * 60 + endMinute;
+
+    // Get workouts for the selected day (excluding the one being edited)
+    const dayWorkouts = existingWorkouts.filter(
+      w =>
+        isSameDay(w.date, selectedDate) &&
+        (!editingWorkout || w.id !== editingWorkout.id),
+    );
+
+    // Check if any existing workout overlaps with the new time
+    return dayWorkouts.some(workout => {
+      const existingStartMinutes = workout.startHour * 60 + workout.startMinute;
+      const existingEndMinutes = workout.endHour * 60 + workout.endMinute;
+
+      // Check if times overlap:
+      // New workout starts before existing ends AND new workout ends after existing starts
+      return (
+        newStartMinutes < existingEndMinutes &&
+        newEndMinutes > existingStartMinutes
+      );
+    });
+  };
+
   const handleSubmit = () => {
+    // Clear previous errors
+    setValidationError(null);
+
+    // Validate end time is after start time
+    const startMinutes = startHour * 60 + startMinute;
+    const endMinutes = endHour * 60 + endMinute;
+
+    if (endMinutes <= startMinutes) {
+      setValidationError(t`End time must be after start time`);
+      return;
+    }
+
+    // Check for overlapping workouts
+    if (checkTimeOverlap()) {
+      setValidationError(
+        t`This workout overlaps with an existing workout. The previous workout must finish before this one starts.`,
+      );
+      return;
+    }
+
     onSubmit({
       startHour,
       startMinute,
@@ -105,6 +164,13 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
 
       <DialogContent>
         <Stack spacing={3} sx={{ mt: 2 }}>
+          {/* Validation Error */}
+          {validationError && (
+            <Alert severity="error" onClose={() => setValidationError(null)}>
+              {validationError}
+            </Alert>
+          )}
+
           {/* Workout Type */}
           <FormControl fullWidth>
             <InputLabel id="workout-type-label">
