@@ -21,10 +21,11 @@ describe('Tracker', () => {
     expect(screen.getByText(/fri/i)).toBeInTheDocument();
   });
 
-  it('should display calendar sidebar on desktop', () => {
+  it('should display calendar selector', () => {
     render(<Tracker />);
 
-    // Should show "Available Calendars" heading
-    expect(screen.getByText(/available calendars/i)).toBeInTheDocument();
+    // Should show calendar selector with default calendar
+    expect(screen.getByRole('combobox')).toBeInTheDocument();
+    expect(screen.getByText(/john athlete/i)).toBeInTheDocument();
   });
 });

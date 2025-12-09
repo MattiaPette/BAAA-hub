@@ -330,7 +330,7 @@ msgstr "Modalità scura"
 
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:92
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/containers/Profile/Profile.tsx:533
 #: src/containers/Profile/ProfileEditForm.tsx:361
@@ -350,7 +350,7 @@ msgstr "Privacy Data di Nascita"
 
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:139
 msgid "Delete"
-msgstr ""
+msgstr "Elimina"
 
 #: src/containers/Profile/ProfileEditForm.tsx:489
 msgid "Description must be 500 characters or less"
@@ -374,7 +374,7 @@ msgstr "es., Milano, Lombardia"
 
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:155
 msgid "Edit"
-msgstr ""
+msgstr "Modifica"
 
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:409
 msgid "Edit banner"
@@ -613,6 +613,7 @@ msgstr "Accesso alle funzionalità gaming"
 msgid "Garmin Connect Profile"
 msgstr "Profilo Garmin Connect"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:43
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
 #: src/helpers/sportTypes/sportTypeLabels.ts:37
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:13
@@ -670,6 +671,7 @@ msgstr "URL Profilo Instagram"
 msgid "Install app"
 msgstr "Installa l'app"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:49
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:19
 msgid "Interval Training"
 msgstr "Allenamento a Intervalli"
@@ -819,6 +821,7 @@ msgstr "Esci"
 msgid "Logout page"
 msgstr "Pagina di disconnessione"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:45
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:15
 msgid "Long Run"
 msgstr "Corsa Lunga"
@@ -887,7 +890,7 @@ msgstr "Nuova notifica"
 msgid "Next"
 msgstr "Avanti"
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:62
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:74
 msgid "Next month"
 msgstr "Mese successivo"
 
@@ -925,6 +928,10 @@ msgstr "Autenticazione a due fattori non abilitata"
 msgid "No users found"
 msgstr "Nessun utente trovato"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:118
+msgid "No workouts scheduled this month"
+msgstr "Nessun allenamento programmato questo mese"
+
 #: src/helpers/mfaLabels/mfaLabels.ts:8
 #: src/helpers/mfaLabels/mfaLabels.ts:21
 msgid "None"
@@ -960,9 +967,9 @@ msgstr "Codici monouso inviati via SMS al tuo numero di telefono"
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Sono consentite solo lettere, numeri e underscore"
 
-#: src/containers/Tracker/Tracker.tsx:160
-msgid "Open calendar list"
-msgstr "Apri lista calendari"
+#: src/containers/Tracker/Tracker.tsx:161
+#~ msgid "Open calendar list"
+#~ msgstr "Apri lista calendari"
 
 #: src/containers/PublicContainer/PublicContainer.tsx:234
 msgid "Open menu"
@@ -1048,7 +1055,7 @@ msgstr "Seleziona almeno uno sport"
 msgid "Please verify your email address for enhanced security."
 msgstr "Per favore, verifica il tuo indirizzo email per una maggiore sicurezza."
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:39
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:51
 msgid "Previous month"
 msgstr "Mese precedente"
 
@@ -1142,6 +1149,7 @@ msgstr "Notifiche push tramite app Guardian"
 msgid "Recommended"
 msgstr "Consigliato"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:47
 #: src/helpers/mfaLabels/mfaLabels.ts:27
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:17
 msgid "Recovery"
@@ -1190,6 +1198,7 @@ msgstr "Ruoli"
 msgid "Rows per page:"
 msgstr "Righe per pagina:"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:41
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:11
 msgid "Run"
 msgstr "Corsa"
@@ -1235,6 +1244,10 @@ msgstr "Chiave di Sicurezza"
 #: src/containers/Profile/ProfileEditForm.tsx:523
 msgid "Select at least one sport type"
 msgstr "Seleziona almeno un tipo di sport"
+
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:90
+msgid "Select calendar"
+msgstr "Seleziona calendario"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
 #: src/containers/Settings/Settings.tsx:180
@@ -1449,7 +1462,7 @@ msgstr "Profilo TikTok"
 
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:116
 msgid "Time"
-msgstr ""
+msgstr "Ora"
 
 #: src/helpers/mfaLabels/mfaLabels.ts:35
 msgid "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
@@ -1471,7 +1484,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:42
+#: src/containers/Tracker/Tracker.tsx:35
 msgid "Tracker"
 msgstr "Tracker"
 
@@ -1621,6 +1634,10 @@ msgstr "Il peso deve essere positivo"
 msgid "Who can see your information?"
 msgstr "Chi può vedere le tue informazioni?"
 
+#: src/components/tracker/AgendaView/AgendaView.tsx:144
+msgid "workout"
+msgstr "allenamento"
+
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:84
 msgid "Workout Details"
 msgstr "Dettagli Allenamento"
@@ -1630,6 +1647,10 @@ msgstr "Dettagli Allenamento"
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:104
 msgid "Workout Type"
 msgstr "Tipo di Allenamento"
+
+#: src/components/tracker/AgendaView/AgendaView.tsx:144
+msgid "workouts"
+msgstr "allenamenti"
 
 #: src/containers/Profile/Profile.tsx:576
 #: src/containers/PublicProfile/PublicProfile.tsx:589
