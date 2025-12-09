@@ -890,7 +890,7 @@ msgstr "New notification"
 msgid "Next"
 msgstr "Next"
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:62
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:74
 msgid "Next month"
 msgstr "Next month"
 
@@ -968,8 +968,8 @@ msgid "Only letters, numbers, and underscores allowed"
 msgstr "Only letters, numbers, and underscores allowed"
 
 #: src/containers/Tracker/Tracker.tsx:161
-msgid "Open calendar list"
-msgstr "Open calendar list"
+#~ msgid "Open calendar list"
+#~ msgstr "Open calendar list"
 
 #: src/containers/PublicContainer/PublicContainer.tsx:234
 msgid "Open menu"
@@ -1055,7 +1055,7 @@ msgstr "Please select at least one sport"
 msgid "Please verify your email address for enhanced security."
 msgstr "Please verify your email address for enhanced security."
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:39
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:51
 msgid "Previous month"
 msgstr "Previous month"
 
@@ -1244,6 +1244,10 @@ msgstr "Security Key"
 #: src/containers/Profile/ProfileEditForm.tsx:523
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
+
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:90
+msgid "Select calendar"
+msgstr "Select calendar"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
 #: src/containers/Settings/Settings.tsx:180
@@ -1480,7 +1484,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:43
+#: src/containers/Tracker/Tracker.tsx:35
 msgid "Tracker"
 msgstr "Tracker"
 

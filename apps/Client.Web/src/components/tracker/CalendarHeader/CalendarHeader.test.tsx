@@ -7,7 +7,13 @@ import { CalendarHeader } from './CalendarHeader';
 describe('CalendarHeader', () => {
   const mockOnPreviousMonth = vi.fn();
   const mockOnNextMonth = vi.fn();
+  const mockOnCalendarSelect = vi.fn();
   const currentMonth = new Date(2025, 11, 1); // December 2025
+
+  const mockCalendars = [
+    { id: 'cal-1', name: 'John Athlete', color: '#1976d2', userId: 'user-1' },
+    { id: 'cal-2', name: 'Sarah Runner', color: '#d32f2f', userId: 'user-2' },
+  ];
 
   it('should render month and year', () => {
     render(
@@ -15,6 +21,9 @@ describe('CalendarHeader', () => {
         currentMonth={currentMonth}
         onPreviousMonth={mockOnPreviousMonth}
         onNextMonth={mockOnNextMonth}
+        calendars={mockCalendars}
+        selectedCalendarId="cal-1"
+        onCalendarSelect={mockOnCalendarSelect}
       />,
     );
 
@@ -29,6 +38,9 @@ describe('CalendarHeader', () => {
         currentMonth={currentMonth}
         onPreviousMonth={mockOnPreviousMonth}
         onNextMonth={mockOnNextMonth}
+        calendars={mockCalendars}
+        selectedCalendarId="cal-1"
+        onCalendarSelect={mockOnCalendarSelect}
       />,
     );
 
@@ -44,6 +56,9 @@ describe('CalendarHeader', () => {
         currentMonth={currentMonth}
         onPreviousMonth={mockOnPreviousMonth}
         onNextMonth={mockOnNextMonth}
+        calendars={mockCalendars}
+        selectedCalendarId="cal-1"
+        onCalendarSelect={mockOnCalendarSelect}
       />,
     );
 
@@ -59,10 +74,44 @@ describe('CalendarHeader', () => {
         currentMonth={currentMonth}
         onPreviousMonth={mockOnPreviousMonth}
         onNextMonth={mockOnNextMonth}
+        calendars={mockCalendars}
+        selectedCalendarId="cal-1"
+        onCalendarSelect={mockOnCalendarSelect}
       />,
     );
 
     expect(screen.getByLabelText(/previous month/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/next month/i)).toBeInTheDocument();
+  });
+
+  it('should render calendar selector with correct calendars', () => {
+    render(
+      <CalendarHeader
+        currentMonth={currentMonth}
+        onPreviousMonth={mockOnPreviousMonth}
+        onNextMonth={mockOnNextMonth}
+        calendars={mockCalendars}
+        selectedCalendarId="cal-1"
+        onCalendarSelect={mockOnCalendarSelect}
+      />,
+    );
+
+    // Calendar selector should be present
+    expect(screen.getByRole('combobox')).toBeInTheDocument();
+  });
+
+  it('should display the selected calendar', () => {
+    render(
+      <CalendarHeader
+        currentMonth={currentMonth}
+        onPreviousMonth={mockOnPreviousMonth}
+        onNextMonth={mockOnNextMonth}
+        calendars={mockCalendars}
+        selectedCalendarId="cal-1"
+        onCalendarSelect={mockOnCalendarSelect}
+      />,
+    );
+
+    expect(screen.getByText('John Athlete')).toBeInTheDocument();
   });
 });

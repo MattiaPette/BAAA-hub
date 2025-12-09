@@ -1,12 +1,5 @@
 import { FC, useState, useMemo, useEffect } from 'react';
-import {
-  Box,
-  Drawer,
-  IconButton,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { addMonths, subMonths } from 'date-fns';
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
@@ -15,7 +8,6 @@ import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvide
 import { CalendarHeader } from '../../components/tracker/CalendarHeader/CalendarHeader';
 import { CalendarView } from '../../components/tracker/CalendarView/CalendarView';
 import { AgendaView } from '../../components/tracker/AgendaView/AgendaView';
-import { CalendarSidebar } from '../../components/tracker/CalendarSidebar/CalendarSidebar';
 import { AddWorkoutDialog } from '../../components/tracker/AddWorkoutDialog/AddWorkoutDialog';
 import { WorkoutDetailsDialog } from '../../components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog';
 import {
@@ -49,7 +41,6 @@ export const Tracker: FC = () => {
   );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [workouts, setWorkouts] = useState<Workout[]>(initialMockWorkouts);
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] =
@@ -134,69 +125,20 @@ export const Tracker: FC = () => {
     setWorkouts(prev => prev.filter(w => w.id !== workoutId));
   };
 
-  const sidebar = (
-    <CalendarSidebar
-      calendars={mockCalendars}
-      selectedCalendarId={selectedCalendarId}
-      onCalendarSelect={setSelectedCalendarId}
-    />
-  );
-
   return (
-    <Box sx={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
-      {/* Mobile sidebar toggle */}
-      {isMobile && (
-        <IconButton
-          onClick={() => setIsSidebarOpen(true)}
-          sx={{
-            position: 'fixed',
-            top: 72,
-            left: 16,
-            zIndex: 1200,
-            backgroundColor: theme => theme.palette.background.paper,
-            '&:hover': {
-              backgroundColor: theme => theme.palette.action.hover,
-            },
-          }}
-          aria-label={t`Open calendar list`}
-        >
-          <MenuIcon />
-        </IconButton>
-      )}
-
-      {/* Sidebar - Drawer on mobile, permanent on desktop */}
-      {isMobile ? (
-        <Drawer
-          anchor="left"
-          open={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-          sx={{
-            '& .MuiDrawer-paper': {
-              width: 280,
-              pt: 8,
-            },
-          }}
-        >
-          {sidebar}
-        </Drawer>
-      ) : (
-        <Box
-          sx={{
-            width: 280,
-            flexShrink: 0,
-            p: 2,
-            borderRight: theme => `1px solid ${theme.palette.divider}`,
-          }}
-        >
-          {sidebar}
-        </Box>
-      )}
-
+    <Box
+      sx={{
+        height: '100%',
+        overflow: 'hidden',
+        p: { xs: 2, md: 3 },
+      }}
+    >
       {/* Main calendar area */}
       <Box
         sx={{
-          flexGrow: 1,
-          p: { xs: 2, md: 3 },
+          maxWidth: 1200,
+          margin: '0 auto',
+          height: '100%',
           overflow: 'auto',
         }}
       >
@@ -204,6 +146,9 @@ export const Tracker: FC = () => {
           currentMonth={currentMonth}
           onPreviousMonth={handlePreviousMonth}
           onNextMonth={handleNextMonth}
+          calendars={mockCalendars}
+          selectedCalendarId={selectedCalendarId}
+          onCalendarSelect={setSelectedCalendarId}
         />
 
         {/* Conditionally render CalendarView or AgendaView based on viewport */}
