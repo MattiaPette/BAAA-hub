@@ -76,6 +76,7 @@ export const CalendarView: FC<CalendarViewProps> = ({
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
           gap: 1,
+          width: '100%',
         }}
       >
         {days.map(day => {

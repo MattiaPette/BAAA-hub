@@ -38,6 +38,9 @@ export const CalendarDay: FC<CalendarDayProps> = ({
         '&:hover': {
           backgroundColor: theme => theme.palette.action.hover,
         },
+        width: '100%',
+        maxWidth: '100%',
+        overflow: 'hidden',
       }}
       elevation={hasWorkouts ? 2 : 0}
       role="button"
@@ -95,10 +98,14 @@ export const CalendarDay: FC<CalendarDayProps> = ({
                   backgroundColor: theme => theme.palette.primary.main,
                   color: theme => theme.palette.primary.contrastText,
                   cursor: 'pointer',
+                  maxWidth: '100%',
+                  width: '100%',
                   '& .MuiChip-label': {
                     px: 1,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    display: 'block',
                   },
                   '&:hover': {
                     backgroundColor: theme => theme.palette.primary.dark,
