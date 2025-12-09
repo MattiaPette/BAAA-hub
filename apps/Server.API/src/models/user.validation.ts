@@ -111,6 +111,39 @@ const personalAchievementsSchema = z
   .optional();
 
 /**
+ * Activity type goal schema
+ */
+const activityTypeGoalSchema = z.object({
+  type: z.nativeEnum(SportType),
+  count: z.number().min(0, 'Activity count must be positive'),
+});
+
+/**
+ * Workout goals schema
+ */
+const workoutGoalsSchema = z
+  .object({
+    weeklyKm: z.number().min(0, 'Weekly km goal must be positive').optional(),
+    monthlyKm: z.number().min(0, 'Monthly km goal must be positive').optional(),
+    yearlyKm: z.number().min(0, 'Yearly km goal must be positive').optional(),
+    weeklyActivities: z
+      .number()
+      .min(0, 'Weekly activities goal must be positive')
+      .optional(),
+    monthlyActivities: z
+      .number()
+      .min(0, 'Monthly activities goal must be positive')
+      .optional(),
+    yearlyActivities: z
+      .number()
+      .min(0, 'Yearly activities goal must be positive')
+      .optional(),
+    weeklyActivityTypeGoals: z.array(activityTypeGoalSchema).optional(),
+    monthlyActivityTypeGoals: z.array(activityTypeGoalSchema).optional(),
+  })
+  .optional();
+
+/**
  * Privacy settings schema
  * Note: avatar and banner are optional for backward compatibility with existing users.
  * Mongoose schema provides defaults for these fields.
@@ -225,6 +258,7 @@ export const createUserSchema = z.object({
     .or(z.literal('')),
   personalStats: personalStatsSchema,
   personalAchievements: personalAchievementsSchema,
+  workoutGoals: workoutGoalsSchema,
   privacySettings: privacySettingsSchema,
 });
 
@@ -319,6 +353,7 @@ export const updateUserSchema = z.object({
     .nullable(),
   personalStats: personalStatsSchema.nullable(),
   personalAchievements: personalAchievementsSchema.nullable(),
+  workoutGoals: workoutGoalsSchema.nullable(),
   privacySettings: privacySettingsSchema.optional(),
 });
 

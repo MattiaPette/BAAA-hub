@@ -218,6 +218,38 @@ export interface PersonalAchievements {
 }
 
 /**
+ * Activity type-specific goal for a time period
+ */
+export interface ActivityTypeGoal {
+  /** Type of activity (e.g., RUNNING, GYM) */
+  type: SportType;
+  /** Target number of activities */
+  count: number;
+}
+
+/**
+ * User workout goals configuration
+ */
+export interface WorkoutGoals {
+  /** Weekly distance goal in kilometers */
+  weeklyKm?: number;
+  /** Monthly distance goal in kilometers */
+  monthlyKm?: number;
+  /** Yearly distance goal in kilometers */
+  yearlyKm?: number;
+  /** Weekly activity count goal */
+  weeklyActivities?: number;
+  /** Monthly activity count goal */
+  monthlyActivities?: number;
+  /** Yearly activity count goal */
+  yearlyActivities?: number;
+  /** Weekly goals for specific activity types */
+  weeklyActivityTypeGoals?: ActivityTypeGoal[];
+  /** Monthly goals for specific activity types */
+  monthlyActivityTypeGoals?: ActivityTypeGoal[];
+}
+
+/**
  * Base user data that can be set by the user
  */
 export interface UserProfileData {
@@ -245,6 +277,8 @@ export interface UserProfileData {
   personalStats?: PersonalStats;
   /** Personal running achievements */
   personalAchievements?: PersonalAchievements;
+  /** User workout goals */
+  workoutGoals?: WorkoutGoals;
   stravaLink?: string;
   instagramLink?: string;
   /** YouTube channel or profile link */
