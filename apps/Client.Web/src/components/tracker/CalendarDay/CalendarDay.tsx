@@ -14,6 +14,7 @@ export const CalendarDay: FC<CalendarDayProps> = ({
   isCurrentMonth,
   workouts,
   onDayClick,
+  onWorkoutClick,
 }) => {
   const today = isToday(date);
   const hasWorkouts = workouts.length > 0;
@@ -84,15 +85,23 @@ export const CalendarDay: FC<CalendarDayProps> = ({
                 key={workout.id}
                 label={`${startTime} ${getWorkoutTypeLabel(workout.type)}`}
                 size="small"
+                onClick={e => {
+                  e.stopPropagation();
+                  onWorkoutClick(workout);
+                }}
                 sx={{
                   height: 20,
                   fontSize: '0.7rem',
                   backgroundColor: theme => theme.palette.primary.main,
                   color: theme => theme.palette.primary.contrastText,
+                  cursor: 'pointer',
                   '& .MuiChip-label': {
                     px: 1,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
+                  },
+                  '&:hover': {
+                    backgroundColor: theme => theme.palette.primary.dark,
                   },
                 }}
               />

@@ -1,0 +1,152 @@
+import { FC } from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  Stack,
+  IconButton,
+  Box,
+  Divider,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
+import { format } from 'date-fns';
+
+import { getWorkoutTypeLabel } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
+import { WorkoutDetailsDialogProps } from './WorkoutDetailsDialog.model';
+
+/**
+ * WorkoutDetailsDialog component for viewing and managing workout details
+ * Allows users to view, edit, and delete workout events
+ */
+export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
+  open,
+  onClose,
+  workout,
+  onEdit,
+  onDelete,
+}) => {
+  if (!workout) {
+    return null;
+  }
+
+  const handleEdit = () => {
+    onEdit(workout);
+    onClose();
+  };
+
+  const handleDelete = () => {
+    onDelete(workout.id);
+    onClose();
+  };
+
+  const startTime = `${String(workout.startHour).padStart(2, '0')}:${String(workout.startMinute).padStart(2, '0')}`;
+  const endTime = `${String(workout.endHour).padStart(2, '0')}:${String(workout.endMinute).padStart(2, '0')}`;
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      aria-labelledby="workout-details-dialog-title"
+    >
+      <IconButton
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: theme => theme.palette.grey[500],
+          '&:hover': {
+            backgroundColor: theme => theme.palette.action.hover,
+          },
+        }}
+        aria-label={t`Close dialog`}
+      >
+        <CloseIcon />
+      </IconButton>
+
+      <DialogTitle id="workout-details-dialog-title">
+        <Trans>Workout Details</Trans>
+      </DialogTitle>
+
+      <DialogContent>
+        <Stack spacing={2} sx={{ mt: 1 }}>
+          {/* Date */}
+          <Box>
+            <Typography variant="subtitle2" color="text.secondary">
+              <Trans>Date</Trans>
+            </Typography>
+            <Typography variant="body1">
+              {format(workout.date, 'PPP')}
+            </Typography>
+          </Box>
+
+          <Divider />
+
+          {/* Workout Type */}
+          <Box>
+            <Typography variant="subtitle2" color="text.secondary">
+              <Trans>Workout Type</Trans>
+            </Typography>
+            <Typography variant="body1">
+              {getWorkoutTypeLabel(workout.type)}
+            </Typography>
+          </Box>
+
+          <Divider />
+
+          {/* Time */}
+          <Box>
+            <Typography variant="subtitle2" color="text.secondary">
+              <Trans>Time</Trans>
+            </Typography>
+            <Typography variant="body1">
+              {startTime} - {endTime}
+            </Typography>
+          </Box>
+        </Stack>
+      </DialogContent>
+
+      <DialogActions sx={{ justifyContent: 'space-between', margin: 2 }}>
+        <Button
+          onClick={handleDelete}
+          startIcon={<DeleteIcon />}
+          color="error"
+          sx={{
+            '&:hover': {
+              backgroundColor: theme => theme.palette.error.dark,
+            },
+          }}
+        >
+          <Trans>Delete</Trans>
+        </Button>
+
+        <Button
+          onClick={handleEdit}
+          startIcon={<EditIcon />}
+          sx={{
+            '& .MuiSvgIcon-root': {
+              color: theme => theme.palette.accent.main,
+            },
+            '&:hover .MuiSvgIcon-root': {
+              color: theme => theme.palette.text.primary,
+            },
+            '&:hover': {
+              backgroundColor: theme => theme.palette.action.hover,
+            },
+          }}
+        >
+          <Trans>Edit</Trans>
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};

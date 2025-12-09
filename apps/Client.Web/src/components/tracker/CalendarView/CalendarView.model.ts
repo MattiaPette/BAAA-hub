@@ -4,4 +4,5 @@ export interface CalendarViewProps {
   currentMonth: Date;
   workouts: Workout[];
   onDayClick: (date: Date) => void;
+  onWorkoutClick: (workout: Readonly<Workout>) => void;
 }

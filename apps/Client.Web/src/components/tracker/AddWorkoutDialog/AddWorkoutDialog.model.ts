@@ -1,4 +1,4 @@
-import { WorkoutType } from '../../../types/tracker';
+import { WorkoutType, Workout } from '../../../types/tracker';
 
 export interface AddWorkoutDialogProps {
   open: boolean;
@@ -13,4 +13,5 @@ export interface AddWorkoutDialogProps {
     }>,
   ) => void;
   selectedDate: Date | null;
+  editingWorkout?: Workout | null;
 }

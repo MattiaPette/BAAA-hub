@@ -5,4 +5,5 @@ export interface CalendarDayProps {
   isCurrentMonth: boolean;
   workouts: Workout[];
   onDayClick: (date: Date) => void;
+  onWorkoutClick: (workout: Readonly<Workout>) => void;
 }

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -23,7 +23,7 @@ import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workou
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 
 /**
- * AddWorkoutDialog component for adding workouts to a specific day
+ * AddWorkoutDialog component for adding or editing workouts
  * Allows users to specify start time, end time, and workout type
  */
 export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
@@ -31,12 +31,31 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   onClose,
   onSubmit,
   selectedDate,
+  editingWorkout,
 }) => {
   const [startHour, setStartHour] = useState<number>(6);
   const [startMinute, setStartMinute] = useState<number>(0);
   const [endHour, setEndHour] = useState<number>(7);
   const [endMinute, setEndMinute] = useState<number>(0);
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.RUN);
+
+  // Populate form when editing
+  useEffect(() => {
+    if (editingWorkout && open) {
+      setStartHour(editingWorkout.startHour);
+      setStartMinute(editingWorkout.startMinute);
+      setEndHour(editingWorkout.endHour);
+      setEndMinute(editingWorkout.endMinute);
+      setWorkoutType(editingWorkout.type);
+    } else if (!editingWorkout && open) {
+      // Reset to defaults when adding new
+      setStartHour(6);
+      setStartMinute(0);
+      setEndHour(7);
+      setEndMinute(0);
+      setWorkoutType(WorkoutType.RUN);
+    }
+  }, [editingWorkout, open]);
 
   const handleSubmit = () => {
     onSubmit({
@@ -76,7 +95,11 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       </IconButton>
 
       <DialogTitle id="add-workout-dialog-title">
-        <Trans>Add Workout</Trans>
+        {editingWorkout ? (
+          <Trans>Edit Workout</Trans>
+        ) : (
+          <Trans>Add Workout</Trans>
+        )}
         {selectedDate && ` - ${selectedDate.toLocaleDateString()}`}
       </DialogTitle>
 
@@ -172,7 +195,11 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
               },
             }}
           >
-            <Trans>Add Workout</Trans>
+            {editingWorkout ? (
+              <Trans>Update Workout</Trans>
+            ) : (
+              <Trans>Add Workout</Trans>
+            )}
           </Button>
         </Stack>
       </DialogActions>

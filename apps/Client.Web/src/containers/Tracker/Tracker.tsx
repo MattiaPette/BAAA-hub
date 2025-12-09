@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from 'react';
+import { FC, useState, useMemo, useEffect } from 'react';
 import {
   Box,
   Drawer,
@@ -9,18 +9,24 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { addMonths, subMonths } from 'date-fns';
 import { t } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
 
+import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
 import { CalendarHeader } from '../../components/tracker/CalendarHeader/CalendarHeader';
 import { CalendarView } from '../../components/tracker/CalendarView/CalendarView';
 import { CalendarSidebar } from '../../components/tracker/CalendarSidebar/CalendarSidebar';
 import { AddWorkoutDialog } from '../../components/tracker/AddWorkoutDialog/AddWorkoutDialog';
-import { mockCalendars, mockWorkouts } from '../../data/mockTrackerData';
-import { WorkoutType } from '../../types/tracker';
+import { WorkoutDetailsDialog } from '../../components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog';
+import {
+  mockCalendars,
+  mockWorkouts as initialMockWorkouts,
+} from '../../data/mockTrackerData';
+import { WorkoutType, Workout } from '../../types/tracker';
 
 /**
  * Tracker container component
  * Displays a monthly calendar view for tracking workouts
- * Uses only mocked data - no backend integration
+ * Uses mocked data with working add/edit/delete functionality
  *
  * NOTE: This component uses date-fns (MIT licensed) for date manipulation
  * https://github.com/date-fns/date-fns/blob/main/LICENSE.md
@@ -28,6 +34,13 @@ import { WorkoutType } from '../../types/tracker';
 export const Tracker: FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { setTitle } = useBreadcrum();
+  const { i18n } = useLingui();
+
+  // Set breadcrumb title
+  useEffect(() => {
+    setTitle(t`Tracker`);
+  }, [setTitle, i18n.locale]);
 
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedCalendarId, setSelectedCalendarId] = useState<string>(
@@ -36,12 +49,16 @@ export const Tracker: FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [workouts, setWorkouts] = useState<Workout[]>(initialMockWorkouts);
+  const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] =
+    useState<boolean>(false);
+  const [editingWorkout, setEditingWorkout] = useState<Workout | null>(null);
 
   // Filter workouts by selected calendar
   const filteredWorkouts = useMemo(
-    () =>
-      mockWorkouts.filter(workout => workout.calendarId === selectedCalendarId),
-    [selectedCalendarId],
+    () => workouts.filter(workout => workout.calendarId === selectedCalendarId),
+    [workouts, selectedCalendarId],
   );
 
   const handlePreviousMonth = () => {
@@ -54,11 +71,17 @@ export const Tracker: FC = () => {
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
+    setEditingWorkout(null);
     setIsDialogOpen(true);
   };
 
+  const handleWorkoutClick = (workout: Readonly<Workout>) => {
+    setSelectedWorkout(workout);
+    setIsDetailsDialogOpen(true);
+  };
+
   const handleAddWorkout = (
-    _workout: Readonly<{
+    newWorkoutData: Readonly<{
       startHour: number;
       startMinute: number;
       endHour: number;
@@ -66,9 +89,48 @@ export const Tracker: FC = () => {
       type: WorkoutType;
     }>,
   ) => {
-    // In a real app, this would add the workout to the backend
-    // For now, this is just a UI prototype with mocked data
-    // Workout data would be: { ..._workout, date: selectedDate }
+    if (!selectedDate) return;
+
+    if (editingWorkout) {
+      // Update existing workout
+      setWorkouts(prev =>
+        prev.map(w =>
+          w.id === editingWorkout.id
+            ? {
+                ...w,
+                startHour: newWorkoutData.startHour,
+                startMinute: newWorkoutData.startMinute,
+                endHour: newWorkoutData.endHour,
+                endMinute: newWorkoutData.endMinute,
+                type: newWorkoutData.type,
+              }
+            : w,
+        ),
+      );
+    } else {
+      // Add new workout
+      const newWorkout: Workout = {
+        id: `workout-${Date.now()}`,
+        date: selectedDate,
+        startHour: newWorkoutData.startHour,
+        startMinute: newWorkoutData.startMinute,
+        endHour: newWorkoutData.endHour,
+        endMinute: newWorkoutData.endMinute,
+        type: newWorkoutData.type,
+        calendarId: selectedCalendarId,
+      };
+      setWorkouts(prev => [...prev, newWorkout]);
+    }
+  };
+
+  const handleEditWorkout = (workout: Readonly<Workout>) => {
+    setSelectedDate(workout.date);
+    setEditingWorkout(workout);
+    setIsDialogOpen(true);
+  };
+
+  const handleDeleteWorkout = (workoutId: string) => {
+    setWorkouts(prev => prev.filter(w => w.id !== workoutId));
   };
 
   const sidebar = (
@@ -147,15 +209,29 @@ export const Tracker: FC = () => {
           currentMonth={currentMonth}
           workouts={filteredWorkouts}
           onDayClick={handleDayClick}
+          onWorkoutClick={handleWorkoutClick}
         />
       </Box>
 
-      {/* Add Workout Dialog */}
+      {/* Add/Edit Workout Dialog */}
       <AddWorkoutDialog
         open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        onClose={() => {
+          setIsDialogOpen(false);
+          setEditingWorkout(null);
+        }}
         onSubmit={handleAddWorkout}
         selectedDate={selectedDate}
+        editingWorkout={editingWorkout}
+      />
+
+      {/* Workout Details Dialog */}
+      <WorkoutDetailsDialog
+        open={isDetailsDialogOpen}
+        onClose={() => setIsDetailsDialogOpen(false)}
+        workout={selectedWorkout}
+        onEdit={handleEditWorkout}
+        onDelete={handleDeleteWorkout}
       />
     </Box>
   );
