@@ -7,6 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import { isAdmin } from '@baaa-hub/shared-types';
 import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvider';
@@ -54,6 +55,15 @@ export const MainContainer: FC = () => {
         label: t`Profile`,
         linkTo: { to: '/profile' },
         order: 2,
+        permission: 'user',
+      },
+      {
+        id: 'tracker',
+        path: 'tracker',
+        icon: CalendarMonthIcon,
+        label: t`Tracker`,
+        linkTo: { to: '/tracker' },
+        order: 3,
         permission: 'user',
       },
       {

@@ -82,6 +82,11 @@ msgstr "Attivo"
 msgid "Add a profile picture and banner to personalize your profile"
 msgstr "Aggiungi un'immagine del profilo e un banner per personalizzare il tuo profilo"
 
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:160
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:269
+msgid "Add Workout"
+msgstr "Aggiungi Allenamento"
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:122
 msgid "Additional interaction is required"
 msgstr "È richiesta un'interazione aggiuntiva"
@@ -100,7 +105,7 @@ msgstr "Admin"
 
 #: src/containers/Administration/Administration.tsx:106
 #: src/containers/Administration/Administration.tsx:261
-#: src/containers/MainContainer/MainContainer.tsx:71
+#: src/containers/MainContainer/MainContainer.tsx:81
 msgid "Administration"
 msgstr "Amministrazione"
 
@@ -146,6 +151,10 @@ msgstr "Autenticazione richiesta. Per favore, effettua nuovamente l'accesso."
 #: src/helpers/mfaLabels/mfaLabels.ts:9
 msgid "Authenticator App"
 msgstr "App di Autenticazione"
+
+#: src/components/tracker/CalendarSidebar/CalendarSidebar.tsx:33
+msgid "Available Calendars"
+msgstr "Calendari Disponibili"
 
 #: src/containers/Settings/Settings.tsx:278
 msgid "Available MFA Methods:"
@@ -195,6 +204,7 @@ msgid "Blocked"
 msgstr "Bloccato"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:251
 #: src/containers/Administration/EditRolesDialog.tsx:158
 #: src/containers/Profile/ProfileEditForm.tsx:1058
 msgid "Cancel"
@@ -241,6 +251,11 @@ msgstr "Clicca per caricare il banner"
 #: src/components/login/AuthDialog/AuthDialog.tsx:104
 msgid "Close"
 msgstr "Chiudi"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:151
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:78
+msgid "Close dialog"
+msgstr "Chiudi dialogo"
 
 #: src/containers/Profile/Profile.tsx:612
 #~ msgid "Coming soon..."
@@ -313,6 +328,10 @@ msgstr "Ciclismo"
 msgid "Dark Mode"
 msgstr "Modalità scura"
 
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:92
+msgid "Date"
+msgstr ""
+
 #: src/containers/Profile/Profile.tsx:533
 #: src/containers/Profile/ProfileEditForm.tsx:361
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:553
@@ -328,6 +347,10 @@ msgstr "La data di nascita è obbligatoria"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:874
 msgid "Date of Birth Privacy"
 msgstr "Privacy Data di Nascita"
+
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:139
+msgid "Delete"
+msgstr ""
 
 #: src/containers/Profile/ProfileEditForm.tsx:489
 msgid "Description must be 500 characters or less"
@@ -349,6 +372,10 @@ msgstr "Trascina per riposizionare, scorri o usa il cursore per zoomare"
 msgid "e.g., Milan, Lombardy"
 msgstr "es., Milano, Lombardia"
 
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:155
+msgid "Edit"
+msgstr ""
+
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:409
 msgid "Edit banner"
 msgstr "Modifica banner"
@@ -363,6 +390,10 @@ msgstr "Modifica Profilo"
 #: src/containers/Administration/EditRolesDialog.tsx:121
 msgid "Edit Roles for {0} {1}"
 msgstr "Modifica ruoli per {0} {1}"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:158
+msgid "Edit Workout"
+msgstr "Modifica Allenamento"
 
 #: src/components/login/LoginDialog/LoginDialog.tsx:155
 #: src/components/login/LoginDialog/LoginDialog.tsx:156
@@ -410,6 +441,26 @@ msgstr "Email verificata"
 #: src/containers/Administration/Administration.tsx:333
 msgid "Enabled"
 msgstr "Abilitato"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:221
+msgid "End hour"
+msgstr "Ora di fine"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:217
+msgid "End Hour"
+msgstr "Ora di Fine"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:229
+msgid "End minute"
+msgstr "Minuto di fine"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:225
+msgid "End Minute"
+msgstr "Minuto di Fine"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:108
+msgid "End time must be after start time"
+msgstr "L'ora di fine deve essere successiva all'ora di inizio"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:457
 msgid "Enter your first name"
@@ -470,7 +521,7 @@ msgid "Favorite Sports"
 msgstr "Sport Preferiti"
 
 #: src/containers/Feed/Feed.tsx:23
-#: src/containers/MainContainer/MainContainer.tsx:45
+#: src/containers/MainContainer/MainContainer.tsx:46
 #: src/containers/PublicContainer/PublicContainer.tsx:151
 #: src/providers/BreadcrumProvider/BreadcrumProvider.tsx:29
 msgid "Feed"
@@ -534,6 +585,10 @@ msgstr "Formato: HH:MM:SS o MM:SS"
 msgid "Format: MM:SS or HH:MM:SS"
 msgstr "Formato: MM:SS o HH:MM:SS"
 
+#: src/components/tracker/CalendarView/CalendarView.tsx:41
+msgid "Fri"
+msgstr "Ven"
+
 #: src/helpers/roleLabels/roleLabels.ts:22
 msgid "Full administrative access"
 msgstr "Accesso amministrativo completo"
@@ -560,6 +615,7 @@ msgstr "Profilo Garmin Connect"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
 #: src/helpers/sportTypes/sportTypeLabels.ts:37
+#: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:13
 msgid "Gym"
 msgstr "Palestra"
 
@@ -613,6 +669,10 @@ msgstr "URL Profilo Instagram"
 #: src/components/prompts/InstallApp/InstallApp.tsx:85
 msgid "Install app"
 msgstr "Installa l'app"
+
+#: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:19
+msgid "Interval Training"
+msgstr "Allenamento a Intervalli"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:44
 msgid "Invalid authentication code"
@@ -749,7 +809,7 @@ msgid "Login successful! Welcome back."
 msgstr "Accesso effettuato con successo! Bentornato."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:250
-#: src/containers/MainContainer/MainContainer.tsx:96
+#: src/containers/MainContainer/MainContainer.tsx:106
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:999
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1005
 msgid "Logout"
@@ -758,6 +818,10 @@ msgstr "Esci"
 #: src/containers/Logout/Logout.tsx:25
 msgid "Logout page"
 msgstr "Pagina di disconnessione"
+
+#: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:15
+msgid "Long Run"
+msgstr "Corsa Lunga"
 
 #: src/containers/Administration/Administration.tsx:460
 msgid "Manage User Roles"
@@ -799,6 +863,10 @@ msgstr "MFA Disabilitato"
 msgid "MFA Enabled: {0}"
 msgstr "MFA Abilitato: {0}"
 
+#: src/components/tracker/CalendarView/CalendarView.tsx:37
+msgid "Mon"
+msgstr "Lun"
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:42
 msgid "Multi-factor authentication is required"
 msgstr "È richiesta l'autenticazione a più fattori"
@@ -818,6 +886,10 @@ msgstr "Nuova notifica"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1092
 msgid "Next"
 msgstr "Avanti"
+
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:62
+msgid "Next month"
+msgstr "Mese successivo"
 
 #: src/containers/Administration/Administration.tsx:355
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:494
@@ -887,6 +959,10 @@ msgstr "Codici monouso inviati via SMS al tuo numero di telefono"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:544
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Sono consentite solo lettere, numeri e underscore"
+
+#: src/containers/Tracker/Tracker.tsx:160
+msgid "Open calendar list"
+msgstr "Apri lista calendari"
 
 #: src/containers/PublicContainer/PublicContainer.tsx:234
 msgid "Open menu"
@@ -972,6 +1048,10 @@ msgstr "Seleziona almeno uno sport"
 msgid "Please verify your email address for enhanced security."
 msgstr "Per favore, verifica il tuo indirizzo email per una maggiore sicurezza."
 
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:39
+msgid "Previous month"
+msgstr "Mese precedente"
+
 #: src/components/commons/inputs/PrivacySelector/PrivacySelector.tsx:30
 #: src/containers/Profile/ProfileEditForm.tsx:305
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:381
@@ -993,7 +1073,7 @@ msgid "Processing..."
 msgstr "Elaborazione..."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:218
-#: src/containers/MainContainer/MainContainer.tsx:54
+#: src/containers/MainContainer/MainContainer.tsx:55
 #: src/containers/Profile/Profile.tsx:159
 msgid "Profile"
 msgstr "Profilo"
@@ -1063,6 +1143,7 @@ msgid "Recommended"
 msgstr "Consigliato"
 
 #: src/helpers/mfaLabels/mfaLabels.ts:27
+#: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:17
 msgid "Recovery"
 msgstr "Recupero"
 
@@ -1109,10 +1190,18 @@ msgstr "Ruoli"
 msgid "Rows per page:"
 msgstr "Righe per pagina:"
 
+#: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:11
+msgid "Run"
+msgstr "Corsa"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:10
 #: src/helpers/sportTypes/sportTypeLabels.ts:30
 msgid "Running"
 msgstr "Corsa"
+
+#: src/components/tracker/CalendarView/CalendarView.tsx:42
+msgid "Sat"
+msgstr "Sab"
 
 #: src/containers/Administration/EditRolesDialog.tsx:165
 msgid "Save"
@@ -1158,7 +1247,7 @@ msgid "Select the roles to assign to this user."
 msgstr "Seleziona i ruoli da assegnare a questo utente."
 
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:231
-#: src/containers/MainContainer/MainContainer.tsx:87
+#: src/containers/MainContainer/MainContainer.tsx:97
 #: src/containers/PublicContainer/PublicContainer.tsx:167
 #: src/containers/Settings/Settings.tsx:87
 #: src/containers/Settings/Settings.tsx:119
@@ -1214,6 +1303,22 @@ msgstr "Sport e Attività"
 msgid "Sports Privacy"
 msgstr "Privacy Sport"
 
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:201
+msgid "Start hour"
+msgstr "Ora di inizio"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:197
+msgid "Start Hour"
+msgstr "Ora di Inizio"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:209
+msgid "Start minute"
+msgstr "Minuto di inizio"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:205
+msgid "Start Minute"
+msgstr "Minuto di Inizio"
+
 #: src/containers/Profile/ProfileEditForm.tsx:298
 msgid "Stats & Achievements"
 msgstr "Statistiche e Traguardi"
@@ -1239,6 +1344,10 @@ msgstr "Utente seguito con successo"
 #: src/containers/PublicProfile/PublicProfile.tsx:227
 msgid "Successfully unfollowed user"
 msgstr "Non segui più questo utente"
+
+#: src/components/tracker/CalendarView/CalendarView.tsx:43
+msgid "Sun"
+msgstr "Dom"
 
 #: src/helpers/roleLabels/roleLabels.ts:10
 msgid "Super Admin"
@@ -1326,9 +1435,21 @@ msgstr "Questo nome utente è già in uso"
 msgid "This will be your public username"
 msgstr "Questo sarà il tuo nome utente pubblico"
 
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:115
+msgid "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
+msgstr "Questo allenamento si sovrappone a un allenamento esistente. L'allenamento precedente deve finire prima che inizi questo."
+
+#: src/components/tracker/CalendarView/CalendarView.tsx:40
+msgid "Thu"
+msgstr "Gio"
+
 #: src/containers/Profile/ProfileEditForm.tsx:698
 msgid "TikTok Profile"
 msgstr "Profilo TikTok"
+
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:116
+msgid "Time"
+msgstr ""
 
 #: src/helpers/mfaLabels/mfaLabels.ts:35
 msgid "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
@@ -1349,6 +1470,11 @@ msgstr "Troppi caratteri"
 msgid "TOTP"
 msgstr "TOTP"
 
+#: src/containers/MainContainer/MainContainer.tsx:64
+#: src/containers/Tracker/Tracker.tsx:42
+msgid "Tracker"
+msgstr "Tracker"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:14
 #: src/helpers/sportTypes/sportTypeLabels.ts:34
 msgid "Trail Running"
@@ -1358,6 +1484,10 @@ msgstr "Trail Running"
 #: src/helpers/sportTypes/sportTypeLabels.ts:33
 msgid "Triathlon"
 msgstr "Triathlon"
+
+#: src/components/tracker/CalendarView/CalendarView.tsx:38
+msgid "Tue"
+msgstr "Mar"
 
 #: src/containers/Settings/Settings.tsx:228
 msgid "Two-Factor Authentication (2FA)"
@@ -1383,9 +1513,17 @@ msgstr "Sblocca utente"
 msgid "Unfollow"
 msgstr "Non seguire più"
 
+#: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:21
+msgid "Unknown"
+msgstr "Sconosciuto"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:22
 msgid "Unknown Sport"
 msgstr "Sport Sconosciuto"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:267
+msgid "Update Workout"
+msgstr "Aggiorna Allenamento"
 
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:173
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:627
@@ -1458,6 +1596,10 @@ msgstr "Camminata"
 msgid "WebAuthn"
 msgstr "WebAuthn"
 
+#: src/components/tracker/CalendarView/CalendarView.tsx:39
+msgid "Wed"
+msgstr "Mer"
+
 #: src/containers/Profile/Profile.tsx:645
 #: src/containers/PublicProfile/PublicProfile.tsx:658
 msgid "Weight"
@@ -1478,6 +1620,16 @@ msgstr "Il peso deve essere positivo"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:852
 msgid "Who can see your information?"
 msgstr "Chi può vedere le tue informazioni?"
+
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:84
+msgid "Workout Details"
+msgstr "Dettagli Allenamento"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:177
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:183
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:104
+msgid "Workout Type"
+msgstr "Tipo di Allenamento"
 
 #: src/containers/Profile/Profile.tsx:576
 #: src/containers/PublicProfile/PublicProfile.tsx:589

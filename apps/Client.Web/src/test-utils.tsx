@@ -6,6 +6,7 @@ import { ThemeModeProvider } from './providers/ThemeProvider/ThemeProvider';
 import { LanguageProvider } from './providers/LanguageProvider/LanguageProvider';
 import { TranslationProvider } from './providers/TranslationProvider/TranslationProvider';
 import { AuthProvider } from './providers/AuthProvider/AuthProvider';
+import { BreadcrumProvider } from './providers/BreadcrumProvider/BreadcrumProvider';
 import { initTheme } from './theme/theme';
 
 // Mock Keycloak props for testing
@@ -38,7 +39,9 @@ export function renderWithProviders(
         <LanguageProvider>
           <TranslationProvider>
             <ThemeModeProvider>
-              <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+              <BreadcrumProvider>
+                <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+              </BreadcrumProvider>
             </ThemeModeProvider>
           </TranslationProvider>
         </LanguageProvider>
