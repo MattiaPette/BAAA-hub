@@ -171,7 +171,9 @@ export const TrainingGoals: FC = () => {
       enqueueSnackbar(t`Training goals updated successfully!`, {
         variant: 'success',
       });
-    } catch {
+    } catch (err) {
+      // Log error for debugging while showing user-friendly message
+      console.error('Failed to update training goals:', err);
       enqueueSnackbar(t`Failed to update training goals. Please try again.`, {
         variant: 'error',
       });
