@@ -30,13 +30,26 @@ export const mockCalendars: Calendar[] = [
 ];
 
 /**
+ * Get current month for mock data base
+ */
+const getCurrentMonthBase = () => {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), 1);
+};
+
+/**
  * Mock workout data for different calendars
+ * Uses current month to ensure workouts are visible in the calendar view
  */
 export const mockWorkouts: Workout[] = [
   // John's workouts
   {
     id: 'workout-1',
-    date: new Date(2025, 11, 10), // Dec 10, 2025
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      10,
+    ),
     startHour: 6,
     startMinute: 0,
     endHour: 7,
@@ -46,7 +59,11 @@ export const mockWorkouts: Workout[] = [
   },
   {
     id: 'workout-2',
-    date: new Date(2025, 11, 10),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      10,
+    ),
     startHour: 18,
     startMinute: 0,
     endHour: 19,
@@ -56,7 +73,11 @@ export const mockWorkouts: Workout[] = [
   },
   {
     id: 'workout-3',
-    date: new Date(2025, 11, 12),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      12,
+    ),
     startHour: 6,
     startMinute: 30,
     endHour: 8,
@@ -66,7 +87,11 @@ export const mockWorkouts: Workout[] = [
   },
   {
     id: 'workout-4',
-    date: new Date(2025, 11, 15),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      15,
+    ),
     startHour: 7,
     startMinute: 0,
     endHour: 9,
@@ -78,7 +103,11 @@ export const mockWorkouts: Workout[] = [
   // Sarah's workouts
   {
     id: 'workout-5',
-    date: new Date(2025, 11, 9),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      9,
+    ),
     startHour: 5,
     startMinute: 30,
     endHour: 6,
@@ -88,7 +117,11 @@ export const mockWorkouts: Workout[] = [
   },
   {
     id: 'workout-6',
-    date: new Date(2025, 11, 11),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      11,
+    ),
     startHour: 6,
     startMinute: 0,
     endHour: 7,
@@ -98,7 +131,11 @@ export const mockWorkouts: Workout[] = [
   },
   {
     id: 'workout-7',
-    date: new Date(2025, 11, 13),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      13,
+    ),
     startHour: 17,
     startMinute: 0,
     endHour: 18,
@@ -110,7 +147,11 @@ export const mockWorkouts: Workout[] = [
   // Mike's workouts
   {
     id: 'workout-8',
-    date: new Date(2025, 11, 8),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      8,
+    ),
     startHour: 8,
     startMinute: 0,
     endHour: 9,
@@ -120,7 +161,11 @@ export const mockWorkouts: Workout[] = [
   },
   {
     id: 'workout-9',
-    date: new Date(2025, 11, 14),
+    date: new Date(
+      getCurrentMonthBase().getFullYear(),
+      getCurrentMonthBase().getMonth(),
+      14,
+    ),
     startHour: 7,
     startMinute: 0,
     endHour: 8,

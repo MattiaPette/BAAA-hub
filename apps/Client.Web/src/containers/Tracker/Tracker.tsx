@@ -58,7 +58,7 @@ export const Tracker: FC = () => {
   };
 
   const handleAddWorkout = (
-    workout: Readonly<{
+    _workout: Readonly<{
       startHour: number;
       startMinute: number;
       endHour: number;
@@ -67,8 +67,8 @@ export const Tracker: FC = () => {
     }>,
   ) => {
     // In a real app, this would add the workout to the backend
-    // For now, we just log it since we're using mocked data
-    console.log('Add workout:', { ...workout, date: selectedDate });
+    // For now, this is just a UI prototype with mocked data
+    // Workout data would be: { ..._workout, date: selectedDate }
   };
 
   const sidebar = (
