@@ -1,9 +1,45 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Box, Paper, Typography, Chip, Stack } from '@mui/material';
 import { isToday } from 'date-fns';
 
 import { getWorkoutTypeLabel } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { CalendarDayProps } from './CalendarDay.model';
+import { Workout } from '../../../types/tracker';
+
+/**
+ * Constants for chip height calculation
+ */
+const MIN_CHIP_HEIGHT = 20; // px
+const BASE_DURATION = 30; // minutes
+const HEIGHT_SCALE_FACTOR = 5; // minutes per pixel
+const MAX_CHIP_HEIGHT = 60; // px
+
+/**
+ * Default calendar color fallback
+ */
+const DEFAULT_CALENDAR_COLOR = '#1976d2';
+
+/**
+ * Calculate duration in minutes for a workout
+ */
+const getWorkoutDurationMinutes = (workout: Readonly<Workout>): number => {
+  const startMinutes = workout.startHour * 60 + workout.startMinute;
+  const endMinutes = workout.endHour * 60 + workout.endMinute;
+  return endMinutes - startMinutes;
+};
+
+/**
+ * Calculate chip height based on duration (minimum 20px, scales with duration)
+ */
+const getChipHeight = (durationMinutes: number): number => {
+  // Base height: 20px for 30min workout
+  // Scale: +1px per 5 minutes
+  const scaleFactor = Math.max(
+    0,
+    (durationMinutes - BASE_DURATION) / HEIGHT_SCALE_FACTOR,
+  );
+  return Math.min(MIN_CHIP_HEIGHT + scaleFactor, MAX_CHIP_HEIGHT); // Max 60px
+};
 
 /**
  * CalendarDay component displays a single day in the calendar
@@ -15,9 +51,31 @@ export const CalendarDay: FC<CalendarDayProps> = ({
   workouts,
   onDayClick,
   onWorkoutClick,
+  calendars = [],
+  isCombinedView = false,
 }) => {
   const today = isToday(date);
   const hasWorkouts = workouts.length > 0;
+
+  // Sort workouts by start time for better stacking
+  const sortedWorkouts = [...workouts].sort((a, b) => {
+    const aStart = a.startHour * 60 + a.startMinute;
+    const bStart = b.startHour * 60 + b.startMinute;
+    return aStart - bStart;
+  });
+
+  // Create calendar color map for efficient lookups
+  const calendarColorMap = useMemo(
+    () =>
+      new Map<string, string>(
+        calendars.map(calendar => [calendar.id, calendar.color]),
+      ),
+    [calendars],
+  );
+
+  // Get calendar color for a workout
+  const getCalendarColor = (calendarId: string): string =>
+    calendarColorMap.get(calendarId) || DEFAULT_CALENDAR_COLOR;
 
   return (
     <Paper
@@ -81,8 +139,11 @@ export const CalendarDay: FC<CalendarDayProps> = ({
 
         {/* Workout chips - max 3 */}
         <Stack spacing={0.5} sx={{ mt: 0.5, overflow: 'hidden' }}>
-          {workouts.slice(0, 3).map(workout => {
+          {sortedWorkouts.slice(0, 3).map(workout => {
             const startTime = `${String(workout.startHour).padStart(2, '0')}:${String(workout.startMinute).padStart(2, '0')}`;
+            const duration = getWorkoutDurationMinutes(workout);
+            const chipHeight = getChipHeight(duration);
+
             return (
               <Chip
                 key={workout.id}
@@ -93,10 +154,17 @@ export const CalendarDay: FC<CalendarDayProps> = ({
                   onWorkoutClick(workout);
                 }}
                 sx={{
-                  height: 20,
+                  height: chipHeight,
                   fontSize: '0.7rem',
-                  backgroundColor: theme => theme.palette.primary.main,
-                  color: theme => theme.palette.primary.contrastText,
+                  backgroundColor: isCombinedView
+                    ? getCalendarColor(workout.calendarId)
+                    : theme => theme.palette.primary.main,
+                  color: theme =>
+                    isCombinedView
+                      ? theme.palette.getContrastText(
+                          getCalendarColor(workout.calendarId),
+                        )
+                      : (theme.palette.primary.contrastText as string),
                   cursor: 'pointer',
                   maxWidth: '100%',
                   width: '100%',
@@ -108,7 +176,7 @@ export const CalendarDay: FC<CalendarDayProps> = ({
                     display: 'block',
                   },
                   '&:hover': {
-                    backgroundColor: theme => theme.palette.primary.dark,
+                    opacity: 0.8,
                   },
                 }}
               />

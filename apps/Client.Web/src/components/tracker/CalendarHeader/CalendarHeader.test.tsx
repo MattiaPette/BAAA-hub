@@ -8,6 +8,7 @@ describe('CalendarHeader', () => {
   const mockOnPreviousMonth = vi.fn();
   const mockOnNextMonth = vi.fn();
   const mockOnCalendarSelect = vi.fn();
+  const mockOnToggleCombinedView = vi.fn();
   const currentMonth = new Date(2025, 11, 1); // December 2025
 
   const mockCalendars = [
@@ -24,6 +25,8 @@ describe('CalendarHeader', () => {
         calendars={mockCalendars}
         selectedCalendarId="cal-1"
         onCalendarSelect={mockOnCalendarSelect}
+        isCombinedView={false}
+        onToggleCombinedView={mockOnToggleCombinedView}
       />,
     );
 
@@ -41,6 +44,8 @@ describe('CalendarHeader', () => {
         calendars={mockCalendars}
         selectedCalendarId="cal-1"
         onCalendarSelect={mockOnCalendarSelect}
+        isCombinedView={false}
+        onToggleCombinedView={mockOnToggleCombinedView}
       />,
     );
 
@@ -59,6 +64,8 @@ describe('CalendarHeader', () => {
         calendars={mockCalendars}
         selectedCalendarId="cal-1"
         onCalendarSelect={mockOnCalendarSelect}
+        isCombinedView={false}
+        onToggleCombinedView={mockOnToggleCombinedView}
       />,
     );
 
@@ -77,6 +84,8 @@ describe('CalendarHeader', () => {
         calendars={mockCalendars}
         selectedCalendarId="cal-1"
         onCalendarSelect={mockOnCalendarSelect}
+        isCombinedView={false}
+        onToggleCombinedView={mockOnToggleCombinedView}
       />,
     );
 
@@ -93,6 +102,8 @@ describe('CalendarHeader', () => {
         calendars={mockCalendars}
         selectedCalendarId="cal-1"
         onCalendarSelect={mockOnCalendarSelect}
+        isCombinedView={false}
+        onToggleCombinedView={mockOnToggleCombinedView}
       />,
     );
 
@@ -109,6 +120,8 @@ describe('CalendarHeader', () => {
         calendars={mockCalendars}
         selectedCalendarId="cal-1"
         onCalendarSelect={mockOnCalendarSelect}
+        isCombinedView={false}
+        onToggleCombinedView={mockOnToggleCombinedView}
       />,
     );
 

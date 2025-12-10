@@ -80,18 +80,14 @@ msgstr "Active"
 msgid "Activities"
 msgstr "Activities"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:239
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:241
 msgid "Activity Count Goals"
 msgstr "Activity Count Goals"
 
-#: src/containers/Profile/Profile.tsx:609
-#~ msgid "Activity Statistics"
-#~ msgstr "Activity Statistics"
-
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:331
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:334
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:423
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:426
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:333
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:336
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:425
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:428
 msgid "Activity Type"
 msgstr "Activity Type"
 
@@ -99,8 +95,8 @@ msgstr "Activity Type"
 msgid "Add a profile picture and banner to personalize your profile"
 msgstr "Add a profile picture and banner to personalize your profile"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:311
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:403
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:313
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:405
 msgid "Add Goal"
 msgstr "Add Goal"
 
@@ -229,6 +225,10 @@ msgstr "Block User"
 msgid "Blocked"
 msgstr "Blocked"
 
+#: src/components/tracker/CalendarLegend/CalendarLegend.tsx:18
+msgid "Calendars"
+msgstr "Calendars"
+
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
 #: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:251
 #: src/containers/Administration/EditRolesDialog.tsx:158
@@ -283,9 +283,9 @@ msgstr "Close"
 msgid "Close dialog"
 msgstr "Close dialog"
 
-#: src/containers/Profile/Profile.tsx:612
-#~ msgid "Coming soon..."
-#~ msgstr "Coming soon..."
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:146
+msgid "Combined"
+msgstr "Combined"
 
 #: src/helpers/roleLabels/roleLabels.ts:12
 msgid "Community Leader"
@@ -323,8 +323,8 @@ msgstr "Contact & Social"
 msgid "Control who can see your profile information. You can set different privacy levels for each section."
 msgstr "Control who can see your profile information. You can set different privacy levels for each section."
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:353
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:445
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:355
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:447
 msgid "Count"
 msgstr "Count"
 
@@ -401,7 +401,7 @@ msgstr "Disabled"
 msgid "Distance"
 msgstr "Distance"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:191
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:193
 msgid "Distance Goals"
 msgstr "Distance Goals"
 
@@ -552,7 +552,7 @@ msgstr "Failed to update profile picture. Please try again."
 msgid "Failed to update profile. Please try again."
 msgstr "Failed to update profile. Please try again."
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:175
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:177
 msgid "Failed to update training goals. Please try again."
 msgstr "Failed to update training goals. Please try again."
 
@@ -634,7 +634,7 @@ msgstr "Format: HH:MM:SS or MM:SS"
 msgid "Format: MM:SS or HH:MM:SS"
 msgstr "Format: MM:SS or HH:MM:SS"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:41
+#: src/components/tracker/CalendarView/CalendarView.tsx:43
 msgid "Fri"
 msgstr "Fri"
 
@@ -919,19 +919,19 @@ msgstr "MFA Disabled"
 msgid "MFA Enabled: {0}"
 msgstr "MFA Enabled: {0}"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:37
+#: src/components/tracker/CalendarView/CalendarView.tsx:39
 msgid "Mon"
 msgstr "Mon"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:261
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:263
 msgid "Monthly Activities"
 msgstr "Monthly Activities"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:392
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:394
 msgid "Monthly Activity Type Goals"
 msgstr "Monthly Activity Type Goals"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:211
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:213
 msgid "Monthly Km"
 msgstr "Monthly Km"
 
@@ -955,7 +955,7 @@ msgstr "New notification"
 msgid "Next"
 msgstr "Next"
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:74
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:79
 msgid "Next month"
 msgstr "Next month"
 
@@ -980,7 +980,7 @@ msgstr "Nickname must be at least 3 characters"
 msgid "No goals set yet. Visit Settings → Training Goals to set your workout goals."
 msgstr "No goals set yet. Visit Settings → Training Goals to set your workout goals."
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:408
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:410
 msgid "No monthly activity type goals set. Click \"Add Goal\" to create one."
 msgstr "No monthly activity type goals set. Click \"Add Goal\" to create one."
 
@@ -1001,7 +1001,7 @@ msgstr "No two-factor authentication enabled"
 msgid "No users found"
 msgstr "No users found"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:316
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:318
 msgid "No weekly activity type goals set. Click \"Add Goal\" to create one."
 msgstr "No weekly activity type goals set. Click \"Add Goal\" to create one."
 
@@ -1043,10 +1043,6 @@ msgstr "One-time codes sent via SMS to your phone number"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:544
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Only letters, numbers, and underscores allowed"
-
-#: src/containers/Tracker/Tracker.tsx:161
-#~ msgid "Open calendar list"
-#~ msgstr "Open calendar list"
 
 #: src/containers/PublicContainer/PublicContainer.tsx:234
 msgid "Open menu"
@@ -1136,7 +1132,7 @@ msgstr "Please select at least one sport"
 msgid "Please verify your email address for enhanced security."
 msgstr "Please verify your email address for enhanced security."
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:51
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:56
 msgid "Previous month"
 msgstr "Previous month"
 
@@ -1253,8 +1249,8 @@ msgstr "Remove banner"
 msgid "Remove banner image"
 msgstr "Remove banner image"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:368
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:460
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:370
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:462
 msgid "Remove goal"
 msgstr "Remove goal"
 
@@ -1294,7 +1290,7 @@ msgstr "Run"
 msgid "Running"
 msgstr "Running"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:42
+#: src/components/tracker/CalendarView/CalendarView.tsx:44
 msgid "Sat"
 msgstr "Sat"
 
@@ -1306,11 +1302,11 @@ msgstr "Save"
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:479
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:481
 msgid "Save Goals"
 msgstr "Save Goals"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:479
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:481
 #: src/containers/Administration/EditRolesDialog.tsx:165
 #: src/containers/Profile/ProfileEditForm.tsx:1061
 msgid "Saving..."
@@ -1336,7 +1332,7 @@ msgstr "Security Key"
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:90
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:102
 msgid "Select calendar"
 msgstr "Select calendar"
 
@@ -1350,19 +1346,19 @@ msgstr "Select Language"
 msgid "Select the roles to assign to this user."
 msgstr "Select the roles to assign to this user."
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:395
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:397
 msgid "Set goals for specific activity types per month"
 msgstr "Set goals for specific activity types per month"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:303
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:305
 msgid "Set goals for specific activity types per week"
 msgstr "Set goals for specific activity types per week"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:242
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:244
 msgid "Set your weekly, monthly, and yearly activity count goals"
 msgstr "Set your weekly, monthly, and yearly activity count goals"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:194
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:196
 msgid "Set your weekly, monthly, and yearly distance goals in kilometers"
 msgstr "Set your weekly, monthly, and yearly distance goals in kilometers"
 
@@ -1465,7 +1461,7 @@ msgstr "Successfully followed user"
 msgid "Successfully unfollowed user"
 msgstr "Successfully unfollowed user"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:43
+#: src/components/tracker/CalendarView/CalendarView.tsx:45
 msgid "Sun"
 msgstr "Sun"
 
@@ -1571,7 +1567,7 @@ msgstr "This workout overlaps with an existing workout. The previous workout mus
 msgid "This Year"
 msgstr "This Year"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:40
+#: src/components/tracker/CalendarView/CalendarView.tsx:42
 msgid "Thu"
 msgstr "Thu"
 
@@ -1586,6 +1582,10 @@ msgstr "Time"
 #: src/helpers/mfaLabels/mfaLabels.ts:35
 msgid "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
 msgstr "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
+
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:143
+msgid "Toggle combined view"
+msgstr "Toggle combined view"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:106
 msgid "Too many attempts. Please try again in a few minutes"
@@ -1603,7 +1603,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:38
+#: src/containers/Tracker/Tracker.tsx:36
 msgid "Tracker"
 msgstr "Tracker"
 
@@ -1625,7 +1625,7 @@ msgstr "Training goals updated successfully!"
 msgid "Triathlon"
 msgstr "Triathlon"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:38
+#: src/components/tracker/CalendarView/CalendarView.tsx:40
 msgid "Tue"
 msgstr "Tue"
 
@@ -1736,19 +1736,19 @@ msgstr "Walking"
 msgid "WebAuthn"
 msgstr "WebAuthn"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:39
+#: src/components/tracker/CalendarView/CalendarView.tsx:41
 msgid "Wed"
 msgstr "Wed"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:249
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:251
 msgid "Weekly Activities"
 msgstr "Weekly Activities"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:300
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:302
 msgid "Weekly Activity Type Goals"
 msgstr "Weekly Activity Type Goals"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:201
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:203
 msgid "Weekly Km"
 msgstr "Weekly Km"
 
@@ -1791,11 +1791,11 @@ msgstr "Workout Type"
 msgid "workouts"
 msgstr "workouts"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:273
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:275
 msgid "Yearly Activities"
 msgstr "Yearly Activities"
 
-#: src/components/settings/TrainingGoals/TrainingGoals.tsx:223
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:225
 msgid "Yearly Km"
 msgstr "Yearly Km"
 

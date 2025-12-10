@@ -8,6 +8,7 @@ import { useBreadcrum } from '../../providers/BreadcrumProvider/BreadcrumProvide
 import { CalendarHeader } from '../../components/tracker/CalendarHeader/CalendarHeader';
 import { CalendarView } from '../../components/tracker/CalendarView/CalendarView';
 import { AgendaView } from '../../components/tracker/AgendaView/AgendaView';
+import { CalendarLegend } from '../../components/tracker/CalendarLegend/CalendarLegend';
 import { AddWorkoutDialog } from '../../components/tracker/AddWorkoutDialog/AddWorkoutDialog';
 import { WorkoutDetailsDialog } from '../../components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog';
 import {
@@ -46,12 +47,37 @@ export const Tracker: FC = () => {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] =
     useState<boolean>(false);
   const [editingWorkout, setEditingWorkout] = useState<Workout | null>(null);
-
-  // Filter workouts by selected calendar
-  const filteredWorkouts = useMemo(
-    () => workouts.filter(workout => workout.calendarId === selectedCalendarId),
-    [workouts, selectedCalendarId],
+  const [isCombinedView, setIsCombinedView] = useState<boolean>(false);
+  const [enabledCalendarIds, setEnabledCalendarIds] = useState<Set<string>>(
+    new Set(mockCalendars.map(c => c.id)),
   );
+
+  // Filter workouts by selected calendar or enabled calendars in combined view
+  const filteredWorkouts = useMemo(
+    () =>
+      workouts.filter(workout =>
+        isCombinedView
+          ? enabledCalendarIds.has(workout.calendarId)
+          : workout.calendarId === selectedCalendarId,
+      ),
+    [workouts, selectedCalendarId, isCombinedView, enabledCalendarIds],
+  );
+
+  const handleToggleCombinedView = () => {
+    setIsCombinedView(prev => !prev);
+  };
+
+  const handleToggleCalendar = (calendarId: string) => {
+    setEnabledCalendarIds(prev => {
+      if (prev.has(calendarId)) {
+        // Create new set without the calendar
+        const filtered = Array.from(prev).filter(id => id !== calendarId);
+        return new Set(filtered);
+      }
+      // Create new set with the calendar added
+      return new Set([...prev, calendarId]);
+    });
+  };
 
   const handlePreviousMonth = () => {
     setCurrentMonth(prev => subMonths(prev, 1));
@@ -149,7 +175,18 @@ export const Tracker: FC = () => {
           calendars={mockCalendars}
           selectedCalendarId={selectedCalendarId}
           onCalendarSelect={setSelectedCalendarId}
+          isCombinedView={isCombinedView}
+          onToggleCombinedView={handleToggleCombinedView}
         />
+
+        {/* Calendar legend for combined view */}
+        {isCombinedView && (
+          <CalendarLegend
+            calendars={mockCalendars}
+            enabledCalendarIds={enabledCalendarIds}
+            onToggleCalendar={handleToggleCalendar}
+          />
+        )}
 
         {/* Conditionally render CalendarView or AgendaView based on viewport */}
         {isMobile ? (
@@ -165,6 +202,8 @@ export const Tracker: FC = () => {
             workouts={filteredWorkouts}
             onDayClick={handleDayClick}
             onWorkoutClick={handleWorkoutClick}
+            calendars={mockCalendars}
+            isCombinedView={isCombinedView}
           />
         )}
       </Box>
