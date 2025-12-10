@@ -1,10 +1,23 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Box, Paper, Typography, Chip, Stack } from '@mui/material';
 import { isToday } from 'date-fns';
 
 import { getWorkoutTypeLabel } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { CalendarDayProps } from './CalendarDay.model';
 import { Workout } from '../../../types/tracker';
+
+/**
+ * Constants for chip height calculation
+ */
+const MIN_CHIP_HEIGHT = 20; // px
+const BASE_DURATION = 30; // minutes
+const HEIGHT_SCALE_FACTOR = 5; // minutes per pixel
+const MAX_CHIP_HEIGHT = 60; // px
+
+/**
+ * Default calendar color fallback
+ */
+const DEFAULT_CALENDAR_COLOR = '#1976d2';
 
 /**
  * Calculate duration in minutes for a workout
@@ -21,9 +34,11 @@ const getWorkoutDurationMinutes = (workout: Readonly<Workout>): number => {
 const getChipHeight = (durationMinutes: number): number => {
   // Base height: 20px for 30min workout
   // Scale: +1px per 5 minutes
-  const baseHeight = 20;
-  const scaleFactor = Math.max(0, (durationMinutes - 30) / 5);
-  return Math.min(baseHeight + scaleFactor, 60); // Max 60px
+  const scaleFactor = Math.max(
+    0,
+    (durationMinutes - BASE_DURATION) / HEIGHT_SCALE_FACTOR,
+  );
+  return Math.min(MIN_CHIP_HEIGHT + scaleFactor, MAX_CHIP_HEIGHT); // Max 60px
 };
 
 /**
@@ -49,11 +64,18 @@ export const CalendarDay: FC<CalendarDayProps> = ({
     return aStart - bStart;
   });
 
+  // Create calendar color map for efficient lookups
+  const calendarColorMap = useMemo(
+    () =>
+      new Map<string, string>(
+        calendars.map(calendar => [calendar.id, calendar.color]),
+      ),
+    [calendars],
+  );
+
   // Get calendar color for a workout
-  const getCalendarColor = (calendarId: string): string => {
-    const calendar = calendars.find(c => c.id === calendarId);
-    return calendar?.color || '#1976d2';
-  };
+  const getCalendarColor = (calendarId: string): string =>
+    calendarColorMap.get(calendarId) || DEFAULT_CALENDAR_COLOR;
 
   return (
     <Paper
