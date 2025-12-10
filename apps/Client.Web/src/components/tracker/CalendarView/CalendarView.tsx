@@ -23,6 +23,8 @@ export const CalendarView: FC<CalendarViewProps> = ({
   workouts,
   onDayClick,
   onWorkoutClick,
+  calendars = [],
+  isCombinedView = false,
 }) => {
   const days = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
@@ -93,6 +95,8 @@ export const CalendarView: FC<CalendarViewProps> = ({
               workouts={dayWorkouts}
               onDayClick={onDayClick}
               onWorkoutClick={onWorkoutClick}
+              calendars={calendars}
+              isCombinedView={isCombinedView}
             />
           );
         })}

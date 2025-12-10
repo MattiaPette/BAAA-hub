@@ -7,4 +7,6 @@ export interface CalendarHeaderProps {
   calendars: Calendar[];
   selectedCalendarId: string;
   onCalendarSelect: (calendarId: string) => void;
+  isCombinedView: boolean;
+  onToggleCombinedView: () => void;
 }

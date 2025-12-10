@@ -6,13 +6,16 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Button,
 } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import { format } from 'date-fns';
 import { enUS, it } from 'date-fns/locale';
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
+import { Trans } from '@lingui/react/macro';
 
 import { CalendarHeaderProps } from './CalendarHeader.model';
 
@@ -28,6 +31,8 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
   calendars,
   selectedCalendarId,
   onCalendarSelect,
+  isCombinedView,
+  onToggleCombinedView,
 }) => {
   const { i18n } = useLingui();
 
@@ -83,46 +88,64 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
       </Box>
 
       {/* Calendar selector */}
-      <FormControl fullWidth size="small">
-        <Select
-          value={selectedCalendarId}
-          onChange={e => onCalendarSelect(e.target.value)}
-          aria-label={t`Select calendar`}
-          sx={{
-            backgroundColor: theme => theme.palette.background.paper,
-            '& .MuiSelect-select': {
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-            },
-          }}
-        >
-          {calendars.map(calendar => (
-            <MenuItem key={calendar.id} value={calendar.id}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1.5,
-                  width: '100%',
-                }}
-              >
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          alignItems: 'center',
+        }}
+      >
+        <FormControl fullWidth size="small" disabled={isCombinedView}>
+          <Select
+            value={selectedCalendarId}
+            onChange={e => onCalendarSelect(e.target.value)}
+            aria-label={t`Select calendar`}
+            sx={{
+              backgroundColor: theme => theme.palette.background.paper,
+              '& .MuiSelect-select': {
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+              },
+            }}
+          >
+            {calendars.map(calendar => (
+              <MenuItem key={calendar.id} value={calendar.id}>
                 <Box
                   sx={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: '50%',
-                    backgroundColor: calendar.color,
-                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.5,
+                    width: '100%',
                   }}
-                  aria-hidden="true"
-                />
-                <Typography variant="body2">{calendar.name}</Typography>
-              </Box>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+                >
+                  <Box
+                    sx={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: '50%',
+                      backgroundColor: calendar.color,
+                      flexShrink: 0,
+                    }}
+                    aria-hidden="true"
+                  />
+                  <Typography variant="body2">{calendar.name}</Typography>
+                </Box>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <Button
+          variant={isCombinedView ? 'contained' : 'outlined'}
+          onClick={onToggleCombinedView}
+          startIcon={<CalendarViewMonthIcon />}
+          aria-label={t`Toggle combined view`}
+          sx={{ whiteSpace: 'nowrap' }}
+        >
+          <Trans>Combined</Trans>
+        </Button>
+      </Box>
     </Box>
   );
 };

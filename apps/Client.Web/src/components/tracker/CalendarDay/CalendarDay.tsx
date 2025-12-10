@@ -4,6 +4,27 @@ import { isToday } from 'date-fns';
 
 import { getWorkoutTypeLabel } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { CalendarDayProps } from './CalendarDay.model';
+import { Workout } from '../../../types/tracker';
+
+/**
+ * Calculate duration in minutes for a workout
+ */
+const getWorkoutDurationMinutes = (workout: Readonly<Workout>): number => {
+  const startMinutes = workout.startHour * 60 + workout.startMinute;
+  const endMinutes = workout.endHour * 60 + workout.endMinute;
+  return endMinutes - startMinutes;
+};
+
+/**
+ * Calculate chip height based on duration (minimum 20px, scales with duration)
+ */
+const getChipHeight = (durationMinutes: number): number => {
+  // Base height: 20px for 30min workout
+  // Scale: +1px per 5 minutes
+  const baseHeight = 20;
+  const scaleFactor = Math.max(0, (durationMinutes - 30) / 5);
+  return Math.min(baseHeight + scaleFactor, 60); // Max 60px
+};
 
 /**
  * CalendarDay component displays a single day in the calendar
@@ -15,9 +36,24 @@ export const CalendarDay: FC<CalendarDayProps> = ({
   workouts,
   onDayClick,
   onWorkoutClick,
+  calendars = [],
+  isCombinedView = false,
 }) => {
   const today = isToday(date);
   const hasWorkouts = workouts.length > 0;
+
+  // Sort workouts by start time for better stacking
+  const sortedWorkouts = [...workouts].sort((a, b) => {
+    const aStart = a.startHour * 60 + a.startMinute;
+    const bStart = b.startHour * 60 + b.startMinute;
+    return aStart - bStart;
+  });
+
+  // Get calendar color for a workout
+  const getCalendarColor = (calendarId: string): string => {
+    const calendar = calendars.find(c => c.id === calendarId);
+    return calendar?.color || '#1976d2';
+  };
 
   return (
     <Paper
@@ -81,8 +117,14 @@ export const CalendarDay: FC<CalendarDayProps> = ({
 
         {/* Workout chips - max 3 */}
         <Stack spacing={0.5} sx={{ mt: 0.5, overflow: 'hidden' }}>
-          {workouts.slice(0, 3).map(workout => {
+          {sortedWorkouts.slice(0, 3).map(workout => {
             const startTime = `${String(workout.startHour).padStart(2, '0')}:${String(workout.startMinute).padStart(2, '0')}`;
+            const duration = getWorkoutDurationMinutes(workout);
+            const chipHeight = getChipHeight(duration);
+            const backgroundColor = isCombinedView
+              ? getCalendarColor(workout.calendarId)
+              : theme => theme.palette.primary.main;
+
             return (
               <Chip
                 key={workout.id}
@@ -93,10 +135,15 @@ export const CalendarDay: FC<CalendarDayProps> = ({
                   onWorkoutClick(workout);
                 }}
                 sx={{
-                  height: 20,
+                  height: chipHeight,
                   fontSize: '0.7rem',
-                  backgroundColor: theme => theme.palette.primary.main,
-                  color: theme => theme.palette.primary.contrastText,
+                  backgroundColor,
+                  color: theme =>
+                    isCombinedView
+                      ? theme.palette.getContrastText(
+                          getCalendarColor(workout.calendarId),
+                        )
+                      : (theme.palette.primary.contrastText as string),
                   cursor: 'pointer',
                   maxWidth: '100%',
                   width: '100%',
@@ -108,7 +155,7 @@ export const CalendarDay: FC<CalendarDayProps> = ({
                     display: 'block',
                   },
                   '&:hover': {
-                    backgroundColor: theme => theme.palette.primary.dark,
+                    opacity: 0.8,
                   },
                 }}
               />

@@ -203,6 +203,10 @@ msgstr "Block User"
 msgid "Blocked"
 msgstr "Blocked"
 
+#: src/components/tracker/CalendarLegend/CalendarLegend.tsx:19
+msgid "Calendars"
+msgstr "Calendars"
+
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
 #: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:251
 #: src/containers/Administration/EditRolesDialog.tsx:158
@@ -256,6 +260,10 @@ msgstr "Close"
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:78
 msgid "Close dialog"
 msgstr "Close dialog"
+
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:146
+msgid "Combined"
+msgstr "Combined"
 
 #: src/containers/Profile/Profile.tsx:612
 #~ msgid "Coming soon..."
@@ -585,7 +593,7 @@ msgstr "Format: HH:MM:SS or MM:SS"
 msgid "Format: MM:SS or HH:MM:SS"
 msgstr "Format: MM:SS or HH:MM:SS"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:41
+#: src/components/tracker/CalendarView/CalendarView.tsx:43
 msgid "Fri"
 msgstr "Fri"
 
@@ -866,7 +874,7 @@ msgstr "MFA Disabled"
 msgid "MFA Enabled: {0}"
 msgstr "MFA Enabled: {0}"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:37
+#: src/components/tracker/CalendarView/CalendarView.tsx:39
 msgid "Mon"
 msgstr "Mon"
 
@@ -890,7 +898,7 @@ msgstr "New notification"
 msgid "Next"
 msgstr "Next"
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:74
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:79
 msgid "Next month"
 msgstr "Next month"
 
@@ -1055,7 +1063,7 @@ msgstr "Please select at least one sport"
 msgid "Please verify your email address for enhanced security."
 msgstr "Please verify your email address for enhanced security."
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:51
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:56
 msgid "Previous month"
 msgstr "Previous month"
 
@@ -1208,7 +1216,7 @@ msgstr "Run"
 msgid "Running"
 msgstr "Running"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:42
+#: src/components/tracker/CalendarView/CalendarView.tsx:44
 msgid "Sat"
 msgstr "Sat"
 
@@ -1245,7 +1253,7 @@ msgstr "Security Key"
 msgid "Select at least one sport type"
 msgstr "Select at least one sport type"
 
-#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:90
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:102
 msgid "Select calendar"
 msgstr "Select calendar"
 
@@ -1358,7 +1366,7 @@ msgstr "Successfully followed user"
 msgid "Successfully unfollowed user"
 msgstr "Successfully unfollowed user"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:43
+#: src/components/tracker/CalendarView/CalendarView.tsx:45
 msgid "Sun"
 msgstr "Sun"
 
@@ -1452,7 +1460,7 @@ msgstr "This will be your public username"
 msgid "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
 msgstr "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:40
+#: src/components/tracker/CalendarView/CalendarView.tsx:42
 msgid "Thu"
 msgstr "Thu"
 
@@ -1467,6 +1475,10 @@ msgstr "Time"
 #: src/helpers/mfaLabels/mfaLabels.ts:35
 msgid "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
 msgstr "Time-based one-time password via authenticator app (Google Authenticator, Authy, etc.). Recommended for strongest security."
+
+#: src/components/tracker/CalendarHeader/CalendarHeader.tsx:143
+msgid "Toggle combined view"
+msgstr "Toggle combined view"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:106
 msgid "Too many attempts. Please try again in a few minutes"
@@ -1484,7 +1496,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:35
+#: src/containers/Tracker/Tracker.tsx:36
 msgid "Tracker"
 msgstr "Tracker"
 
@@ -1498,7 +1510,7 @@ msgstr "Trail Running"
 msgid "Triathlon"
 msgstr "Triathlon"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:38
+#: src/components/tracker/CalendarView/CalendarView.tsx:40
 msgid "Tue"
 msgstr "Tue"
 
@@ -1609,7 +1621,7 @@ msgstr "Walking"
 msgid "WebAuthn"
 msgstr "WebAuthn"
 
-#: src/components/tracker/CalendarView/CalendarView.tsx:39
+#: src/components/tracker/CalendarView/CalendarView.tsx:41
 msgid "Wed"
 msgstr "Wed"
 
