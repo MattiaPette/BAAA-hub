@@ -56,6 +56,7 @@ const toUserResponse = (doc: UserDocument): User => {
     mfaType: obj.mfaType,
     roles: obj.roles,
     privacySettings: obj.privacySettings,
+    workoutGoals: obj.workoutGoals,
   };
 };
 
@@ -216,6 +217,8 @@ export const updateCurrentUser = async (ctx: AuthContext): Promise<void> => {
     user.personalAchievements = data.personalAchievements ?? undefined;
   if (data.privacySettings !== undefined)
     user.privacySettings = data.privacySettings;
+  if (data.workoutGoals !== undefined)
+    user.workoutGoals = data.workoutGoals ?? undefined;
 
   await user.save();
 

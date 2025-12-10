@@ -130,10 +130,7 @@ export const canManageAdminRole = (
     const willHaveSuperAdmin = newRoles.includes(UserRole.SUPER_ADMIN);
 
     // Non-super-admins cannot change admin/super-admin status
-    if (
-      hadAdmin !== willHaveAdmin ||
-      hadSuperAdmin !== willHaveSuperAdmin
-    ) {
+    if (hadAdmin !== willHaveAdmin || hadSuperAdmin !== willHaveSuperAdmin) {
       return false;
     }
   }
@@ -179,7 +176,10 @@ export const canManageUser = (
  * @param roles - Array of roles to check for
  * @returns true if user has at least one of the specified roles
  */
-export const hasAnyRole = (userRoles: UserRole[], roles: UserRole[]): boolean => {
+export const hasAnyRole = (
+  userRoles: UserRole[],
+  roles: UserRole[],
+): boolean => {
   return roles.some(role => hasRole(userRoles, role));
 };
 
@@ -189,7 +189,10 @@ export const hasAnyRole = (userRoles: UserRole[], roles: UserRole[]): boolean =>
  * @param roles - Array of roles to check for
  * @returns true if user has all of the specified roles
  */
-export const hasAllRoles = (userRoles: UserRole[], roles: UserRole[]): boolean => {
+export const hasAllRoles = (
+  userRoles: UserRole[],
+  roles: UserRole[],
+): boolean => {
   return roles.every(role => hasRole(userRoles, role));
 };
 
