@@ -24,6 +24,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import NoEncryptionIcon from '@mui/icons-material/NoEncryption';
 import PaletteIcon from '@mui/icons-material/Palette';
 import LockIcon from '@mui/icons-material/Lock';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { useSnackbar } from 'notistack';
 
 import { MfaType } from '@baaa-hub/shared-types';
@@ -37,6 +38,7 @@ import {
   getMfaTypeLabels,
   getMfaTypeDescriptions,
 } from '../../helpers/mfaLabels';
+import { TrainingGoals } from '../../components/settings/TrainingGoals/TrainingGoals';
 
 /**
  * TabPanel component for rendering tab content
@@ -140,6 +142,14 @@ export const Settings: FC = () => {
             label={t`Account Security`}
             id="settings-tab-1"
             aria-controls="settings-tabpanel-1"
+            disabled={!isAuthenticated}
+          />
+          <Tab
+            icon={<FitnessCenterIcon />}
+            iconPosition="start"
+            label={t`Training Goals`}
+            id="settings-tab-2"
+            aria-controls="settings-tabpanel-2"
             disabled={!isAuthenticated}
           />
         </Tabs>
@@ -339,6 +349,17 @@ export const Settings: FC = () => {
               </CardContent>
             </Card>
           </Stack>
+        )}
+      </TabPanel>
+
+      {/* Training Goals Tab */}
+      <TabPanel value={tabValue} index={2}>
+        {!isAuthenticated ? (
+          <Alert severity="info">
+            <Trans>Please log in to access training goals settings.</Trans>
+          </Alert>
+        ) : (
+          <TrainingGoals />
         )}
       </TabPanel>
     </Box>
