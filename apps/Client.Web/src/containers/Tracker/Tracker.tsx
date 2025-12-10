@@ -155,6 +155,8 @@ export const Tracker: FC = () => {
     <Box
       sx={{
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
         overflow: 'hidden',
         p: { xs: 2, md: 3 },
       }}
@@ -162,10 +164,10 @@ export const Tracker: FC = () => {
       {/* Main calendar area */}
       <Box
         sx={{
-          maxWidth: 1200,
-          margin: '0 auto',
-          height: '100%',
-          overflow: 'auto',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
         }}
       >
         <CalendarHeader

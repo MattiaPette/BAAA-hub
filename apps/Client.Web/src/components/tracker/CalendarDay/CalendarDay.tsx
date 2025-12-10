@@ -81,7 +81,7 @@ export const CalendarDay: FC<CalendarDayProps> = ({
     <Paper
       onClick={() => onDayClick(date)}
       sx={{
-        minHeight: { xs: 80, sm: 100, md: 120 },
+        height: '100%',
         p: 1,
         cursor: 'pointer',
         backgroundColor: theme =>

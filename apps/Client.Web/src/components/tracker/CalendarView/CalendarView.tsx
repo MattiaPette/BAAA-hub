@@ -46,7 +46,14 @@ export const CalendarView: FC<CalendarViewProps> = ({
   ];
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+      }}
+    >
       {/* Week day headers */}
       <Box
         sx={{
@@ -77,8 +84,11 @@ export const CalendarView: FC<CalendarViewProps> = ({
         sx={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
+          gridTemplateRows: `repeat(${Math.ceil(days.length / 7)}, 1fr)`,
           gap: 1,
           width: '100%',
+          flex: 1,
+          overflow: 'hidden',
         }}
       >
         {days.map(day => {
