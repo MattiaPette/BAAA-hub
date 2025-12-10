@@ -121,9 +121,6 @@ export const CalendarDay: FC<CalendarDayProps> = ({
             const startTime = `${String(workout.startHour).padStart(2, '0')}:${String(workout.startMinute).padStart(2, '0')}`;
             const duration = getWorkoutDurationMinutes(workout);
             const chipHeight = getChipHeight(duration);
-            const backgroundColor = isCombinedView
-              ? getCalendarColor(workout.calendarId)
-              : theme => theme.palette.primary.main;
 
             return (
               <Chip
@@ -137,7 +134,9 @@ export const CalendarDay: FC<CalendarDayProps> = ({
                 sx={{
                   height: chipHeight,
                   fontSize: '0.7rem',
-                  backgroundColor,
+                  backgroundColor: isCombinedView
+                    ? getCalendarColor(workout.calendarId)
+                    : theme => theme.palette.primary.main,
                   color: theme =>
                     isCombinedView
                       ? theme.palette.getContrastText(
