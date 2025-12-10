@@ -61,7 +61,7 @@ msgstr "Accesso negato. Nome utente e/o password non corretti"
 msgid "Account created successfully! You can now log in."
 msgstr "Account creato con successo! Ora puoi accedere."
 
-#: src/containers/Settings/Settings.tsx:140
+#: src/containers/Settings/Settings.tsx:142
 msgid "Account Security"
 msgstr "Sicurezza Account"
 
@@ -74,13 +74,31 @@ msgstr "Azioni"
 msgid "Active"
 msgstr "Attivo"
 
-#: src/containers/Profile/Profile.tsx:609
-#~ msgid "Activity Statistics"
-#~ msgstr "Statistiche Attività"
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:132
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:157
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:182
+msgid "Activities"
+msgstr "Attività"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:241
+msgid "Activity Count Goals"
+msgstr "Obiettivi di Conteggio Attività"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:333
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:336
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:425
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:428
+msgid "Activity Type"
+msgstr "Tipo di Attività"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:586
 msgid "Add a profile picture and banner to personalize your profile"
 msgstr "Aggiungi un'immagine del profilo e un banner per personalizzare il tuo profilo"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:313
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:405
+msgid "Add Goal"
+msgstr "Aggiungi Obiettivo"
 
 #: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:160
 #: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:269
@@ -136,13 +154,17 @@ msgstr "Si è verificato un errore durante l'autenticazione. Riprova"
 msgid "App is already installed"
 msgstr "Applicazione già installata"
 
-#: src/containers/Settings/Settings.tsx:133
+#: src/containers/Settings/Settings.tsx:135
 msgid "Appearance"
 msgstr "Aspetto"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:194
 msgid "Apply"
 msgstr "Applica"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:143
+msgid "Authentication required"
+msgstr "Autenticazione richiesta"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:34
 msgid "Authentication required. Please try logging in again."
@@ -156,7 +178,7 @@ msgstr "App di Autenticazione"
 msgid "Available Calendars"
 msgstr "Calendari Disponibili"
 
-#: src/containers/Settings/Settings.tsx:278
+#: src/containers/Settings/Settings.tsx:288
 msgid "Available MFA Methods:"
 msgstr "Metodi MFA Disponibili:"
 
@@ -203,7 +225,7 @@ msgstr "Blocca utente"
 msgid "Blocked"
 msgstr "Bloccato"
 
-#: src/components/tracker/CalendarLegend/CalendarLegend.tsx:19
+#: src/components/tracker/CalendarLegend/CalendarLegend.tsx:18
 msgid "Calendars"
 msgstr "Calendari"
 
@@ -234,7 +256,7 @@ msgstr "Cambia foto profilo"
 msgid "Choose a unique nickname"
 msgstr "Scegli un nickname unico"
 
-#: src/containers/Settings/Settings.tsx:193
+#: src/containers/Settings/Settings.tsx:203
 msgid "Choose your preferred language"
 msgstr "Scegli la tua lingua preferita"
 
@@ -265,10 +287,6 @@ msgstr "Chiudi dialogo"
 msgid "Combined"
 msgstr "Combinata"
 
-#: src/containers/Profile/Profile.tsx:612
-#~ msgid "Coming soon..."
-#~ msgstr "Prossimamente..."
-
 #: src/helpers/roleLabels/roleLabels.ts:12
 msgid "Community Leader"
 msgstr "Community Leader"
@@ -285,6 +303,10 @@ msgstr "Riconoscimento della community"
 msgid "Community Star"
 msgstr "Community Star"
 
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:91
+msgid "Complete"
+msgstr "Completo"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:969
 msgid "Complete Your Profile"
 msgstr "Completa il Tuo Profilo"
@@ -300,6 +322,11 @@ msgstr "Contatti e Social"
 #: src/containers/Profile/ProfileEditForm.tsx:961
 msgid "Control who can see your profile information. You can set different privacy levels for each section."
 msgstr "Controlla chi può vedere le informazioni del tuo profilo. Puoi impostare diversi livelli di privacy per ogni sezione."
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:355
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:447
+msgid "Count"
+msgstr "Conteggio"
 
 #: src/containers/Profile/ProfileEditForm.tsx:422
 msgid "Country"
@@ -332,7 +359,7 @@ msgstr "CrossFit"
 msgid "Cycling"
 msgstr "Ciclismo"
 
-#: src/containers/Settings/Settings.tsx:165
+#: src/containers/Settings/Settings.tsx:175
 msgid "Dark Mode"
 msgstr "Modalità scura"
 
@@ -367,6 +394,16 @@ msgstr "La descrizione deve essere di 500 caratteri o meno"
 #: src/containers/Administration/Administration.tsx:334
 msgid "Disabled"
 msgstr "Disabilitato"
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:126
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:151
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:176
+msgid "Distance"
+msgstr "Distanza"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:193
+msgid "Distance Goals"
+msgstr "Obiettivi di Distanza"
 
 #: src/components/login/LoginDialog/LoginDialog.tsx:237
 msgid "Don't have an account?"
@@ -435,7 +472,7 @@ msgstr "Email non verificata"
 msgid "Email Privacy"
 msgstr "Privacy Email"
 
-#: src/containers/Settings/Settings.tsx:320
+#: src/containers/Settings/Settings.tsx:330
 msgid "Email Verification"
 msgstr "Verifica Email"
 
@@ -514,6 +551,10 @@ msgstr "Impossibile aggiornare la foto profilo. Riprova."
 #: src/containers/Profile/Profile.tsx:300
 msgid "Failed to update profile. Please try again."
 msgstr "Impossibile aggiornare il profilo. Riprova."
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:177
+msgid "Failed to update training goals. Please try again."
+msgstr "Impossibile aggiornare gli obiettivi di allenamento. Riprova."
 
 #: src/containers/Administration/Administration.tsx:247
 msgid "Failed to update user roles"
@@ -620,6 +661,10 @@ msgstr "Accesso alle funzionalità gaming"
 #: src/containers/Profile/ProfileEditForm.tsx:670
 msgid "Garmin Connect Profile"
 msgstr "Profilo Garmin Connect"
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:112
+msgid "Goals Progress"
+msgstr "Progressi Obiettivi"
 
 #: src/components/tracker/AgendaView/AgendaView.tsx:43
 #: src/helpers/sportTypes/sportTypeLabels.ts:17
@@ -769,15 +814,15 @@ msgstr "Iscritto"
 msgid "Just now"
 msgstr "Proprio ora"
 
-#: src/containers/Settings/Settings.tsx:177
+#: src/containers/Settings/Settings.tsx:187
 msgid "Language"
 msgstr "Lingua"
 
-#: src/containers/Settings/Settings.tsx:110
+#: src/containers/Settings/Settings.tsx:112
 msgid "Language changed to English"
 msgstr "Lingua cambiata in Inglese"
 
-#: src/containers/Settings/Settings.tsx:111
+#: src/containers/Settings/Settings.tsx:113
 msgid "Language changed to Italian"
 msgstr "Lingua cambiata in Italiano"
 
@@ -796,7 +841,7 @@ msgstr "Il cognome è obbligatorio"
 msgid "Last name must be 50 characters or less"
 msgstr "Il cognome deve essere di 50 caratteri o meno"
 
-#: src/containers/Settings/Settings.tsx:165
+#: src/containers/Settings/Settings.tsx:175
 msgid "Light Mode"
 msgstr "Modalità chiara"
 
@@ -878,6 +923,18 @@ msgstr "MFA Abilitato: {0}"
 msgid "Mon"
 msgstr "Lun"
 
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:263
+msgid "Monthly Activities"
+msgstr "Attività Mensili"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:394
+msgid "Monthly Activity Type Goals"
+msgstr "Obiettivi di Tipo di Attività Mensili"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:213
+msgid "Monthly Km"
+msgstr "Km Mensili"
+
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:42
 msgid "Multi-factor authentication is required"
 msgstr "È richiesta l'autenticazione a più fattori"
@@ -919,6 +976,14 @@ msgstr "Il nickname deve essere di 30 caratteri o meno"
 msgid "Nickname must be at least 3 characters"
 msgstr "Il nickname deve essere di almeno 3 caratteri"
 
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:52
+msgid "No goals set yet. Visit Settings → Training Goals to set your workout goals."
+msgstr "Nessun obiettivo impostato. Visita Impostazioni → Obiettivi di Allenamento per impostare i tuoi obiettivi di allenamento."
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:410
+msgid "No monthly activity type goals set. Click \"Add Goal\" to create one."
+msgstr "Nessun obiettivo di tipo di attività mensile impostato. Clicca &quot;Aggiungi Obiettivo&quot; per crearne uno."
+
 #: src/components/social/NotificationBell/NotificationBell.tsx:199
 msgid "No notifications yet"
 msgstr "Nessuna notifica ancora"
@@ -936,6 +1001,10 @@ msgstr "Autenticazione a due fattori non abilitata"
 msgid "No users found"
 msgstr "Nessun utente trovato"
 
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:318
+msgid "No weekly activity type goals set. Click \"Add Goal\" to create one."
+msgstr "Nessun obiettivo di tipo di attività settimanale impostato. Clicca &quot;Aggiungi Obiettivo&quot; per crearne uno."
+
 #: src/components/tracker/AgendaView/AgendaView.tsx:118
 msgid "No workouts scheduled this month"
 msgstr "Nessun allenamento programmato questo mese"
@@ -945,12 +1014,12 @@ msgstr "Nessun allenamento programmato questo mese"
 msgid "None"
 msgstr "Nessuno"
 
-#: src/containers/Settings/Settings.tsx:253
+#: src/containers/Settings/Settings.tsx:263
 msgid "Not Enabled"
 msgstr "Non Abilitato"
 
 #: src/containers/Administration/Administration.tsx:322
-#: src/containers/Settings/Settings.tsx:327
+#: src/containers/Settings/Settings.tsx:337
 msgid "Not Verified"
 msgstr "Non verificato"
 
@@ -974,10 +1043,6 @@ msgstr "Codici monouso inviati via SMS al tuo numero di telefono"
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:544
 msgid "Only letters, numbers, and underscores allowed"
 msgstr "Sono consentite solo lettere, numeri e underscore"
-
-#: src/containers/Tracker/Tracker.tsx:161
-#~ msgid "Open calendar list"
-#~ msgstr "Apri lista calendari"
 
 #: src/containers/PublicContainer/PublicContainer.tsx:234
 msgid "Open menu"
@@ -1047,9 +1112,13 @@ msgstr "Chiave di sicurezza fisica (FIDO2/WebAuthn)"
 msgid "Please check your input and try again."
 msgstr "Per favore, controlla i dati inseriti e riprova."
 
-#: src/containers/Settings/Settings.tsx:204
+#: src/containers/Settings/Settings.tsx:214
 msgid "Please log in to access account security settings."
 msgstr "Effettua l'accesso per visualizzare le impostazioni di sicurezza dell'account."
+
+#: src/containers/Settings/Settings.tsx:359
+msgid "Please log in to access training goals settings."
+msgstr "Effettua l'accesso per visualizzare le impostazioni degli obiettivi di allenamento."
 
 #: src/containers/PublicProfile/PublicProfile.tsx:181
 msgid "Please log in to follow users"
@@ -1059,7 +1128,7 @@ msgstr "Effettua il login per seguire gli utenti"
 msgid "Please select at least one sport"
 msgstr "Seleziona almeno uno sport"
 
-#: src/containers/Settings/Settings.tsx:335
+#: src/containers/Settings/Settings.tsx:345
 msgid "Please verify your email address for enhanced security."
 msgstr "Per favore, verifica il tuo indirizzo email per una maggiore sicurezza."
 
@@ -1153,7 +1222,7 @@ msgstr "Notifica Push"
 msgid "Push notifications via Guardian app"
 msgstr "Notifiche push tramite app Guardian"
 
-#: src/containers/Settings/Settings.tsx:290
+#: src/containers/Settings/Settings.tsx:300
 msgid "Recommended"
 msgstr "Consigliato"
 
@@ -1179,6 +1248,11 @@ msgstr "Rimuovi banner"
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:441
 msgid "Remove banner image"
 msgstr "Rimuovi immagine banner"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:370
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:462
+msgid "Remove goal"
+msgstr "Rimuovi obiettivo"
 
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:268
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:718
@@ -1228,6 +1302,11 @@ msgstr "Salva"
 msgid "Save Changes"
 msgstr "Salva Modifiche"
 
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:481
+msgid "Save Goals"
+msgstr "Salva Obiettivi"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:481
 #: src/containers/Administration/EditRolesDialog.tsx:165
 #: src/containers/Profile/ProfileEditForm.tsx:1061
 msgid "Saving..."
@@ -1241,7 +1320,7 @@ msgstr "Cerca per nome, email o nickname..."
 msgid "Search for users..."
 msgstr "Cerca utenti..."
 
-#: src/containers/Settings/Settings.tsx:218
+#: src/containers/Settings/Settings.tsx:228
 msgid "Security"
 msgstr "Sicurezza"
 
@@ -1258,8 +1337,8 @@ msgid "Select calendar"
 msgstr "Seleziona calendario"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:981
-#: src/containers/Settings/Settings.tsx:180
-#: src/containers/Settings/Settings.tsx:185
+#: src/containers/Settings/Settings.tsx:190
+#: src/containers/Settings/Settings.tsx:195
 msgid "Select Language"
 msgstr "Seleziona lingua"
 
@@ -1267,15 +1346,31 @@ msgstr "Seleziona lingua"
 msgid "Select the roles to assign to this user."
 msgstr "Seleziona i ruoli da assegnare a questo utente."
 
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:397
+msgid "Set goals for specific activity types per month"
+msgstr "Imposta obiettivi per tipi di attività specifici al mese"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:305
+msgid "Set goals for specific activity types per week"
+msgstr "Imposta obiettivi per tipi di attività specifici alla settimana"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:244
+msgid "Set your weekly, monthly, and yearly activity count goals"
+msgstr "Imposta i tuoi obiettivi settimanali, mensili e annuali di conteggio attività"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:196
+msgid "Set your weekly, monthly, and yearly distance goals in kilometers"
+msgstr "Imposta i tuoi obiettivi settimanali, mensili e annuali di distanza in chilometri"
+
 #: src/components/commons/navigation/UserProfilePopup/UserProfilePopup.tsx:231
 #: src/containers/MainContainer/MainContainer.tsx:97
 #: src/containers/PublicContainer/PublicContainer.tsx:167
-#: src/containers/Settings/Settings.tsx:87
-#: src/containers/Settings/Settings.tsx:119
+#: src/containers/Settings/Settings.tsx:89
+#: src/containers/Settings/Settings.tsx:121
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: src/containers/Settings/Settings.tsx:126
+#: src/containers/Settings/Settings.tsx:128
 msgid "Settings tabs"
 msgstr "Schede impostazioni"
 
@@ -1387,15 +1482,15 @@ msgstr "Supporta JPG, PNG, WEBP, HEIC. Max 5MB."
 msgid "Swimming"
 msgstr "Nuoto"
 
-#: src/containers/Settings/Settings.tsx:168
+#: src/containers/Settings/Settings.tsx:178
 msgid "Switch between light and dark theme"
 msgstr "Passa tra tema chiaro e scuro"
 
-#: src/containers/Settings/Settings.tsx:100
+#: src/containers/Settings/Settings.tsx:102
 msgid "Switched to dark theme"
 msgstr "Passato al tema scuro"
 
-#: src/containers/Settings/Settings.tsx:99
+#: src/containers/Settings/Settings.tsx:101
 msgid "Switched to light theme"
 msgstr "Passato al tema chiaro"
 
@@ -1419,7 +1514,7 @@ msgstr "La richiesta è scaduta. Riprova"
 msgid "The service is temporarily unavailable. Please try again later"
 msgstr "Il servizio è temporaneamente non disponibile. Riprova più tardi"
 
-#: src/containers/Settings/Settings.tsx:155
+#: src/containers/Settings/Settings.tsx:165
 msgid "Theme"
 msgstr "Tema"
 
@@ -1430,6 +1525,10 @@ msgstr "Esiste già un utente con questo indirizzo email"
 #: src/containers/ProfileSetup/ProfileSetup.tsx:125
 msgid "This email is already registered."
 msgstr "Questa email è già registrata."
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:148
+msgid "This Month"
+msgstr "Questo Mese"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:245
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:411
@@ -1452,6 +1551,10 @@ msgstr "Questa password è stata compromessa in una violazione dei dati. Scegli 
 msgid "This username is already in use"
 msgstr "Questo nome utente è già in uso"
 
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:123
+msgid "This Week"
+msgstr "Questa Settimana"
+
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:503
 msgid "This will be your public username"
 msgstr "Questo sarà il tuo nome utente pubblico"
@@ -1459,6 +1562,10 @@ msgstr "Questo sarà il tuo nome utente pubblico"
 #: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:115
 msgid "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
 msgstr "Questo allenamento si sovrappone a un allenamento esistente. L'allenamento precedente deve finire prima che inizi questo."
+
+#: src/components/tracker/GoalsProgress/GoalsProgress.tsx:173
+msgid "This Year"
+msgstr "Quest'Anno"
 
 #: src/components/tracker/CalendarView/CalendarView.tsx:42
 msgid "Thu"
@@ -1505,6 +1612,14 @@ msgstr "Tracker"
 msgid "Trail Running"
 msgstr "Trail Running"
 
+#: src/containers/Settings/Settings.tsx:150
+msgid "Training Goals"
+msgstr "Obiettivi di Allenamento"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:171
+msgid "Training goals updated successfully!"
+msgstr "Obiettivi di allenamento aggiornati con successo!"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:13
 #: src/helpers/sportTypes/sportTypeLabels.ts:33
 msgid "Triathlon"
@@ -1514,11 +1629,11 @@ msgstr "Triathlon"
 msgid "Tue"
 msgstr "Mar"
 
-#: src/containers/Settings/Settings.tsx:228
+#: src/containers/Settings/Settings.tsx:238
 msgid "Two-Factor Authentication (2FA)"
 msgstr "Autenticazione a Due Fattori (2FA)"
 
-#: src/containers/Settings/Settings.tsx:266
+#: src/containers/Settings/Settings.tsx:276
 msgid "Two-factor authentication adds an extra layer of security to your account. To enable or manage 2FA, you will be prompted during your next login, or you can contact an administrator for assistance."
 msgstr "L'autenticazione a due fattori aggiunge un ulteriore livello di sicurezza al tuo account. Per abilitare o gestire il 2FA, ti verrà richiesto durante il prossimo accesso, oppure puoi contattare un amministratore per assistenza."
 
@@ -1595,7 +1710,7 @@ msgid "User unblocked successfully"
 msgstr "Utente sbloccato con successo"
 
 #: src/containers/Administration/Administration.tsx:321
-#: src/containers/Settings/Settings.tsx:324
+#: src/containers/Settings/Settings.tsx:334
 msgid "Verified"
 msgstr "Verificato"
 
@@ -1624,6 +1739,18 @@ msgstr "WebAuthn"
 #: src/components/tracker/CalendarView/CalendarView.tsx:41
 msgid "Wed"
 msgstr "Mer"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:251
+msgid "Weekly Activities"
+msgstr "Attività Settimanali"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:302
+msgid "Weekly Activity Type Goals"
+msgstr "Obiettivi di Tipo di Attività Settimanali"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:203
+msgid "Weekly Km"
+msgstr "Km Settimanali"
 
 #: src/containers/Profile/Profile.tsx:645
 #: src/containers/PublicProfile/PublicProfile.tsx:658
@@ -1664,6 +1791,14 @@ msgstr "Tipo di Allenamento"
 msgid "workouts"
 msgstr "allenamenti"
 
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:275
+msgid "Yearly Activities"
+msgstr "Attività Annuali"
+
+#: src/components/settings/TrainingGoals/TrainingGoals.tsx:225
+msgid "Yearly Km"
+msgstr "Km Annuali"
+
 #: src/containers/Profile/Profile.tsx:576
 #: src/containers/PublicProfile/PublicProfile.tsx:589
 msgid "years old"
@@ -1699,7 +1834,7 @@ msgstr "È necessario effettuare l'accesso"
 msgid "You must register for multi-factor authentication"
 msgstr "È necessario registrare l'autenticazione a più fattori"
 
-#: src/containers/Settings/Settings.tsx:258
+#: src/containers/Settings/Settings.tsx:268
 msgid "Your account does not have two-factor authentication enabled."
 msgstr "Il tuo account non ha l'autenticazione a due fattori abilitata."
 
@@ -1723,7 +1858,7 @@ msgstr "Il tuo account richiede il completamento di passaggi aggiuntivi prima di
 msgid "Your account setup is incomplete. Please complete your profile to continue"
 msgstr "La configurazione del tuo account è incompleta. Completa il tuo profilo per continuare"
 
-#: src/containers/Settings/Settings.tsx:334
+#: src/containers/Settings/Settings.tsx:344
 msgid "Your email address has been verified."
 msgstr "Il tuo indirizzo email è stato verificato."
 

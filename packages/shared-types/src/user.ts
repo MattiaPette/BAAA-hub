@@ -130,10 +130,7 @@ export const canManageAdminRole = (
     const willHaveSuperAdmin = newRoles.includes(UserRole.SUPER_ADMIN);
 
     // Non-super-admins cannot change admin/super-admin status
-    if (
-      hadAdmin !== willHaveAdmin ||
-      hadSuperAdmin !== willHaveSuperAdmin
-    ) {
+    if (hadAdmin !== willHaveAdmin || hadSuperAdmin !== willHaveSuperAdmin) {
       return false;
     }
   }
@@ -179,7 +176,10 @@ export const canManageUser = (
  * @param roles - Array of roles to check for
  * @returns true if user has at least one of the specified roles
  */
-export const hasAnyRole = (userRoles: UserRole[], roles: UserRole[]): boolean => {
+export const hasAnyRole = (
+  userRoles: UserRole[],
+  roles: UserRole[],
+): boolean => {
   return roles.some(role => hasRole(userRoles, role));
 };
 
@@ -189,7 +189,10 @@ export const hasAnyRole = (userRoles: UserRole[], roles: UserRole[]): boolean =>
  * @param roles - Array of roles to check for
  * @returns true if user has all of the specified roles
  */
-export const hasAllRoles = (userRoles: UserRole[], roles: UserRole[]): boolean => {
+export const hasAllRoles = (
+  userRoles: UserRole[],
+  roles: UserRole[],
+): boolean => {
   return roles.every(role => hasRole(userRoles, role));
 };
 
@@ -215,6 +218,38 @@ export interface PersonalAchievements {
   timeHalfMarathon?: string;
   /** Marathon time in format "HH:MM:SS" or "MM:SS" */
   timeMarathon?: string;
+}
+
+/**
+ * Activity type-specific goal for a time period
+ */
+export interface ActivityTypeGoal {
+  /** Type of activity (e.g., RUNNING, GYM) */
+  type: SportType;
+  /** Target number of activities */
+  count: number;
+}
+
+/**
+ * User workout goals configuration
+ */
+export interface WorkoutGoals {
+  /** Weekly distance goal in kilometers */
+  weeklyKm?: number;
+  /** Monthly distance goal in kilometers */
+  monthlyKm?: number;
+  /** Yearly distance goal in kilometers */
+  yearlyKm?: number;
+  /** Weekly activity count goal */
+  weeklyActivities?: number;
+  /** Monthly activity count goal */
+  monthlyActivities?: number;
+  /** Yearly activity count goal */
+  yearlyActivities?: number;
+  /** Weekly goals for specific activity types */
+  weeklyActivityTypeGoals?: ActivityTypeGoal[];
+  /** Monthly goals for specific activity types */
+  monthlyActivityTypeGoals?: ActivityTypeGoal[];
 }
 
 /**
@@ -245,6 +280,8 @@ export interface UserProfileData {
   personalStats?: PersonalStats;
   /** Personal running achievements */
   personalAchievements?: PersonalAchievements;
+  /** User workout goals */
+  workoutGoals?: WorkoutGoals;
   stravaLink?: string;
   instagramLink?: string;
   /** YouTube channel or profile link */

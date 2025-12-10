@@ -159,6 +159,56 @@ const userSchema = new Schema<UserDocument>(
         trim: true,
       },
     },
+    workoutGoals: {
+      weeklyKm: {
+        type: Number,
+        min: [0, 'Weekly km goal must be positive'],
+      },
+      monthlyKm: {
+        type: Number,
+        min: [0, 'Monthly km goal must be positive'],
+      },
+      yearlyKm: {
+        type: Number,
+        min: [0, 'Yearly km goal must be positive'],
+      },
+      weeklyActivities: {
+        type: Number,
+        min: [0, 'Weekly activities goal must be positive'],
+      },
+      monthlyActivities: {
+        type: Number,
+        min: [0, 'Monthly activities goal must be positive'],
+      },
+      yearlyActivities: {
+        type: Number,
+        min: [0, 'Yearly activities goal must be positive'],
+      },
+      weeklyActivityTypeGoals: [
+        {
+          type: {
+            type: String,
+            enum: Object.values(SportType),
+          },
+          count: {
+            type: Number,
+            min: [0, 'Activity count must be positive'],
+          },
+        },
+      ],
+      monthlyActivityTypeGoals: [
+        {
+          type: {
+            type: String,
+            enum: Object.values(SportType),
+          },
+          count: {
+            type: Number,
+            min: [0, 'Activity count must be positive'],
+          },
+        },
+      ],
+    },
     privacySettings: {
       email: {
         type: String,
