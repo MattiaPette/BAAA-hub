@@ -1145,7 +1145,7 @@ msgstr "Nessun obiettivo impostato. Visita Impostazioni → Obiettivi di Allenam
 
 #: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:331
 msgid "No intervals added yet. Click “Add Work Interval” or “Add Rest Interval” to start."
-msgstr ""
+msgstr "Nessun intervallo aggiunto. Clicca \"Aggiungi Intervallo di Lavoro\" o \"Aggiungi Intervallo di Riposo\" per iniziare."
 
 #: src/components/settings/TrainingGoals/TrainingGoals.tsx:410
 msgid "No monthly activity type goals set. Click \"Add Goal\" to create one."
