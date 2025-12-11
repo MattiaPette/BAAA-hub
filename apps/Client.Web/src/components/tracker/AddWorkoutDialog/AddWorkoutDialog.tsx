@@ -13,6 +13,7 @@ import {
   Stack,
   IconButton,
   Alert,
+  Divider,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
@@ -20,9 +21,10 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { isSameDay } from 'date-fns';
 
-import { WorkoutType } from '../../../types/tracker';
+import { WorkoutType, GymWorkoutDetails } from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
+import { GymWorkoutForm } from '../GymWorkoutForm';
 
 /**
  * AddWorkoutDialog component for adding or editing workouts
@@ -42,6 +44,9 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [endHour, setEndHour] = useState<number>(7);
   const [endMinute, setEndMinute] = useState<number>(0);
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.RUN);
+  const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
+    undefined,
+  );
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
@@ -52,6 +57,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndHour(editingWorkout.endHour);
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
+      setGymDetails(editingWorkout.gymDetails);
       setValidationError(null);
     } else if (!editingWorkout && open) {
       // Reset to defaults when adding new
@@ -60,6 +66,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndHour(7);
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
+      setGymDetails(undefined);
       setValidationError(null);
     }
   }, [editingWorkout, open]);
@@ -117,12 +124,32 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       return;
     }
 
+    // Validate gym details if workout type is GYM
+    if (workoutType === WorkoutType.GYM) {
+      if (!gymDetails || gymDetails.exercises.length === 0) {
+        setValidationError(
+          t`Please add at least one exercise for gym workouts`,
+        );
+        return;
+      }
+
+      // Validate each exercise has a name
+      const hasEmptyName = gymDetails.exercises.some(
+        exercise => !exercise.name.trim(),
+      );
+      if (hasEmptyName) {
+        setValidationError(t`All exercises must have a name`);
+        return;
+      }
+    }
+
     onSubmit({
       startHour,
       startMinute,
       endHour,
       endMinute,
       type: workoutType,
+      gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
     });
     onClose();
   };
@@ -230,6 +257,14 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
               fullWidth
             />
           </Stack>
+
+          {/* Gym Workout Details - Only shown for GYM type */}
+          {workoutType === WorkoutType.GYM && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
         </Stack>
       </DialogContent>
 
