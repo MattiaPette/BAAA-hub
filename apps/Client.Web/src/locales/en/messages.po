@@ -122,7 +122,7 @@ msgstr "Add Workout"
 msgid "Additional interaction is required"
 msgstr "Additional interaction is required"
 
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:263
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:264
 msgid "Additional notes about your recovery session..."
 msgstr "Additional notes about your recovery session..."
 
@@ -688,8 +688,8 @@ msgstr "First name must be 50 characters or less"
 msgid "Foam Rolling"
 msgstr "Foam Rolling"
 
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:212
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:219
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:213
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:220
 msgid "Focus Areas"
 msgstr "Focus Areas"
 
@@ -776,7 +776,7 @@ msgstr "Half Marathon"
 msgid "Half Marathon Time"
 msgstr "Half Marathon Time"
 
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:242
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:243
 msgid "Heart Rate (bpm)"
 msgstr "Heart Rate (bpm)"
 
@@ -833,8 +833,8 @@ msgstr "Install app"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:442
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:447
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:191
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:196
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:192
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:197
 msgid "Intensity Level"
 msgstr "Intensity Level"
 
@@ -1178,7 +1178,7 @@ msgid "Not Verified"
 msgstr "Not Verified"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:503
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:257
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:258
 msgid "Notes"
 msgstr "Notes"
 
@@ -1207,7 +1207,7 @@ msgstr "Only letters, numbers, and underscores allowed"
 msgid "Open menu"
 msgstr "Open menu"
 
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:252
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:253
 msgid "Optional"
 msgstr "Optional"
 
@@ -1405,8 +1405,8 @@ msgstr "Recommended"
 msgid "Recovery"
 msgstr "Recovery"
 
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:170
-#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:175
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:171
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:176
 msgid "Recovery Activity Type"
 msgstr "Recovery Activity Type"
 
