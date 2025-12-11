@@ -264,7 +264,7 @@ msgstr "Blocked"
 msgid "Bodyweight"
 msgstr "Bodyweight"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:240
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:242
 msgid "bpm"
 msgstr "bpm"
 
@@ -452,7 +452,7 @@ msgstr "Date of birth is required"
 msgid "Date of Birth Privacy"
 msgstr "Date of Birth Privacy"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:275
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:277
 msgid "Delete"
 msgstr "Delete"
 
@@ -522,7 +522,7 @@ msgstr "e.g., Bench Press"
 msgid "e.g., Milan, Lombardy"
 msgstr "e.g., Milan, Lombardy"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:291
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:293
 msgid "Edit"
 msgstr "Edit"
 
@@ -809,7 +809,7 @@ msgstr "Half Marathon"
 msgid "Half Marathon Time"
 msgstr "Half Marathon Time"
 
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:237
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:239
 msgid "Heart Rate"
 msgstr "Heart Rate"
 
@@ -1221,7 +1221,7 @@ msgstr "Not Verified"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:503
 #: src/components/tracker/SwimmingWorkoutForm/SwimmingWorkoutForm.tsx:231
-#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:247
+#: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:249
 msgid "Notes"
 msgstr "Notes"
 
