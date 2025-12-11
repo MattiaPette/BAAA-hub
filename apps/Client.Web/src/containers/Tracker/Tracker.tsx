@@ -105,6 +105,8 @@ export const Tracker: FC = () => {
       endHour: number;
       endMinute: number;
       type: WorkoutType;
+      gymDetails?: import('../../types/tracker').GymWorkoutDetails;
+      recoveryDetails?: import('../../types/tracker').RecoveryWorkoutDetails;
     }>,
   ) => {
     if (!selectedDate) return;
@@ -121,6 +123,8 @@ export const Tracker: FC = () => {
                 endHour: newWorkoutData.endHour,
                 endMinute: newWorkoutData.endMinute,
                 type: newWorkoutData.type,
+                gymDetails: newWorkoutData.gymDetails,
+                recoveryDetails: newWorkoutData.recoveryDetails,
               }
             : w,
         ),
@@ -136,6 +140,8 @@ export const Tracker: FC = () => {
         endMinute: newWorkoutData.endMinute,
         type: newWorkoutData.type,
         calendarId: selectedCalendarId,
+        gymDetails: newWorkoutData.gymDetails,
+        recoveryDetails: newWorkoutData.recoveryDetails,
       };
       setWorkouts(prev => [...prev, newWorkout]);
     }
