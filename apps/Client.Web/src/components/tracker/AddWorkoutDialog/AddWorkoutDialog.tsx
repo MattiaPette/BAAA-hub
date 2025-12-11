@@ -21,10 +21,15 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { isSameDay } from 'date-fns';
 
-import { WorkoutType, GymWorkoutDetails } from '../../../types/tracker';
+import {
+  WorkoutType,
+  GymWorkoutDetails,
+  RunWorkoutDetails,
+} from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
+import { RunWorkoutForm } from '../RunWorkoutForm';
 
 /**
  * AddWorkoutDialog component for adding or editing workouts
@@ -47,6 +52,9 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
     undefined,
   );
+  const [runDetails, setRunDetails] = useState<RunWorkoutDetails | undefined>(
+    undefined,
+  );
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
@@ -58,6 +66,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
+      setRunDetails(editingWorkout.runDetails);
       setValidationError(null);
     } else if (!editingWorkout && open) {
       // Reset to defaults when adding new
@@ -67,6 +76,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
+      setRunDetails(undefined);
       setValidationError(null);
     }
   }, [editingWorkout, open]);
@@ -150,6 +160,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       endMinute,
       type: workoutType,
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
+      runDetails: workoutType === WorkoutType.RUN ? runDetails : undefined,
     });
     onClose();
   };
@@ -263,6 +274,14 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
             <>
               <Divider sx={{ my: 2 }} />
               <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
+
+          {/* Run Workout Details - Only shown for RUN type */}
+          {workoutType === WorkoutType.RUN && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <RunWorkoutForm value={runDetails} onChange={setRunDetails} />
             </>
           )}
         </Stack>

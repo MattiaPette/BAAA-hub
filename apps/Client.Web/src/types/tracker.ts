@@ -53,6 +53,20 @@ export enum IntensityLevel {
 }
 
 /**
+ * Heart rate zones for running workouts
+ */
+export enum HeartRateZone {
+  Z1 = 'Z1',
+  Z2 = 'Z2',
+  Z3 = 'Z3',
+  Z4 = 'Z4',
+  Z5 = 'Z5',
+  Z6 = 'Z6',
+  Z7 = 'Z7',
+  CUSTOM = 'CUSTOM',
+}
+
+/**
  * Represents a single exercise set in a gym workout
  */
 export interface ExerciseSet {
@@ -82,6 +96,18 @@ export interface GymWorkoutDetails {
 }
 
 /**
+ * Run-specific workout details
+ */
+export interface RunWorkoutDetails {
+  distanceGoal?: number; // in kilometers
+  paceGoal?: number; // in minutes per kilometer
+  heartRateZone?: HeartRateZone;
+  customHeartRateMin?: number; // BPM, used when heartRateZone is CUSTOM
+  customHeartRateMax?: number; // BPM, used when heartRateZone is CUSTOM
+  notes?: string;
+}
+
+/**
  * Represents a single workout activity
  */
 export interface Workout {
@@ -94,6 +120,7 @@ export interface Workout {
   type: WorkoutType;
   calendarId: string;
   gymDetails?: GymWorkoutDetails; // Only present for GYM type workouts
+  runDetails?: RunWorkoutDetails; // Only present for RUN type workouts
 }
 
 /**
