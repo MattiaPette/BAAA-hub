@@ -1136,7 +1136,7 @@ msgstr "Il nickname deve essere di almeno 3 caratteri"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:432
 msgid "No exercises added yet. Click “Add Exercise” to start."
-msgstr "Nessun esercizio aggiunto. Clicca \msgstr ""quot;Aggiungi Esercizio\msgstr ""quot; per iniziare."
+msgstr "Nessun esercizio aggiunto. Clicca \"Aggiungi Esercizio\" per iniziare."
 
 #: src/components/tracker/GoalsProgress/GoalsProgress.tsx:52
 msgid "No goals set yet. Visit Settings → Training Goals to set your workout goals."
