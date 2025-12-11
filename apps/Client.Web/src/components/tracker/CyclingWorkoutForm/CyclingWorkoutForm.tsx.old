@@ -1,12 +1,9 @@
-import { FC, useState, useCallback, useEffect } from 'react';
+import { FC, useState } from 'react';
 import { Stack, TextField } from '@mui/material';
 import { t } from '@lingui/core/macro';
 
 import { CyclingWorkoutDetails } from '../../../types/tracker';
 import { CyclingWorkoutFormProps } from './CyclingWorkoutForm.model';
-
-// Maximum theoretical heart rate based on age (220 - age is common formula)
-const MAX_THEORETICAL_HEART_RATE = 220;
 
 /**
  * CyclingWorkoutForm component for detailed cycling workout tracking
@@ -27,31 +24,17 @@ export const CyclingWorkoutForm: FC<CyclingWorkoutFormProps> = ({
   );
   const [notes, setNotes] = useState<string>(value?.notes || '');
 
-  // Sync state with prop changes (e.g., when editing a workout)
-  useEffect(() => {
-    if (value !== undefined) {
-      setDistance(value.distance);
-      setAverageSpeed(value.averageSpeed);
-      setElevationGain(value.elevationGain);
-      setAverageHeartRate(value.averageHeartRate);
-      setNotes(value.notes || '');
-    }
-  }, [value]);
-
   // Update parent when any field changes
-  const updateDetails = useCallback(
-    (updates: Readonly<Partial<CyclingWorkoutDetails>>) => {
-      const newDetails: CyclingWorkoutDetails = {
-        distance: updates.distance ?? distance,
-        averageSpeed: updates.averageSpeed ?? averageSpeed,
-        elevationGain: updates.elevationGain ?? elevationGain,
-        averageHeartRate: updates.averageHeartRate ?? averageHeartRate,
-        notes: updates.notes ?? notes,
-      };
-      onChange(newDetails);
-    },
-    [distance, averageSpeed, elevationGain, averageHeartRate, notes, onChange],
-  );
+  const updateDetails = (updates: Readonly<Partial<CyclingWorkoutDetails>>) => {
+    const newDetails: CyclingWorkoutDetails = {
+      distance: updates.distance ?? distance,
+      averageSpeed: updates.averageSpeed ?? averageSpeed,
+      elevationGain: updates.elevationGain ?? elevationGain,
+      averageHeartRate: updates.averageHeartRate ?? averageHeartRate,
+      notes: updates.notes ?? notes,
+    };
+    onChange(newDetails);
+  };
 
   // Handle distance change
   const handleDistanceChange = (newDistance: number | undefined) => {
