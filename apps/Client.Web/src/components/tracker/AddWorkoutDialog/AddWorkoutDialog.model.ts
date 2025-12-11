@@ -2,6 +2,7 @@ import {
   WorkoutType,
   Workout,
   GymWorkoutDetails,
+  SwimmingWorkoutDetails,
 } from '../../../types/tracker';
 
 export interface AddWorkoutDialogProps {
@@ -15,6 +16,7 @@ export interface AddWorkoutDialogProps {
       endMinute: number;
       type: WorkoutType;
       gymDetails?: GymWorkoutDetails;
+      swimmingDetails?: SwimmingWorkoutDetails;
     }>,
   ) => void;
   selectedDate: Date | null;

@@ -21,10 +21,15 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { isSameDay } from 'date-fns';
 
-import { WorkoutType, GymWorkoutDetails } from '../../../types/tracker';
+import {
+  WorkoutType,
+  GymWorkoutDetails,
+  SwimmingWorkoutDetails,
+} from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
+import { SwimmingWorkoutForm } from '../SwimmingWorkoutForm';
 
 /**
  * AddWorkoutDialog component for adding or editing workouts
@@ -47,6 +52,9 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
     undefined,
   );
+  const [swimmingDetails, setSwimmingDetails] = useState<
+    SwimmingWorkoutDetails | undefined
+  >(undefined);
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
@@ -58,6 +66,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
+      setSwimmingDetails(editingWorkout.swimmingDetails);
       setValidationError(null);
     } else if (!editingWorkout && open) {
       // Reset to defaults when adding new
@@ -67,6 +76,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
+      setSwimmingDetails(undefined);
       setValidationError(null);
     }
   }, [editingWorkout, open]);
@@ -143,6 +153,26 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       }
     }
 
+    // Validate swimming details if workout type is SWIMMING
+    if (workoutType === WorkoutType.SWIMMING) {
+      if (!swimmingDetails) {
+        setValidationError(t`Please provide swimming workout details`);
+        return;
+      }
+
+      // Validate required fields
+      if (
+        swimmingDetails.distanceGoal <= 0 ||
+        swimmingDetails.lapCount <= 0 ||
+        swimmingDetails.timePerLap <= 0
+      ) {
+        setValidationError(
+          t`Distance, lap count, and time per lap must be greater than zero`,
+        );
+        return;
+      }
+    }
+
     onSubmit({
       startHour,
       startMinute,
@@ -150,6 +180,8 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       endMinute,
       type: workoutType,
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
+      swimmingDetails:
+        workoutType === WorkoutType.SWIMMING ? swimmingDetails : undefined,
     });
     onClose();
   };
@@ -263,6 +295,17 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
             <>
               <Divider sx={{ my: 2 }} />
               <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
+
+          {/* Swimming Workout Details - Only shown for SWIMMING type */}
+          {workoutType === WorkoutType.SWIMMING && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <SwimmingWorkoutForm
+                value={swimmingDetails}
+                onChange={setSwimmingDetails}
+              />
             </>
           )}
         </Stack>
