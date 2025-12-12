@@ -66,6 +66,7 @@ msgid "Account Security"
 msgstr "Sicurezza Account"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:367
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:201
 #: src/containers/Administration/Administration.tsx:361
 msgid "Actions"
 msgstr "Azioni"
@@ -74,6 +75,10 @@ msgstr "Azioni"
 #: src/containers/Administration/Administration.tsx:446
 msgid "Active"
 msgstr "Attivo"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:39
+msgid "Active Recovery"
+msgstr "Recupero Attivo"
 
 #: src/components/tracker/GoalsProgress/GoalsProgress.tsx:132
 #: src/components/tracker/GoalsProgress/GoalsProgress.tsx:157
@@ -105,6 +110,10 @@ msgstr "Aggiungi Esercizio"
 msgid "Add Goal"
 msgstr "Aggiungi Obiettivo"
 
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:175
+msgid "Add Rest Interval"
+msgstr "Aggiungi Intervallo di Riposo"
+
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:350
 msgid "Add Set"
 msgstr "Aggiungi Serie"
@@ -117,6 +126,10 @@ msgstr "Aggiungi Allenamento"
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:122
 msgid "Additional interaction is required"
 msgstr "È richiesta un'interazione aggiuntiva"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:264
+msgid "Additional notes about your recovery session..."
+msgstr "Note aggiuntive sulla tua sessione di recupero..."
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:509
 msgid "Additional notes about your workout..."
@@ -216,6 +229,7 @@ msgid "Average Speed:"
 msgstr "Velocità Media:"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:71
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:63
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:1075
 msgid "Back"
 msgstr "Indietro"
@@ -382,6 +396,7 @@ msgid "Control who can see your profile information. You can set different priva
 msgstr "Controlla chi può vedere le informazioni del tuo profilo. Puoi impostare diversi livelli di privacy per ogni sezione."
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:81
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:69
 msgid "Core"
 msgstr "Core"
 
@@ -415,6 +430,14 @@ msgstr "Creazione in corso..."
 #: src/helpers/sportTypes/sportTypeLabels.ts:38
 msgid "CrossFit"
 msgstr "CrossFit"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:195
+msgid "Custom Heart Rate Range (BPM)"
+msgstr "Intervallo Frequenza Cardiaca Personalizzato (BPM)"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:38
+msgid "Custom Range"
+msgstr "Intervallo Personalizzato"
 
 #: src/helpers/sportTypes/sportTypeLabels.ts:11
 #: src/helpers/sportTypes/sportTypeLabels.ts:31
@@ -727,6 +750,15 @@ msgstr "Il nome è obbligatorio"
 msgid "First name must be 50 characters or less"
 msgstr "Il nome deve essere di 50 caratteri o meno"
 
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:33
+msgid "Foam Rolling"
+msgstr "Foam Rolling"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:213
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:220
+msgid "Focus Areas"
+msgstr "Aree di Focus"
+
 #: src/containers/PublicProfile/PublicProfile.tsx:458
 msgid "Follow"
 msgstr "Segui"
@@ -761,6 +793,10 @@ msgstr "Ven"
 #: src/helpers/roleLabels/roleLabels.ts:22
 msgid "Full administrative access"
 msgstr "Accesso amministrativo completo"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:57
+msgid "Full Body"
+msgstr "Corpo Intero"
 
 #: src/components/commons/inputs/ImageUpload/ImageViewDialog.tsx:77
 msgid "Full size banner image"
@@ -806,6 +842,10 @@ msgstr "Mezza Maratona"
 msgid "Half Marathon Time"
 msgstr "Tempo Mezza Maratona"
 
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:243
+msgid "Heart Rate (bpm)"
+msgstr "Frequenza Cardiaca (bpm)"
+
 #: src/containers/Profile/Profile.tsx:612
 #: src/containers/PublicProfile/PublicProfile.tsx:625
 msgid "Height"
@@ -824,6 +864,7 @@ msgid "Height must be positive"
 msgstr "L'altezza deve essere positiva"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:101
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:85
 msgid "High"
 msgstr "Alto"
 
@@ -835,6 +876,10 @@ msgstr "Livello di privilegio più alto - può gestire gli amministratori"
 #: src/helpers/sportTypes/sportTypeLabels.ts:35
 msgid "Hiking"
 msgstr "Escursionismo"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:41
+msgid "Ice Bath"
+msgstr "Bagno di Ghiaccio"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:24
 msgid "Incorrect username or password"
@@ -854,8 +899,14 @@ msgstr "Installa l'app"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:442
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:447
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:192
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:197
 msgid "Intensity Level"
 msgstr "Livello di Intensità"
+
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:157
+msgid "Interval Structure"
+msgstr "Struttura Intervalli"
 
 #: src/components/tracker/AgendaView/AgendaView.tsx:49
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:19
@@ -979,6 +1030,7 @@ msgid "Last name must be 50 characters or less"
 msgstr "Il cognome deve essere di 50 caratteri o meno"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:79
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:65
 msgid "Legs"
 msgstr "Gambe"
 
@@ -1021,8 +1073,13 @@ msgid "Long Run"
 msgstr "Corsa Lunga"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:97
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:81
 msgid "Low"
 msgstr "Basso"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:61
+msgid "Lower Body"
+msgstr "Parte Inferiore del Corpo"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:49
 msgid "Machine"
@@ -1045,9 +1102,17 @@ msgstr "Maratona"
 msgid "Marathon Time"
 msgstr "Tempo Maratona"
 
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:37
+msgid "Massage"
+msgstr "Massaggio"
+
 #: src/containers/Profile/ProfileEditForm.tsx:484
 msgid "Max 500 characters"
 msgstr "Max 500 caratteri"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:211
+msgid "Max BPM"
+msgstr "BPM Massimo"
 
 #: src/helpers/roleLabels/roleLabels.ts:8
 msgid "Member"
@@ -1068,7 +1133,12 @@ msgstr "MFA Disabilitato"
 msgid "MFA Enabled: {0}"
 msgstr "MFA Abilitato: {0}"
 
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:305
+msgid "MM:SS"
+msgstr "MM:SS"
+
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:99
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:83
 msgid "Moderate"
 msgstr "Moderato"
 
@@ -1142,6 +1212,10 @@ msgstr "Nessun esercizio aggiunto. Clicca \"Aggiungi Esercizio\" per iniziare."
 msgid "No goals set yet. Visit Settings → Training Goals to set your workout goals."
 msgstr "Nessun obiettivo impostato. Visita Impostazioni → Obiettivi di Allenamento per impostare i tuoi obiettivi di allenamento."
 
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:331
+msgid "No intervals added yet. Click “Add Work Interval” or “Add Rest Interval” to start."
+msgstr "Nessun intervallo aggiunto. Clicca \"Aggiungi Intervallo di Lavoro\" o \"Aggiungi Intervallo di Riposo\" per iniziare."
+
 #: src/components/settings/TrainingGoals/TrainingGoals.tsx:410
 msgid "No monthly activity type goals set. Click \"Add Goal\" to create one."
 msgstr "Nessun obiettivo di tipo di attività mensile impostato. Clicca &quot;Aggiungi Obiettivo&quot; per crearne uno."
@@ -1171,6 +1245,7 @@ msgstr "Nessun obiettivo di tipo di attività settimanale impostato. Clicca &quo
 msgid "No workouts scheduled this month"
 msgstr "Nessun allenamento programmato questo mese"
 
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:180
 #: src/helpers/mfaLabels/mfaLabels.ts:8
 #: src/helpers/mfaLabels/mfaLabels.ts:21
 msgid "None"
@@ -1187,6 +1262,7 @@ msgstr "Non verificato"
 
 #: src/components/tracker/CyclingWorkoutForm/CyclingWorkoutForm.tsx:134
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:503
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:258
 msgid "Notes"
 msgstr "Note"
 
@@ -1202,6 +1278,18 @@ msgstr "Note:"
 #: src/components/social/NotificationBell/NotificationBell.tsx:189
 msgid "Notifications"
 msgstr "Notifiche"
+
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:141
+msgid "Number of rounds"
+msgstr "Numero di ripetizioni"
+
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:137
+msgid "Number of Rounds"
+msgstr "Numero di Ripetizioni"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:167
+msgid "Number of rounds must be at least 1"
+msgstr "Il numero di ripetizioni deve essere almeno 1"
 
 #: src/components/commons/errors/RootErrorFallback/RootErrorFallback.tsx:97
 msgid "Oh no! Something went wrong..."
@@ -1223,6 +1311,10 @@ msgstr "Sono consentite solo lettere, numeri e underscore"
 msgid "Open menu"
 msgstr "Apri menu"
 
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:253
+msgid "Optional"
+msgstr "Opzionale"
+
 #: src/helpers/roleLabels/roleLabels.ts:11
 msgid "Organization Committee"
 msgstr "Comitato Organizzativo"
@@ -1232,10 +1324,15 @@ msgid "Organization committee member"
 msgstr "Membro del comitato organizzativo"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:57
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:45
 #: src/helpers/sportTypes/sportTypeLabels.ts:19
 #: src/helpers/sportTypes/sportTypeLabels.ts:39
 msgid "Other"
 msgstr "Altro"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:149
+msgid "Pace Goal (min/km)"
+msgstr "Obiettivo Passo (min/km)"
 
 #: src/components/login/LoginDialog/LoginDialog.tsx:184
 #: src/components/login/LoginForm/LoginForm.tsx:165
@@ -1288,6 +1385,10 @@ msgstr "Chiave di sicurezza fisica (FIDO2/WebAuthn)"
 msgid "Please add at least one exercise for gym workouts"
 msgstr "Aggiungi almeno un esercizio per gli allenamenti in palestra"
 
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:160
+msgid "Please add at least one interval for interval training"
+msgstr "Aggiungi almeno un intervallo per l'allenamento a intervalli"
+
 #: src/containers/ProfileSetup/ProfileSetup.tsx:145
 msgid "Please check your input and try again."
 msgstr "Per favore, controlla i dati inseriti e riprova."
@@ -1303,6 +1404,10 @@ msgstr "Effettua l'accesso per visualizzare le impostazioni degli obiettivi di a
 #: src/containers/PublicProfile/PublicProfile.tsx:181
 msgid "Please log in to follow users"
 msgstr "Effettua il login per seguire gli utenti"
+
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:159
+msgid "Please provide recovery session details"
+msgstr "Fornisci i dettagli della sessione di recupero"
 
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:752
 msgid "Please select at least one sport"
@@ -1412,6 +1517,11 @@ msgstr "Consigliato"
 msgid "Recovery"
 msgstr "Recupero"
 
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:171
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:176
+msgid "Recovery Activity Type"
+msgstr "Tipo di Attività di Recupero"
+
 #: src/helpers/mfaLabels/mfaLabels.ts:14
 msgid "Recovery Code"
 msgstr "Codice di Recupero"
@@ -1438,6 +1548,10 @@ msgstr "Rimuovi esercizio"
 msgid "Remove goal"
 msgstr "Rimuovi obiettivo"
 
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:317
+msgid "Remove interval"
+msgstr "Rimuovi intervallo"
+
 #: src/components/commons/inputs/ImageUpload/ImageUpload.tsx:268
 #: src/containers/ProfileSetup/ProfileSetupForm.tsx:718
 msgid "Remove photo"
@@ -1458,6 +1572,10 @@ msgstr "Ripetizioni"
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:128
 msgid "Response type not supported"
 msgstr "Tipo di risposta non supportato"
+
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:229
+msgid "Rest"
+msgstr "Riposo"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:462
 msgid "Rest Time Between Sets (seconds)"
@@ -1481,6 +1599,10 @@ msgstr "Righe per pagina:"
 msgid "Run"
 msgstr "Corsa"
 
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:129
+msgid "Run Details"
+msgstr "Dettagli Corsa"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:10
 #: src/helpers/sportTypes/sportTypeLabels.ts:30
 msgid "Running"
@@ -1489,6 +1611,10 @@ msgstr "Corsa"
 #: src/components/tracker/CalendarView/CalendarView.tsx:44
 msgid "Sat"
 msgstr "Sab"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:43
+msgid "Sauna"
+msgstr "Sauna"
 
 #: src/containers/Administration/EditRolesDialog.tsx:165
 msgid "Save"
@@ -1579,6 +1705,7 @@ msgid "Settings tabs"
 msgstr "Schede impostazioni"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:73
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:67
 msgid "Shoulders"
 msgstr "Spalle"
 
@@ -1661,6 +1788,10 @@ msgstr "Profilo Strava"
 msgid "Strava Profile URL"
 msgstr "URL Profilo Strava"
 
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:31
+msgid "Stretching"
+msgstr "Stretching"
+
 #: src/containers/PublicProfile/PublicProfile.tsx:200
 msgid "Successfully followed user"
 msgstr "Utente seguito con successo"
@@ -1701,6 +1832,14 @@ msgstr "Passato al tema scuro"
 #: src/containers/Settings/Settings.tsx:101
 msgid "Switched to light theme"
 msgstr "Passato al tema chiaro"
+
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:198
+msgid "Target Pace"
+msgstr "Passo Target"
+
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:307
+msgid "Target pace per kilometer"
+msgstr "Passo target per chilometro"
 
 #: src/containers/Profile/ProfileEditForm.tsx:477
 msgid "Tell us about yourself..."
@@ -1811,7 +1950,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:36
+#: src/containers/Tracker/Tracker.tsx:41
 msgid "Tracker"
 msgstr "Tracker"
 
@@ -1851,6 +1990,7 @@ msgstr "L'autenticazione a due fattori aggiunge un ulteriore livello di sicurezz
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:309
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:314
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:186
 msgid "Type"
 msgstr "Tipo"
 
@@ -1905,6 +2045,10 @@ msgstr "Caricamento banner"
 msgid "Uploading image"
 msgstr "Caricamento immagine"
 
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:59
+msgid "Upper Body"
+msgstr "Parte Superiore del Corpo"
+
 #: src/containers/Administration/Administration.tsx:214
 msgid "User blocked successfully"
 msgstr "Utente bloccato con successo"
@@ -1935,6 +2079,7 @@ msgid "Verified"
 msgstr "Verificato"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:103
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:87
 msgid "Very High"
 msgstr "Molto Alto"
 
@@ -1998,6 +2143,10 @@ msgstr "Il peso deve essere positivo"
 msgid "Who can see your information?"
 msgstr "Chi può vedere le tue informazioni?"
 
+#: src/components/tracker/IntervalTrainingForm/IntervalTrainingForm.tsx:227
+msgid "Work"
+msgstr "Lavoro"
+
 #: src/components/tracker/AgendaView/AgendaView.tsx:144
 msgid "workout"
 msgstr "allenamento"
@@ -2028,6 +2177,10 @@ msgstr "Km Annuali"
 #: src/containers/PublicProfile/PublicProfile.tsx:589
 msgid "years old"
 msgstr "anni"
+
+#: src/components/tracker/RecoveryWorkoutForm/RecoveryWorkoutForm.tsx:35
+msgid "Yoga"
+msgstr "Yoga"
 
 #: src/containers/ProfileSetup/ProfileSetup.tsx:129
 msgid "You already have a profile. Redirecting to dashboard..."
@@ -2102,6 +2255,34 @@ msgstr "La sessione è scaduta. Effettua nuovamente l'accesso"
 #: src/containers/Profile/ProfileEditForm.tsx:642
 msgid "YouTube Channel"
 msgstr "Canale YouTube"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:24
+msgid "Zone 1 - Recovery"
+msgstr "Zona 1 - Recupero"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:26
+msgid "Zone 2 - Endurance"
+msgstr "Zona 2 - Resistenza"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:28
+msgid "Zone 3 - Tempo"
+msgstr "Zona 3 - Tempo"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:30
+msgid "Zone 4 - Threshold"
+msgstr "Zona 4 - Soglia"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:32
+msgid "Zone 5 - VO2 Max"
+msgstr "Zona 5 - VO2 Max"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:34
+msgid "Zone 6 - Anaerobic"
+msgstr "Zona 6 - Anaerobica"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:36
+msgid "Zone 7 - Maximum"
+msgstr "Zona 7 - Massima"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:162
 msgid "Zoom"

@@ -236,4 +236,80 @@ describe('AddWorkoutDialog', () => {
     expect(startHourInput.value).toBe('10');
     expect(startMinuteInput.value).toBe('30');
   });
+
+  it('should show RunWorkoutForm when RUN workout type is selected', async () => {
+    render(
+      <AddWorkoutDialog
+        open
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        selectedDate={selectedDate}
+        existingWorkouts={[]}
+      />,
+    );
+
+    // RUN is the default type
+    await waitFor(() => {
+      expect(screen.getByText(/run details/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should hide RunWorkoutForm when changing from RUN to another workout type', async () => {
+    render(
+      <AddWorkoutDialog
+        open
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        selectedDate={selectedDate}
+        existingWorkouts={[]}
+      />,
+    );
+
+    // Initially, RUN form should be visible
+    await waitFor(() => {
+      expect(screen.getByText(/run details/i)).toBeInTheDocument();
+    });
+
+    // Change to GYM type
+    const workoutTypeSelect = screen.getByLabelText(/workout type/i);
+    fireEvent.mouseDown(workoutTypeSelect);
+
+    const gymOption = screen.getByRole('option', { name: /gym/i });
+    fireEvent.click(gymOption);
+
+    // RUN form should be hidden now
+    await waitFor(() => {
+      expect(screen.queryByText(/run details/i)).not.toBeInTheDocument();
+    });
+  });
+
+  it('should submit run workout with runDetails', async () => {
+    render(
+      <AddWorkoutDialog
+        open
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        selectedDate={selectedDate}
+        existingWorkouts={[]}
+      />,
+    );
+
+    // Fill in distance goal
+    const distanceInput = screen.getByLabelText(/distance goal/i);
+    fireEvent.change(distanceInput, { target: { value: '10' } });
+
+    const submitButton = screen.getByRole('button', { name: /add workout/i });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: WorkoutType.RUN,
+          runDetails: expect.objectContaining({
+            distanceGoal: 10,
+          }),
+        }),
+      );
+    });
+  });
 });
