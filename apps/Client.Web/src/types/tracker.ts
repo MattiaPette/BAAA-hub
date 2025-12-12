@@ -12,6 +12,7 @@ export enum WorkoutType {
   LONG_RUN = 'LONG_RUN',
   RECOVERY = 'RECOVERY',
   INTERVAL_TRAINING = 'INTERVAL_TRAINING',
+  SWIMMING = 'SWIMMING',
   CYCLING = 'CYCLING',
 }
 
@@ -51,6 +52,17 @@ export enum IntensityLevel {
   MODERATE = 'MODERATE',
   HIGH = 'HIGH',
   VERY_HIGH = 'VERY_HIGH',
+}
+
+/**
+ * Swim types for swimming workouts
+ */
+export enum SwimType {
+  FREESTYLE = 'FREESTYLE',
+  BACKSTROKE = 'BACKSTROKE',
+  BREASTSTROKE = 'BREASTSTROKE',
+  BUTTERFLY = 'BUTTERFLY',
+  INDIVIDUAL_MEDLEY = 'INDIVIDUAL_MEDLEY',
 }
 
 /**
@@ -124,6 +136,19 @@ export interface GymWorkoutDetails {
 }
 
 /**
+ * Swimming-specific workout details
+ */
+export interface SwimmingWorkoutDetails {
+  distanceGoal: number; // in meters
+  lapCount: number;
+  timePerLap: number; // in seconds
+  swimType: SwimType;
+  intensity: IntensityLevel;
+  heartRate?: number; // optional, beats per minute
+  notes?: string;
+}
+
+/**
  * Cycling-specific workout details
  */
 export interface CyclingWorkoutDetails {
@@ -193,6 +218,7 @@ export interface Workout {
   type: WorkoutType;
   calendarId: string;
   gymDetails?: GymWorkoutDetails; // Only present for GYM type workouts
+  swimmingDetails?: SwimmingWorkoutDetails; // Only present for SWIMMING type workouts
   cyclingDetails?: CyclingWorkoutDetails; // Only present for CYCLING type workouts
   recoveryDetails?: RecoveryWorkoutDetails; // Only present for RECOVERY type workouts
   intervalDetails?: IntervalWorkoutDetails; // Only present for INTERVAL_TRAINING type workouts
