@@ -21,10 +21,15 @@ import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
 import { isSameDay } from 'date-fns';
 
-import { WorkoutType, GymWorkoutDetails } from '../../../types/tracker';
+import {
+  WorkoutType,
+  GymWorkoutDetails,
+  LongRunWorkoutDetails,
+} from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
+import { LongRunWorkoutForm } from '../LongRunWorkoutForm';
 
 /**
  * AddWorkoutDialog component for adding or editing workouts
@@ -47,6 +52,9 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
     undefined,
   );
+  const [longRunDetails, setLongRunDetails] = useState<
+    LongRunWorkoutDetails | undefined
+  >(undefined);
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
@@ -58,6 +66,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
+      setLongRunDetails(editingWorkout.longRunDetails);
       setValidationError(null);
     } else if (!editingWorkout && open) {
       // Reset to defaults when adding new
@@ -67,6 +76,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
+      setLongRunDetails(undefined);
       setValidationError(null);
     }
   }, [editingWorkout, open]);
@@ -143,6 +153,16 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       }
     }
 
+    // Validate long run details if workout type is LONG_RUN
+    if (workoutType === WorkoutType.LONG_RUN) {
+      if (!longRunDetails || longRunDetails.distanceGoal <= 0) {
+        setValidationError(
+          t`Please specify a distance goal for long run workouts`,
+        );
+        return;
+      }
+    }
+
     onSubmit({
       startHour,
       startMinute,
@@ -150,6 +170,8 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       endMinute,
       type: workoutType,
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
+      longRunDetails:
+        workoutType === WorkoutType.LONG_RUN ? longRunDetails : undefined,
     });
     onClose();
   };
@@ -263,6 +285,17 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
             <>
               <Divider sx={{ my: 2 }} />
               <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
+
+          {/* Long Run Workout Details - Only shown for LONG_RUN type */}
+          {workoutType === WorkoutType.LONG_RUN && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <LongRunWorkoutForm
+                value={longRunDetails}
+                onChange={setLongRunDetails}
+              />
             </>
           )}
         </Stack>

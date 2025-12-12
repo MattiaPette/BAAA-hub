@@ -82,6 +82,18 @@ export interface GymWorkoutDetails {
 }
 
 /**
+ * Long Run-specific workout details
+ */
+export interface LongRunWorkoutDetails {
+  distanceGoal: number; // in kilometers
+  paceGoal?: number; // in minutes per kilometer
+  hydrationNotes?: string;
+  averageHeartRate?: number; // in bpm
+  peakHeartRate?: number; // in bpm
+  notes?: string;
+}
+
+/**
  * Represents a single workout activity
  */
 export interface Workout {
@@ -94,6 +106,7 @@ export interface Workout {
   type: WorkoutType;
   calendarId: string;
   gymDetails?: GymWorkoutDetails; // Only present for GYM type workouts
+  longRunDetails?: LongRunWorkoutDetails; // Only present for LONG_RUN type workouts
 }
 
 /**
