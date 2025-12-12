@@ -20,10 +20,15 @@ export const CalendarLegend: FC<CalendarLegendProps> = ({
     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
       {calendars.map(calendar => {
         const isEnabled = enabledCalendarIds.has(calendar.id);
+        const displayName = calendar.isCurrentUser ? (
+          <Trans>My activities calendar</Trans>
+        ) : (
+          calendar.name
+        );
         return (
           <Chip
             key={calendar.id}
-            label={calendar.name}
+            label={displayName}
             onClick={() => onToggleCalendar(calendar.id)}
             sx={{
               backgroundColor: isEnabled ? calendar.color : 'transparent',
