@@ -246,4 +246,5 @@ export interface Calendar {
   name: string;
   color: string;
   userId: string;
+  isCurrentUser?: boolean;
 }

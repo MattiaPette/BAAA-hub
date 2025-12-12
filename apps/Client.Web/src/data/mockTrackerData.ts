@@ -7,6 +7,7 @@ import { Workout, WorkoutType, Calendar } from '../types/tracker';
 
 /**
  * Mock calendars (users/trainees)
+ * The first calendar (cal-1) represents the current user's calendar
  */
 export const mockCalendars: Calendar[] = [
   {
@@ -14,20 +15,29 @@ export const mockCalendars: Calendar[] = [
     name: 'John Athlete',
     color: '#1976d2',
     userId: 'user-1',
+    isCurrentUser: true,
   },
   {
     id: 'cal-2',
     name: 'Sarah Runner',
     color: '#d32f2f',
     userId: 'user-2',
+    isCurrentUser: false,
   },
   {
     id: 'cal-3',
     name: 'Mike Trainer',
     color: '#388e3c',
     userId: 'user-3',
+    isCurrentUser: false,
   },
 ];
+
+/**
+ * Get the current user's calendar ID
+ */
+export const getCurrentUserCalendarId = (): string =>
+  mockCalendars.find(cal => cal.isCurrentUser)?.id || mockCalendars[0].id;
 
 /**
  * Get current month for mock data base

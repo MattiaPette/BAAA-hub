@@ -129,7 +129,13 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
                     }}
                     aria-hidden="true"
                   />
-                  <Typography variant="body2">{calendar.name}</Typography>
+                  <Typography variant="body2">
+                    {calendar.isCurrentUser ? (
+                      <Trans>My activities calendar</Trans>
+                    ) : (
+                      calendar.name
+                    )}
+                  </Typography>
                 </Box>
               </MenuItem>
             ))}
