@@ -24,6 +24,7 @@ import { isSameDay } from 'date-fns';
 import {
   WorkoutType,
   GymWorkoutDetails,
+  LongRunWorkoutDetails,
   SwimmingWorkoutDetails,
   CyclingWorkoutDetails,
   RecoveryWorkoutDetails,
@@ -33,6 +34,7 @@ import {
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
+import { LongRunWorkoutForm } from '../LongRunWorkoutForm';
 import { SwimmingWorkoutForm } from '../SwimmingWorkoutForm';
 import { CyclingWorkoutForm } from '../CyclingWorkoutForm';
 import { RecoveryWorkoutForm } from '../RecoveryWorkoutForm';
@@ -60,6 +62,10 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
     undefined,
   );
+  const [longRunDetails, setLongRunDetails] = useState<
+    LongRunWorkoutDetails | undefined
+  >(undefined);
+
   const [swimmingDetails, setSwimmingDetails] = useState<
     SwimmingWorkoutDetails | undefined
   >(undefined);
@@ -91,6 +97,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
+      setLongRunDetails(editingWorkout.longRunDetails);
       setSwimmingDetails(editingWorkout.swimmingDetails);
       setCyclingDetails(editingWorkout.cyclingDetails);
       setRecoveryDetails(editingWorkout.recoveryDetails);
@@ -105,6 +112,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
+      setLongRunDetails(undefined);
       setSwimmingDetails(undefined);
       setCyclingDetails(undefined);
       setRecoveryDetails(undefined);
@@ -186,6 +194,15 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       }
     }
 
+    // Validate long run details if workout type is LONG_RUN
+    if (workoutType === WorkoutType.LONG_RUN) {
+      if (!longRunDetails || longRunDetails.distanceGoal <= 0) {
+        setValidationError(
+          t`Please specify a distance goal for long run workouts`,
+        );
+        return;
+      }
+    }
     // Validate swimming details if workout type is SWIMMING
     if (workoutType === WorkoutType.SWIMMING) {
       if (!swimmingDetails) {
@@ -236,6 +253,8 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       endMinute,
       type: workoutType,
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
+      longRunDetails:
+        workoutType === WorkoutType.LONG_RUN ? longRunDetails : undefined,
       swimmingDetails:
         workoutType === WorkoutType.SWIMMING ? swimmingDetails : undefined,
       cyclingDetails:
@@ -360,6 +379,17 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
             <>
               <Divider sx={{ my: 2 }} />
               <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
+
+          {/* Long Run Workout Details - Only shown for LONG_RUN type */}
+          {workoutType === WorkoutType.LONG_RUN && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <LongRunWorkoutForm
+                value={longRunDetails}
+                onChange={setLongRunDetails}
+              />
             </>
           )}
 

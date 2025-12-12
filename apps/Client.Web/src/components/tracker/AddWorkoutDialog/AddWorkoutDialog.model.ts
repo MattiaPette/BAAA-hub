@@ -2,6 +2,7 @@ import {
   WorkoutType,
   Workout,
   GymWorkoutDetails,
+  LongRunWorkoutDetails,
   SwimmingWorkoutDetails,
   CyclingWorkoutDetails,
   RecoveryWorkoutDetails,
@@ -20,6 +21,7 @@ export interface AddWorkoutDialogProps {
       endMinute: number;
       type: WorkoutType;
       gymDetails?: GymWorkoutDetails;
+      longRunDetails?: LongRunWorkoutDetails;
       swimmingDetails?: SwimmingWorkoutDetails;
       cyclingDetails?: CyclingWorkoutDetails;
       recoveryDetails?: RecoveryWorkoutDetails;
