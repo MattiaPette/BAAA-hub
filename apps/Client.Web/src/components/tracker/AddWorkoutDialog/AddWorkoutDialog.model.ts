@@ -32,4 +32,5 @@ export interface AddWorkoutDialogProps {
   selectedDate: Date | null;
   editingWorkout?: Workout | null;
   existingWorkouts: Workout[];
+  selectedCalendarId: string;
 }
