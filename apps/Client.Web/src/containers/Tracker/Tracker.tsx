@@ -22,6 +22,9 @@ import {
   RunWorkoutDetails,
   IntervalWorkoutDetails,
   RecoveryWorkoutDetails,
+  LongRunWorkoutDetails,
+  SwimmingWorkoutDetails,
+  CyclingWorkoutDetails,
 } from '../../types/tracker';
 
 /**
@@ -116,6 +119,9 @@ export const Tracker: FC = () => {
       runDetails?: RunWorkoutDetails;
       intervalDetails?: IntervalWorkoutDetails;
       recoveryDetails?: RecoveryWorkoutDetails;
+      longRunDetails?: LongRunWorkoutDetails;
+      swimmingDetails?: SwimmingWorkoutDetails;
+      cyclingDetails?: CyclingWorkoutDetails;
     }>,
   ) => {
     if (!selectedDate) return;
@@ -136,6 +142,9 @@ export const Tracker: FC = () => {
                 recoveryDetails: newWorkoutData.recoveryDetails,
                 intervalDetails: newWorkoutData.intervalDetails,
                 runDetails: newWorkoutData.runDetails,
+                longRunDetails: newWorkoutData.longRunDetails,
+                swimmingDetails: newWorkoutData.swimmingDetails,
+                cyclingDetails: newWorkoutData.cyclingDetails,
               }
             : w,
         ),
@@ -155,6 +164,9 @@ export const Tracker: FC = () => {
         recoveryDetails: newWorkoutData.recoveryDetails,
         intervalDetails: newWorkoutData.intervalDetails,
         runDetails: newWorkoutData.runDetails,
+        longRunDetails: newWorkoutData.longRunDetails,
+        swimmingDetails: newWorkoutData.swimmingDetails,
+        cyclingDetails: newWorkoutData.cyclingDetails,
       };
       setWorkouts(prev => [...prev, newWorkout]);
     }
