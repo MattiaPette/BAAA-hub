@@ -252,6 +252,7 @@ export const Tracker: FC = () => {
         selectedDate={selectedDate}
         editingWorkout={editingWorkout}
         existingWorkouts={workouts}
+        selectedCalendarId={selectedCalendarId}
       />
 
       {/* Workout Details Dialog */}

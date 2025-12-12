@@ -53,6 +53,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   selectedDate,
   editingWorkout,
   existingWorkouts,
+  selectedCalendarId,
 }) => {
   const [startHour, setStartHour] = useState<number>(6);
   const [startMinute, setStartMinute] = useState<number>(0);
@@ -125,6 +126,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   /**
    * Checks if the new workout time overlaps with existing workouts
    * Returns true if there's an overlap, false otherwise
+   * Only checks for overlaps within the same calendar (same user)
    */
   const checkTimeOverlap = (): boolean => {
     if (!selectedDate) return false;
@@ -133,10 +135,12 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
     const newStartMinutes = startHour * 60 + startMinute;
     const newEndMinutes = endHour * 60 + endMinute;
 
-    // Get workouts for the selected day (excluding the one being edited)
+    // Get workouts for the selected day and calendar (excluding the one being edited)
+    // Only check overlaps within the same calendar to avoid false positives from follower calendars
     const dayWorkouts = existingWorkouts.filter(
       w =>
         isSameDay(w.date, selectedDate) &&
+        w.calendarId === selectedCalendarId &&
         (!editingWorkout || w.id !== editingWorkout.id),
     );
 

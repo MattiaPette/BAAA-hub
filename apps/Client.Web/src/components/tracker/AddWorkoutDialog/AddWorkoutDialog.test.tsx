@@ -22,6 +22,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -36,6 +37,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -62,6 +64,7 @@ describe('AddWorkoutDialog', () => {
         selectedDate={selectedDate}
         editingWorkout={editingWorkout}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -76,6 +79,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -90,6 +94,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -107,6 +112,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -126,6 +132,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -143,6 +150,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -186,6 +194,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={existingWorkouts}
+        selectedCalendarId="1"
       />,
     );
 
@@ -201,6 +210,46 @@ describe('AddWorkoutDialog', () => {
     });
 
     expect(mockOnSubmit).not.toHaveBeenCalled();
+  });
+
+  it('should not show validation error for workouts in different calendars', async () => {
+    const existingWorkouts = [
+      {
+        id: '1',
+        date: selectedDate,
+        startHour: 6,
+        startMinute: 0,
+        endHour: 7,
+        endMinute: 0,
+        type: WorkoutType.RUN,
+        calendarId: '2', // Different calendar
+      },
+    ];
+
+    render(
+      <AddWorkoutDialog
+        open
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        selectedDate={selectedDate}
+        existingWorkouts={existingWorkouts}
+        selectedCalendarId="1"
+      />,
+    );
+
+    // Try to add workout at same time as workout in different calendar
+    const startHourInput = screen.getByLabelText(/start hour/i);
+    fireEvent.change(startHourInput, { target: { value: '6' } });
+
+    const submitButton = screen.getByRole('button', { name: /add workout/i });
+    fireEvent.click(submitButton);
+
+    // Should not show overlap error and should call onSubmit
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalled();
+    });
+
+    expect(screen.queryByText(/overlaps/i)).not.toBeInTheDocument();
   });
 
   it('should pre-fill form when editing workout', () => {
@@ -223,6 +272,7 @@ describe('AddWorkoutDialog', () => {
         selectedDate={selectedDate}
         editingWorkout={editingWorkout}
         existingWorkouts={[editingWorkout]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -245,6 +295,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -262,6 +313,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
@@ -291,6 +343,7 @@ describe('AddWorkoutDialog', () => {
         onSubmit={mockOnSubmit}
         selectedDate={selectedDate}
         existingWorkouts={[]}
+        selectedCalendarId="1"
       />,
     );
 
