@@ -3,6 +3,11 @@ import {
   Workout,
   GymWorkoutDetails,
   LongRunWorkoutDetails,
+  SwimmingWorkoutDetails,
+  CyclingWorkoutDetails,
+  RecoveryWorkoutDetails,
+  IntervalWorkoutDetails,
+  RunWorkoutDetails,
 } from '../../../types/tracker';
 
 export interface AddWorkoutDialogProps {
@@ -17,6 +22,11 @@ export interface AddWorkoutDialogProps {
       type: WorkoutType;
       gymDetails?: GymWorkoutDetails;
       longRunDetails?: LongRunWorkoutDetails;
+      swimmingDetails?: SwimmingWorkoutDetails;
+      cyclingDetails?: CyclingWorkoutDetails;
+      recoveryDetails?: RecoveryWorkoutDetails;
+      intervalDetails?: IntervalWorkoutDetails;
+      runDetails?: RunWorkoutDetails;
     }>,
   ) => void;
   selectedDate: Date | null;

@@ -10,6 +10,7 @@ import {
   IconButton,
   Box,
   Divider,
+  Chip,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,7 +22,46 @@ import { enUS, it } from 'date-fns/locale';
 import { useLingui } from '@lingui/react';
 
 import { getWorkoutTypeLabel } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
+import { WorkoutType, SwimType, IntensityLevel } from '../../../types/tracker';
 import { WorkoutDetailsDialogProps } from './WorkoutDetailsDialog.model';
+
+/**
+ * Get human-readable label for swim type
+ */
+const getSwimTypeLabel = (type: SwimType): string => {
+  switch (type) {
+    case SwimType.FREESTYLE:
+      return t`Freestyle`;
+    case SwimType.BACKSTROKE:
+      return t`Backstroke`;
+    case SwimType.BREASTSTROKE:
+      return t`Breaststroke`;
+    case SwimType.BUTTERFLY:
+      return t`Butterfly`;
+    case SwimType.INDIVIDUAL_MEDLEY:
+      return t`Individual Medley`;
+    default:
+      return t`Unknown`;
+  }
+};
+
+/**
+ * Get human-readable label for intensity level
+ */
+const getIntensityLevelLabel = (level: IntensityLevel): string => {
+  switch (level) {
+    case IntensityLevel.LOW:
+      return t`Low`;
+    case IntensityLevel.MODERATE:
+      return t`Moderate`;
+    case IntensityLevel.HIGH:
+      return t`High`;
+    case IntensityLevel.VERY_HIGH:
+      return t`Very High`;
+    default:
+      return t`Unknown`;
+  }
+};
 
 /**
  * WorkoutDetailsDialog component for viewing and managing workout details
@@ -119,6 +159,172 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
               {startTime} - {endTime}
             </Typography>
           </Box>
+
+          {/* Swimming Workout Details */}
+          {workout.type === WorkoutType.SWIMMING && workout.swimmingDetails && (
+            <>
+              <Divider />
+              <Box>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  <Trans>Swimming Details</Trans>
+                </Typography>
+                <Stack spacing={1.5}>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      <Trans>Distance Goal</Trans>
+                    </Typography>
+                    <Typography variant="body2">
+                      {workout.swimmingDetails.distanceGoal}{' '}
+                      <Trans>meters</Trans>
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      <Trans>Lap Count</Trans>
+                    </Typography>
+                    <Typography variant="body2">
+                      {workout.swimmingDetails.lapCount}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      <Trans>Time per Lap</Trans>
+                    </Typography>
+                    <Typography variant="body2">
+                      {workout.swimmingDetails.timePerLap}{' '}
+                      <Trans>seconds</Trans>
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      <Trans>Type of Swim</Trans>
+                    </Typography>
+                    <Typography variant="body2">
+                      {getSwimTypeLabel(workout.swimmingDetails.swimType)}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" color="text.secondary">
+                      <Trans>Intensity Level</Trans>
+                    </Typography>
+                    <Typography variant="body2">
+                      <Chip
+                        label={getIntensityLevelLabel(
+                          workout.swimmingDetails.intensity,
+                        )}
+                        size="small"
+                        color={(() => {
+                          const { intensity } = workout.swimmingDetails;
+                          if (
+                            intensity === IntensityLevel.VERY_HIGH ||
+                            intensity === IntensityLevel.HIGH
+                          ) {
+                            return 'error';
+                          }
+                          if (intensity === IntensityLevel.MODERATE) {
+                            return 'warning';
+                          }
+                          return 'success';
+                        })()}
+                      />
+                    </Typography>
+                  </Box>
+                  {workout.swimmingDetails.heartRate && (
+                    <Box>
+                      <Typography variant="caption" color="text.secondary">
+                        <Trans>Heart Rate</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.swimmingDetails.heartRate} <Trans>bpm</Trans>
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.swimmingDetails.notes && (
+                    <Box>
+                      <Typography variant="caption" color="text.secondary">
+                        <Trans>Notes</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.swimmingDetails.notes}
+                      </Typography>
+                    </Box>
+                  )}
+                </Stack>
+              </Box>
+            </>
+          )}
+
+          {/* Cycling Details - Only shown for CYCLING type */}
+          {workout.type === WorkoutType.CYCLING && workout.cyclingDetails && (
+            <>
+              <Divider />
+              <Box>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  <Trans>Cycling Details</Trans>
+                </Typography>
+                <Stack spacing={1}>
+                  {workout.cyclingDetails.distance !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Distance:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.distance} km
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.averageSpeed !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Average Speed:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.averageSpeed} km/h
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.elevationGain !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Elevation Gain:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.elevationGain} m
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.averageHeartRate !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Average Heart Rate:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.averageHeartRate} bpm
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.notes && (
+                    <Box>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Notes:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.notes}
+                      </Typography>
+                    </Box>
+                  )}
+                </Stack>
+              </Box>
+            </>
+          )}
         </Stack>
       </DialogContent>
 
