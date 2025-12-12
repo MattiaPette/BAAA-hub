@@ -15,7 +15,14 @@ import {
   mockCalendars,
   mockWorkouts as initialMockWorkouts,
 } from '../../data/mockTrackerData';
-import { WorkoutType, Workout } from '../../types/tracker';
+import {
+  WorkoutType,
+  Workout,
+  GymWorkoutDetails,
+  RunWorkoutDetails,
+  IntervalWorkoutDetails,
+  RecoveryWorkoutDetails,
+} from '../../types/tracker';
 
 /**
  * Tracker container component
@@ -105,8 +112,10 @@ export const Tracker: FC = () => {
       endHour: number;
       endMinute: number;
       type: WorkoutType;
-      gymDetails?: import('../../types/tracker').GymWorkoutDetails;
-      recoveryDetails?: import('../../types/tracker').RecoveryWorkoutDetails;
+      gymDetails?: GymWorkoutDetails;
+      runDetails?: RunWorkoutDetails;
+      intervalDetails?: IntervalWorkoutDetails;
+      recoveryDetails?: RecoveryWorkoutDetails;
     }>,
   ) => {
     if (!selectedDate) return;
@@ -125,6 +134,8 @@ export const Tracker: FC = () => {
                 type: newWorkoutData.type,
                 gymDetails: newWorkoutData.gymDetails,
                 recoveryDetails: newWorkoutData.recoveryDetails,
+                intervalDetails: newWorkoutData.intervalDetails,
+                runDetails: newWorkoutData.runDetails,
               }
             : w,
         ),
@@ -142,6 +153,8 @@ export const Tracker: FC = () => {
         calendarId: selectedCalendarId,
         gymDetails: newWorkoutData.gymDetails,
         recoveryDetails: newWorkoutData.recoveryDetails,
+        intervalDetails: newWorkoutData.intervalDetails,
+        runDetails: newWorkoutData.runDetails,
       };
       setWorkouts(prev => [...prev, newWorkout]);
     }

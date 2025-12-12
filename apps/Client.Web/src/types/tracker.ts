@@ -80,6 +80,20 @@ export enum RecoveryFocusArea {
 }
 
 /**
+ * Heart rate zones for running workouts
+ */
+export enum HeartRateZone {
+  Z1 = 'Z1',
+  Z2 = 'Z2',
+  Z3 = 'Z3',
+  Z4 = 'Z4',
+  Z5 = 'Z5',
+  Z6 = 'Z6',
+  Z7 = 'Z7',
+  CUSTOM = 'CUSTOM',
+}
+
+/**
  * Represents a single exercise set in a gym workout
  */
 export interface ExerciseSet {
@@ -120,6 +134,41 @@ export interface RecoveryWorkoutDetails {
 }
 
 /**
+ * Represents a single interval in interval training
+ */
+export interface IntervalSegment {
+  id: string;
+  type: 'work' | 'rest';
+  durationMinutes: number;
+  durationSeconds: number;
+  distance?: number; // in km, optional
+  targetPace?: string; // Format: MM:SS per km, optional
+  notes?: string;
+}
+
+/**
+ * Interval training-specific workout details
+ */
+export interface IntervalWorkoutDetails {
+  intervals: IntervalSegment[];
+  rounds: number; // number of times to repeat the interval sequence
+  intensity: IntensityLevel;
+  notes?: string;
+}
+
+/**
+ * Run-specific workout details
+ */
+export interface RunWorkoutDetails {
+  distanceGoal?: number; // in kilometers
+  paceGoal?: number; // in minutes per kilometer
+  heartRateZone?: HeartRateZone;
+  customHeartRateMin?: number; // BPM, used when heartRateZone is CUSTOM
+  customHeartRateMax?: number; // BPM, used when heartRateZone is CUSTOM
+  notes?: string;
+}
+
+/**
  * Represents a single workout activity
  */
 export interface Workout {
@@ -133,6 +182,8 @@ export interface Workout {
   calendarId: string;
   gymDetails?: GymWorkoutDetails; // Only present for GYM type workouts
   recoveryDetails?: RecoveryWorkoutDetails; // Only present for RECOVERY type workouts
+  intervalDetails?: IntervalWorkoutDetails; // Only present for INTERVAL_TRAINING type workouts
+  runDetails?: RunWorkoutDetails; // Only present for RUN type workouts
 }
 
 /**
