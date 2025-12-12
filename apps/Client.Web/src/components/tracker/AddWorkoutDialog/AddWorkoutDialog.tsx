@@ -25,11 +25,13 @@ import {
   WorkoutType,
   GymWorkoutDetails,
   IntervalWorkoutDetails,
+  RunWorkoutDetails,
 } from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
 import { IntervalTrainingForm } from '../IntervalTrainingForm';
+import { RunWorkoutForm } from '../RunWorkoutForm';
 
 /**
  * AddWorkoutDialog component for adding or editing workouts
@@ -55,6 +57,9 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [intervalDetails, setIntervalDetails] = useState<
     IntervalWorkoutDetails | undefined
   >(undefined);
+  const [runDetails, setRunDetails] = useState<RunWorkoutDetails | undefined>(
+    undefined,
+  );
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
@@ -67,6 +72,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
       setIntervalDetails(editingWorkout.intervalDetails);
+      setRunDetails(editingWorkout.runDetails);
       setValidationError(null);
     } else if (!editingWorkout && open) {
       // Reset to defaults when adding new
@@ -77,6 +83,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
       setIntervalDetails(undefined);
+      setRunDetails(undefined);
       setValidationError(null);
     }
   }, [editingWorkout, open]);
@@ -180,6 +187,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
         workoutType === WorkoutType.INTERVAL_TRAINING
           ? intervalDetails
           : undefined,
+      runDetails: workoutType === WorkoutType.RUN ? runDetails : undefined,
     });
     onClose();
   };
@@ -304,6 +312,14 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
                 value={intervalDetails}
                 onChange={setIntervalDetails}
               />
+            </>
+          )}
+
+          {/* Run Workout Details - Only shown for RUN type */}
+          {workoutType === WorkoutType.RUN && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <RunWorkoutForm value={runDetails} onChange={setRunDetails} />
             </>
           )}
         </Stack>
