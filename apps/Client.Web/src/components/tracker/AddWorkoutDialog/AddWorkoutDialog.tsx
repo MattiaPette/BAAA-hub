@@ -276,7 +276,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       aria-labelledby="add-workout-dialog-title"
     >

@@ -100,7 +100,7 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       aria-labelledby="workout-details-dialog-title"
     >
