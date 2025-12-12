@@ -53,6 +53,7 @@ export const CalendarDay: FC<CalendarDayProps> = ({
   onWorkoutClick,
   calendars = [],
   isCombinedView = false,
+  isEditable = true,
 }) => {
   const today = isToday(date);
   const hasWorkouts = workouts.length > 0;
@@ -79,11 +80,11 @@ export const CalendarDay: FC<CalendarDayProps> = ({
 
   return (
     <Paper
-      onClick={() => onDayClick(date)}
+      onClick={() => isEditable && onDayClick(date)}
       sx={{
         height: '100%',
         p: 1,
-        cursor: 'pointer',
+        cursor: isEditable ? 'pointer' : 'default',
         backgroundColor: theme =>
           !isCurrentMonth
             ? theme.palette.action.disabledBackground
@@ -93,9 +94,11 @@ export const CalendarDay: FC<CalendarDayProps> = ({
           today
             ? `2px solid ${theme.palette.accent.main}`
             : `1px solid ${theme.palette.divider}`,
-        '&:hover': {
-          backgroundColor: theme => theme.palette.action.hover,
-        },
+        '&:hover': isEditable
+          ? {
+              backgroundColor: theme => theme.palette.action.hover,
+            }
+          : {},
         width: '100%',
         maxWidth: '100%',
         overflow: 'hidden',
@@ -105,7 +108,7 @@ export const CalendarDay: FC<CalendarDayProps> = ({
       tabIndex={0}
       aria-label={`${date.toLocaleDateString()}, ${workouts.length} workouts`}
       onKeyDown={e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (isEditable && (e.key === 'Enter' || e.key === ' ')) {
           e.preventDefault();
           onDayClick(date);
         }

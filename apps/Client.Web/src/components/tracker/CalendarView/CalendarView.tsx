@@ -25,6 +25,7 @@ export const CalendarView: FC<CalendarViewProps> = ({
   onWorkoutClick,
   calendars = [],
   isCombinedView = false,
+  isEditable = true,
 }) => {
   const days = useMemo(() => {
     const monthStart = startOfMonth(currentMonth);
@@ -107,6 +108,7 @@ export const CalendarView: FC<CalendarViewProps> = ({
               onWorkoutClick={onWorkoutClick}
               calendars={calendars}
               isCombinedView={isCombinedView}
+              isEditable={isEditable}
             />
           );
         })}

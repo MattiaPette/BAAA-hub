@@ -210,6 +210,7 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
   workout,
   onEdit,
   onDelete,
+  isEditable = true,
 }) => {
   const { i18n } = useLingui();
 
@@ -978,39 +979,41 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
         </Stack>
       </DialogContent>
 
-      <DialogActions sx={{ justifyContent: 'space-between', margin: 2 }}>
-        <Button
-          onClick={handleDelete}
-          startIcon={<DeleteIcon />}
-          color="error"
-          variant="text"
-          sx={{
-            color: theme => theme.palette.error.main,
-            '&:hover': {
-              backgroundColor: theme => theme.palette.error.main,
-              color: theme => theme.palette.error.contrastText,
-            },
-          }}
-        >
-          <Trans>Delete</Trans>
-        </Button>
+      {isEditable && (
+        <DialogActions sx={{ justifyContent: 'space-between', margin: 2 }}>
+          <Button
+            onClick={handleDelete}
+            startIcon={<DeleteIcon />}
+            color="error"
+            variant="text"
+            sx={{
+              color: theme => theme.palette.error.main,
+              '&:hover': {
+                backgroundColor: theme => theme.palette.error.main,
+                color: theme => theme.palette.error.contrastText,
+              },
+            }}
+          >
+            <Trans>Delete</Trans>
+          </Button>
 
-        <Button
-          onClick={handleEdit}
-          startIcon={<EditIcon />}
-          color="primary"
-          variant="text"
-          sx={{
-            color: theme => theme.palette.primary.main,
-            '&:hover': {
-              backgroundColor: theme => theme.palette.primary.main,
-              color: theme => theme.palette.primary.contrastText,
-            },
-          }}
-        >
-          <Trans>Edit</Trans>
-        </Button>
-      </DialogActions>
+          <Button
+            onClick={handleEdit}
+            startIcon={<EditIcon />}
+            color="primary"
+            variant="text"
+            sx={{
+              color: theme => theme.palette.primary.main,
+              '&:hover': {
+                backgroundColor: theme => theme.palette.primary.main,
+                color: theme => theme.palette.primary.contrastText,
+              },
+            }}
+          >
+            <Trans>Edit</Trans>
+          </Button>
+        </DialogActions>
+      )}
     </Dialog>
   );
 };

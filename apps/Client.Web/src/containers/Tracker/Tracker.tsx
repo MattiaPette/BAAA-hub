@@ -14,6 +14,7 @@ import { WorkoutDetailsDialog } from '../../components/tracker/WorkoutDetailsDia
 import {
   mockCalendars,
   mockWorkouts as initialMockWorkouts,
+  getCurrentUserCalendarId,
 } from '../../data/mockTrackerData';
 import {
   WorkoutType,
@@ -48,7 +49,7 @@ export const Tracker: FC = () => {
 
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedCalendarId, setSelectedCalendarId] = useState<string>(
-    mockCalendars[0].id,
+    getCurrentUserCalendarId(),
   );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -72,6 +73,12 @@ export const Tracker: FC = () => {
       ),
     [workouts, selectedCalendarId, isCombinedView, enabledCalendarIds],
   );
+
+  // Check if the selected calendar is editable (belongs to the current user)
+  const isSelectedCalendarEditable = useMemo(() => {
+    const currentUserCalendarId = getCurrentUserCalendarId();
+    return selectedCalendarId === currentUserCalendarId;
+  }, [selectedCalendarId]);
 
   const handleToggleCombinedView = () => {
     setIsCombinedView(prev => !prev);
@@ -98,6 +105,10 @@ export const Tracker: FC = () => {
   };
 
   const handleDayClick = (date: Date) => {
+    // Only allow creating workouts in the current user's calendar
+    if (!isSelectedCalendarEditable && !isCombinedView) {
+      return;
+    }
     setSelectedDate(date);
     setEditingWorkout(null);
     setIsDialogOpen(true);
@@ -237,6 +248,7 @@ export const Tracker: FC = () => {
             onWorkoutClick={handleWorkoutClick}
             calendars={mockCalendars}
             isCombinedView={isCombinedView}
+            isEditable={isSelectedCalendarEditable || isCombinedView}
           />
         )}
       </Box>
@@ -262,6 +274,7 @@ export const Tracker: FC = () => {
         workout={selectedWorkout}
         onEdit={handleEditWorkout}
         onDelete={handleDeleteWorkout}
+        isEditable={selectedWorkout?.calendarId === getCurrentUserCalendarId()}
       />
     </Box>
   );
