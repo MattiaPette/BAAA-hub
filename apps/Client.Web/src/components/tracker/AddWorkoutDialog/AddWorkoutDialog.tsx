@@ -25,11 +25,19 @@ import {
   WorkoutType,
   GymWorkoutDetails,
   SwimmingWorkoutDetails,
+  CyclingWorkoutDetails,
+  RecoveryWorkoutDetails,
+  IntervalWorkoutDetails,
+  RunWorkoutDetails,
 } from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
 import { SwimmingWorkoutForm } from '../SwimmingWorkoutForm';
+import { CyclingWorkoutForm } from '../CyclingWorkoutForm';
+import { RecoveryWorkoutForm } from '../RecoveryWorkoutForm';
+import { IntervalTrainingForm } from '../IntervalTrainingForm';
+import { RunWorkoutForm } from '../RunWorkoutForm';
 
 /**
  * AddWorkoutDialog component for adding or editing workouts
@@ -55,6 +63,23 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [swimmingDetails, setSwimmingDetails] = useState<
     SwimmingWorkoutDetails | undefined
   >(undefined);
+
+  const [cyclingDetails, setCyclingDetails] = useState<
+    CyclingWorkoutDetails | undefined
+  >(undefined);
+
+  const [recoveryDetails, setRecoveryDetails] = useState<
+    RecoveryWorkoutDetails | undefined
+  >(undefined);
+
+  const [intervalDetails, setIntervalDetails] = useState<
+    IntervalWorkoutDetails | undefined
+  >(undefined);
+
+  const [runDetails, setRunDetails] = useState<RunWorkoutDetails | undefined>(
+    undefined,
+  );
+
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
@@ -67,6 +92,10 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
       setSwimmingDetails(editingWorkout.swimmingDetails);
+      setCyclingDetails(editingWorkout.cyclingDetails);
+      setRecoveryDetails(editingWorkout.recoveryDetails);
+      setIntervalDetails(editingWorkout.intervalDetails);
+      setRunDetails(editingWorkout.runDetails);
       setValidationError(null);
     } else if (!editingWorkout && open) {
       // Reset to defaults when adding new
@@ -77,6 +106,10 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
       setSwimmingDetails(undefined);
+      setCyclingDetails(undefined);
+      setRecoveryDetails(undefined);
+      setIntervalDetails(undefined);
+      setRunDetails(undefined);
       setValidationError(null);
     }
   }, [editingWorkout, open]);
@@ -173,6 +206,29 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       }
     }
 
+    // Validate recovery details if workout type is RECOVERY
+    if (workoutType === WorkoutType.RECOVERY) {
+      if (!recoveryDetails) {
+        setValidationError(t`Please provide recovery session details`);
+      }
+    }
+
+    // Validate interval details if workout type is INTERVAL_TRAINING
+    if (workoutType === WorkoutType.INTERVAL_TRAINING) {
+      if (!intervalDetails || intervalDetails.intervals.length === 0) {
+        setValidationError(
+          t`Please add at least one interval for interval training`,
+        );
+        return;
+      }
+
+      // Validate rounds
+      if (intervalDetails.rounds < 1) {
+        setValidationError(t`Number of rounds must be at least 1`);
+        return;
+      }
+    }
+
     onSubmit({
       startHour,
       startMinute,
@@ -182,6 +238,15 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
       swimmingDetails:
         workoutType === WorkoutType.SWIMMING ? swimmingDetails : undefined,
+      cyclingDetails:
+        workoutType === WorkoutType.CYCLING ? cyclingDetails : undefined,
+      recoveryDetails:
+        workoutType === WorkoutType.RECOVERY ? recoveryDetails : undefined,
+      intervalDetails:
+        workoutType === WorkoutType.INTERVAL_TRAINING
+          ? intervalDetails
+          : undefined,
+      runDetails: workoutType === WorkoutType.RUN ? runDetails : undefined,
     });
     onClose();
   };
@@ -306,6 +371,47 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
                 value={swimmingDetails}
                 onChange={setSwimmingDetails}
               />
+            </>
+          )}
+
+          {/* Cycling Workout Details - Only shown for CYCLING type */}
+          {workoutType === WorkoutType.CYCLING && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <CyclingWorkoutForm
+                value={cyclingDetails}
+                onChange={setCyclingDetails}
+              />
+            </>
+          )}
+
+          {/* Recovery Workout Details - Only shown for RECOVERY type */}
+          {workoutType === WorkoutType.RECOVERY && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <RecoveryWorkoutForm
+                value={recoveryDetails}
+                onChange={setRecoveryDetails}
+              />
+            </>
+          )}
+
+          {/* Interval Training Details - Only shown for INTERVAL_TRAINING type */}
+          {workoutType === WorkoutType.INTERVAL_TRAINING && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <IntervalTrainingForm
+                value={intervalDetails}
+                onChange={setIntervalDetails}
+              />
+            </>
+          )}
+
+          {/* Run Workout Details - Only shown for RUN type */}
+          {workoutType === WorkoutType.RUN && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <RunWorkoutForm value={runDetails} onChange={setRunDetails} />
             </>
           )}
         </Stack>

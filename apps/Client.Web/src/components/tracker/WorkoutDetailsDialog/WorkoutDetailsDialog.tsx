@@ -257,6 +257,74 @@ export const WorkoutDetailsDialog: FC<WorkoutDetailsDialogProps> = ({
               </Box>
             </>
           )}
+
+          {/* Cycling Details - Only shown for CYCLING type */}
+          {workout.type === WorkoutType.CYCLING && workout.cyclingDetails && (
+            <>
+              <Divider />
+              <Box>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  <Trans>Cycling Details</Trans>
+                </Typography>
+                <Stack spacing={1}>
+                  {workout.cyclingDetails.distance !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Distance:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.distance} km
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.averageSpeed !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Average Speed:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.averageSpeed} km/h
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.elevationGain !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Elevation Gain:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.elevationGain} m
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.averageHeartRate !== undefined && (
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Average Heart Rate:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.averageHeartRate} bpm
+                      </Typography>
+                    </Box>
+                  )}
+                  {workout.cyclingDetails.notes && (
+                    <Box>
+                      <Typography variant="body2" fontWeight="bold">
+                        <Trans>Notes:</Trans>
+                      </Typography>
+                      <Typography variant="body2">
+                        {workout.cyclingDetails.notes}
+                      </Typography>
+                    </Box>
+                  )}
+                </Stack>
+              </Box>
+            </>
+          )}
         </Stack>
       </DialogContent>
 
