@@ -109,14 +109,18 @@ msgstr "Add Goal"
 msgid "Add Set"
 msgstr "Add Set"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:187
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:304
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:198
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:323
 msgid "Add Workout"
 msgstr "Add Workout"
 
 #: src/helpers/getErrorDescription/getErrorDescription.tsx:122
 msgid "Additional interaction is required"
 msgstr "Additional interaction is required"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:234
+msgid "Additional notes about your run..."
+msgstr "Additional notes about your run..."
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:509
 msgid "Additional notes about your workout..."
@@ -151,7 +155,7 @@ msgstr "Age"
 msgid "All"
 msgstr "All"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:141
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:151
 msgid "All exercises must have a name"
 msgstr "All exercises must have a name"
 
@@ -264,7 +268,7 @@ msgid "Calendars"
 msgstr "Calendars"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:184
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:286
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:305
 #: src/containers/Administration/EditRolesDialog.tsx:158
 #: src/containers/Profile/ProfileEditForm.tsx:1058
 msgid "Cancel"
@@ -320,7 +324,7 @@ msgstr "Click to upload banner"
 msgid "Close"
 msgstr "Close"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:178
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:189
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:78
 msgid "Close dialog"
 msgstr "Close dialog"
@@ -400,6 +404,14 @@ msgstr "Creating..."
 msgid "CrossFit"
 msgstr "CrossFit"
 
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:195
+msgid "Custom Heart Rate Range (BPM)"
+msgstr "Custom Heart Rate Range (BPM)"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:38
+msgid "Custom Range"
+msgstr "Custom Range"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:11
 #: src/helpers/sportTypes/sportTypeLabels.ts:31
 msgid "Cycling"
@@ -447,6 +459,10 @@ msgstr "Disabled"
 msgid "Distance"
 msgstr "Distance"
 
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:134
+msgid "Distance Goal (km)"
+msgstr "Distance Goal (km)"
+
 #: src/components/settings/TrainingGoals/TrainingGoals.tsx:193
 msgid "Distance Goals"
 msgstr "Distance Goals"
@@ -462,6 +478,14 @@ msgstr "Drag to reposition, scroll or use slider to zoom"
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:47
 msgid "Dumbbell"
 msgstr "Dumbbell"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:144
+msgid "e.g., 5, 10, 21.1"
+msgstr "e.g., 5, 10, 21.1"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:159
+msgid "e.g., 5.5, 6.0"
+msgstr "e.g., 5.5, 6.0"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:305
 msgid "e.g., Bench Press"
@@ -490,7 +514,7 @@ msgstr "Edit Profile"
 msgid "Edit Roles for {0} {1}"
 msgstr "Edit Roles for {0} {1}"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:185
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:196
 msgid "Edit Workout"
 msgstr "Edit Workout"
 
@@ -541,23 +565,23 @@ msgstr "Email Verified"
 msgid "Enabled"
 msgstr "Enabled"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:248
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:259
 msgid "End hour"
 msgstr "End hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:244
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:255
 msgid "End Hour"
 msgstr "End Hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:256
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:267
 msgid "End minute"
 msgstr "End minute"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:252
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:263
 msgid "End Minute"
 msgstr "End Minute"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:115
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:125
 msgid "End time must be after start time"
 msgstr "End time must be after start time"
 
@@ -752,6 +776,11 @@ msgstr "Half Marathon"
 #: src/containers/Profile/ProfileEditForm.tsx:896
 msgid "Half Marathon Time"
 msgstr "Half Marathon Time"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:166
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:171
+msgid "Heart Rate Zone"
+msgstr "Heart Rate Zone"
 
 #: src/containers/Profile/Profile.tsx:612
 #: src/containers/PublicProfile/PublicProfile.tsx:625
@@ -996,6 +1025,10 @@ msgstr "Marathon Time"
 msgid "Max 500 characters"
 msgstr "Max 500 characters"
 
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:211
+msgid "Max BPM"
+msgstr "Max BPM"
+
 #: src/helpers/roleLabels/roleLabels.ts:8
 msgid "Member"
 msgstr "Member"
@@ -1014,6 +1047,14 @@ msgstr "MFA Disabled"
 #: src/containers/Administration/Administration.tsx:421
 msgid "MFA Enabled: {0}"
 msgstr "MFA Enabled: {0}"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:199
+msgid "Min BPM"
+msgstr "Min BPM"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:160
+msgid "Minutes per kilometer"
+msgstr "Minutes per kilometer"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:99
 msgid "Moderate"
@@ -1118,6 +1159,7 @@ msgstr "No weekly activity type goals set. Click \"Add Goal\" to create one."
 msgid "No workouts scheduled this month"
 msgstr "No workouts scheduled this month"
 
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:180
 #: src/helpers/mfaLabels/mfaLabels.ts:8
 #: src/helpers/mfaLabels/mfaLabels.ts:21
 msgid "None"
@@ -1133,6 +1175,7 @@ msgid "Not Verified"
 msgstr "Not Verified"
 
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:503
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:228
 msgid "Notes"
 msgstr "Notes"
 
@@ -1174,6 +1217,10 @@ msgstr "Organization committee member"
 #: src/helpers/sportTypes/sportTypeLabels.ts:39
 msgid "Other"
 msgstr "Other"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:149
+msgid "Pace Goal (min/km)"
+msgstr "Pace Goal (min/km)"
 
 #: src/components/login/LoginDialog/LoginDialog.tsx:184
 #: src/components/login/LoginForm/LoginForm.tsx:165
@@ -1222,7 +1269,7 @@ msgstr "Photo Privacy"
 msgid "Physical security key (FIDO2/WebAuthn)"
 msgstr "Physical security key (FIDO2/WebAuthn)"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:131
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:141
 msgid "Please add at least one exercise for gym workouts"
 msgstr "Please add at least one exercise for gym workouts"
 
@@ -1419,6 +1466,10 @@ msgstr "Rows per page:"
 msgid "Run"
 msgstr "Run"
 
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:129
+msgid "Run Details"
+msgstr "Run Details"
+
 #: src/helpers/sportTypes/sportTypeLabels.ts:10
 #: src/helpers/sportTypes/sportTypeLabels.ts:30
 msgid "Running"
@@ -1565,19 +1616,19 @@ msgstr "Sports & Activities"
 msgid "Sports Privacy"
 msgstr "Sports Privacy"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:228
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:239
 msgid "Start hour"
 msgstr "Start hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:224
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:235
 msgid "Start Hour"
 msgstr "Start Hour"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:236
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:247
 msgid "Start minute"
 msgstr "Start minute"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:232
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:243
 msgid "Start Minute"
 msgstr "Start Minute"
 
@@ -1705,7 +1756,7 @@ msgstr "This Week"
 msgid "This will be your public username"
 msgstr "This will be your public username"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:122
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:132
 msgid "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
 msgstr "This workout overlaps with an existing workout. The previous workout must finish before this one starts."
 
@@ -1749,7 +1800,7 @@ msgid "TOTP"
 msgstr "TOTP"
 
 #: src/containers/MainContainer/MainContainer.tsx:64
-#: src/containers/Tracker/Tracker.tsx:36
+#: src/containers/Tracker/Tracker.tsx:41
 msgid "Tracker"
 msgstr "Tracker"
 
@@ -1811,6 +1862,7 @@ msgstr "Unfollow"
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:59
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:87
 #: src/components/tracker/GymWorkoutForm/GymWorkoutForm.tsx:105
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:40
 #: src/helpers/workoutTypeLabels/workoutTypeLabels.ts:21
 msgid "Unknown"
 msgstr "Unknown"
@@ -1819,7 +1871,7 @@ msgstr "Unknown"
 msgid "Unknown Sport"
 msgstr "Unknown Sport"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:302
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:321
 msgid "Update Workout"
 msgstr "Update Workout"
 
@@ -1944,8 +1996,8 @@ msgstr "workout"
 msgid "Workout Details"
 msgstr "Workout Details"
 
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:204
-#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:210
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:215
+#: src/components/tracker/AddWorkoutDialog/AddWorkoutDialog.tsx:221
 #: src/components/tracker/WorkoutDetailsDialog/WorkoutDetailsDialog.tsx:104
 msgid "Workout Type"
 msgstr "Workout Type"
@@ -2040,6 +2092,34 @@ msgstr "Your session has expired. Please log in again"
 #: src/containers/Profile/ProfileEditForm.tsx:642
 msgid "YouTube Channel"
 msgstr "YouTube Channel"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:24
+msgid "Zone 1 - Recovery"
+msgstr "Zone 1 - Recovery"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:26
+msgid "Zone 2 - Endurance"
+msgstr "Zone 2 - Endurance"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:28
+msgid "Zone 3 - Tempo"
+msgstr "Zone 3 - Tempo"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:30
+msgid "Zone 4 - Threshold"
+msgstr "Zone 4 - Threshold"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:32
+msgid "Zone 5 - VO2 Max"
+msgstr "Zone 5 - VO2 Max"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:34
+msgid "Zone 6 - Anaerobic"
+msgstr "Zone 6 - Anaerobic"
+
+#: src/components/tracker/RunWorkoutForm/RunWorkoutForm.tsx:36
+msgid "Zone 7 - Maximum"
+msgstr "Zone 7 - Maximum"
 
 #: src/components/commons/inputs/ImageUpload/ImageCropDialog.tsx:162
 msgid "Zoom"
