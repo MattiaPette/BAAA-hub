@@ -20,6 +20,7 @@ import {
   Workout,
   GymWorkoutDetails,
   RunWorkoutDetails,
+  IntervalWorkoutDetails,
 } from '../../types/tracker';
 
 /**
@@ -112,6 +113,7 @@ export const Tracker: FC = () => {
       type: WorkoutType;
       gymDetails?: GymWorkoutDetails;
       runDetails?: RunWorkoutDetails;
+      intervalDetails?: IntervalWorkoutDetails;
     }>,
   ) => {
     if (!selectedDate) return;
@@ -129,6 +131,7 @@ export const Tracker: FC = () => {
                 endMinute: newWorkoutData.endMinute,
                 type: newWorkoutData.type,
                 gymDetails: newWorkoutData.gymDetails,
+                intervalDetails: newWorkoutData.intervalDetails,
                 runDetails: newWorkoutData.runDetails,
               }
             : w,
@@ -146,6 +149,7 @@ export const Tracker: FC = () => {
         type: newWorkoutData.type,
         calendarId: selectedCalendarId,
         gymDetails: newWorkoutData.gymDetails,
+        intervalDetails: newWorkoutData.intervalDetails,
         runDetails: newWorkoutData.runDetails,
       };
       setWorkouts(prev => [...prev, newWorkout]);

@@ -96,6 +96,28 @@ export interface GymWorkoutDetails {
 }
 
 /**
+ * Represents a single interval in interval training
+ */
+export interface IntervalSegment {
+  id: string;
+  type: 'work' | 'rest';
+  durationMinutes: number;
+  durationSeconds: number;
+  distance?: number; // in km, optional
+  targetPace?: string; // Format: MM:SS per km, optional
+}
+
+/**
+ * Interval training-specific workout details
+ */
+export interface IntervalWorkoutDetails {
+  intervals: IntervalSegment[];
+  rounds: number; // number of times to repeat the interval sequence
+  intensity: IntensityLevel;
+  notes?: string;
+}
+
+/**
  * Run-specific workout details
  */
 export interface RunWorkoutDetails {
@@ -120,6 +142,7 @@ export interface Workout {
   type: WorkoutType;
   calendarId: string;
   gymDetails?: GymWorkoutDetails; // Only present for GYM type workouts
+  intervalDetails?: IntervalWorkoutDetails; // Only present for INTERVAL_TRAINING type workouts
   runDetails?: RunWorkoutDetails; // Only present for RUN type workouts
 }
 

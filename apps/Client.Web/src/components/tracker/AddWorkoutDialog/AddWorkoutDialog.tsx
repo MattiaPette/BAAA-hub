@@ -24,11 +24,13 @@ import { isSameDay } from 'date-fns';
 import {
   WorkoutType,
   GymWorkoutDetails,
+  IntervalWorkoutDetails,
   RunWorkoutDetails,
 } from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
+import { IntervalTrainingForm } from '../IntervalTrainingForm';
 import { RunWorkoutForm } from '../RunWorkoutForm';
 
 /**
@@ -52,6 +54,9 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
     undefined,
   );
+  const [intervalDetails, setIntervalDetails] = useState<
+    IntervalWorkoutDetails | undefined
+  >(undefined);
   const [runDetails, setRunDetails] = useState<RunWorkoutDetails | undefined>(
     undefined,
   );
@@ -66,6 +71,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
+      setIntervalDetails(editingWorkout.intervalDetails);
       setRunDetails(editingWorkout.runDetails);
       setValidationError(null);
     } else if (!editingWorkout && open) {
@@ -76,6 +82,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
+      setIntervalDetails(undefined);
       setRunDetails(undefined);
       setValidationError(null);
     }
@@ -153,6 +160,22 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       }
     }
 
+    // Validate interval details if workout type is INTERVAL_TRAINING
+    if (workoutType === WorkoutType.INTERVAL_TRAINING) {
+      if (!intervalDetails || intervalDetails.intervals.length === 0) {
+        setValidationError(
+          t`Please add at least one interval for interval training`,
+        );
+        return;
+      }
+
+      // Validate rounds
+      if (intervalDetails.rounds < 1) {
+        setValidationError(t`Number of rounds must be at least 1`);
+        return;
+      }
+    }
+
     onSubmit({
       startHour,
       startMinute,
@@ -160,6 +183,10 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       endMinute,
       type: workoutType,
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
+      intervalDetails:
+        workoutType === WorkoutType.INTERVAL_TRAINING
+          ? intervalDetails
+          : undefined,
       runDetails: workoutType === WorkoutType.RUN ? runDetails : undefined,
     });
     onClose();
@@ -274,6 +301,17 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
             <>
               <Divider sx={{ my: 2 }} />
               <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
+
+          {/* Interval Training Details - Only shown for INTERVAL_TRAINING type */}
+          {workoutType === WorkoutType.INTERVAL_TRAINING && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <IntervalTrainingForm
+                value={intervalDetails}
+                onChange={setIntervalDetails}
+              />
             </>
           )}
 
