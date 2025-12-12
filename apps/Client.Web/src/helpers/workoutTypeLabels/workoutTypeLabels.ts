@@ -17,6 +17,8 @@ export const getWorkoutTypeLabel = (type: WorkoutType): string => {
       return t`Recovery`;
     case WorkoutType.INTERVAL_TRAINING:
       return t`Interval Training`;
+    case WorkoutType.CYCLING:
+      return t`Cycling`;
     default:
       return t`Unknown`;
   }
@@ -42,5 +44,9 @@ export const getWorkoutTypeOptions = (): Array<{
   {
     value: WorkoutType.INTERVAL_TRAINING,
     label: getWorkoutTypeLabel(WorkoutType.INTERVAL_TRAINING),
+  },
+  {
+    value: WorkoutType.CYCLING,
+    label: getWorkoutTypeLabel(WorkoutType.CYCLING),
   },
 ];

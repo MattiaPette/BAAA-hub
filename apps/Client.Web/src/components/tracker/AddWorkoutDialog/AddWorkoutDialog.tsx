@@ -24,6 +24,7 @@ import { isSameDay } from 'date-fns';
 import {
   WorkoutType,
   GymWorkoutDetails,
+  CyclingWorkoutDetails,
   RecoveryWorkoutDetails,
   IntervalWorkoutDetails,
   RunWorkoutDetails,
@@ -31,6 +32,7 @@ import {
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
+import { CyclingWorkoutForm } from '../CyclingWorkoutForm';
 import { RecoveryWorkoutForm } from '../RecoveryWorkoutForm';
 import { IntervalTrainingForm } from '../IntervalTrainingForm';
 import { RunWorkoutForm } from '../RunWorkoutForm';
@@ -56,6 +58,10 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
     undefined,
   );
+  const [cyclingDetails, setCyclingDetails] = useState<
+    CyclingWorkoutDetails | undefined
+  >(undefined);
+
   const [recoveryDetails, setRecoveryDetails] = useState<
     RecoveryWorkoutDetails | undefined
   >(undefined);
@@ -79,6 +85,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
+      setCyclingDetails(editingWorkout.cyclingDetails);
       setRecoveryDetails(editingWorkout.recoveryDetails);
       setIntervalDetails(editingWorkout.intervalDetails);
       setRunDetails(editingWorkout.runDetails);
@@ -91,6 +98,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
+      setCyclingDetails(undefined);
       setRecoveryDetails(undefined);
       setIntervalDetails(undefined);
       setRunDetails(undefined);
@@ -200,6 +208,8 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       endMinute,
       type: workoutType,
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
+      cyclingDetails:
+        workoutType === WorkoutType.CYCLING ? cyclingDetails : undefined,
       recoveryDetails:
         workoutType === WorkoutType.RECOVERY ? recoveryDetails : undefined,
       intervalDetails:
@@ -320,6 +330,17 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
             <>
               <Divider sx={{ my: 2 }} />
               <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
+
+          {/* Cycling Workout Details - Only shown for CYCLING type */}
+          {workoutType === WorkoutType.CYCLING && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <CyclingWorkoutForm
+                value={cyclingDetails}
+                onChange={setCyclingDetails}
+              />
             </>
           )}
 

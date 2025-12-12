@@ -12,6 +12,7 @@ export enum WorkoutType {
   LONG_RUN = 'LONG_RUN',
   RECOVERY = 'RECOVERY',
   INTERVAL_TRAINING = 'INTERVAL_TRAINING',
+  CYCLING = 'CYCLING',
 }
 
 /**
@@ -123,6 +124,17 @@ export interface GymWorkoutDetails {
 }
 
 /**
+ * Cycling-specific workout details
+ */
+export interface CyclingWorkoutDetails {
+  distance?: number; // in km
+  averageSpeed?: number; // in km/h
+  elevationGain?: number; // in meters
+  averageHeartRate?: number; // in bpm
+  notes?: string;
+}
+
+/**
  * Recovery-specific workout details
  */
 export interface RecoveryWorkoutDetails {
@@ -181,6 +193,7 @@ export interface Workout {
   type: WorkoutType;
   calendarId: string;
   gymDetails?: GymWorkoutDetails; // Only present for GYM type workouts
+  cyclingDetails?: CyclingWorkoutDetails; // Only present for CYCLING type workouts
   recoveryDetails?: RecoveryWorkoutDetails; // Only present for RECOVERY type workouts
   intervalDetails?: IntervalWorkoutDetails; // Only present for INTERVAL_TRAINING type workouts
   runDetails?: RunWorkoutDetails; // Only present for RUN type workouts
