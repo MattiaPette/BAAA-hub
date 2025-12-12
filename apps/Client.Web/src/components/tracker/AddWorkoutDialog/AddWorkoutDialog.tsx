@@ -24,12 +24,14 @@ import { isSameDay } from 'date-fns';
 import {
   WorkoutType,
   GymWorkoutDetails,
+  RecoveryWorkoutDetails,
   IntervalWorkoutDetails,
   RunWorkoutDetails,
 } from '../../../types/tracker';
 import { getWorkoutTypeOptions } from '../../../helpers/workoutTypeLabels/workoutTypeLabels';
 import { AddWorkoutDialogProps } from './AddWorkoutDialog.model';
 import { GymWorkoutForm } from '../GymWorkoutForm';
+import { RecoveryWorkoutForm } from '../RecoveryWorkoutForm';
 import { IntervalTrainingForm } from '../IntervalTrainingForm';
 import { RunWorkoutForm } from '../RunWorkoutForm';
 
@@ -54,12 +56,18 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
   const [gymDetails, setGymDetails] = useState<GymWorkoutDetails | undefined>(
     undefined,
   );
+  const [recoveryDetails, setRecoveryDetails] = useState<
+    RecoveryWorkoutDetails | undefined
+  >(undefined);
+
   const [intervalDetails, setIntervalDetails] = useState<
     IntervalWorkoutDetails | undefined
   >(undefined);
+
   const [runDetails, setRunDetails] = useState<RunWorkoutDetails | undefined>(
     undefined,
   );
+
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // Populate form when editing
@@ -71,6 +79,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(editingWorkout.endMinute);
       setWorkoutType(editingWorkout.type);
       setGymDetails(editingWorkout.gymDetails);
+      setRecoveryDetails(editingWorkout.recoveryDetails);
       setIntervalDetails(editingWorkout.intervalDetails);
       setRunDetails(editingWorkout.runDetails);
       setValidationError(null);
@@ -82,6 +91,7 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       setEndMinute(0);
       setWorkoutType(WorkoutType.RUN);
       setGymDetails(undefined);
+      setRecoveryDetails(undefined);
       setIntervalDetails(undefined);
       setRunDetails(undefined);
       setValidationError(null);
@@ -160,6 +170,13 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       }
     }
 
+    // Validate recovery details if workout type is RECOVERY
+    if (workoutType === WorkoutType.RECOVERY) {
+      if (!recoveryDetails) {
+        setValidationError(t`Please provide recovery session details`);
+      }
+    }
+
     // Validate interval details if workout type is INTERVAL_TRAINING
     if (workoutType === WorkoutType.INTERVAL_TRAINING) {
       if (!intervalDetails || intervalDetails.intervals.length === 0) {
@@ -183,6 +200,8 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
       endMinute,
       type: workoutType,
       gymDetails: workoutType === WorkoutType.GYM ? gymDetails : undefined,
+      recoveryDetails:
+        workoutType === WorkoutType.RECOVERY ? recoveryDetails : undefined,
       intervalDetails:
         workoutType === WorkoutType.INTERVAL_TRAINING
           ? intervalDetails
@@ -301,6 +320,17 @@ export const AddWorkoutDialog: FC<AddWorkoutDialogProps> = ({
             <>
               <Divider sx={{ my: 2 }} />
               <GymWorkoutForm value={gymDetails} onChange={setGymDetails} />
+            </>
+          )}
+
+          {/* Recovery Workout Details - Only shown for RECOVERY type */}
+          {workoutType === WorkoutType.RECOVERY && (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <RecoveryWorkoutForm
+                value={recoveryDetails}
+                onChange={setRecoveryDetails}
+              />
             </>
           )}
 

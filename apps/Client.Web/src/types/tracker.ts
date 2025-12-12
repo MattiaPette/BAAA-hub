@@ -53,6 +53,33 @@ export enum IntensityLevel {
 }
 
 /**
+ * Recovery activity types
+ */
+export enum RecoveryActivityType {
+  STRETCHING = 'STRETCHING',
+  FOAM_ROLLING = 'FOAM_ROLLING',
+  YOGA = 'YOGA',
+  MASSAGE = 'MASSAGE',
+  ACTIVE_RECOVERY = 'ACTIVE_RECOVERY',
+  ICE_BATH = 'ICE_BATH',
+  SAUNA = 'SAUNA',
+  OTHER = 'OTHER',
+}
+
+/**
+ * Focus areas for recovery sessions
+ */
+export enum RecoveryFocusArea {
+  FULL_BODY = 'FULL_BODY',
+  UPPER_BODY = 'UPPER_BODY',
+  LOWER_BODY = 'LOWER_BODY',
+  BACK = 'BACK',
+  LEGS = 'LEGS',
+  SHOULDERS = 'SHOULDERS',
+  CORE = 'CORE',
+}
+
+/**
  * Heart rate zones for running workouts
  */
 export enum HeartRateZone {
@@ -96,6 +123,17 @@ export interface GymWorkoutDetails {
 }
 
 /**
+ * Recovery-specific workout details
+ */
+export interface RecoveryWorkoutDetails {
+  activityType: RecoveryActivityType;
+  intensity: IntensityLevel;
+  focusAreas: RecoveryFocusArea[];
+  heartRate?: number; // optional heart rate in bpm
+  notes?: string;
+}
+
+/**
  * Represents a single interval in interval training
  */
 export interface IntervalSegment {
@@ -105,6 +143,7 @@ export interface IntervalSegment {
   durationSeconds: number;
   distance?: number; // in km, optional
   targetPace?: string; // Format: MM:SS per km, optional
+  notes?: string;
 }
 
 /**
@@ -142,6 +181,7 @@ export interface Workout {
   type: WorkoutType;
   calendarId: string;
   gymDetails?: GymWorkoutDetails; // Only present for GYM type workouts
+  recoveryDetails?: RecoveryWorkoutDetails; // Only present for RECOVERY type workouts
   intervalDetails?: IntervalWorkoutDetails; // Only present for INTERVAL_TRAINING type workouts
   runDetails?: RunWorkoutDetails; // Only present for RUN type workouts
 }

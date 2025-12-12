@@ -21,6 +21,7 @@ import {
   GymWorkoutDetails,
   RunWorkoutDetails,
   IntervalWorkoutDetails,
+  RecoveryWorkoutDetails,
 } from '../../types/tracker';
 
 /**
@@ -114,6 +115,7 @@ export const Tracker: FC = () => {
       gymDetails?: GymWorkoutDetails;
       runDetails?: RunWorkoutDetails;
       intervalDetails?: IntervalWorkoutDetails;
+      recoveryDetails?: RecoveryWorkoutDetails;
     }>,
   ) => {
     if (!selectedDate) return;
@@ -131,6 +133,7 @@ export const Tracker: FC = () => {
                 endMinute: newWorkoutData.endMinute,
                 type: newWorkoutData.type,
                 gymDetails: newWorkoutData.gymDetails,
+                recoveryDetails: newWorkoutData.recoveryDetails,
                 intervalDetails: newWorkoutData.intervalDetails,
                 runDetails: newWorkoutData.runDetails,
               }
@@ -149,6 +152,7 @@ export const Tracker: FC = () => {
         type: newWorkoutData.type,
         calendarId: selectedCalendarId,
         gymDetails: newWorkoutData.gymDetails,
+        recoveryDetails: newWorkoutData.recoveryDetails,
         intervalDetails: newWorkoutData.intervalDetails,
         runDetails: newWorkoutData.runDetails,
       };

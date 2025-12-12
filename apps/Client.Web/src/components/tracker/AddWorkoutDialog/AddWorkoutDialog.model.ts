@@ -2,6 +2,7 @@ import {
   WorkoutType,
   Workout,
   GymWorkoutDetails,
+  RecoveryWorkoutDetails,
   IntervalWorkoutDetails,
   RunWorkoutDetails,
 } from '../../../types/tracker';
@@ -17,6 +18,7 @@ export interface AddWorkoutDialogProps {
       endMinute: number;
       type: WorkoutType;
       gymDetails?: GymWorkoutDetails;
+      recoveryDetails?: RecoveryWorkoutDetails;
       intervalDetails?: IntervalWorkoutDetails;
       runDetails?: RunWorkoutDetails;
     }>,
