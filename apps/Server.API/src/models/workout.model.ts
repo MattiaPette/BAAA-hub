@@ -209,11 +209,11 @@ const cyclingWorkoutDetailsSchema = new Schema(
   {
     distance: {
       type: Number,
-      min: [0, 'Distance cannot be negative'],
+      min: [0.001, 'Distance must be positive'],
     },
     averageSpeed: {
       type: Number,
-      min: [0, 'Average speed cannot be negative'],
+      min: [0.001, 'Average speed must be positive'],
     },
     elevationGain: {
       type: Number,
@@ -296,7 +296,7 @@ const intervalSegmentSchema = new Schema(
     },
     distance: {
       type: Number,
-      min: [0, 'Distance cannot be negative'],
+      min: [0.001, 'Distance must be positive'],
     },
     targetPace: {
       type: String,
@@ -351,11 +351,11 @@ const runWorkoutDetailsSchema = new Schema(
   {
     distanceGoal: {
       type: Number,
-      min: [0, 'Distance cannot be negative'],
+      min: [0.001, 'Distance must be positive'],
     },
     paceGoal: {
       type: Number,
-      min: [0, 'Pace cannot be negative'],
+      min: [0.001, 'Pace must be positive'],
     },
     heartRateZone: {
       type: String,
