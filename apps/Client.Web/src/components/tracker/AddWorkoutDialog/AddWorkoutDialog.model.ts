@@ -1,4 +1,14 @@
-import { WorkoutType, Workout } from '../../../types/tracker';
+import {
+  WorkoutType,
+  Workout,
+  GymWorkoutDetails,
+  LongRunWorkoutDetails,
+  SwimmingWorkoutDetails,
+  CyclingWorkoutDetails,
+  RecoveryWorkoutDetails,
+  IntervalWorkoutDetails,
+  RunWorkoutDetails,
+} from '../../../types/tracker';
 
 export interface AddWorkoutDialogProps {
   open: boolean;
@@ -10,9 +20,17 @@ export interface AddWorkoutDialogProps {
       endHour: number;
       endMinute: number;
       type: WorkoutType;
+      gymDetails?: GymWorkoutDetails;
+      longRunDetails?: LongRunWorkoutDetails;
+      swimmingDetails?: SwimmingWorkoutDetails;
+      cyclingDetails?: CyclingWorkoutDetails;
+      recoveryDetails?: RecoveryWorkoutDetails;
+      intervalDetails?: IntervalWorkoutDetails;
+      runDetails?: RunWorkoutDetails;
     }>,
   ) => void;
   selectedDate: Date | null;
   editingWorkout?: Workout | null;
   existingWorkouts: Workout[];
+  selectedCalendarId: string;
 }

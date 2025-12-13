@@ -6,4 +6,5 @@ export interface WorkoutDetailsDialogProps {
   workout: Workout | null;
   onEdit: (workout: Readonly<Workout>) => void;
   onDelete: (workoutId: string) => void;
+  isEditable?: boolean;
 }

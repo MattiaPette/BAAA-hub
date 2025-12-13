@@ -26,6 +26,6 @@ describe('Tracker', () => {
 
     // Should show calendar selector with default calendar
     expect(screen.getByRole('combobox')).toBeInTheDocument();
-    expect(screen.getByText(/john athlete/i)).toBeInTheDocument();
+    expect(screen.getByText(/my activities calendar/i)).toBeInTheDocument();
   });
 });

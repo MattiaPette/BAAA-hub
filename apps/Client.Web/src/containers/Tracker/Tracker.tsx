@@ -14,8 +14,19 @@ import { WorkoutDetailsDialog } from '../../components/tracker/WorkoutDetailsDia
 import {
   mockCalendars,
   mockWorkouts as initialMockWorkouts,
+  getCurrentUserCalendarId,
 } from '../../data/mockTrackerData';
-import { WorkoutType, Workout } from '../../types/tracker';
+import {
+  WorkoutType,
+  Workout,
+  GymWorkoutDetails,
+  RunWorkoutDetails,
+  IntervalWorkoutDetails,
+  RecoveryWorkoutDetails,
+  LongRunWorkoutDetails,
+  SwimmingWorkoutDetails,
+  CyclingWorkoutDetails,
+} from '../../types/tracker';
 
 /**
  * Tracker container component
@@ -38,7 +49,7 @@ export const Tracker: FC = () => {
 
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedCalendarId, setSelectedCalendarId] = useState<string>(
-    mockCalendars[0].id,
+    getCurrentUserCalendarId(),
   );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -62,6 +73,12 @@ export const Tracker: FC = () => {
       ),
     [workouts, selectedCalendarId, isCombinedView, enabledCalendarIds],
   );
+
+  // Check if the selected calendar is editable (belongs to the current user)
+  const isSelectedCalendarEditable = useMemo(() => {
+    const currentUserCalendarId = getCurrentUserCalendarId();
+    return selectedCalendarId === currentUserCalendarId;
+  }, [selectedCalendarId]);
 
   const handleToggleCombinedView = () => {
     setIsCombinedView(prev => !prev);
@@ -88,6 +105,10 @@ export const Tracker: FC = () => {
   };
 
   const handleDayClick = (date: Date) => {
+    // Only allow creating workouts in the current user's calendar
+    if (!isSelectedCalendarEditable && !isCombinedView) {
+      return;
+    }
     setSelectedDate(date);
     setEditingWorkout(null);
     setIsDialogOpen(true);
@@ -105,6 +126,13 @@ export const Tracker: FC = () => {
       endHour: number;
       endMinute: number;
       type: WorkoutType;
+      gymDetails?: GymWorkoutDetails;
+      runDetails?: RunWorkoutDetails;
+      intervalDetails?: IntervalWorkoutDetails;
+      recoveryDetails?: RecoveryWorkoutDetails;
+      longRunDetails?: LongRunWorkoutDetails;
+      swimmingDetails?: SwimmingWorkoutDetails;
+      cyclingDetails?: CyclingWorkoutDetails;
     }>,
   ) => {
     if (!selectedDate) return;
@@ -121,6 +149,13 @@ export const Tracker: FC = () => {
                 endHour: newWorkoutData.endHour,
                 endMinute: newWorkoutData.endMinute,
                 type: newWorkoutData.type,
+                gymDetails: newWorkoutData.gymDetails,
+                recoveryDetails: newWorkoutData.recoveryDetails,
+                intervalDetails: newWorkoutData.intervalDetails,
+                runDetails: newWorkoutData.runDetails,
+                longRunDetails: newWorkoutData.longRunDetails,
+                swimmingDetails: newWorkoutData.swimmingDetails,
+                cyclingDetails: newWorkoutData.cyclingDetails,
               }
             : w,
         ),
@@ -136,6 +171,13 @@ export const Tracker: FC = () => {
         endMinute: newWorkoutData.endMinute,
         type: newWorkoutData.type,
         calendarId: selectedCalendarId,
+        gymDetails: newWorkoutData.gymDetails,
+        recoveryDetails: newWorkoutData.recoveryDetails,
+        intervalDetails: newWorkoutData.intervalDetails,
+        runDetails: newWorkoutData.runDetails,
+        longRunDetails: newWorkoutData.longRunDetails,
+        swimmingDetails: newWorkoutData.swimmingDetails,
+        cyclingDetails: newWorkoutData.cyclingDetails,
       };
       setWorkouts(prev => [...prev, newWorkout]);
     }
@@ -206,6 +248,7 @@ export const Tracker: FC = () => {
             onWorkoutClick={handleWorkoutClick}
             calendars={mockCalendars}
             isCombinedView={isCombinedView}
+            isEditable={isSelectedCalendarEditable || isCombinedView}
           />
         )}
       </Box>
@@ -221,6 +264,7 @@ export const Tracker: FC = () => {
         selectedDate={selectedDate}
         editingWorkout={editingWorkout}
         existingWorkouts={workouts}
+        selectedCalendarId={selectedCalendarId}
       />
 
       {/* Workout Details Dialog */}
@@ -230,6 +274,7 @@ export const Tracker: FC = () => {
         workout={selectedWorkout}
         onEdit={handleEditWorkout}
         onDelete={handleDeleteWorkout}
+        isEditable={selectedWorkout?.calendarId === getCurrentUserCalendarId()}
       />
     </Box>
   );

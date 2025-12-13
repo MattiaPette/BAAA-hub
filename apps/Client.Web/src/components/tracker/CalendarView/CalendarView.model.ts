@@ -7,4 +7,5 @@ export interface CalendarViewProps {
   onWorkoutClick: (workout: Readonly<Workout>) => void;
   calendars?: Calendar[];
   isCombinedView?: boolean;
+  isEditable?: boolean;
 }
