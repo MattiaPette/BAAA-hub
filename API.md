@@ -610,6 +610,166 @@ curl -X PUT \
 }
 ```
 
+### Workout Endpoints
+
+Workout tracking system for managing training activities. Supports 7 workout
+types with detailed metrics for each type.
+
+| Method | Endpoint            | Auth     | Description          |
+| ------ | ------------------- | -------- | -------------------- |
+| POST   | `/api/workouts`     | Required | Create a new workout |
+| GET    | `/api/workouts`     | Required | List workouts        |
+| GET    | `/api/workouts/:id` | Required | Get specific workout |
+| PATCH  | `/api/workouts/:id` | Required | Update workout       |
+| DELETE | `/api/workouts/:id` | Required | Delete workout       |
+
+**Workout Types:**
+
+- `RUN` - Regular running workout with pace and heart rate tracking
+- `GYM` - Gym workout with exercises, sets, and muscle groups
+- `LONG_RUN` - Extended run with hydration notes and detailed metrics
+- `RECOVERY` - Recovery activities (yoga, stretching, foam rolling, etc.)
+- `INTERVAL_TRAINING` - Interval training with work/rest segments
+- `SWIMMING` - Swimming workout with lap tracking
+- `CYCLING` - Cycling with distance, speed, and elevation
+
+**Create Workout:**
+
+All workouts require basic timing information. Type-specific details must match
+the workout type.
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "date": "2024-12-13",
+    "startHour": 6,
+    "startMinute": 0,
+    "endHour": 7,
+    "endMinute": 30,
+    "type": "RUN",
+    "runDetails": {
+      "distanceGoal": 10,
+      "paceGoal": 5.5,
+      "heartRateZone": "Z3",
+      "notes": "Morning tempo run"
+    }
+  }' \
+  http://localhost:3000/api/workouts
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "workout": {
+    "id": "507f1f77bcf86cd799439011",
+    "userId": "507f1f77bcf86cd799439012",
+    "date": "2024-12-13",
+    "startHour": 6,
+    "startMinute": 0,
+    "endHour": 7,
+    "endMinute": 30,
+    "type": "RUN",
+    "runDetails": {
+      "distanceGoal": 10,
+      "paceGoal": 5.5,
+      "heartRateZone": "Z3",
+      "notes": "Morning tempo run"
+    },
+    "createdAt": "2024-12-13T10:00:00.000Z",
+    "updatedAt": "2024-12-13T10:00:00.000Z"
+  }
+}
+```
+
+**List Workouts with Filters:**
+
+```bash
+# Get workouts for current user
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/workouts"
+
+# Filter by date range
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/workouts?startDate=2024-12-01&endDate=2024-12-31"
+
+# Filter by type
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/workouts?type=RUN"
+
+# View another user's workouts (requires userId)
+curl -H "Authorization: Bearer <token>" \
+  "http://localhost:3000/api/workouts?userId=507f1f77bcf86cd799439012"
+```
+
+**Query Parameters:**
+
+| Parameter   | Type        | Description                                |
+| ----------- | ----------- | ------------------------------------------ |
+| `userId`    | string      | View workouts for specific user (optional) |
+| `startDate` | YYYY-MM-DD  | Filter workouts from this date             |
+| `endDate`   | YYYY-MM-DD  | Filter workouts until this date            |
+| `type`      | WorkoutType | Filter by workout type                     |
+
+**Response:**
+
+```json
+{
+  "workouts": [
+    {
+      "id": "507f1f77bcf86cd799439011",
+      "userId": "507f1f77bcf86cd799439012",
+      "date": "2024-12-13",
+      "type": "RUN",
+      "runDetails": { ... },
+      "createdAt": "2024-12-13T10:00:00.000Z",
+      "updatedAt": "2024-12-13T10:00:00.000Z"
+    }
+  ],
+  "total": 1
+}
+```
+
+**Update Workout:**
+
+```bash
+curl -X PATCH \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "runDetails": {
+      "notes": "Updated notes - felt great!"
+    }
+  }' \
+  http://localhost:3000/api/workouts/507f1f77bcf86cd799439011
+```
+
+**Delete Workout:**
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer <token>" \
+  http://localhost:3000/api/workouts/507f1f77bcf86cd799439011
+```
+
+**Response (204 No Content)**
+
+**Workout Type-Specific Details:**
+
+Each workout type has specific details:
+
+- **GYM**: exercises array with sets/reps/weight, intensity, rest time, muscle
+  groups
+- **RUN**: distance goal, pace goal, heart rate zone, notes
+- **LONG_RUN**: distance, pace, hydration notes, average/peak heart rate
+- **RECOVERY**: activity type, intensity, focus areas, notes
+- **INTERVAL_TRAINING**: intervals array with work/rest segments, rounds,
+  intensity
+- **SWIMMING**: distance, lap count, time per lap, swim type, intensity
+- **CYCLING**: distance, average speed, elevation gain, average heart rate
+
 ### Health Check
 
 | Method | Endpoint  | Auth   | Description           |

@@ -195,7 +195,19 @@ export const updateWorkout = async (ctx: AuthContext): Promise<void> => {
     );
   }
 
-  // Update workout
+  // If workout type is being changed, clear old type-specific details
+  if (data.type && data.type !== workout.type) {
+    // Clear all type-specific details
+    workout.gymDetails = undefined;
+    workout.longRunDetails = undefined;
+    workout.swimmingDetails = undefined;
+    workout.cyclingDetails = undefined;
+    workout.recoveryDetails = undefined;
+    workout.intervalDetails = undefined;
+    workout.runDetails = undefined;
+  }
+
+  // Update workout with new data
   Object.assign(workout, data);
   await workout.save();
 

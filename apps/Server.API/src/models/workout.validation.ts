@@ -327,7 +327,37 @@ export const updateWorkoutSchema = z
   })
   .refine(data => Object.keys(data).length > 0, {
     message: 'At least one field must be provided for update',
-  });
+  })
+  .refine(
+    data => {
+      // If workout type is being updated, ensure the appropriate details are provided
+      if (data.type) {
+        switch (data.type) {
+          case WorkoutType.GYM:
+            return !!data.gymDetails;
+          case WorkoutType.LONG_RUN:
+            return !!data.longRunDetails;
+          case WorkoutType.SWIMMING:
+            return !!data.swimmingDetails;
+          case WorkoutType.CYCLING:
+            return !!data.cyclingDetails;
+          case WorkoutType.RECOVERY:
+            return !!data.recoveryDetails;
+          case WorkoutType.INTERVAL_TRAINING:
+            return !!data.intervalDetails;
+          case WorkoutType.RUN:
+            return !!data.runDetails;
+          default:
+            return false;
+        }
+      }
+      return true;
+    },
+    {
+      message:
+        'When changing workout type, corresponding workout details must be provided',
+    },
+  );
 
 /**
  * Type inference for TypeScript

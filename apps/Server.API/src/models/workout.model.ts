@@ -131,7 +131,7 @@ const longRunWorkoutDetailsSchema = new Schema(
     distanceGoal: {
       type: Number,
       required: [true, 'Distance goal is required'],
-      min: [0, 'Distance cannot be negative'],
+      min: [0.001, 'Distance must be positive'],
     },
     paceGoal: {
       type: Number,
@@ -167,7 +167,7 @@ const swimmingWorkoutDetailsSchema = new Schema(
     distanceGoal: {
       type: Number,
       required: [true, 'Distance goal is required'],
-      min: [0, 'Distance cannot be negative'],
+      min: [0.001, 'Distance must be positive'],
     },
     lapCount: {
       type: Number,
