@@ -135,7 +135,7 @@ const longRunWorkoutDetailsSchema = new Schema(
     },
     paceGoal: {
       type: Number,
-      min: [0, 'Pace cannot be negative'],
+      min: [0.001, 'Pace must be positive'],
     },
     hydrationNotes: {
       type: String,
